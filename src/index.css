@@ -3,12 +3,13 @@
 @tailwind utilities;
 
 body {
+  font-family: 'Roboto', sans-serif;
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  background: #E2E8F0;
+  background: rgb(226,232,240);
+  background: linear-gradient(55deg, rgba(226,232,240,1) 0%, rgba(203,213,225,1) 20%, rgba(148,163,184,1) 100%); 
 }
 
 #root {
@@ -16,4 +17,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
+}
+
+@media (max-width: 1600px) {
+  html {
+      font-size: 14px;
+  }
 }

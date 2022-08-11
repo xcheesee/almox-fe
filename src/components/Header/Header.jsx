@@ -1,24 +1,34 @@
 import React from 'react';
-import { IconButton } from '@mui/material';
+import { 
+    Box,
+    Typography,
+    IconButton 
+} from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PersonSharpIcon from '@mui/icons-material/PersonSharp';
+import PersonIcon from '@mui/icons-material/Person';
+
+const headerSx = { fontSize: '1.5rem', color: (theme) => theme.palette.color.bg };
 
 const Header = () => {
     return (
-        <header className="bg-slate-600 flex items-center justify-between px-6 py-1 drop-shadow-xl">
-            <h1 className="text-xl text-white font-light">Almoxarifado</h1>
+        <Box 
+            component="header" 
+            className="flex items-center justify-between px-4 py-2"
+            sx={headerSx}
+        >
+            <Typography sx={headerSx} variant="h2" component="h1">Almoxarifado</Typography>
             
-            <div className="flex items-center gap-5">
-                <div className="flex items-center gap-1">
-                    <PersonSharpIcon className="text-white" fontSize="small"/>
-                    <p className="text-white font-light">Olá, username</p>
-                </div>
+            <Box className="flex items-center gap-5">
+                <Box className="flex items-center gap-1">
+                    <PersonIcon fontSize="small"/>
+                    <Typography>Olá, username</Typography>
+                </Box>
 
                 <IconButton>
-                    <LogoutIcon className="text-white" fontSize="small" />
+                    <LogoutIcon fontSize="small" />
                 </IconButton>
-            </div>
-        </header>
+            </Box>
+        </Box>
     );
 }
 
