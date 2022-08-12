@@ -1,9 +1,7 @@
 import React from 'react';
 import { 
     TableRow, 
-    TableCell, 
-    IconButton,
-    Tooltip
+    TableCell
 } from '@mui/material';
 import Tabela from './Tabela';
 
