@@ -46,7 +46,7 @@ const TabelaOrdem = () => {
                             </Tooltip>
                             <Tooltip title="Editar" placement="top">
                                 <IconButton>
-                                    <EditIcon fontSize="small" />
+                                    <EditIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Baixa" placement="right">

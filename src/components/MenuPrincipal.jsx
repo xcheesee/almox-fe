@@ -27,20 +27,22 @@ const MenuPrincipal = () => {
             <Box className="grid gap-6 grid-cols-2 grid-rows-2 my-8 px-10">
                 <Link to="/entrada" className="row-start-1 row-end-1" >
                     <Button sx={buttonSx} variant="contained">
-                        <ArchiveIcon className="mx-2" />
+                        <ArchiveIcon className="mx-2" fontSize="large" />
                         Entrada de material
                     </Button>
                 </Link>
                 <Link to="/ordemservico" className="row-start-1 row-end-1" >
-                    <Button className="row-start-1 row-end-2" sx={buttonSx} variant="contained">
-                        <AssignmentIcon className="mx-2" />
+                    <Button sx={buttonSx} variant="contained">
+                        <AssignmentIcon className="mx-2" fontSize="large" />
                         Ordem de serviço
                     </Button>
                 </Link>
-                <Button className="col-span-2 flex gap-2" sx={buttonSx} variant="contained">
-                    <InventoryIcon /> 
-                    Inventário
-                </Button>
+                <Link to="/inventario" className="col-span-2 flex gap-2">
+                    <Button sx={buttonSx} variant="contained">
+                        <InventoryIcon className="mx-2" fontSize="large" /> 
+                        Inventário
+                    </Button>
+                </Link>
             </Box>
         </ContainerPrincipal>
     );
