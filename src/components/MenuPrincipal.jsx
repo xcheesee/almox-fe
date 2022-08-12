@@ -1,43 +1,36 @@
 import React from 'react';
 import { 
-    Paper, 
-    Button, 
-    Typography, 
+    Button,
     Box 
 } from '@mui/material';
+import ContainerPrincipal from './ContainerPrincipal';
+import Titulo from './Titulo';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-
-const paperSx = { 
-    maxWidth: '80rem', 
-    width: '100%',
-    padding: '1rem',
-    margin: 'auto',
-    backgroundColor: 'rgba(255,255,255,0.8)'
-};
-
-const tituloSx = { fontSize: '2rem' };
+import { Link } from 'react-router-dom';
 
 const buttonSx = {
     textTransform: 'none',
     fontSize: '2rem',
     fontWeight: 'light',
-    padding: '2rem'
+    padding: '2rem',
+    width: '100%'
 };
-
 
 const MenuPrincipal = () => {
     return (
-        <Paper elevation={6} sx={paperSx}>
-            <Typography variant="h2" component="h1" sx={tituloSx}>
+        <ContainerPrincipal>
+            <Titulo>
                 Menu principal
-            </Typography>
+            </Titulo>
             <Box className="grid gap-6 grid-cols-2 grid-rows-2 my-8 px-10">
-                <Button className="row-start-1 row-end-1" sx={buttonSx} variant="contained">
-                    <ArchiveIcon className="mx-2" />
-                    Entrada de material
-                </Button>
+                <Link to="/entrada" className="row-start-1 row-end-1" >
+                    <Button sx={buttonSx} variant="contained">
+                        <ArchiveIcon className="mx-2" />
+                        Entrada de material
+                    </Button>
+                </Link>
                 <Button className="row-start-1 row-end-2" sx={buttonSx} variant="contained">
                     <AssignmentIcon className="mx-2" />
                     Ordem de serviço
@@ -47,7 +40,7 @@ const MenuPrincipal = () => {
                     Inventário
                 </Button>
             </Box>
-        </Paper>
+        </ContainerPrincipal>
     );
 }
 

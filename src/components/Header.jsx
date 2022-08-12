@@ -16,7 +16,7 @@ const Header = () => {
             className="flex items-center justify-between px-4 py-2"
             sx={headerSx}
         >
-            <Typography sx={headerSx} variant="h2" component="h1">Almoxarifado</Typography>
+            <Typography sx={{ fontSize: '1.5rem' }} variant="h2" component="h1">Almoxarifado</Typography>
             
             <Box className="flex items-center gap-5">
                 <Box className="flex items-center gap-1">

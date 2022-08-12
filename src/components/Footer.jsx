@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from './img/Logo64_original.png';
+import Logo from '../img/Logo64_original.png';
 import { Typography, Box } from '@mui/material';
 
 const footerSx = { color: (theme) => theme.palette.color.bg };
