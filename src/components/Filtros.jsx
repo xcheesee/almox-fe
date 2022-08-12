@@ -65,9 +65,10 @@ const Filtros = (props) => {
                         width: '80%'
                     }}
                 >
+                    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        {props.children}
+                    </Box>
                     
-                    {props.children}
-
                     <Box sx={{ alignSelf: 'end', mt: '2rem'}}>
                         <Button 
                             sx={{ 

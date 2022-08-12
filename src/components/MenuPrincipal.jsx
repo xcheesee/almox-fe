@@ -31,10 +31,12 @@ const MenuPrincipal = () => {
                         Entrada de material
                     </Button>
                 </Link>
-                <Button className="row-start-1 row-end-2" sx={buttonSx} variant="contained">
-                    <AssignmentIcon className="mx-2" />
-                    Ordem de serviço
-                </Button>
+                <Link to="/ordemservico" className="row-start-1 row-end-1" >
+                    <Button className="row-start-1 row-end-2" sx={buttonSx} variant="contained">
+                        <AssignmentIcon className="mx-2" />
+                        Ordem de serviço
+                    </Button>
+                </Link>
                 <Button className="col-span-2 flex gap-2" sx={buttonSx} variant="contained">
                     <InventoryIcon /> 
                     Inventário
