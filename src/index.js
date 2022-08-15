@@ -11,12 +11,12 @@ const theme = createTheme(
   {
     palette: {
       primary: { main: '#64748B' },
-      color: { main: '#FFFFFF', bg: '#555555' },
+      color: { main: '#FFFFFF', bg: '#555555', bgInterno: '#F8F8FF' },
     },
     typography: {
       button: {
         textTransform: 'none'
-      }
+      },
     }
   },
   ptBR,
