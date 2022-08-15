@@ -1,4 +1,5 @@
 import React from 'react';
+import { mascaraProcessoSei, mascaraContrato } from '../helpers';
 import { 
     TableRow, 
     TableCell, 
@@ -35,8 +36,8 @@ const TabelaEntrada = () => {
                     <TableRow key={index}>
                         <TableCell align="center">{entrada.id}</TableCell>
                         <TableCell align="center">{entrada.data}</TableCell>
-                        <TableCell align="center">{entrada.processo_sei}</TableCell>
-                        <TableCell align="center">{entrada.contrato}</TableCell>
+                        <TableCell align="center">{mascaraProcessoSei(entrada.processo_sei)}</TableCell>
+                        <TableCell align="center">{mascaraContrato(entrada.contrato)}</TableCell>
                         <TableCell align="center">{entrada.local}</TableCell>
                         <TableCell align="center">{entrada.nota_fiscal}</TableCell>
                         <TableCell align="center">
