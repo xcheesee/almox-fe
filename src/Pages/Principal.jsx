@@ -1,14 +1,12 @@
-import Header from "../components/Header";
+import React from 'react';
+import Margens from '../components/Margens';
 import MenuPrincipal from "../components/MenuPrincipal";
-import Footer from "../components/Footer";
 
 const Principal = () => {
     return (
-        <>
-            <Header />
+        <Margens>
             <MenuPrincipal />
-            <Footer />
-        </>
+        </Margens>
     )
 }
 

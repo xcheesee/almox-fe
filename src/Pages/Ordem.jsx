@@ -1,15 +1,12 @@
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Margens from '../components/Margens';
 import OrdemServico from '../components/OrdemServico';
 
 const Ordem = () => {
     return (
-        <>
-            <Header />
+        <Margens>
             <OrdemServico />
-            <Footer />
-        </>
+        </Margens>
     );
 }
 

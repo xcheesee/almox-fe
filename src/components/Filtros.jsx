@@ -15,7 +15,6 @@ const Filtros = (props) => {
                         borderRadius: 1, 
                         boxSizing: 'border-box', 
                         margin: '1rem',
-                        textTransform: 'none',
                         padding: '0.5rem'
                     }}
                 >
@@ -72,14 +71,12 @@ const Filtros = (props) => {
                     <Box sx={{ alignSelf: 'end', mt: '2rem'}}>
                         <Button 
                             sx={{ 
-                                textTransform: 'none', 
                                 mr: '1rem' 
                             }}
                         >
                             Limpar
                         </Button>
                         <Button
-                            sx={{ textTransform: 'none' }}
                             variant="contained"
                         >
                             Salvar

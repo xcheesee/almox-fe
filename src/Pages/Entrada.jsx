@@ -1,15 +1,12 @@
 import React from 'react';
-import Header from '../components/Header';
+import Margens from '../components/Margens';
 import EntradaMaterial from '../components/EntradaMaterial';
-import Footer from '../components/Footer';
 
 const Entrada = () => {
     return (
-        <>
-            <Header />
+        <Margens>
             <EntradaMaterial />
-            <Footer />
-        </>
+        </Margens>
     );
 }
 

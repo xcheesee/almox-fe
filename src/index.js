@@ -13,6 +13,11 @@ const theme = createTheme(
       primary: { main: '#64748B' },
       color: { main: '#FFFFFF', bg: '#555555' },
     },
+    typography: {
+      button: {
+        textTransform: 'none'
+      }
+    }
   },
   ptBR,
 );
