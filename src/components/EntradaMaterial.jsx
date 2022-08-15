@@ -5,12 +5,13 @@ import Titulo from './Titulo';
 import Filtros from './Filtros';
 import TabelaEntrada from './TabelaEntrada';
 import AddIcon from '@mui/icons-material/Add';
+import { Link } from 'react-router-dom';
 
 const EntradaMaterial = (props) => {
     return (
         <ContainerPrincipal>
             <Titulo pathVoltar="/principal">
-                Entrada de materiais
+                Entrada de material
             </Titulo>
 
             <Filtros>
@@ -54,10 +55,12 @@ const EntradaMaterial = (props) => {
             <TabelaEntrada />
 
             <Box className="flex justify-end">
-                <Button variant="contained" sx={{ margin: '2rem 0' }}>
-                    <AddIcon sx={{ mr: '0.2rem' }} size="small" />
-                    Nova entrada
-                </Button>
+                <Link to="/entrada/nova-entrada">
+                    <Button variant="contained" sx={{ margin: '2rem 0' }}>
+                        <AddIcon sx={{ mr: '0.2rem' }} size="small" />
+                        Nova entrada
+                    </Button>
+                </Link>
             </Box>
 
             <Box className="flex justify-center my-4">

@@ -4,7 +4,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Principal from './Pages/Principal';
-import Entrada from './Pages/Entrada';
+import Entrada from './Pages/Entrada/Entrada';
+import NovaEntrada from './Pages/Entrada/NovaEntrada';
 import Ordem from './Pages/Ordem';
 import PaginaInventario from './Pages/PaginaInventario';
 import { Routes, Route } from 'react-router';
@@ -12,12 +13,20 @@ import { Routes, Route } from 'react-router';
 function App() {
   return (
     <Routes>
+      <Route path="/" element={
+        <Principal />
+      } />
+
       <Route path="/principal" element={
         <Principal />
       } />
 
       <Route path="/entrada" element={
         <Entrada />
+      } />
+
+      <Route path="/entrada/nova-entrada" element={
+        <NovaEntrada />
       } />
 
       <Route path="/ordemservico" element={
