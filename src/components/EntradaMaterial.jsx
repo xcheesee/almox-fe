@@ -54,10 +54,10 @@ const EntradaMaterial = (props) => {
 
             <TabelaEntrada />
 
-            <Box className="flex justify-end">
+            <Box className="flex justify-end py-8">
                 <Link to="/entrada/nova-entrada">
-                    <Button variant="contained" sx={{ margin: '2rem 0' }}>
-                        <AddIcon sx={{ mr: '0.2rem' }} size="small" />
+                    <Button variant="contained">
+                        <AddIcon className="mr-1" size="small" />
                         Nova entrada
                     </Button>
                 </Link>

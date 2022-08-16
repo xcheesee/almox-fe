@@ -63,9 +63,9 @@ const OrdemServico = () => {
 
             <TabelaOrdem />
 
-            <Box className="flex justify-end">
-                <Button variant="contained" sx={{ margin: '2rem 0' }}>
-                    <AddIcon sx={{ mr: '0.2rem' }} size="small" />
+            <Box className="flex justify-end my-8">
+                <Button variant="contained">
+                    <AddIcon className="mr-1" size="small" />
                     Nova entrada
                 </Button>
             </Box>
