@@ -1,6 +1,6 @@
 import React from 'react';
-import Margens from '../components/Margens';
-import OrdemServico from '../components/OrdemServico';
+import Margens from '../../components/Margens';
+import OrdemServico from '../../components/OrdemServico';
 
 const Ordem = () => {
     return (

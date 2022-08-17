@@ -6,7 +6,8 @@ import '@fontsource/roboto/700.css';
 import Principal from './Pages/Principal';
 import Entrada from './Pages/Entrada/Entrada';
 import NovaEntrada from './Pages/Entrada/NovaEntrada';
-import Ordem from './Pages/Ordem';
+import Ordem from './Pages/Ordem/Ordem';
+import NovaOrdem from './Pages/Ordem/NovaOrdem';
 import PaginaInventario from './Pages/PaginaInventario';
 import { Routes, Route } from 'react-router';
 
@@ -31,6 +32,10 @@ function App() {
 
       <Route path="/ordemservico" element={
         <Ordem />
+      } />
+
+      <Route path="/ordemservico/nova-ordem" element={
+        <NovaOrdem />
       } />
 
       <Route path="/inventario" element={

@@ -11,3 +11,15 @@ export const mascaraContrato = (contrato) => {
     else
         return "";
 }
+
+export const enviaForm = (e, materiais) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const inputObject = Object.fromEntries(formData);
+
+  console.log({
+      ...inputObject,
+      materiais: [...materiais]
+  });
+}

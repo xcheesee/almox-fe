@@ -18,7 +18,11 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 const BoxMateriais = (props) => {
-    const { label, materiais, setMateriais } = props;
+    const { 
+        label, 
+        materiais, 
+        setMateriais 
+    } = props;
 
     useEffect(() => {}, [materiais.length])
     
@@ -70,7 +74,7 @@ const BoxMateriais = (props) => {
     }
 
     return (
-        <Box>
+        <Box className="mx-8 mb-12">
             <Typography sx={styles.label} >
                 {label}
             </Typography>

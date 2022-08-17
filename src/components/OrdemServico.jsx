@@ -5,6 +5,7 @@ import Titulo from './Titulo';
 import Filtros from './Filtros';
 import TabelaOrdem from './TabelaOrdem';
 import AddIcon from '@mui/icons-material/Add';
+import { Link } from 'react-router-dom';
 
 const OrdemServico = () => {
     return (
@@ -63,11 +64,13 @@ const OrdemServico = () => {
 
             <TabelaOrdem />
 
-            <Box className="flex justify-end my-8">
-                <Button variant="contained">
-                    <AddIcon className="mr-1" size="small" />
-                    Nova entrada
-                </Button>
+            <Box className="flex justify-end py-8">
+                <Link to="/ordemservico/nova-ordem">
+                    <Button variant="contained">
+                        <AddIcon className="mr-1" size="small" />
+                        Nova ordem
+                    </Button>
+                </Link>
             </Box>
 
             <Box className="flex justify-center my-4">

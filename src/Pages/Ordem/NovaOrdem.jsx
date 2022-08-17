@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Margens from '../../components/Margens';
-import NovaEntradaMaterial from '../../components/NovaEntradaMaterial';
+import NovaOrdemServico from '../../components/NovaOrdemServico';
 
-const NovaEntrada = () => {
+const NovaOrdem = () => {
     const [materiais, setMateriais] = useState([{ material: '', quantidade: '' }]);
-
+    
     return (
         <Margens>
-            <NovaEntradaMaterial 
+            <NovaOrdemServico 
                 materiais={materiais}
                 setMateriais={setMateriais}
             />
@@ -15,4 +15,4 @@ const NovaEntrada = () => {
     );
 }
 
-export default NovaEntrada;
+export default NovaOrdem;
