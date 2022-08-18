@@ -15,8 +15,12 @@ const theme = createTheme(
     },
     typography: {
       button: {
-        textTransform: 'none'
+        textTransform: 'none',
+        color: '#FFFFFF'
       },
+      allVariants: {
+        color: '#555555'
+      }
     }
   },
   ptBR,

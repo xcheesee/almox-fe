@@ -14,7 +14,7 @@ const Footer = () => {
             <Typography>
                 Desenvolvido pela NDTIC – SVMA 
             </Typography>
-            <img src={Logo} alt="Logo da NDTIC" width="16" className="rounded-full" />
+            <img src={Logo} alt="Logo da NDTIC" style={{ width: '1.25rem' }} className="rounded-full" />
         </Box>
     );
 }

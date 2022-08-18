@@ -23,7 +23,11 @@ const Titulo = (props) => {
 
     return (
         <Box className="flex items-center gap-2">
-            { location.pathname !== '/principal' ? <BotaoVoltar voltaPara={ voltaPara ? voltaPara : "/principal" } /> : "" }
+            { 
+                location.pathname !== '/' && location.pathname !== '/principal' 
+                ? <BotaoVoltar voltaPara={ voltaPara ? voltaPara : "/principal" } /> 
+                : "" 
+            }
             <Typography variant="h2" component="h1" sx={tituloSx}>
                 {other.children}
             </Typography>
