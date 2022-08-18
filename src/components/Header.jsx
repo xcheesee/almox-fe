@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const style = {
     header: { 
@@ -20,7 +20,16 @@ const style = {
 }
 
 const Header = () => {
+    const username = localStorage.getItem('username');
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const logout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('departamentos');
+        localStorage.removeItem('username');
+        navigate('/', { replace: true });
+    }
 
     return (
         <Box 
@@ -40,14 +49,12 @@ const Header = () => {
                         <Box className="flex items-center gap-5">
                             <Box className="flex items-center gap-1">
                                 <PersonIcon fontSize="small"/>
-                                <Typography>Olá, username</Typography>
+                                <Typography>Olá, {username}</Typography>
                             </Box>
 
-                            <Link to="/">
-                                <IconButton>
-                                    <LogoutIcon fontSize="small" />
-                                </IconButton>
-                            </Link>
+                            <IconButton onClick={logout}>
+                                <LogoutIcon fontSize="small" />
+                            </IconButton>
                         </Box>
                 }
             </Box>

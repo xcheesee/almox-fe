@@ -48,6 +48,7 @@ const BoxLogin = (props) => {
                         label="E-mail"
                         name="email"
                         type="email"
+                        error={errors.hasOwnProperty('message')}
                         fullWidth
                     />
                 </Box>
@@ -71,6 +72,8 @@ const BoxLogin = (props) => {
                                 </InputAdornment>
                             ),
                         }}
+                        error={errors.hasOwnProperty('message')}
+                        helperText={errors.message || ""}
                         fullWidth
                     />
                 </Box>
@@ -97,7 +100,7 @@ const BoxLogin = (props) => {
                     Caso tenha esquecido sua senha ou precise criar um usuário para acesso, favor enviar 
                     e-mail para <strong>tisvma@prefeitura.sp.gov.br</strong>.
                     No e-mail, informe o serviço a ser solicitado (esqueci a senha/criar usuário), 
-                    o e-mail caso esteja solicitando o serviço para terceiro, e o sistema (<strong>Almoxarifado</strong>) 
+                    o e-mail caso esteja solicitando o serviço para terceiro, e o sistema (<strong>Almoxarifado</strong>). 
                 </Typography>
             </Box>
         </Paper>

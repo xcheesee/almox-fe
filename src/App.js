@@ -3,6 +3,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import Auth from './components/Auth';
 import Login from './Pages/Login';
 import Principal from './Pages/Principal';
 import Entrada from './Pages/Entrada/Entrada';
@@ -16,31 +17,45 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={
-        <Login />
+        <Auth>
+          <Login />
+        </Auth>
       } />
 
       <Route path="/principal" element={
-        <Principal />
+        <Auth>
+          <Principal />
+        </Auth>
       } />
 
       <Route path="/entrada" element={
-        <Entrada />
+        <Auth>
+          <Entrada />
+        </Auth>
       } />
 
       <Route path="/entrada/nova-entrada" element={
-        <NovaEntrada />
+        <Auth>
+          <NovaEntrada />
+        </Auth>
       } />
 
       <Route path="/ordemservico" element={
-        <Ordem />
+        <Auth>
+          <Ordem />
+        </Auth>
       } />
 
       <Route path="/ordemservico/nova-ordem" element={
-        <NovaOrdem />
+        <Auth>
+          <NovaOrdem />
+        </Auth>
       } />
 
       <Route path="/inventario" element={
-        <PaginaInventario />
+        <Auth>
+          <PaginaInventario />
+        </Auth>
       } />
     </Routes>
   );

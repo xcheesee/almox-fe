@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Margens from '../components/Margens';
 import BoxLogin from '../components/BoxLogin';
 import { useNavigate } from 'react-router';
 
@@ -12,6 +11,7 @@ const Login = () => {
     const login = (e) => {
         e.preventDefault();
         setCarregando(true);
+        setErrors({});
 
         const formData = new FormData(e.target);
         const inputObject = Object.fromEntries(formData);
@@ -31,17 +31,22 @@ const Login = () => {
                 if (res.ok) {
                     setCarregando(false);
                     return res.json()
-                        .then(data => console.log(data));
+                        .then(data => {
+                            localStorage.setItem('access_token', `${data.token_type} ${data.access_token}`);
+                            localStorage.setItem('username', data.username);
+                            localStorage.setItem('departamentos', data.departamentos);
+                            navigate('/principal', { replace: true });
+                        });
                 } else if (res.status === 401) {
                     setCarregando(false);
                     return res.json()
-                        .then(data => console.log(data));
+                        .then(data => setErrors(data));
                 } else {
                     setCarregando(false);
                     return res.json()
                         .then(data => {
-                            navigate('/principal', { replace: true });
                             console.log(data);
+                            // configurar o dialog no futuro
                         });
                 }
             })
@@ -49,16 +54,14 @@ const Login = () => {
     }
 
     return (
-        <Margens>
-            <BoxLogin 
-                visibilidade={visibilidade} 
-                setVisibilidade={setVisibilidade}
-                carregando={carregando}
-                setCarregando={setCarregando}
-                login={login}
-                errors={errors}
-            />
-        </Margens>
+        <BoxLogin 
+            visibilidade={visibilidade} 
+            setVisibilidade={setVisibilidade}
+            carregando={carregando}
+            setCarregando={setCarregando}
+            login={login}
+            errors={errors}
+        />
     );
 }
 
