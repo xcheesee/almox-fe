@@ -13,7 +13,7 @@ const Tabela = (props) => {
     const { cabecalhos, ...other } = props;
 
     return (
-        <TableContainer component={Paper} elevation={3}>
+        <TableContainer component={Paper} elevation={6}>
             <Table size="small">
                 <TableHead sx={{ background: (theme) => theme.palette.primary.main}}>
                     <TableRow>

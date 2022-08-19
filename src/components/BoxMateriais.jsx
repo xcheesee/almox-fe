@@ -81,12 +81,12 @@ const BoxMateriais = (props) => {
 
             <Paper
                 sx={styles.container}
-                elevation={3}
+                elevation={6}
             >
                 {materiais.map((material, index) => {
                     return (
                         <Fade in={true} key={index}>
-                            <Paper className="p-4 mb-4 flex gap-4">
+                            <Paper className="p-4 mb-4 flex gap-4" elevation={3}>
                                 <FormControl fullWidth size="small">
                                     <InputLabel id="material-label">Material</InputLabel>
                                     <Select
