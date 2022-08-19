@@ -16,7 +16,8 @@ import BoxMateriais from './BoxMateriais';
 const NovaOrdemServico = (props) => {
     const {
         materiais,
-        setMateriais
+        setMateriais,
+        setOpenCancelar
     } = props;
 
     return (
@@ -140,7 +141,7 @@ const NovaOrdemServico = (props) => {
             />
 
             <Box className="flex justify-end gap-4">
-                <Button>
+                <Button onClick={() => setOpenCancelar(true)}>
                     Cancelar
                 </Button>
                 <Button 

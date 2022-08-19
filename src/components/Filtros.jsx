@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IconButton, Box, Badge, Typography, Collapse, Button } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TuneIcon from '@mui/icons-material/Tune';
 
 const Filtros = (props) => {
     const {
@@ -40,7 +41,7 @@ const Filtros = (props) => {
                     sx={{ 
                         borderRadius: 1, 
                         boxSizing: 'border-box', 
-                        margin: '1rem',
+                        margin: '1rem 0',
                         padding: '0.5rem'
                     }}
                 >
@@ -67,12 +68,13 @@ const Filtros = (props) => {
                                 alignItems: 'center',
                             }}
                         >
+                            <TuneIcon fontSize="small" sx={{ mr: '0.2rem' }} />
                             Filtros
                         </Typography>
                         {
                             visibilidade
-                            ? <ExpandLessIcon sx={{ mr: '0.5rem' }} />
-                            : <ExpandMoreIcon sx={{ mr: '0.5rem' }} />
+                            ? <ExpandLessIcon fontSize="small" sx={{ mr: '0.5rem' }} />
+                            : <ExpandMoreIcon fontSize="small" sx={{ mr: '0.5rem' }} />
                         }
                     </Badge>
                 </IconButton>

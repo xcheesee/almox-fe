@@ -15,7 +15,8 @@ import Selecao from './Selecao';
 const NovaEntradaMaterial = (props) => {
     const {
         materiais,
-        setMateriais
+        setMateriais,
+        setOpenCancelar
     } = props;
 
     return (
@@ -79,7 +80,7 @@ const NovaEntradaMaterial = (props) => {
             />
             
             <Box className="flex justify-end gap-4">
-                <Button>
+                <Button onClick={() => setOpenCancelar(true)}>
                     Cancelar
                 </Button>
                 <Button 
