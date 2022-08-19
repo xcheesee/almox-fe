@@ -10,45 +10,47 @@ import { Link } from 'react-router-dom';
 const EntradaMaterial = (props) => {
     return (
         <ContainerPrincipal>
-            <Titulo pathVoltar="/principal">
+            <Titulo voltaPara="/principal">
                 Entrada de material
             </Titulo>
 
             <Filtros>
                 <TextField 
                     label="Processo SEI"
-                    size="small"
-                    helperText=" "
+                    name="processo_sei"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Número contrato"
-                    size="small"
-                    helperText=" "
+                    name="numero_contrato"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Base"
-                    size="small"
-                    helperText=" "
+                    name="base"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Número nota fiscal"
-                    size="small"
-                    helperText=" "
+                    name="nota_fiscal"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Entrada depois de"
-                    size="small"
-                    helperText=" "
+                    name="entrada_depois_de"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Entrada antes de"
-                    size="small"
-                    helperText=" "
+                    name="entrada_antes_de"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
                 />
             </Filtros>
 

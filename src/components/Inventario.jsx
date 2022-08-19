@@ -15,38 +15,38 @@ const Inventario = () => {
             <Filtros>
                 <TextField 
                     label="Base"
-                    size="small"
-                    helperText=" "
+                    name="base"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Nome do item"
-                    size="small"
-                    helperText=" "
+                    name="nome_item"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Tipo de item"
-                    size="small"
-                    helperText=" "
+                    name="tipo_item"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Tipo de medida"
-                    size="small"
-                    helperText=" "
+                    name="tipo_medida"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Quantidade maior que"
-                    size="small"
-                    helperText=" "
+                    name="quantidade_maior_que"
+                    InputLabelProps={{ shrink: true }}
                 />
 
                 <TextField 
                     label="Quantidade menor que"
-                    size="small"
-                    helperText=" "
+                    name="quantidade_menor_que"
+                    InputLabelProps={{ shrink: true }}
                 />
             </Filtros>
 

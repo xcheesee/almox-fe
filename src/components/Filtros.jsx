@@ -4,7 +4,33 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Filtros = (props) => {
+    const {
+        ...other
+    } = props;
+
     const [visibilidade, setVisibilidade] = useState(false);
+    const [filtrosAtivos, setFiltrosAtivos] = useState(['']);
+
+    const limpar = () => {
+        setVisibilidade(false);
+        setFiltrosAtivos(['']);
+    }
+
+    const salvar = (e) => {
+        e.preventDefault();
+        const arrFiltros = [];
+
+        const formData = new FormData(e.target);
+        const inputObject = Object.fromEntries(formData);
+
+        Object.entries(inputObject).forEach((campo) => {
+            if (campo[1] !== "")
+                arrFiltros.push(`[${campo[0]}]=${campo[1]}`);
+        });
+
+        setFiltrosAtivos(['', ...arrFiltros]);
+        setVisibilidade(false);
+    }
 
     return (
         <Box>
@@ -19,7 +45,7 @@ const Filtros = (props) => {
                     }}
                 >
                     <Badge 
-                        badgeContent={0} 
+                        badgeContent={filtrosAtivos.length - 1} 
                         color="primary"
                         anchorOrigin={{
                             vertical: 'top',
@@ -51,6 +77,7 @@ const Filtros = (props) => {
                     </Badge>
                 </IconButton>
             </Box>
+
             <Collapse in={visibilidade}>
                 <Box 
                     sx={{ 
@@ -64,20 +91,28 @@ const Filtros = (props) => {
                         width: '80%'
                     }}
                 >
-                    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                        {props.children}
+                    <Box 
+                        sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}
+                        component="form"
+                        id="filtros"
+                        onSubmit={salvar}
+                    >
+                        {other.children}
                     </Box>
                     
-                    <Box sx={{ alignSelf: 'end', mt: '2rem'}}>
+                    <Box sx={{ alignSelf: 'end', mt: '1rem'}}>
                         <Button 
-                            sx={{ 
-                                mr: '1rem' 
-                            }}
+                            sx={{ mr: '1rem' }}
+                            onClick={limpar}
+                            type="reset"
+                            form="filtros"
                         >
                             Limpar
                         </Button>
                         <Button
                             variant="contained"
+                            type="submit"
+                            form="filtros"
                         >
                             Salvar
                         </Button>
