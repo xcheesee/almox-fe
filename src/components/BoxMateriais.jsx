@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { 
+import {
     Typography,
     Paper,
     Fade,
@@ -12,32 +12,32 @@ import {
     Tooltip,
     IconButton,
     Box,
-    Button 
+    Button
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 const BoxMateriais = (props) => {
-    const { 
-        label, 
-        materiais, 
-        setMateriais 
+    const {
+        label,
+        materiais,
+        setMateriais
     } = props;
 
-    useEffect(() => {}, [materiais.length])
-    
+    useEffect(() => { }, [materiais.length])
+
     const styles = {
         label: {
-            color: (theme) => theme.palette.color.bg, 
-            fontSize: '1.3rem', 
-            fontWeight: 'light', 
+            color: (theme) => theme.palette.color.bg,
+            fontSize: '1.3rem',
+            fontWeight: 'light',
             mb: '0.5rem'
         },
-        container: { 
-            background: (theme) => theme.palette.color.bgInterno, 
-            padding: '1rem', 
-            display: 'flex', 
-            flexDirection: 'column' 
+        container: {
+            background: (theme) => theme.palette.color.bgInterno,
+            padding: '1rem',
+            display: 'flex',
+            flexDirection: 'column'
         }
     }
 
@@ -79,14 +79,11 @@ const BoxMateriais = (props) => {
                 {label}
             </Typography>
 
-            <Paper
-                sx={styles.container}
-                elevation={6}
-            >
+            <Paper sx={styles.container} >
                 {materiais.map((material, index) => {
                     return (
                         <Fade in={true} key={index}>
-                            <Paper className="p-4 mb-4 flex gap-4" elevation={3}>
+                            <Paper className="p-4 mb-4 flex gap-4">
                                 <FormControl fullWidth size="small">
                                     <InputLabel id="material-label">Material</InputLabel>
                                     <Select
@@ -104,7 +101,7 @@ const BoxMateriais = (props) => {
                                     </Select>
                                 </FormControl>
 
-                                <TextField 
+                                <TextField
                                     name="quantidade"
                                     label="Quantidade"
                                     defaultValue={material.quantidade}
@@ -115,7 +112,7 @@ const BoxMateriais = (props) => {
                                         endAdornment: <InputAdornment position="end">{setUnidadeMedida(material.material)}</InputAdornment>,
                                     }}
                                 />
-                                
+
                                 <Tooltip title="Remover" placement="right">
                                     <Box>
                                         <IconButton onClick={() => removeMaterial(index)} disabled={index === 0}>
@@ -129,8 +126,8 @@ const BoxMateriais = (props) => {
                 })}
 
                 <Box className="self-end">
-                    <Button onClick={adicionaMaterial} > 
-                        <AddIcon fontSize="small" /> 
+                    <Button onClick={adicionaMaterial} >
+                        <AddIcon fontSize="small" />
                         Adicionar material
                     </Button>
                 </Box>

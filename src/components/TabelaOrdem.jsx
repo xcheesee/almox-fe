@@ -1,7 +1,7 @@
 import React from 'react';
-import { 
-    TableRow, 
-    TableCell, 
+import {
+    TableRow,
+    TableCell,
     IconButton,
     Tooltip
 } from '@mui/material';
@@ -9,6 +9,7 @@ import Tabela from './Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
+import { Link } from 'react-router-dom';
 
 const cabecalhos = [
     "ID",
@@ -20,11 +21,11 @@ const cabecalhos = [
 ];
 
 const entradas = [
-    {id: 1, data_servico: "2022-04-12", base_origem: "Leopoldina", base_destino: "Ibirapuera", local_servico: "Pq Ibirapuera"},
-    {id: 2, data_servico: "2022-05-02", base_origem: "Leopoldina", base_destino: "Leopoldina", local_servico: "Pq Leopoldina - Orlando Vilas Boas"},
-    {id: 3, data_servico: "2022-02-07", base_origem: "Leopoldina", base_destino: "Ibirapuera", local_servico: "Pq Ibirapuera"},
-    {id: 4, data_servico: "2022-07-21", base_origem: "Leopoldina", base_destino: "Jaraguá", local_servico: "Pq Anhanguera"},
-    {id: 5, data_servico: "2022-07-27", base_origem: "Leopoldina", base_destino: "Leopoldina", local_servico: "Pq Trianon"},
+    { id: 1, data_servico: "2022-04-12", base_origem: "Leopoldina", base_destino: "Ibirapuera", local_servico: "Pq Ibirapuera" },
+    { id: 2, data_servico: "2022-05-02", base_origem: "Leopoldina", base_destino: "Leopoldina", local_servico: "Pq Leopoldina - Orlando Vilas Boas" },
+    { id: 3, data_servico: "2022-02-07", base_origem: "Leopoldina", base_destino: "Ibirapuera", local_servico: "Pq Ibirapuera" },
+    { id: 4, data_servico: "2022-07-21", base_origem: "Leopoldina", base_destino: "Jaraguá", local_servico: "Pq Anhanguera" },
+    { id: 5, data_servico: "2022-07-27", base_origem: "Leopoldina", base_destino: "Leopoldina", local_servico: "Pq Trianon" },
 ];
 
 const TabelaOrdem = () => {
@@ -50,9 +51,11 @@ const TabelaOrdem = () => {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Baixa" placement="right">
-                                <IconButton>
-                                    <GradingIcon />
-                                </IconButton>
+                                <Link to={`/ordemservico/baixa/${entrada.id}`}>
+                                    <IconButton>
+                                        <GradingIcon />
+                                    </IconButton>
+                                </Link>
                             </Tooltip>
                         </TableCell>
                     </TableRow>

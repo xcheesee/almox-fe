@@ -10,6 +10,7 @@ import Entrada from './Pages/Entrada/Entrada';
 import NovaEntrada from './Pages/Entrada/NovaEntrada';
 import Ordem from './Pages/Ordem/Ordem';
 import NovaOrdem from './Pages/Ordem/NovaOrdem';
+import Baixa from './Pages/Ordem/Baixa';
 import PaginaInventario from './Pages/PaginaInventario';
 import { Routes, Route } from 'react-router';
 
@@ -49,6 +50,12 @@ function App() {
       <Route path="/ordemservico/nova-ordem" element={
         <Auth>
           <NovaOrdem />
+        </Auth>
+      } />
+
+      <Route path="/ordemservico/baixa/:id" element={
+        <Auth>
+          <Baixa />
         </Auth>
       } />
 
