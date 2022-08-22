@@ -1,9 +1,12 @@
 import React from 'react';
-import { 
-    TableRow, 
-    TableCell
+import {
+    TableRow,
+    TableCell,
+    IconButton,
+    Tooltip
 } from '@mui/material';
 import Tabela from './Tabela';
+import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 
 const cabecalhos = [
     "ID",
@@ -11,37 +14,38 @@ const cabecalhos = [
     "Tipo",
     "Medida",
     "Local",
-    "Quantidade"
+    "Quantidade",
+    "Ação"
 ];
 
 const entradas = [
     {
-        id: 1, 
-        item: "Adaptador de PVC rígido soldável, longo, com flange, 25 mm x 3/4\"", 
-        tipo: "Hidráulica", 
-        medida: "Pç", 
-        local: "Base Leopoldina", 
+        id: 1,
+        item: "Adaptador de PVC rígido soldável, longo, com flange, 25 mm x 3/4\"",
+        tipo: "Hidráulica",
+        medida: "Pç",
+        local: "Base Leopoldina",
         quantidade: "500"
     },
     {
-        id: 2, 
-        item: "Adaptador PVC Sold. c/ Flange p/ Cx. D'água. Diam. 32mm, marrom", 
-        tipo: "Hidráulica", 
-        medida: "Pç", 
-        local: "Base Leopoldina", 
+        id: 2,
+        item: "Adaptador PVC Sold. c/ Flange p/ Cx. D'água. Diam. 32mm, marrom",
+        tipo: "Hidráulica",
+        medida: "Pç",
+        local: "Base Leopoldina",
         quantidade: "300"
     },
     {
-        id: 3, 
-        item: "Sarrafo \"2,5 x 5\" cm em Pinus; mista ou equivalente da região - Bruta", 
-        tipo: "Carpintaria", 
-        medida: "M", 
-        local: "Base Leopoldina", 
+        id: 3,
+        item: "Sarrafo \"2,5 x 5\" cm em Pinus; mista ou equivalente da região - Bruta",
+        tipo: "Carpintaria",
+        medida: "M",
+        local: "Base Leopoldina",
         quantidade: "3000"
     },
 ];
 
-const TabelaInventario = () => {
+const TabelaInventario = ({ setIdAlerta, setOpenDefinir }) => {
     return (
         <Tabela cabecalhos={cabecalhos}>
             {entradas.map((entrada, index) => {
@@ -53,6 +57,13 @@ const TabelaInventario = () => {
                         <TableCell align="center">{entrada.medida}</TableCell>
                         <TableCell align="center">{entrada.local}</TableCell>
                         <TableCell align="center">{entrada.quantidade}</TableCell>
+                        <TableCell align="center">
+                            <Tooltip title="Definir alerta" placement="right">
+                                <IconButton onClick={() => { setOpenDefinir(true); setIdAlerta(entrada.id); }}>
+                                    <NotificationAddIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </TableCell>
                     </TableRow>
                 );
             })}
