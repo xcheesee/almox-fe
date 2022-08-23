@@ -10,13 +10,14 @@ const style = {
         alignItems: 'center'
     },
     labelBotao: { 
-        fontSize: '1.25rem', 
+        fontSize: '1.25rem',
+        fontWeight: 'light', 
         mr: '0.5rem',
         ml: '0.5rem', 
         display: 'flex', 
         alignItems: 'center',
     },
-    tuneIcon: { mr: '0.2rem' },
+    tuneIcon: { mr: '0.4rem' },
     expandIcon: { mr: '0.5rem' },
     containerFiltros: { 
         display: 'flex',
