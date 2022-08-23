@@ -26,7 +26,7 @@ const BoxLogin = (props) => {
     } = props;
 
     return (
-        <Paper className="w-2/5 mx-auto my-8 p-4" elevation={6}>
+        <Paper className="md:w-3/5 xl:w-2/5 mx-auto my-8 p-4" elevation={6}>
             <Titulo>
                 Entrar
             </Titulo>

@@ -3,7 +3,8 @@ const style = {
         fontSize: '2rem',
         fontWeight: 'light',
         padding: '6rem',
-        width: '100%'
+        width: '100%',
+        height: '100%'
     }
 };
 
