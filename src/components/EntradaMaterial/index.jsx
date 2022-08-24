@@ -1,73 +1,42 @@
 import React from 'react';
-import { TextField, Box, Button, Pagination } from '@mui/material';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
-import Filtros from '../Filtros';
+import FiltrosEntrada from '../FiltrosEntrada';
+import LoadingTabela from '../LoadingTabela';
 import TabelaEntrada from '../TabelaEntrada';
-import AddIcon from '@mui/icons-material/Add';
-import { Link } from 'react-router-dom';
+import BotaoNovo from '../BotaoNovo';
+import Paginacao from '../Paginacao';
 
 const EntradaMaterial = (props) => {
+    const {
+        entradas,
+        metaEntradas,
+        page,
+        setPage,
+        carregando
+    } = props;
+
     return (
         <ContainerPrincipal>
             <Titulo voltaPara="/principal">
                 Entrada de material
             </Titulo>
 
-            <Filtros>
-                <TextField 
-                    label="Processo SEI"
-                    name="processo_sei"
-                    InputLabelProps={{ shrink: true }}
-                />
+            <FiltrosEntrada />
 
-                <TextField 
-                    label="Número contrato"
-                    name="numero_contrato"
-                    InputLabelProps={{ shrink: true }}
-                />
+            <LoadingTabela carregando={carregando}>
+                <TabelaEntrada entradas={entradas} metaEntradas={metaEntradas} />
+            </LoadingTabela>
 
-                <TextField 
-                    label="Base"
-                    name="base"
-                    InputLabelProps={{ shrink: true }}
-                />
+            <BotaoNovo caminho="/entrada/nova-entrada">
+                Nova entrada
+            </BotaoNovo>
 
-                <TextField 
-                    label="Número nota fiscal"
-                    name="nota_fiscal"
-                    InputLabelProps={{ shrink: true }}
-                />
-
-                <TextField 
-                    label="Entrada depois de"
-                    name="entrada_depois_de"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                />
-
-                <TextField 
-                    label="Entrada antes de"
-                    name="entrada_antes_de"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                />
-            </Filtros>
-
-            <TabelaEntrada />
-
-            <Box className="flex justify-end py-8">
-                <Link to="/entrada/nova-entrada">
-                    <Button variant="contained">
-                        <AddIcon className="mr-1" size="small" />
-                        Nova entrada
-                    </Button>
-                </Link>
-            </Box>
-
-            <Box className="flex justify-center my-4">
-                <Pagination count={5} shape="rounded" color="primary" />
-            </Box>
+            <Paginacao 
+                page={page}
+                setPage={setPage}
+                count={metaEntradas.last_page}
+            />
         </ContainerPrincipal>
     );
 }
