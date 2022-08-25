@@ -23,3 +23,13 @@ export const enviaForm = (e, materiais) => {
       materiais: [...materiais]
   });
 }
+
+export const token = localStorage.getItem('access_token');
+
+export const headers = {
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': token
+  }
+};

@@ -20,25 +20,16 @@ const cabecalhos = [
     "Ação"
 ];
 
-const entradas = [
-    { id: 1, data_servico: "2022-04-12", base_origem: "Leopoldina", base_destino: "Ibirapuera", local_servico: "Pq Ibirapuera" },
-    { id: 2, data_servico: "2022-05-02", base_origem: "Leopoldina", base_destino: "Leopoldina", local_servico: "Pq Leopoldina - Orlando Vilas Boas" },
-    { id: 3, data_servico: "2022-02-07", base_origem: "Leopoldina", base_destino: "Ibirapuera", local_servico: "Pq Ibirapuera" },
-    { id: 4, data_servico: "2022-07-21", base_origem: "Leopoldina", base_destino: "Jaraguá", local_servico: "Pq Anhanguera" },
-    { id: 5, data_servico: "2022-07-27", base_origem: "Leopoldina", base_destino: "Leopoldina", local_servico: "Pq Trianon" },
-];
-
-const TabelaOrdem = () => {
+const TabelaOrdem = ({ ordens }) => {
     return (
         <Tabela cabecalhos={cabecalhos}>
-            {entradas.map((entrada, index) => {
-                return (
-                    <TableRow key={index}>
-                        <TableCell align="center">{entrada.id}</TableCell>
-                        <TableCell align="center">{entrada.data_servico}</TableCell>
-                        <TableCell align="center">{entrada.base_origem}</TableCell>
-                        <TableCell align="center">{entrada.base_destino}</TableCell>
-                        <TableCell align="center">{entrada.local_servico}</TableCell>
+            {ordens.map(ordem => (
+                    <TableRow key={ordem.id}>
+                        <TableCell align="center">{ordem.id}</TableCell>
+                        <TableCell align="center">{ordem.data_servico}</TableCell>
+                        <TableCell align="center">{ordem.origem}</TableCell>
+                        <TableCell align="center">{ordem.destino}</TableCell>
+                        <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
                                 <IconButton>
@@ -51,7 +42,7 @@ const TabelaOrdem = () => {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Baixa" placement="right">
-                                <Link to={`/ordemservico/baixa/${entrada.id}`}>
+                                <Link to={`/ordemservico/baixa/${ordem.id}`}>
                                     <IconButton>
                                         <GradingIcon />
                                     </IconButton>
@@ -59,8 +50,8 @@ const TabelaOrdem = () => {
                             </Tooltip>
                         </TableCell>
                     </TableRow>
-                );
-            })}
+                )
+            )}
         </Tabela>
     );
 }

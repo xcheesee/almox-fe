@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import EntradaMaterial from '../../components/EntradaMaterial';
+import { headers } from '../../common/utils';
 
 const Entrada = () => {
     const [entradas, setEntradas] = useState([]);
@@ -9,14 +10,9 @@ const Entrada = () => {
 
     useEffect(() => {
         const url = `${process.env.REACT_APP_API_URL}/entradas?page=${page}`;
-        const token = localStorage.getItem('access_token');
         const options = {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': token
-            }
+            headers: headers
         };
 
         setCarregando(true);
@@ -24,7 +20,7 @@ const Entrada = () => {
         fetch(url, options)
             .then(res => res.json())
             .then(data => {
-                setCarregando(false)
+                setCarregando(false);
                 setEntradas(data.data);
                 setMetaEntradas(data.meta);
             });
