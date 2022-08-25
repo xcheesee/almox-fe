@@ -4,14 +4,14 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Auth from './components/Auth';
-import Login from './pages/Login';
-import Principal from './pages/Principal';
-import Entrada from './pages/Entrada/Entrada';
-import NovaEntrada from './pages/Entrada/NovaEntrada';
-import Ordem from './pages/Ordem/Ordem';
-import NovaOrdem from './pages/Ordem/NovaOrdem';
-import Baixa from './pages/Ordem/Baixa';
-import PaginaInventario from './pages/PaginaInventario';
+import Login from './Pages/Login';
+import Principal from './Pages/Principal';
+import Entrada from './Pages/Entrada/Entrada';
+import NovaEntrada from './Pages/Entrada/NovaEntrada';
+import Ordem from './Pages/Ordem/Ordem';
+import NovaOrdem from './Pages/Ordem/NovaOrdem';
+import Baixa from './Pages/Ordem/Baixa';
+import PaginaInventario from './Pages/PaginaInventario';
 import { Routes, Route } from 'react-router';
 
 function App() {
