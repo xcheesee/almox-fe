@@ -34,7 +34,7 @@ const Login = () => {
                         .then(data => {
                             localStorage.setItem('access_token', `${data.token_type} ${data.access_token}`);
                             localStorage.setItem('username', data.username);
-                            localStorage.setItem('departamentos', data.departamentos);
+                            localStorage.setItem('departamentos', JSON.stringify(data.departamentos));
                             navigate('/principal', { replace: true });
                         });
                 } else if (res.status === 401) {
