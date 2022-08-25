@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from '@mui/material';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import FiltrosInventario from '../FiltrosInventario';
@@ -34,11 +35,13 @@ const Inventario = (props) => {
                 />
             </LoadingTabela>
 
-            <Paginacao 
-                page={page}
-                setPage={setPage}
-                count={metaItens.last_page}
-            />
+            <Box className="mt-10">
+                <Paginacao 
+                    page={page}
+                    setPage={setPage}
+                    count={metaItens.last_page}
+                />
+            </Box>
         </ContainerPrincipal>
 
     );
