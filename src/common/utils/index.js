@@ -33,3 +33,21 @@ export const headers = {
     'Authorization': token
   }
 };
+
+export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
+  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}`
+  const options = {
+      method: 'GET',
+      headers: headers
+  };
+
+  setCarregando(true);
+
+  fetch(url, options)
+      .then(res => res.json())
+      .then(data => {
+          setCarregando(false);
+          setData(data.data);
+          setMeta(data.meta);
+      });
+};

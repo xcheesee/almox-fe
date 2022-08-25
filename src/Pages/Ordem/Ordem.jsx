@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { headers } from '../../common/utils';
+import { getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 
 const Ordem = () => {
@@ -9,21 +9,7 @@ const Ordem = () => {
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_API_URL}/ordem_servico?page=${page}`;
-        const options = {
-            method: 'GET',
-            headers: headers
-        };
-
-        setCarregando(true);
-
-        fetch(url, options)
-            .then(res => res.json())
-            .then(data => {
-                setCarregando(false);
-                setOrdens(data.data);
-                setMetaOrdens(data.meta);
-            });
+        getTabela('ordem_servico', page, setCarregando, setOrdens, setMetaOrdens);
     }, [page])
 
     return (

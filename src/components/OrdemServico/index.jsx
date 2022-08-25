@@ -23,7 +23,7 @@ const OrdemServico = (props) => {
             <FiltrosOrdem />
 
             <LoadingTabela carregando={carregando}>
-                <TabelaOrdem ordens={ordens} metaOrdens={metaOrdens} />
+                <TabelaOrdem ordens={ordens} />
             </LoadingTabela>
 
             <BotaoNovo caminho="/ordemservico/nova-ordem">
