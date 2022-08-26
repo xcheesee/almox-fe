@@ -21,9 +21,9 @@ const cabecalhos = [
     "Ação",
 ];
 
-const TabelaEntrada = ({ entradas }) => {
+const TabelaEntrada = ({ entradas, carregando }) => {
     return (
-        <Tabela cabecalhos={cabecalhos}>
+        <Tabela cabecalhos={cabecalhos} carregando={carregando}>
             {entradas.map(entrada => (
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
@@ -52,7 +52,6 @@ const TabelaEntrada = ({ entradas }) => {
                     </TableRow>
                 )
             )}
-            
         </Tabela>
     );
 }
