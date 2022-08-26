@@ -23,3 +23,31 @@ export const enviaForm = (e, materiais) => {
       materiais: [...materiais]
   });
 }
+
+export const token = localStorage.getItem('access_token');
+
+export const headers = {
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': token
+  }
+};
+
+export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
+  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}`
+  const options = {
+      method: 'GET',
+      headers: headers
+  };
+
+  setCarregando(true);
+
+  fetch(url, options)
+      .then(res => res.json())
+      .then(data => {
+          setCarregando(false);
+          setData(data.data);
+          setMeta(data.meta);
+      });
+};

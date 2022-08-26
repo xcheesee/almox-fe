@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import EntradaMaterial from '../../components/EntradaMaterial';
+import { getTabela } from '../../common/utils';
 
 const Entrada = () => {
     const [entradas, setEntradas] = useState([]);
@@ -8,26 +9,7 @@ const Entrada = () => {
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_API_URL}/entradas?page=${page}`;
-        const token = localStorage.getItem('access_token');
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': token
-            }
-        };
-
-        setCarregando(true);
-
-        fetch(url, options)
-            .then(res => res.json())
-            .then(data => {
-                setCarregando(false)
-                setEntradas(data.data);
-                setMetaEntradas(data.meta);
-            });
+        getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas);
     }, [page])
 
     return (

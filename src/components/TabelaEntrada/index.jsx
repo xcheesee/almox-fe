@@ -21,21 +21,16 @@ const cabecalhos = [
     "Ação",
 ];
 
-const TabelaEntrada = (props) => {
-    const {
-        entradas
-    } = props;
-
+const TabelaEntrada = ({ entradas }) => {
     return (
         <Tabela cabecalhos={cabecalhos}>
-            {entradas.map((entrada, index) => {
-                return (
-                    <TableRow key={index}>
+            {entradas.map(entrada => (
+                    <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
-                        <TableCell align="center">{entrada.data || "---"}</TableCell>
+                        <TableCell align="center">{entrada.data_entrada || "---"}</TableCell>
                         <TableCell align="center">{mascaraProcessoSei(entrada.processo_sei || "---")}</TableCell>
                         <TableCell align="center">{mascaraContrato(entrada.numero_contrato || "---")}</TableCell>
-                        <TableCell align="center">{entrada.local_id || "---"}</TableCell>
+                        <TableCell align="center">{entrada.local || "---"}</TableCell>
                         <TableCell align="center">{entrada.numero_nota_fiscal || "---"}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
@@ -55,8 +50,9 @@ const TabelaEntrada = (props) => {
                             </Tooltip>
                         </TableCell>
                     </TableRow>
-                );
-            })}
+                )
+            )}
+            
         </Tabela>
     );
 }

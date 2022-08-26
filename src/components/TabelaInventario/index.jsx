@@ -18,55 +18,33 @@ const cabecalhos = [
     "Ação"
 ];
 
-const entradas = [
-    {
-        id: 1,
-        item: "Adaptador de PVC rígido soldável, longo, com flange, 25 mm x 3/4\"",
-        tipo: "Hidráulica",
-        medida: "Pç",
-        local: "Base Leopoldina",
-        quantidade: "500"
-    },
-    {
-        id: 2,
-        item: "Adaptador PVC Sold. c/ Flange p/ Cx. D'água. Diam. 32mm, marrom",
-        tipo: "Hidráulica",
-        medida: "Pç",
-        local: "Base Leopoldina",
-        quantidade: "300"
-    },
-    {
-        id: 3,
-        item: "Sarrafo \"2,5 x 5\" cm em Pinus; mista ou equivalente da região - Bruta",
-        tipo: "Carpintaria",
-        medida: "M",
-        local: "Base Leopoldina",
-        quantidade: "3000"
-    },
-];
+const TabelaInventario = (props) => {
+    const { 
+        itens,
+        setIdAlerta, 
+        setOpenDefinir,
+    } = props;
 
-const TabelaInventario = ({ setIdAlerta, setOpenDefinir }) => {
     return (
         <Tabela cabecalhos={cabecalhos}>
-            {entradas.map((entrada, index) => {
-                return (
-                    <TableRow key={index}>
-                        <TableCell align="center">{entrada.id}</TableCell>
-                        <TableCell align="center">{entrada.item}</TableCell>
-                        <TableCell align="center">{entrada.tipo}</TableCell>
-                        <TableCell align="center">{entrada.medida}</TableCell>
-                        <TableCell align="center">{entrada.local}</TableCell>
-                        <TableCell align="center">{entrada.quantidade}</TableCell>
+            {itens.map(item => (
+                    <TableRow key={item.id}>
+                        <TableCell align="center">{item.id}</TableCell>
+                        <TableCell align="center">{item.item_id}</TableCell>
+                        <TableCell align="center">{item.tipo || "---"}</TableCell>
+                        <TableCell align="center">{item.medida || "---"}</TableCell>
+                        <TableCell align="center">{item.local_id}</TableCell>
+                        <TableCell align="center">{item.quantidade}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Definir alerta" placement="right">
-                                <IconButton onClick={() => { setOpenDefinir(true); setIdAlerta(entrada.id); }}>
+                                <IconButton onClick={() => { setOpenDefinir(true); setIdAlerta(item.id); }}>
                                     <NotificationAddIcon />
                                 </IconButton>
                             </Tooltip>
                         </TableCell>
                     </TableRow>
-                );
-            })}
+                )
+            )}
         </Tabela>
     );
 }
