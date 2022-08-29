@@ -18,6 +18,8 @@ const NovaEntradaMaterial = (props) => {
         setMateriais,
         setOpenCancelar
     } = props;
+    
+    const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
     return (
         <ContainerPrincipal>
@@ -29,6 +31,17 @@ const NovaEntradaMaterial = (props) => {
                 id="nova-entrada"
                 onSubmit={(e) => enviaForm(e, materiais)}
             >
+                <Selecao
+                    label="Departamento"
+                    name="departamento_id"
+                >
+                    {Object.entries(departamentos).map(departamento => (
+                        <MenuItem key={departamento[0]} value={departamento[0]}>
+                            {departamento[1]}
+                        </MenuItem>
+                    ))}
+                </Selecao>
+
                 <TextField 
                     type="date"
                     name="data_entrada"

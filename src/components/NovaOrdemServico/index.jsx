@@ -21,6 +21,8 @@ const NovaOrdemServico = (props) => {
         setOpenCancelar
     } = props;
 
+    const departamentos = JSON.parse(localStorage.getItem('departamentos'));
+
     return (
         <ContainerPrincipal>
             <Titulo voltaPara="/ordemservico">
@@ -31,6 +33,17 @@ const NovaOrdemServico = (props) => {
                 id="nova-ordem"
                 onSubmit={(e) => enviaForm(e, materiais)}
             >
+                <Selecao
+                    label="Departamento"
+                    name="departamento_id"
+                >
+                    {Object.entries(departamentos).map(departamento => (
+                        <MenuItem key={departamento[0]} value={departamento[0]}>
+                            {departamento[1]}
+                        </MenuItem>
+                    ))}
+                </Selecao>
+
                 <TextField 
                     type="date"
                     name="data_servico"
