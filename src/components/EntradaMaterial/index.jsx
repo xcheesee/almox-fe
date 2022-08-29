@@ -2,7 +2,6 @@ import React from 'react';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import FiltrosEntrada from '../FiltrosEntrada';
-import LoadingTabela from '../LoadingTabela';
 import TabelaEntrada from '../TabelaEntrada';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
@@ -18,15 +17,20 @@ const EntradaMaterial = (props) => {
 
     return (
         <ContainerPrincipal>
-            <Titulo voltaPara="/principal">
+            <Titulo 
+                voltaPara="/principal" 
+                carregando={carregando}
+            >
                 Entrada de material
             </Titulo>
 
             <FiltrosEntrada />
-
-            <LoadingTabela carregando={carregando}>
-                <TabelaEntrada entradas={entradas} metaEntradas={metaEntradas} />
-            </LoadingTabela>
+            
+            <TabelaEntrada 
+                entradas={entradas} 
+                metaEntradas={metaEntradas} 
+                carregando={carregando} 
+            />
 
             <BotaoNovo caminho="/entrada/nova-entrada">
                 Nova entrada

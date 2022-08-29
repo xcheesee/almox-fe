@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, IconButton, Tooltip, CircularProgress } from '@mui/material';
 import style from './style';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Link, useLocation } from 'react-router-dom';
@@ -17,7 +17,7 @@ const BotaoVoltar = (props) => {
 }
 
 const Titulo = (props) => {
-    const { voltaPara, ...other } = props;
+    const { voltaPara, carregando, ...other } = props;
     const location = useLocation();
 
     return (
@@ -29,6 +29,11 @@ const Titulo = (props) => {
             }
             <Typography variant="h2" component="h1" sx={style.titulo}>
                 {other.children}
+                {
+                    carregando
+                    ? <CircularProgress size='1rem' />
+                    : ''
+                }
             </Typography>
         </Box>
     );

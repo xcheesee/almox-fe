@@ -20,9 +20,9 @@ const cabecalhos = [
     "Ação"
 ];
 
-const TabelaOrdem = ({ ordens }) => {
+const TabelaOrdem = ({ ordens, carregando }) => {
     return (
-        <Tabela cabecalhos={cabecalhos}>
+        <Tabela cabecalhos={cabecalhos} carregando={carregando}>
             {ordens.map(ordem => (
                     <TableRow key={ordem.id}>
                         <TableCell align="center">{ordem.id}</TableCell>

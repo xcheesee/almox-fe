@@ -23,10 +23,11 @@ const TabelaInventario = (props) => {
         itens,
         setIdAlerta, 
         setOpenDefinir,
+        carregando
     } = props;
 
     return (
-        <Tabela cabecalhos={cabecalhos}>
+        <Tabela cabecalhos={cabecalhos} carregando={carregando}>
             {itens.map(item => (
                     <TableRow key={item.id}>
                         <TableCell align="center">{item.id}</TableCell>

@@ -2,7 +2,6 @@ import React from 'react';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import FiltrosOrdem from '../FiltrosOrdem';
-import LoadingTabela from '../LoadingTabela';
 import TabelaOrdem from '../TabelaOrdem';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
@@ -17,14 +16,12 @@ const OrdemServico = (props) => {
     } = props;
 
     return (
-        <ContainerPrincipal>
-            <Titulo>Ordem de serviço</Titulo>
+        <ContainerPrincipal carregando={carregando}>
+            <Titulo carregando={carregando}>Ordem de serviço</Titulo>
 
             <FiltrosOrdem />
 
-            <LoadingTabela carregando={carregando}>
-                <TabelaOrdem ordens={ordens} />
-            </LoadingTabela>
+            <TabelaOrdem ordens={ordens} carregando={carregando} />
 
             <BotaoNovo caminho="/ordemservico/nova-ordem">
                 Nova ordem

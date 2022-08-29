@@ -7,28 +7,33 @@ import {
     TableRow, 
     TableCell, 
     TableBody,
-    Fade
+    Fade,
+    Collapse,
 } from '@mui/material';
 import style from './style';
 
 const Tabela = (props) => {
-    const { cabecalhos, ...other } = props;
+    const { cabecalhos, carregando, ...other } = props;
 
     return (
         <Fade in={true} timeout={400}>
             <TableContainer component={Paper} elevation={4}>
-                <Table size="small">
-                    <TableHead sx={style.tableHead}>
-                        <TableRow>
-                            {cabecalhos.map((cabecalho, index) => {
-                                return <TableCell sx={style.tableCell} align="center" key={index}>{cabecalho}</TableCell>
-                            })}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {other.children}
-                    </TableBody>
-                </Table>
+                <Collapse in={!carregando} collapsedSize={34}>
+                    <Table size="small">
+                        <TableHead sx={style.tableHead}>
+                            <TableRow>
+                                {cabecalhos.map((cabecalho, index) => (
+                                    <TableCell sx={style.tableCell} align="center" key={index}>
+                                        {cabecalho}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {other.children}
+                        </TableBody>
+                    </Table>
+                </Collapse>
             </TableContainer>
         </Fade>
     );
