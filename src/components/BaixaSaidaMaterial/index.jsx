@@ -3,82 +3,77 @@ import {
   Typography,
   Box,
   Paper,
-  TextField,
-  Button
+  // TextField,
+  Button,
+  Collapse,
 } from '@mui/material';
 import style from './style';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
-import { useParams } from 'react-router-dom';
+import { formataDateTime } from '../../common/utils';
 
-const BaixaSaidaMaterial = () => {
-  let params = useParams();
-
-  const ordemservico = {
-    origem: 'Leopoldina',
-    local_servico: 'Ibirapuera',
-    especificacoes: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Donec ut molestie nunc, ut ornare odio. Etiam a ligula a ipsum pulvinar sollicitudin. 
-    Sed viverra dui tellus, vel pellentesque turpis vulputate quis. Pellentesque nec varius diam. 
-    Sed laoreet ullamcorper placerat. Etiam rhoncus aliquam consequat. Etiam ac semper ante, ut dignissim ligula. 
-    Quisque est turpis, euismod eu facilisis in, scelerisque sed diam. Sed non tempor nisi.`,
-    profissional: 'Fulano Ciclano',
-    horas_execucao: '8',
-    data_servico: '2022-08-05',
-    material_utilizado: [
-      { material: 'Adaptador de PVC rígido soldável, com flange, 25mm x 3/4"', solicitado: 50, enviado: 50, usado: 50, retorno: 0 },
-      { material: 'Tábua "2,5 x 30" cm em pinus; mista ou equivalente da região - Bruta', solicitado: 2000, enviado: 1800, usado: 1200, retorno: 600 }
-    ]
-  }
-
+const BaixaSaidaMaterial = ({ ordemServico, carregando, id }) => {
   return (
     <ContainerPrincipal>
-      <Titulo voltaPara="/ordemservico">
+      <Titulo voltaPara="/ordemservico" carregando={carregando}>
         Baixa da saída de material
       </Titulo>
 
       <Box sx={style.box}>
         <Typography sx={style.subTitulo} >
-          Ordem de serviço <strong>#{`${params.id}`}</strong>
+          Ordem de serviço <strong>#{`${id}`}</strong>
         </Typography>
 
-        <Paper className="p-6 grid grid-rows-3 items-center">
-          <Box className='grid grid-cols-3 self-start'>
-            <Typography sx={style.textoNegrito}>
-              Origem
-              <Typography sx={style.span} component="span">{ordemservico.origem}</Typography>
-            </Typography>
+        <Collapse in={!carregando}>
+          <Box className="p-6 grid grid-rows-3 gap-8 items-center">
+            <Box className='grid grid-cols-3 self-start'>
+              <Typography sx={style.textoNegrito}>
+                Origem
+                <Typography sx={style.span} component="span">{ordemServico.origem}</Typography>
+              </Typography>
 
-            <Typography sx={style.textoNegrito}>
-              Local de serviço
-              <Typography sx={style.span} component="span">{ordemservico.local_servico}</Typography>
-            </Typography>
+              <Typography sx={style.textoNegrito}>
+                Local de serviço
+                <Typography sx={style.span} component="span">{ordemServico.local_servico}</Typography>
+              </Typography>
+
+              <Typography sx={style.textoNegrito}>
+                Profissional
+                <Typography sx={style.span} component="span">{ordemServico.profissional}</Typography>
+              </Typography>
+            </Box>
+
+            <Box className='grid grid-cols-3 self-start'>
+              <Typography sx={style.textoNegrito}>
+                Especificações
+                <Typography sx={style.span} component="span">{ordemServico.especificacao}</Typography>
+              </Typography>
+            </Box>
+
+            <Box className='grid grid-cols-3 self-end'>
+              <Typography sx={style.textoNegrito}>
+                Horas execução
+                <Typography sx={style.span} component="span">
+                  {ordemServico.horas_execucao} {ordemServico.horas_execucao <= 1 ? 'hora' : 'horas'}
+                </Typography>
+              </Typography>
+              
+              <Typography sx={style.textoNegrito}>
+                Data de início do serviço
+                <Typography sx={style.span} component="span">
+                  { formataDateTime(ordemServico.data_inicio_servico) || "Sem data de início" }
+                </Typography>
+              </Typography>
+              
+              <Typography sx={style.textoNegrito}>
+                Data de fim do serviço
+                <Typography sx={style.span} component="span">
+                  { formataDateTime(ordemServico.data_fim_servico) || "Sem data de fim" }
+                </Typography>
+              </Typography>
+            </Box>
           </Box>
-
-          <Box>
-            <Typography sx={style.textoNegrito}>
-              Especificaçõs
-              <Typography sx={style.span} component="span">{ordemservico.especificacoes}</Typography>
-            </Typography>
-          </Box>
-
-          <Box className='grid grid-cols-3 self-end'>
-            <Typography sx={style.textoNegrito}>
-              Profissional
-              <Typography sx={style.span} component="span">{ordemservico.profissional}</Typography>
-            </Typography>
-
-            <Typography sx={style.textoNegrito}>
-              Horas execução
-              <Typography sx={style.span} component="span">{ordemservico.horas_execucao} {ordemservico.horas_execucao <= 1 ? 'hora' : 'horas'}</Typography>
-            </Typography>
-
-            <Typography sx={style.textoNegrito}>
-              Data do serviço
-              <Typography sx={style.span} component="span">{ordemservico.data_servico}</Typography>
-            </Typography>
-          </Box>
-        </Paper>
+        </Collapse>
       </Box>
 
       <Box sx={style.box}>
@@ -87,7 +82,7 @@ const BaixaSaidaMaterial = () => {
         </Typography>
 
         <Paper sx={style.paperBg}>
-          {ordemservico.material_utilizado.map((material, index) => (
+          {/* {ordemServico.material_utilizado.map((material, index) => (
             <Paper className='p-4 grid grid-cols-2 items-center' key={index}>
               <Typography>{material.material}</Typography>
 
@@ -118,7 +113,7 @@ const BaixaSaidaMaterial = () => {
                 />
               </Box>
             </Paper>
-          ))}
+          ))} */}
         </Paper>
       </Box>
 

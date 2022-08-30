@@ -45,7 +45,7 @@ const NovaOrdemServico = (props) => {
                 </Selecao>
 
                 <TextField 
-                    type="date"
+                    type="datetime-local"
                     name="data_inicio_servico"
                     label="Data de início do serviço"
                     InputLabelProps={{ shrink: true }}
@@ -53,7 +53,7 @@ const NovaOrdemServico = (props) => {
                 />
 
                 <TextField 
-                    type="date"
+                    type="datetime-local"
                     name="data_fim_servico"
                     label="Data de fim do serviço"
                     InputLabelProps={{ shrink: true }}
