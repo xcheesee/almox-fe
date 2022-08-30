@@ -3,9 +3,6 @@ import {
     Typography,
     Paper,
     Fade,
-    FormControl,
-    InputLabel,
-    Select,
     MenuItem,
     TextField,
     InputAdornment,
@@ -15,6 +12,7 @@ import {
     Button
 } from '@mui/material';
 import style from './style';
+import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -70,22 +68,31 @@ const BoxMateriais = (props) => {
                     return (
                         <Fade in={true} key={index}>
                             <Paper className="p-4 mb-4 flex gap-4">
-                                <FormControl fullWidth size="small">
-                                    <InputLabel id="material-label">Material</InputLabel>
-                                    <Select
-                                        labelId="material-label"
-                                        label="Material"
-                                        name="material"
-                                        value={material.material}
-                                        onChange={(e) => handleChange(e, index)}
-                                    >
-                                        <MenuItem value="Teste_1">Teste 1</MenuItem>
-                                        <MenuItem value="Teste_2">Teste 2</MenuItem>
-                                        <MenuItem value="Teste_3">Teste 3</MenuItem>
-                                        <MenuItem value="Teste_4">Teste 4</MenuItem>
-                                        <MenuItem value="Teste_5">Teste 5</MenuItem>
-                                    </Select>
-                                </FormControl>
+                                <Selecao
+                                    label="Tipo de material"
+                                    name="tipo_material"
+                                    size="small"
+                                    fullWidth
+                                >
+                                    <MenuItem value="Teste_1">Teste 1</MenuItem>
+                                    <MenuItem value="Teste_2">Teste 2</MenuItem>
+                                    <MenuItem value="Teste_3">Teste 3</MenuItem>
+                                    <MenuItem value="Teste_4">Teste 4</MenuItem>
+                                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                                </Selecao>
+
+                                <Selecao
+                                    label="Material"
+                                    name="material"
+                                    size="small"
+                                    fullWidth
+                                >
+                                    <MenuItem value="Teste_1">Teste 1</MenuItem>
+                                    <MenuItem value="Teste_2">Teste 2</MenuItem>
+                                    <MenuItem value="Teste_3">Teste 3</MenuItem>
+                                    <MenuItem value="Teste_4">Teste 4</MenuItem>
+                                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                                </Selecao>
 
                                 <TextField
                                     name="quantidade"

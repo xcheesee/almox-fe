@@ -17,10 +17,12 @@ export const enviaForm = (e, materiais) => {
 
   const formData = new FormData(e.target);
   const inputObject = Object.fromEntries(formData);
+  const user_id = localStorage.getItem('user_id');
 
   console.log({
       ...inputObject,
-      materiais: [...materiais]
+      materiais: [...materiais],
+      user_id: user_id
   });
 }
 

@@ -12,12 +12,6 @@ const FiltrosOrdem = () => {
             />
 
             <TextField 
-                label="Base destino do pedido"
-                name="base_destino_do_pedido"
-                InputLabelProps={{ shrink: true }}
-            />
-
-            <TextField 
                 label="Local de serviço"
                 name="local_servico"
                 InputLabelProps={{ shrink: true }}
@@ -36,22 +30,10 @@ const FiltrosOrdem = () => {
             />
 
             <TextField 
-                label="Cargo almoxarife responsável"
-                name="cargo_almoxarife_responsavel"
-                InputLabelProps={{ shrink: true }}
-            />
-
-            <TextField 
-                label="Data serviço depois de"
-                name="data_servico_depois_de"
+                label="Data serviço"
+                name="data_servico"
                 type="date"
-                InputLabelProps={{ shrink: true }}
-            />
-
-            <TextField 
-                label="Data serviço antes de"
-                name="data_servico_antes_de"
-                type="date"
+                className="col-span-2"
                 InputLabelProps={{ shrink: true }}
             />
         </Filtros>

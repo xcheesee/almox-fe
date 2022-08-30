@@ -46,43 +46,40 @@ const NovaOrdemServico = (props) => {
 
                 <TextField 
                     type="date"
-                    name="data_servico"
-                    label="Data do serviço"
+                    name="data_inicio_servico"
+                    label="Data de início do serviço"
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                />
+
+                <TextField 
+                    type="date"
+                    name="data_fim_servico"
+                    label="Data de fim do serviço"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                 />
 
                 <Selecao
                     label="Base de origem dos materiais"
-                    name="base_origem"
+                    name="origem_id"
                 >
-                    <MenuItem value="Teste_1">Teste 1</MenuItem>
-                    <MenuItem value="Teste_2">Teste 2</MenuItem>
-                    <MenuItem value="Teste_3">Teste 3</MenuItem>
-                    <MenuItem value="Teste_4">Teste 4</MenuItem>
-                    <MenuItem value="Teste_5">Teste 5</MenuItem>
-                </Selecao>
-
-                <Selecao
-                    label="Base de destino dos materiais"
-                    name="base_destino"
-                >
-                    <MenuItem value="Teste_1">Teste 1</MenuItem>
-                    <MenuItem value="Teste_2">Teste 2</MenuItem>
-                    <MenuItem value="Teste_3">Teste 3</MenuItem>
-                    <MenuItem value="Teste_4">Teste 4</MenuItem>
-                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                    <MenuItem value={1}>Teste 1</MenuItem>
+                    <MenuItem value={2}>Teste 2</MenuItem>
+                    <MenuItem value={3}>Teste 3</MenuItem>
+                    <MenuItem value={4}>Teste 4</MenuItem>
+                    <MenuItem value={5}>Teste 5</MenuItem>
                 </Selecao>
 
                 <Selecao
                     label="Local de serviço"
-                    name="local_servico"
+                    name="local_servico_id"
                 >
-                    <MenuItem value="Teste_1">Teste 1</MenuItem>
-                    <MenuItem value="Teste_2">Teste 2</MenuItem>
-                    <MenuItem value="Teste_3">Teste 3</MenuItem>
-                    <MenuItem value="Teste_4">Teste 4</MenuItem>
-                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                    <MenuItem value={1}>Teste 1</MenuItem>
+                    <MenuItem value={2}>Teste 2</MenuItem>
+                    <MenuItem value={3}>Teste 3</MenuItem>
+                    <MenuItem value={4}>Teste 4</MenuItem>
+                    <MenuItem value={5}>Teste 5</MenuItem>
                 </Selecao>
 
                 <TextField 
@@ -93,14 +90,19 @@ const NovaOrdemServico = (props) => {
                     fullWidth
                 />
 
-                <TextField 
+                <Selecao
                     name="profissional"
                     label="Profissional"
-                    fullWidth
-                />
+                >
+                    <MenuItem value={1}>Fulano</MenuItem>
+                    <MenuItem value={2}>Sicrano</MenuItem>
+                    <MenuItem value={3}>Beltrano</MenuItem>
+                    <MenuItem value={4}>José</MenuItem>
+                    <MenuItem value={5}>Maria</MenuItem>
+                </Selecao>
 
                 <TextField 
-                    name="hora_servico"
+                    name="horas_execucao"
                     label="Hora de serviço"
                     fullWidth
                 />
@@ -124,19 +126,14 @@ const NovaOrdemServico = (props) => {
                         className="flex flex-col gap-10 my-4"
                     >
                         <TextField 
-                            name="nome_almoxarife"
+                            name="almoxarife_nome"
                             label="Nome"
                             fullWidth
                         />
 
                         <TextField 
-                            name="email_almoxarife"
+                            name="almoxarife_email"
                             label="E-mail"
-                            fullWidth
-                        />
-                        <TextField 
-                            name="telefone_almoxarife"
-                            label="Telefone"
                             fullWidth
                         />
                     </Box>

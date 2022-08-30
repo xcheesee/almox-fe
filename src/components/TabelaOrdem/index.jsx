@@ -15,7 +15,6 @@ const cabecalhos = [
     "ID",
     "Data serviço",
     "Base origem",
-    "Base destino",
     "Local serviço",
     "Ação"
 ];
@@ -28,7 +27,6 @@ const TabelaOrdem = ({ ordens, carregando }) => {
                         <TableCell align="center">{ordem.id}</TableCell>
                         <TableCell align="center">{ordem.data_servico}</TableCell>
                         <TableCell align="center">{ordem.origem}</TableCell>
-                        <TableCell align="center">{ordem.destino}</TableCell>
                         <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
