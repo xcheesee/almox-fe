@@ -12,29 +12,27 @@ export const mascaraContrato = (contrato) => {
         return "";
 }
 
-export const enviaForm = (e, materiais) => {
+export const enviaForm = (e/*, materiais*/) => {
   e.preventDefault();
 
   const formData = new FormData(e.target);
   const inputObject = Object.fromEntries(formData);
   const user_id = localStorage.getItem('user_id');
 
-  console.log({
+  return {
       ...inputObject,
-      materiais: [...materiais],
+      // materiais: [...materiais],
       user_id: user_id
-  });
+  };
 }
 
 export const token = localStorage.getItem('access_token');
 
 export const headers = {
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': token
-  }
-};
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+  'Authorization': token
+}
 
 export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}`
@@ -52,7 +50,7 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
           setData(data.data);
           setMeta(data.meta);
       });
-};
+}
 
 export const formataDateTime = (dateTime) => {
   let data = new Date(dateTime);

@@ -4,10 +4,10 @@ import {
     MenuItem,
     Box,
     Button,
-    Typography
+    Typography,
+    CircularProgress
 } from '@mui/material';
 import style from './style';
-import { enviaForm } from '../../common/utils';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import FormContainer from '../FormContainer';
@@ -18,11 +18,14 @@ const NovaOrdemServico = (props) => {
     const {
         materiais,
         setMateriais,
-        setOpenCancelar
+        setOpenCancelar,
+        setOpenConfirmar,
+        carregando,
+        cadastraOrdem
     } = props;
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-
+    
     return (
         <ContainerPrincipal>
             <Titulo voltaPara="/ordemservico">
@@ -31,7 +34,7 @@ const NovaOrdemServico = (props) => {
 
             <FormContainer
                 id="nova-ordem"
-                onSubmit={(e) => enviaForm(e, materiais)}
+                onSubmit={cadastraOrdem}
             >
                 <Selecao
                     label="Departamento"
@@ -94,16 +97,16 @@ const NovaOrdemServico = (props) => {
                     name="profissional"
                     label="Profissional"
                 >
-                    <MenuItem value={1}>Fulano</MenuItem>
-                    <MenuItem value={2}>Sicrano</MenuItem>
-                    <MenuItem value={3}>Beltrano</MenuItem>
-                    <MenuItem value={4}>José</MenuItem>
-                    <MenuItem value={5}>Maria</MenuItem>
+                    <MenuItem value="Fulano">Fulano</MenuItem>
+                    <MenuItem value="Sicrano">Sicrano</MenuItem>
+                    <MenuItem value="Beltrano">Beltrano</MenuItem>
+                    <MenuItem value="José">José</MenuItem>
+                    <MenuItem value="Maria">Maria</MenuItem>
                 </Selecao>
 
                 <TextField 
                     name="horas_execucao"
-                    label="Hora de serviço"
+                    label="Horas de serviço"
                     fullWidth
                 />
 
@@ -134,6 +137,7 @@ const NovaOrdemServico = (props) => {
                         <TextField 
                             name="almoxarife_email"
                             label="E-mail"
+                            type="email"
                             fullWidth
                         />
                     </Box>
@@ -151,10 +155,15 @@ const NovaOrdemServico = (props) => {
                     Cancelar
                 </Button>
                 <Button 
-                    type="submit" 
-                    form="nova-ordem" 
+                    onClick={() => setOpenConfirmar(true)}
                     variant="contained"
                 >
+                    {
+                        carregando
+                        ? <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} />
+                        : null
+                    }
+
                     Enviar
                 </Button>
             </Box>
