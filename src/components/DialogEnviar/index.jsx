@@ -7,12 +7,12 @@ import {
     Button 
 } from '@mui/material';
 
-const DialogEnviar = ({ openConfirmar, setOpenConfirmar }) => {
+const DialogEnviar = ({ openConfirmar, setOpenConfirmar, texto, form }) => {
     return (
         <Dialog open={openConfirmar}>
             <DialogContent>
                 <DialogContentText>
-                    Deseja cadastrar a nova ordem de serviço?
+                    Deseja cadastrar a nova {`${texto}`}?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -23,7 +23,7 @@ const DialogEnviar = ({ openConfirmar, setOpenConfirmar }) => {
                 </Button>
                 <Button
                     type="submit" 
-                    form="nova-ordem" 
+                    form={form}
                 >
                     Sim
                 </Button>

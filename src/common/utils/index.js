@@ -12,24 +12,25 @@ export const mascaraContrato = (contrato) => {
         return "";
 }
 
-export const enviaForm = (e/*, materiais*/) => {
-  e.preventDefault();
+export const formataDateTime = (dateTime) => {
+  let data = new Date(dateTime);
+  let dataFormatada = data.toLocaleDateString("pt-BR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 
-  const formData = new FormData(e.target);
-  const inputObject = Object.fromEntries(formData);
-  const user_id = localStorage.getItem('user_id');
+  if (dataFormatada === "Invalid Date")
+    return "---";
 
-  return {
-      ...inputObject,
-      // materiais: [...materiais],
-      user_id: user_id
-  };
+  return dataFormatada;
 }
 
 export const token = localStorage.getItem('access_token');
 
 export const headers = {
-  'Content-Type': 'application/json',
   'Accept': 'application/json',
   'Authorization': token
 }
@@ -52,18 +53,44 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
       });
 }
 
-export const formataDateTime = (dateTime) => {
-  let data = new Date(dateTime);
-  let dataFormatada = data.toLocaleDateString("pt-BR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+export const enviaForm = (e, ...other) => {
+  e.preventDefault();
 
-  if (dataFormatada === "Invalid Date")
-    return "---";
+  const formData = new FormData(e.target);
+  formData.append('user_id', localStorage.getItem('user_id'));
+  // solução temporária
+  other.forEach(materiais => {
+    materiais.forEach((material, index) => {
+      const entries = Object.entries(material);
+      entries.forEach(keyValue => {
+        formData.append(`entrada_items[${index}][${keyValue[0]}]`, keyValue[1]);
+      })
+    })
+  })
 
-  return dataFormatada;
+  return formData;
+}
+
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, ...other) => {
+  const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
+  const options = {
+      method: 'POST',
+      headers: headers,
+      body: enviaForm(e, ...other)
+  };
+
+  setCarregando(true);
+  setOpenConfirmar(false);
+
+  fetch(urlCompleta, options)
+      .then(res => { 
+          if (res.ok) {
+              setCarregando(false);
+              navigate(`/${paginaAnterior}`, { replace: true });
+          } else {
+              setCarregando(false);
+          }
+      })
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
 }

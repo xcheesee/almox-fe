@@ -16,6 +16,7 @@ const Selecao = (props) => {
                 label={label}
                 name={name}
                 defaultValue=""
+                onChange={other.onChange}
             >
                 {other.children}
             </Select>

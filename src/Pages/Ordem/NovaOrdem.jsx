@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { enviaForm, headers } from '../../common/utils';
+import { enviaNovoForm } from '../../common/utils';
 import NovaOrdemServico from '../../components/NovaOrdemServico';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
@@ -14,27 +14,14 @@ const NovaOrdem = () => {
     const navigate = useNavigate();
     
     const cadastraOrdem = (e) => {
-        const url = `${process.env.REACT_APP_API_URL}/ordem_servico`;
-        const options = {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(enviaForm(e))
-        };
-
-        setCarregando(true);
-        setOpenConfirmar(false);
-
-        fetch(url, options)
-            .then(res => { 
-                if (res.ok) {
-                    setCarregando(false);
-                    navigate('/ordemservico', { replace: true });
-                } else {
-                    setCarregando(false);
-                }
-            })
-            .then(data => console.log(data))
-            .catch(err => console.log(err));
+        enviaNovoForm(
+            e, 
+            'ordem_servico', 
+            'ordemservico', 
+            setCarregando, 
+            setOpenConfirmar, 
+            navigate
+        );
     }
 
     return (
@@ -56,6 +43,8 @@ const NovaOrdem = () => {
             <DialogEnviar 
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
+                texto="ordem de serviço"
+                form="nova-ordem"
             />
         </>
     );

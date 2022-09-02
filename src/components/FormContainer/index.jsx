@@ -18,6 +18,7 @@ const FormContainer = (props) => {
                 onSubmit={onSubmit}
                 id={id}
                 className="flex flex-col gap-10"
+                encType="multipart/form-data"
             >
                 {other.children}
             </Box>
