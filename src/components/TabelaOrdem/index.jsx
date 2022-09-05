@@ -13,9 +13,9 @@ import { Link } from 'react-router-dom';
 
 const cabecalhos = [
     "ID",
-    "Data serviço",
+    "Data de início do serviço",
+    "Data de fim do serviço",
     "Base origem",
-    "Base destino",
     "Local serviço",
     "Ação"
 ];
@@ -26,9 +26,13 @@ const TabelaOrdem = ({ ordens, carregando }) => {
             {ordens.map(ordem => (
                     <TableRow key={ordem.id}>
                         <TableCell align="center">{ordem.id}</TableCell>
-                        <TableCell align="center">{ordem.data_servico}</TableCell>
+                        <TableCell align="center">
+                            {ordem.data_inicio_servico || "---"}
+                        </TableCell>
+                        <TableCell align="center">
+                            {ordem.data_fim_servico || "---"}
+                        </TableCell>
                         <TableCell align="center">{ordem.origem}</TableCell>
-                        <TableCell align="center">{ordem.destino}</TableCell>
                         <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">

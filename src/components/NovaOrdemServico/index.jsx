@@ -4,10 +4,10 @@ import {
     MenuItem,
     Box,
     Button,
-    Typography
+    Typography,
+    CircularProgress
 } from '@mui/material';
 import style from './style';
-import { enviaForm } from '../../common/utils';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import FormContainer from '../FormContainer';
@@ -18,9 +18,14 @@ const NovaOrdemServico = (props) => {
     const {
         materiais,
         setMateriais,
-        setOpenCancelar
+        setOpenCancelar,
+        setOpenConfirmar,
+        carregando,
+        cadastraOrdem
     } = props;
 
+    const departamentos = JSON.parse(localStorage.getItem('departamentos'));
+    
     return (
         <ContainerPrincipal>
             <Titulo voltaPara="/ordemservico">
@@ -29,47 +34,55 @@ const NovaOrdemServico = (props) => {
 
             <FormContainer
                 id="nova-ordem"
-                onSubmit={(e) => enviaForm(e, materiais)}
+                onSubmit={cadastraOrdem}
             >
+                <Selecao
+                    label="Departamento"
+                    name="departamento_id"
+                >
+                    {Object.entries(departamentos).map(departamento => (
+                        <MenuItem key={departamento[0]} value={departamento[0]}>
+                            {departamento[1]}
+                        </MenuItem>
+                    ))}
+                </Selecao>
+
                 <TextField 
-                    type="date"
-                    name="data_servico"
-                    label="Data do serviço"
+                    type="datetime-local"
+                    name="data_inicio_servico"
+                    label="Data de início do serviço"
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                />
+
+                <TextField 
+                    type="datetime-local"
+                    name="data_fim_servico"
+                    label="Data de fim do serviço"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                 />
 
                 <Selecao
                     label="Base de origem dos materiais"
-                    name="base_origem"
+                    name="origem_id"
                 >
-                    <MenuItem value="Teste_1">Teste 1</MenuItem>
-                    <MenuItem value="Teste_2">Teste 2</MenuItem>
-                    <MenuItem value="Teste_3">Teste 3</MenuItem>
-                    <MenuItem value="Teste_4">Teste 4</MenuItem>
-                    <MenuItem value="Teste_5">Teste 5</MenuItem>
-                </Selecao>
-
-                <Selecao
-                    label="Base de destino dos materiais"
-                    name="base_destino"
-                >
-                    <MenuItem value="Teste_1">Teste 1</MenuItem>
-                    <MenuItem value="Teste_2">Teste 2</MenuItem>
-                    <MenuItem value="Teste_3">Teste 3</MenuItem>
-                    <MenuItem value="Teste_4">Teste 4</MenuItem>
-                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                    <MenuItem value={1}>Teste 1</MenuItem>
+                    <MenuItem value={2}>Teste 2</MenuItem>
+                    <MenuItem value={3}>Teste 3</MenuItem>
+                    <MenuItem value={4}>Teste 4</MenuItem>
+                    <MenuItem value={5}>Teste 5</MenuItem>
                 </Selecao>
 
                 <Selecao
                     label="Local de serviço"
-                    name="local_servico"
+                    name="local_servico_id"
                 >
-                    <MenuItem value="Teste_1">Teste 1</MenuItem>
-                    <MenuItem value="Teste_2">Teste 2</MenuItem>
-                    <MenuItem value="Teste_3">Teste 3</MenuItem>
-                    <MenuItem value="Teste_4">Teste 4</MenuItem>
-                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                    <MenuItem value={1}>Teste 1</MenuItem>
+                    <MenuItem value={2}>Teste 2</MenuItem>
+                    <MenuItem value={3}>Teste 3</MenuItem>
+                    <MenuItem value={4}>Teste 4</MenuItem>
+                    <MenuItem value={5}>Teste 5</MenuItem>
                 </Selecao>
 
                 <TextField 
@@ -80,15 +93,20 @@ const NovaOrdemServico = (props) => {
                     fullWidth
                 />
 
-                <TextField 
+                <Selecao
                     name="profissional"
                     label="Profissional"
-                    fullWidth
-                />
+                >
+                    <MenuItem value="Fulano">Fulano</MenuItem>
+                    <MenuItem value="Sicrano">Sicrano</MenuItem>
+                    <MenuItem value="Beltrano">Beltrano</MenuItem>
+                    <MenuItem value="José">José</MenuItem>
+                    <MenuItem value="Maria">Maria</MenuItem>
+                </Selecao>
 
                 <TextField 
-                    name="hora_servico"
-                    label="Hora de serviço"
+                    name="horas_execucao"
+                    label="Horas de serviço"
                     fullWidth
                 />
 
@@ -111,19 +129,15 @@ const NovaOrdemServico = (props) => {
                         className="flex flex-col gap-10 my-4"
                     >
                         <TextField 
-                            name="nome_almoxarife"
+                            name="almoxarife_nome"
                             label="Nome"
                             fullWidth
                         />
 
                         <TextField 
-                            name="email_almoxarife"
+                            name="almoxarife_email"
                             label="E-mail"
-                            fullWidth
-                        />
-                        <TextField 
-                            name="telefone_almoxarife"
-                            label="Telefone"
+                            type="email"
                             fullWidth
                         />
                     </Box>
@@ -141,10 +155,15 @@ const NovaOrdemServico = (props) => {
                     Cancelar
                 </Button>
                 <Button 
-                    type="submit" 
-                    form="nova-ordem" 
+                    onClick={() => setOpenConfirmar(true)}
                     variant="contained"
                 >
+                    {
+                        carregando
+                        ? <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} />
+                        : null
+                    }
+
                     Enviar
                 </Button>
             </Box>

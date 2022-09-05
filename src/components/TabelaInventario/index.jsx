@@ -31,10 +31,10 @@ const TabelaInventario = (props) => {
             {itens.map(item => (
                     <TableRow key={item.id}>
                         <TableCell align="center">{item.id}</TableCell>
-                        <TableCell align="center">{item.item_id}</TableCell>
-                        <TableCell align="center">{item.tipo || "---"}</TableCell>
-                        <TableCell align="center">{item.medida || "---"}</TableCell>
-                        <TableCell align="center">{item.local_id}</TableCell>
+                        <TableCell align="center">{item.item}</TableCell>
+                        <TableCell align="center">{item.local_tipo}</TableCell>
+                        <TableCell align="center">{item.medida}</TableCell>
+                        <TableCell align="center">{item.local}</TableCell>
                         <TableCell align="center">{item.quantidade}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Definir alerta" placement="right">

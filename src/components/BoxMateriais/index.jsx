@@ -3,9 +3,6 @@ import {
     Typography,
     Paper,
     Fade,
-    FormControl,
-    InputLabel,
-    Select,
     MenuItem,
     TextField,
     InputAdornment,
@@ -15,6 +12,7 @@ import {
     Button
 } from '@mui/material';
 import style from './style';
+import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -28,7 +26,7 @@ const BoxMateriais = (props) => {
     useEffect(() => { }, [materiais.length])
 
     const adicionaMaterial = () => {
-        setMateriais(prev => [...prev, { material: '', quantidade: '' }]);
+        setMateriais(prev => [...prev, { id: '', quantidade: '' }]);
     }
 
     const removeMaterial = (index) => {
@@ -38,12 +36,12 @@ const BoxMateriais = (props) => {
     }
 
     const setUnidadeMedida = (material) => {
-        switch (material) {
-            case "Teste_1": return "Pç";
-            case "Teste_2": return "Kg";
-            case "Teste_3": return "Un";
-            case "Teste_4": return "500 / Pç"
-            case "Teste_5": return "L"
+        switch (material.id) {
+            case 1: return "Pç";
+            case 2: return "Kg";
+            case 3: return "Un";
+            case 4: return "500 / Pç"
+            case 5: return "L"
             default: return ""
         }
     }
@@ -70,22 +68,32 @@ const BoxMateriais = (props) => {
                     return (
                         <Fade in={true} key={index}>
                             <Paper className="p-4 mb-4 flex gap-4">
-                                <FormControl fullWidth size="small">
-                                    <InputLabel id="material-label">Material</InputLabel>
-                                    <Select
-                                        labelId="material-label"
-                                        label="Material"
-                                        name="material"
-                                        value={material.material}
-                                        onChange={(e) => handleChange(e, index)}
-                                    >
-                                        <MenuItem value="Teste_1">Teste 1</MenuItem>
-                                        <MenuItem value="Teste_2">Teste 2</MenuItem>
-                                        <MenuItem value="Teste_3">Teste 3</MenuItem>
-                                        <MenuItem value="Teste_4">Teste 4</MenuItem>
-                                        <MenuItem value="Teste_5">Teste 5</MenuItem>
-                                    </Select>
-                                </FormControl>
+                                <Selecao
+                                    label="Tipo de material"
+                                    name="tipo_material"
+                                    size="small"
+                                    fullWidth
+                                >
+                                    <MenuItem value="Teste_1">Teste 1</MenuItem>
+                                    <MenuItem value="Teste_2">Teste 2</MenuItem>
+                                    <MenuItem value="Teste_3">Teste 3</MenuItem>
+                                    <MenuItem value="Teste_4">Teste 4</MenuItem>
+                                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                                </Selecao>
+
+                                <Selecao
+                                    label="Material"
+                                    name="id"
+                                    size="small"
+                                    onChange={(e) => handleChange(e, index)}
+                                    fullWidth
+                                >
+                                    <MenuItem value={1}>Teste 1</MenuItem>
+                                    <MenuItem value={2}>Teste 2</MenuItem>
+                                    <MenuItem value={3}>Teste 3</MenuItem>
+                                    <MenuItem value={4}>Teste 4</MenuItem>
+                                    <MenuItem value={5}>Teste 5</MenuItem>
+                                </Selecao>
 
                                 <TextField
                                     name="quantidade"
@@ -95,7 +103,7 @@ const BoxMateriais = (props) => {
                                     fullWidth
                                     size="small"
                                     InputProps={{
-                                        endAdornment: <InputAdornment position="end">{setUnidadeMedida(material.material)}</InputAdornment>,
+                                        endAdornment: <InputAdornment position="end">{setUnidadeMedida(material)}</InputAdornment>,
                                     }}
                                 />
 

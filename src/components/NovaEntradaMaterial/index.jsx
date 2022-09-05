@@ -4,8 +4,8 @@ import {
     TextField, 
     Button,
     MenuItem,
+    CircularProgress
 } from '@mui/material';
-import { enviaForm } from '../../common/utils';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import BoxMateriais from '../BoxMateriais';
@@ -16,8 +16,13 @@ const NovaEntradaMaterial = (props) => {
     const {
         materiais,
         setMateriais,
-        setOpenCancelar
+        setOpenCancelar,
+        setOpenConfirmar,
+        carregando,
+        cadastraEntrada
     } = props;
+    
+    const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
     return (
         <ContainerPrincipal>
@@ -27,8 +32,19 @@ const NovaEntradaMaterial = (props) => {
             
             <FormContainer
                 id="nova-entrada"
-                onSubmit={(e) => enviaForm(e, materiais)}
+                onSubmit={cadastraEntrada}
             >
+                <Selecao
+                    label="Departamento"
+                    name="departamento_id"
+                >
+                    {Object.entries(departamentos).map(departamento => (
+                        <MenuItem key={departamento[0]} value={departamento[0]}>
+                            {departamento[1]}
+                        </MenuItem>
+                    ))}
+                </Selecao>
+
                 <TextField 
                     type="date"
                     name="data_entrada"
@@ -39,13 +55,13 @@ const NovaEntradaMaterial = (props) => {
 
                 <Selecao 
                     label="Local de destino dos materiais" 
-                    name="local_servico"
+                    name="local_id"
                 >
-                    <MenuItem value="Teste_1">Teste 1</MenuItem>
-                    <MenuItem value="Teste_2">Teste 2</MenuItem>
-                    <MenuItem value="Teste_3">Teste 3</MenuItem>
-                    <MenuItem value="Teste_4">Teste 4</MenuItem>
-                    <MenuItem value="Teste_5">Teste 5</MenuItem>
+                    <MenuItem value={1}>Teste 1</MenuItem>
+                    <MenuItem value={2}>Teste 2</MenuItem>
+                    <MenuItem value={3}>Teste 3</MenuItem>
+                    <MenuItem value={4}>Teste 4</MenuItem>
+                    <MenuItem value={5}>Teste 5</MenuItem>
                 </Selecao>
 
                 <TextField 
@@ -61,7 +77,7 @@ const NovaEntradaMaterial = (props) => {
                 />
 
                 <TextField 
-                    name="nota_fiscal"
+                    name="numero_nota_fiscal"
                     label="Número da nota fiscal"
                     fullWidth
                 />
@@ -69,6 +85,8 @@ const NovaEntradaMaterial = (props) => {
                 <TextField 
                     name="arquivo_nota_fiscal"
                     label="Arquivo da nota fiscal"
+                    type="file"
+                    InputLabelProps={{ shrink: true }}
                     fullWidth
                 />
             </FormContainer>
@@ -84,10 +102,15 @@ const NovaEntradaMaterial = (props) => {
                     Cancelar
                 </Button>
                 <Button 
-                    type="submit" 
-                    form="nova-entrada" 
+                    onClick={() => setOpenConfirmar(true)}
                     variant="contained"
                 >
+                    {
+                        carregando
+                        ? <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} />
+                        : null
+                    }
+
                     Enviar
                 </Button>
             </Box>

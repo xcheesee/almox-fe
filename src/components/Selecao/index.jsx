@@ -9,13 +9,14 @@ const Selecao = (props) => {
     } = props;
 
     return (
-        <FormControl fullWidth>
+        <FormControl {...other}>
             <InputLabel id={`${name}-label`}>{label}</InputLabel>
             <Select
                 labelId={`${name}-label`}
                 label={label}
                 name={name}
                 defaultValue=""
+                onChange={other.onChange}
             >
                 {other.children}
             </Select>

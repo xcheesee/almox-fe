@@ -1,6 +1,7 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { TextField, MenuItem } from '@mui/material';
 import Filtros from '../Filtros';
+import Selecao from '../Selecao';
 
 const FiltrosEntrada = () => {
     return (
@@ -30,18 +31,22 @@ const FiltrosEntrada = () => {
             />
 
             <TextField 
-                label="Entrada depois de"
-                name="entrada_depois_de"
+                label="Data de entrada"
+                name="data_entrada"
                 type="date"
                 InputLabelProps={{ shrink: true }}
             />
 
-            <TextField 
-                label="Entrada antes de"
-                name="entrada_antes_de"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-            />
+            <Selecao
+                label="Tipo"
+                name="tipo"
+            >
+                <MenuItem value={1}>Teste 1</MenuItem>
+                <MenuItem value={2}>Teste 2</MenuItem>
+                <MenuItem value={3}>Teste 3</MenuItem>
+                <MenuItem value={4}>Teste 4</MenuItem>
+                <MenuItem value={5}>Teste 5</MenuItem>
+            </Selecao>
         </Filtros>
     );
 }
