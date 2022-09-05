@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
+import CampoDataRange from '../CampoDataRange';
 
 const FiltrosOrdem = () => {
+    const [datas, setDatas] = useState([''])
     return (
-        <Filtros>
+        <Filtros
+            //valor da data de servico e funcao para limpar tal data
+            ordem={datas}
+            limpaData={setDatas}
+        >
             <TextField 
                 label="Base origem do pedido"
                 name="base_origem_do_pedido"
@@ -35,6 +41,16 @@ const FiltrosOrdem = () => {
                 type="date"
                 className="col-span-2"
                 InputLabelProps={{ shrink: true }}
+            />
+
+            <CampoDataRange
+                className={'col-span-2'}
+                label={'Data serviço - faixa de pesquisa'}
+                intervalo={datas}
+                onChange={setDatas}
+                separador={' - '}
+                placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
+                size={'lg'}
             />
         </Filtros>
     );
