@@ -6,16 +6,24 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
 
 const Filtros = (props) => {
+    //O DatePicker do RSuite nao passa values para form a nao ser que seja a implementacao de form do proprio RSuite
+    //https://rsuitejs.com/components/form/#code-lt-form-control-gt-code
+    //A implementacao atual usa States para value storage
     const {
+        entrada,
+        ordem,
+        limpaData,
         ...other
     } = props;
 
     const [visibilidade, setVisibilidade] = useState(false);
     const [filtrosAtivos, setFiltrosAtivos] = useState(['']);
 
+    //limpaData usa o setState do filtro da pagina atual
     const limpar = () => {
         setVisibilidade(false);
         setFiltrosAtivos(['']);
+        limpaData(['']);
     }
 
     const salvar = (e) => {
@@ -23,15 +31,25 @@ const Filtros = (props) => {
         const arrFiltros = [];
 
         const formData = new FormData(e.target);
-        const inputObject = Object.fromEntries(formData);
+        const inputObject = {...Object.fromEntries(formData), data_entrada: validaData(entrada), data_servico: validaData(ordem)}
 
         Object.entries(inputObject).forEach((campo) => {
             if (campo[1] !== "")
                 arrFiltros.push(`[${campo[0]}]=${campo[1]}`);
         });
+        console.log(arrFiltros)
 
         setFiltrosAtivos(['', ...arrFiltros]);
         setVisibilidade(false);
+    }
+
+    //checa por input em branco ou nao inicializado
+    const validaData = (dataRange) => {
+        return (
+            dataRange === undefined || dataRange[0] === ''
+                ? ''
+                : dataRange
+        )
     }
 
     return (

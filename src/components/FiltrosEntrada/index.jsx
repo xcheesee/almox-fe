@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField, MenuItem } from '@mui/material';
 import Filtros from '../Filtros';
 import Selecao from '../Selecao';
+import CampoDataRange from '../CampoDataRange/CampoDataRange';
 
 const FiltrosEntrada = () => {
+    const [datas, setDatas] = useState([''])
     return (
-        <Filtros>
+        <Filtros
+            //valor da data de entrada e funcao para limpar tal data
+            entrada={datas}
+            limpaData={setDatas}
+        >
             <TextField 
                 label="Processo SEI"
                 name="processo_sei"
@@ -35,6 +41,15 @@ const FiltrosEntrada = () => {
                 name="data_entrada"
                 type="date"
                 InputLabelProps={{ shrink: true }}
+            />
+
+            <CampoDataRange
+                label={'Data de entrada - faixa de pesquisa'}
+                intervalo={datas}
+                onChange={setDatas}
+                separador={' / '}
+                placeholder={'dd-mm-aaaa / dd-mm-aaaa'}
+                size={'lg'}
             />
 
             <Selecao
