@@ -19,6 +19,10 @@ body {
   min-height: 100vh;
 }
 
+a:hover {
+  text-decoration: none !important;
+}
+
 @media (max-width: 1600px) {
   html {
       font-size: 14px;
