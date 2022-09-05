@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
+import { DOMHelper} from 'rsuite'
 import CampoDataRange from '../CampoDataRange/CampoDataRange';
 
 const FiltrosOrdem = () => {
@@ -44,11 +45,13 @@ const FiltrosOrdem = () => {
             />
 
             <CampoDataRange
+                className={'col-span-2'}
                 label={'Data serviço - faixa de pesquisa'}
                 intervalo={datas}
                 onChange={setDatas}
-                separador={' / '}
-                placeholder={'dd-mm-aaaa / dd-mm-aaaa'}
+                separador={' - '}
+                placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
+                size={'lg'}
             />
         </Filtros>
     );

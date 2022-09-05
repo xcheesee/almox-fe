@@ -38,7 +38,6 @@ const Filtros = (props) => {
                 arrFiltros.push(`[${campo[0]}]=${campo[1]}`);
         });
         console.log(arrFiltros)
-
         setFiltrosAtivos(['', ...arrFiltros]);
         setVisibilidade(false);
     }

@@ -47,8 +47,8 @@ const FiltrosEntrada = () => {
                 label={'Data de entrada - faixa de pesquisa'}
                 intervalo={datas}
                 onChange={setDatas}
-                separador={' / '}
-                placeholder={'dd-mm-aaaa / dd-mm-aaaa'}
+                separador={' - '}
+                placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
                 size={'lg'}
             />
 
