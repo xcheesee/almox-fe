@@ -53,30 +53,30 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
       });
 }
 
-export const enviaForm = (e, ...other) => {
+export const enviaForm = (e, materiais) => {
   e.preventDefault();
 
   const formData = new FormData(e.target);
   formData.append('user_id', localStorage.getItem('user_id'));
-  // solução temporária
-  other.forEach(materiais => {
+  
+  if (materiais) {
     materiais.forEach((material, index) => {
       const entries = Object.entries(material);
       entries.forEach(keyValue => {
         formData.append(`entrada_items[${index}][${keyValue[0]}]`, keyValue[1]);
-      })
-    })
-  })
-
+      });
+    });
+  }
+  
   return formData;
 }
 
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, ...other) => {
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
       headers: headers,
-      body: enviaForm(e, ...other)
+      body: enviaForm(e, materiais)
   };
 
   setCarregando(true);
@@ -87,6 +87,7 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
           if (res.ok) {
               setCarregando(false);
               navigate(`/${paginaAnterior}`, { replace: true });
+              return res.json();
           } else {
               setCarregando(false);
           }
