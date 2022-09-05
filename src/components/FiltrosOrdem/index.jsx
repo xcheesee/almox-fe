@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
-import { DOMHelper} from 'rsuite'
-import CampoDataRange from '../CampoDataRange/CampoDataRange';
+import CampoDataRange from '../CampoDataRange';
 
 const FiltrosOrdem = () => {
     const [datas, setDatas] = useState([''])
