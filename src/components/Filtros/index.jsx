@@ -31,13 +31,16 @@ const Filtros = (props) => {
         const arrFiltros = [];
 
         const formData = new FormData(e.target);
-        const inputObject = {...Object.fromEntries(formData), data_entrada: validaData(entrada), data_servico: validaData(ordem)}
+        const inputObject = {
+            ...Object.fromEntries(formData),
+            data_entrada: validaData(entrada),
+            data_servico: validaData(ordem)
+        }
 
         Object.entries(inputObject).forEach((campo) => {
             if (campo[1] !== "")
                 arrFiltros.push(`[${campo[0]}]=${campo[1]}`);
         });
-        console.log(arrFiltros)
         setFiltrosAtivos(['', ...arrFiltros]);
         setVisibilidade(false);
     }
