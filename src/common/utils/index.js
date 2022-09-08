@@ -115,3 +115,28 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
       .then(data => console.log(data))
       .catch(err => console.log(err));
 }
+
+export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenConfirmar, materiais) => {
+  const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
+  const options = {
+    method: 'POST',
+    headers: headers,
+    body: enviaForm(e, materiais)
+  };
+
+  setCarregando(true);
+  setOpenConfirmar(false);
+
+  fetch(urlCompleta, options)
+    .then(res => {
+      if (res.ok) {
+        setOpenEditar(false);
+        setCarregando(false);
+        return res.json();
+      } else {
+        setCarregando(false);
+      }
+    })
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+}

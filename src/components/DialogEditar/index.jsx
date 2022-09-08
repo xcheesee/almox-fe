@@ -5,12 +5,13 @@ import {
     DialogContent,
     DialogActions,
     Button,
+    CircularProgress
 } from '@mui/material';
 
-const DialogEditar = ({ titulo, openEditar, setOpenEditar, ...other }) => {
+const DialogEditar = ({ titulo, openEditar, setOpenEditar, carregando, defaultValue, setOpenConfirmar, ...other }) => {
     return (
         <Dialog open={openEditar} fullWidth maxWidth="md">
-            <DialogTitle>{titulo}</DialogTitle>
+            <DialogTitle>{titulo} #{defaultValue.id}</DialogTitle>
             <DialogContent>
                 {other.children}
             </DialogContent>
@@ -18,7 +19,14 @@ const DialogEditar = ({ titulo, openEditar, setOpenEditar, ...other }) => {
                 <Button onClick={ () => setOpenEditar(false) }>
                     Cancelar
                 </Button>
-                <Button variant="contained">
+                <Button 
+                    variant="contained" sx={{ gap: '0.5rem' }}
+                    onClick={() => setOpenConfirmar(true)}
+                >
+                    {carregando
+                        ? <CircularProgress color="color" size="1rem" />
+                        : ''
+                    }
                     Editar
                 </Button>
             </DialogActions>

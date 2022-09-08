@@ -4,19 +4,22 @@ import { getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import FormOrdemServico from '../../components/FormOrdemServico';
+import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 
 const Ordem = () => {
     const [ordens, setOrdens] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
+    const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
+    const [openConfirmar, setOpenConfirmar] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
     const [cursor, setCursor] = useState('default');
 
     useEffect(() => {
         getTabela('ordem_servico', page, setCarregando, setOrdens, setMetaOrdens);
-    }, [page])
+    }, [page, openEditar]) // usar o openEditar para atualizar a tabela depois da edição não parece a melhor implementação -> pensar em algo melhor depois
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -36,9 +39,22 @@ const Ordem = () => {
                 openEditar={openEditar}
                 setOpenEditar={setOpenEditar}
                 defaultValue={ordemServico}
+                carregando={carregandoEdicao}
+                setOpenConfirmar={setOpenConfirmar}
             >
-                <FormOrdemServico defaultValue={ordemServico} />
+                <FormOrdemServico 
+                    defaultValue={ordemServico} 
+                    setCarregando={setCarregandoEdicao}
+                    setOpenEditar={setOpenEditar}
+                    setOpenConfirmar={setOpenConfirmar}
+                />
             </DialogEditar>
+            <DialogConfirmaEdicao
+                texto="ordem de serviço"
+                id={ordemServico.id}
+                openConfirmar={openConfirmar}
+                setOpenConfirmar={setOpenConfirmar}
+            />
         </Box>
     );
 }
