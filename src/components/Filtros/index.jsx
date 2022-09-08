@@ -17,6 +17,8 @@ const Filtros = (props) => {
         ...other
     } = props;
 
+    /** TODO: RESET DE PAGINA EM REDEFINICAO DE FILTROS */
+
     const [visibilidade, setVisibilidade] = useState(false);
     const [filtrosAtivos, setFiltrosAtivos] = useState(['']);
 
@@ -40,7 +42,6 @@ const Filtros = (props) => {
             entrada_antes_de: entradaAntesDe,
             // data_servico: validaData(ordem)
         }
-        console.log(inputObject)
         setFiltrosAtivos(['', ...arrFiltros]);
         setFiltros(
             Object.entries(inputObject)
