@@ -36,7 +36,7 @@ export const headers = {
 }
 
 export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) => {
-  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros}`
+  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}`
   console.log(url)
   const options = {
       method: 'GET',
