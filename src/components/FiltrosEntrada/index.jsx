@@ -4,13 +4,14 @@ import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
 
-const FiltrosEntrada = () => {
+const FiltrosEntrada = ({setFiltros}) => {
     const [datas, setDatas] = useState([''])
     return (
         <Filtros
             //valor da data de entrada e funcao para limpar tal data
             entrada={datas}
             limpaData={setDatas}
+            setFiltros={setFiltros}
         >
             <TextField 
                 label="Processo SEI"
@@ -26,22 +27,22 @@ const FiltrosEntrada = () => {
 
             <TextField 
                 label="Base"
-                name="base"
+                name="local"
                 InputLabelProps={{ shrink: true }}
             />
 
             <TextField 
                 label="Número nota fiscal"
-                name="nota_fiscal"
+                name="numero_nota_fiscal"
                 InputLabelProps={{ shrink: true }}
             />
 
-            <TextField 
+            {/* <TextField 
                 label="Data de entrada"
                 name="data_entrada"
                 type="date"
                 InputLabelProps={{ shrink: true }}
-            />
+            /> */}
 
             <CampoDataRange
                 label={'Data de entrada - faixa de pesquisa'}

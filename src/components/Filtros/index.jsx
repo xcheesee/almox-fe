@@ -13,8 +13,11 @@ const Filtros = (props) => {
         entrada,
         ordem,
         limpaData,
+        setFiltros,
         ...other
     } = props;
+
+    /** TODO: RESET DE PAGINA EM REDEFINICAO DE FILTROS */
 
     const [visibilidade, setVisibilidade] = useState(false);
     const [filtrosAtivos, setFiltrosAtivos] = useState(['']);
@@ -23,6 +26,7 @@ const Filtros = (props) => {
     const limpar = () => {
         setVisibilidade(false);
         setFiltrosAtivos(['']);
+        setFiltros([['','']])
         limpaData(['']);
     }
 
@@ -31,14 +35,32 @@ const Filtros = (props) => {
         const arrFiltros = [];
 
         const formData = new FormData(e.target);
-        const inputObject = {...Object.fromEntries(formData), data_entrada: validaData(entrada), data_servico: validaData(ordem)}
-
-        Object.entries(inputObject).forEach((campo) => {
-            if (campo[1] !== "")
-                arrFiltros.push(`[${campo[0]}]=${campo[1]}`);
-        });
-        console.log(arrFiltros)
+        const [entradaDepoisDe, entradaAntesDe] = validaData(entrada)
+        const inputObject = {
+            ...Object.fromEntries(formData),
+            entrada_depois_de: entradaDepoisDe,
+            entrada_antes_de: entradaAntesDe,
+            // data_servico: validaData(ordem)
+        }
         setFiltrosAtivos(['', ...arrFiltros]);
+        setFiltros(
+            Object.entries(inputObject)
+                .filter((filtro) => filtro[1] !== '')
+                .reduce((acc, filtro, index, arr) => {
+                    return (
+                        index !== arr.length - 1
+                        ? acc + `filter[${filtro[0]}]=${filtro[1]}&`
+                        : acc + `filter[${filtro[0]}]=${filtro[1]}`
+                    )
+                    
+                }, '&')
+        )
+        console.log(
+            Object.entries(inputObject)
+                .filter((filtro) => filtro[1] !== '')
+                .reduce((acc, filtro) => acc + `filter[${filtro[0]}]=${filtro[1]}&`, '?')
+        )
+        
         setVisibilidade(false);
     }
 
@@ -46,7 +68,7 @@ const Filtros = (props) => {
     const validaData = (dataRange) => {
         return (
             dataRange === undefined || dataRange[0] === ''
-                ? ''
+                ? ['', '']
                 : dataRange
         )
     }
