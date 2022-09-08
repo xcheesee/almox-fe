@@ -27,22 +27,22 @@ const FiltrosEntrada = ({setFiltros}) => {
 
             <TextField 
                 label="Base"
-                name="base"
+                name="local"
                 InputLabelProps={{ shrink: true }}
             />
 
             <TextField 
                 label="Número nota fiscal"
-                name="nota_fiscal"
+                name="numero_nota_fiscal"
                 InputLabelProps={{ shrink: true }}
             />
 
-            <TextField 
+            {/* <TextField 
                 label="Data de entrada"
                 name="data_entrada"
                 type="date"
                 InputLabelProps={{ shrink: true }}
-            />
+            /> */}
 
             <CampoDataRange
                 label={'Data de entrada - faixa de pesquisa'}
