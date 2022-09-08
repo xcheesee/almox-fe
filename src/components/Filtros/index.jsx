@@ -24,6 +24,7 @@ const Filtros = (props) => {
     const limpar = () => {
         setVisibilidade(false);
         setFiltrosAtivos(['']);
+        setFiltros([['','']])
         limpaData(['']);
     }
 
