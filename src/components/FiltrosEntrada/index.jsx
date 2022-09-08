@@ -4,13 +4,14 @@ import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
 
-const FiltrosEntrada = () => {
+const FiltrosEntrada = ({setFiltros}) => {
     const [datas, setDatas] = useState([''])
     return (
         <Filtros
             //valor da data de entrada e funcao para limpar tal data
             entrada={datas}
             limpaData={setDatas}
+            setFiltros={setFiltros}
         >
             <TextField 
                 label="Processo SEI"

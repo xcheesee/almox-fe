@@ -12,7 +12,8 @@ const EntradaMaterial = (props) => {
         metaEntradas,
         page,
         setPage,
-        carregando
+        carregando,
+        setFiltros
     } = props;
 
     return (
@@ -24,12 +25,14 @@ const EntradaMaterial = (props) => {
                 Entrada de material
             </Titulo>
 
-            <FiltrosEntrada />
+            <FiltrosEntrada
+                setFiltros={setFiltros}
+            />
             
             <TabelaEntrada 
                 entradas={entradas} 
                 metaEntradas={metaEntradas} 
-                carregando={carregando} 
+                carregando={carregando}
             />
 
             <BotaoNovo caminho="/entrada/nova-entrada">

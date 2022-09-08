@@ -35,8 +35,11 @@ export const headers = {
   'Authorization': token
 }
 
-export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
-  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}`
+export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) => {
+  const url = page > 0
+    ? `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros}`
+    : `${process.env.REACT_APP_API_URL}/${rota}${filtros}`
+  console.log(url)
   const options = {
       method: 'GET',
       headers: headers
@@ -50,6 +53,7 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
           setCarregando(false);
           setData(data.data);
           setMeta(data.meta);
+          console.log(data)
       });
 }
 

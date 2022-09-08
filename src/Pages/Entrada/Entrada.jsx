@@ -7,10 +7,12 @@ const Entrada = () => {
     const [metaEntradas, setMetaEntradas] = useState({});
     const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
+    const [filtros, setFiltros] = useState('')
 
     useEffect(() => {
-        getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas);
-    }, [page])
+        getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
+        console.log(filtros, metaEntradas)
+    }, [page, filtros])
 
     return (
         <EntradaMaterial 
@@ -19,6 +21,7 @@ const Entrada = () => {
             page={page}
             setPage={setPage}
             carregando={carregando}
+            setFiltros={setFiltros}
         />
     );
 }

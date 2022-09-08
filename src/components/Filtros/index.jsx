@@ -13,6 +13,7 @@ const Filtros = (props) => {
         entrada,
         ordem,
         limpaData,
+        setFiltros,
         ...other
     } = props;
 
@@ -31,17 +32,33 @@ const Filtros = (props) => {
         const arrFiltros = [];
 
         const formData = new FormData(e.target);
+        const [entradaDepoisDe, entradaAntesDe] = validaData(entrada)
         const inputObject = {
             ...Object.fromEntries(formData),
-            data_entrada: validaData(entrada),
-            data_servico: validaData(ordem)
+            entrada_depois_de: entradaDepoisDe,
+            entrada_antes_de: entradaAntesDe,
+            // data_servico: validaData(ordem)
         }
-
-        Object.entries(inputObject).forEach((campo) => {
-            if (campo[1] !== "")
-                arrFiltros.push(`[${campo[0]}]=${campo[1]}`);
-        });
+        console.log(inputObject)
         setFiltrosAtivos(['', ...arrFiltros]);
+        setFiltros(
+            Object.entries(inputObject)
+                .filter((filtro) => filtro[1] !== '')
+                .reduce((acc, filtro, index, arr) => {
+                    return (
+                        index !== arr.length - 1
+                        ? acc + `filter[${filtro[0]}]=${filtro[1]}&`
+                        : acc + `filter[${filtro[0]}]=${filtro[1]}`
+                    )
+                    
+                }, '&')
+        )
+        console.log(
+            Object.entries(inputObject)
+                .filter((filtro) => filtro[1] !== '')
+                .reduce((acc, filtro) => acc + `filter[${filtro[0]}]=${filtro[1]}&`, '?')
+        )
+        
         setVisibilidade(false);
     }
 
@@ -49,7 +66,7 @@ const Filtros = (props) => {
     const validaData = (dataRange) => {
         return (
             dataRange === undefined || dataRange[0] === ''
-                ? ''
+                ? ['', '']
                 : dataRange
         )
     }
