@@ -53,6 +53,24 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta) => {
       });
 }
 
+export const getRegistro = (rota, id, setOpenEditar, setter, setCursor) => {
+  const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
+  const options = {
+    method: 'GET',
+    headers: headers
+  };
+  
+  setCursor('progress');
+  
+  fetch(url, options)
+  .then(res => res.json())
+  .then(data => {
+      setOpenEditar(true);
+      setCursor('default');
+      setter(data.data);
+    });
+}
+
 export const enviaForm = (e, materiais) => {
   e.preventDefault();
 

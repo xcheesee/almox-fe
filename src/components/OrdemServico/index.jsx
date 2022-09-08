@@ -12,7 +12,10 @@ const OrdemServico = (props) => {
         metaOrdens,
         page,
         setPage,
-        carregando
+        carregando,
+        setOpenEditar,
+        setOrdemServico,
+        setCursor, cursor
     } = props;
 
     return (
@@ -21,7 +24,14 @@ const OrdemServico = (props) => {
 
             <FiltrosOrdem />
 
-            <TabelaOrdem ordens={ordens} carregando={carregando} />
+            <TabelaOrdem 
+                ordens={ordens} 
+                carregando={carregando} 
+                setOpenEditar={setOpenEditar}
+                setOrdemServico={setOrdemServico}
+                setCursor={setCursor}
+                cursor={cursor}
+            />
 
             <BotaoNovo caminho="/ordemservico/nova-ordem">
                 Nova ordem

@@ -6,6 +6,7 @@ import {
     Tooltip
 } from '@mui/material';
 import Tabela from '../Tabela';
+import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
@@ -20,7 +21,7 @@ const cabecalhos = [
     "Ação"
 ];
 
-const TabelaOrdem = ({ ordens, carregando }) => {
+const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setCursor, cursor }) => {
     return (
         <Tabela cabecalhos={cabecalhos} carregando={carregando}>
             {ordens.map(ordem => (
@@ -36,18 +37,21 @@ const TabelaOrdem = ({ ordens, carregando }) => {
                         <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
-                                <IconButton>
+                                <IconButton disabled={cursor === 'progress'}>
                                     <ManageSearchIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Editar" placement="top">
-                                <IconButton>
+                                <IconButton 
+                                    disabled={cursor === 'progress'} 
+                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor) }
+                                >
                                     <EditIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Baixa" placement="right">
                                 <Link to={`/ordemservico/baixa/${ordem.id}`}>
-                                    <IconButton>
+                                    <IconButton disabled={cursor === 'progress'}>
                                         <GradingIcon />
                                     </IconButton>
                                 </Link>

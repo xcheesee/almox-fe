@@ -5,6 +5,7 @@ const Selecao = (props) => {
     const {
         name,
         label,
+        defaultValue,
         ...other
     } = props;
 
@@ -15,7 +16,7 @@ const Selecao = (props) => {
                 labelId={`${name}-label`}
                 label={label}
                 name={name}
-                defaultValue=""
+                defaultValue={defaultValue || ""}
                 onChange={other.onChange}
             >
                 {other.children}
