@@ -2,9 +2,13 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
 
-const FiltrosInventario = () => {
+const FiltrosInventario = ({ setFiltros, setPage }) => {
     return (
-        <Filtros>
+        <Filtros
+            setFiltros={setFiltros}
+            setPage={setPage}
+            limpaData={(x) => {}} // funcao default para nao gerar erro de falta de data values
+        >
             <TextField
                 label="Base"
                 name="base"
@@ -13,7 +17,7 @@ const FiltrosInventario = () => {
 
             <TextField
                 label="Nome do item"
-                name="nome_item"
+                name="item"
                 InputLabelProps={{ shrink: true }}
             />
 

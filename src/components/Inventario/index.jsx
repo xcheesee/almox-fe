@@ -15,6 +15,7 @@ const Inventario = (props) => {
         carregando,
         setIdAlerta, 
         setOpenDefinir,
+        setFiltros
     } = props;
     
     return (
@@ -23,7 +24,10 @@ const Inventario = (props) => {
                 Inventário
             </Titulo>
 
-            <FiltrosInventario />
+            <FiltrosInventario
+                setFiltros={setFiltros}
+                setPage={setPage}            
+            />
 
             <TabelaInventario
                 itens={itens}

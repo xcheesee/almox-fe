@@ -10,10 +10,11 @@ const PaginaInventario = () => {
     const [carregando, setCarregando] = useState(true);
     const [openDefinir, setOpenDefinir] = useState(false);
     const [idAlerta, setIdAlerta] = useState('');
+    const [filtros, setFiltros] = useState('')
 
     useEffect(() => {
-        getTabela('inventario', page, setCarregando, setItens, setMetaItens);
-    }, [page])
+        getTabela('inventarios', page, setCarregando, setItens, setMetaItens, filtros);
+    }, [page, filtros])
 
     return (
         <>
@@ -25,6 +26,7 @@ const PaginaInventario = () => {
                 carregando={carregando}
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
+                setFiltros={setFiltros}
             />
             <DialogDefinirAlerta
                 openDefinir={openDefinir}
