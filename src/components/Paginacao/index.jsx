@@ -13,7 +13,7 @@ const Paginacao = ({ page, setPage, count }) => {
                 color="primary"
                 onChange={handleChange}
                 count={count} 
-                value={page}
+                page={page}
             />
         </Box>
     );

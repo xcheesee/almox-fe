@@ -5,8 +5,6 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
 
-//TODO: resetar estilo de Pagination quando o filtro faz update nos dados de entrada 
-
 const Filtros = (props) => {
     //O DatePicker do RSuite nao passa values para form a nao ser que seja a implementacao de form do proprio RSuite
     //https://rsuitejs.com/components/form/#code-lt-form-control-gt-code
@@ -25,10 +23,10 @@ const Filtros = (props) => {
 
     //limpaData apaga o dataRange no callback limpar
     const limpar = () => {
-        setPage(1)
-        setVisibilidade(false);
         setFiltrosAtivos(['']);
         setFiltros('')
+        setPage(1)
+        setVisibilidade(false);
         limpaData(['']);
         
     }
@@ -58,8 +56,8 @@ const Filtros = (props) => {
                 }, '')
         )
         setFiltrosAtivos(['', ...arrFiltros]);
-        setVisibilidade(false);
         setPage(1)
+        setVisibilidade(false);
     }
 
     //checa por input em branco ou nao inicializado
