@@ -57,6 +57,7 @@ const Ordem = () => {
                 id={ordemServico.id}
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
+                form="nova-ordem"
             />
         </Box>
     );

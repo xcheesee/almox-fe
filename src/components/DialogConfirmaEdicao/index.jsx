@@ -7,7 +7,7 @@ import {
     Button
 } from '@mui/material';
 
-const DialogConfirmaEdicao = ({ texto, id, openConfirmar, setOpenConfirmar }) => {
+const DialogConfirmaEdicao = ({ texto, id, openConfirmar, setOpenConfirmar, form }) => {
     return (
         <Dialog open={openConfirmar}>
             <DialogContent>
@@ -23,7 +23,7 @@ const DialogConfirmaEdicao = ({ texto, id, openConfirmar, setOpenConfirmar }) =>
                 </Button>
                 <Button
                     type="submit"
-                    form="nova-ordem"
+                    form={form}
                 >
                     Sim
                 </Button>

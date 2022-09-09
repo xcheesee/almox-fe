@@ -13,6 +13,10 @@ const EntradaMaterial = (props) => {
         page,
         setPage,
         carregando,
+        setOpenEditar,
+        setEntradaMaterial,
+        setCursor,
+        cursor,
         setFiltros
     } = props;
 
@@ -34,6 +38,10 @@ const EntradaMaterial = (props) => {
                 entradas={entradas} 
                 metaEntradas={metaEntradas} 
                 carregando={carregando}
+                setOpenEditar={setOpenEditar}
+                setEntradaMaterial={setEntradaMaterial}
+                setCursor={setCursor}
+                cursor={cursor}
             />
 
             <BotaoNovo caminho="/entrada/nova-entrada">

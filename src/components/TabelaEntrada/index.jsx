@@ -7,6 +7,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import Tabela from '../Tabela';
+import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
@@ -21,7 +22,7 @@ const cabecalhos = [
     "Ação",
 ];
 
-const TabelaEntrada = ({ entradas, carregando }) => {
+const TabelaEntrada = ({ entradas, carregando, setOpenEditar, setEntradaMaterial, setCursor, cursor }) => {
     return (
         <Tabela cabecalhos={cabecalhos} carregando={carregando}>
             {entradas.map(entrada => (
@@ -34,17 +35,20 @@ const TabelaEntrada = ({ entradas, carregando }) => {
                         <TableCell align="center">{entrada.numero_nota_fiscal || "---"}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
-                                <IconButton>
+                                <IconButton disabled={cursor === 'progress'}>
                                     <ManageSearchIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Editar" placement="top">
-                                <IconButton>
+                                <IconButton 
+                                    disabled={cursor === 'progress'}
+                                    onClick={ () => getRegistro('entrada', entrada.id, setOpenEditar, setEntradaMaterial, setCursor) }
+                                >
                                     <EditIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Listar materiais" placement="right">
-                                <IconButton>
+                                <IconButton disabled={cursor === 'progress'}>
                                     <FormatListNumberedIcon />
                                 </IconButton>
                             </Tooltip>
