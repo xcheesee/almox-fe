@@ -23,17 +23,18 @@ const Filtros = (props) => {
 
     //limpaData apaga o dataRange no callback limpar
     const limpar = () => {
+        setPage(1)
         setVisibilidade(false);
         setFiltrosAtivos(['']);
-        setFiltros([['','']])
+        setFiltros('')
         limpaData(['']);
-        setPage(1)
+        
     }
 
     const salvar = (e) => {
         e.preventDefault();
         const arrFiltros = [];
-        setPage(1)
+        
 
         const formData = new FormData(e.target);
         const [entradaDepoisDe, entradaAntesDe] = validaData(entrada)
@@ -56,6 +57,7 @@ const Filtros = (props) => {
         )
         setFiltrosAtivos(['', ...arrFiltros]);
         setVisibilidade(false);
+        setPage(1)
     }
 
     //checa por input em branco ou nao inicializado
