@@ -27,13 +27,13 @@ const FiltrosOrdem = ({setFiltros, setPage}) => {
 
             <TextField 
                 label="Nome almoxarife responsável"
-                name="nome_almoxarife"
+                name="almoxarife_nome"
                 InputLabelProps={{ shrink: true }}
             />
 
             <TextField 
                 label="E-mail almoxarife responsável"
-                name="email_almoxarife"
+                name="almoxarife_email"
                 InputLabelProps={{ shrink: true }}
             />
 
@@ -47,7 +47,7 @@ const FiltrosOrdem = ({setFiltros, setPage}) => {
 
             <CampoDataRange
                 className={'col-span-2'}
-                label={'Data serviço - faixa de pesquisa'}
+                label={'Data de serviço - faixa de pesquisa'}
                 intervalo={datas}
                 onChange={setDatas}
                 separador={' - '}
