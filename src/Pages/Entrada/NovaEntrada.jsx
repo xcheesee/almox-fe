@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { enviaNovoForm } from '../../common/utils';
 import NovaEntradaMaterial from '../../components/NovaEntradaMaterial';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
@@ -13,18 +12,6 @@ const NovaEntrada = () => {
 
     const navigate = useNavigate();
 
-    const cadastraEntrada = (e) => {
-        enviaNovoForm(
-            e,
-            'entrada', 
-            'entrada', 
-            setCarregando, 
-            setOpenConfirmar, 
-            navigate,
-            materiais,
-        );
-    }
-
     return (
         <>
             <NovaEntradaMaterial 
@@ -33,7 +20,8 @@ const NovaEntrada = () => {
                 setOpenCancelar={setOpenCancelar}
                 setOpenConfirmar={setOpenConfirmar}
                 carregando={carregando}
-                cadastraEntrada={cadastraEntrada}
+                setCarregando={setCarregando}
+                navigate={navigate}
             />
             <DialogCancelar 
                 paginaAnterior="entrada de material" 

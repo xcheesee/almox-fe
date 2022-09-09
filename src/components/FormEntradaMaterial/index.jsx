@@ -5,15 +5,34 @@ import {
 } from '@mui/material';
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
-import { enviaEdicao } from '../../common/utils';
+import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
 const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
-const FormEntradaMaterial = ({ defaultValue, setCarregando, setOpenEditar, setOpenConfirmar }) => {
+const FormEntradaMaterial = ({ defaultValue, setCarregando, setOpenEditar, setOpenConfirmar, navigate, acao, materiais }) => {
     return (
         <FormContainer
             id="nova-entrada"
-            onSubmit={(e) => enviaEdicao(e, 'entrada', defaultValue.id, setCarregando, setOpenEditar, setOpenConfirmar)}
+            onSubmit={(e) => {
+                acao === 'editar'
+                    ? enviaEdicao(
+                        e, 
+                        'entrada', 
+                        defaultValue.id, 
+                        setCarregando, 
+                        setOpenEditar, 
+                        setOpenConfirmar
+                    )
+                    : enviaNovoForm(
+                        e, 
+                        'entrada', 
+                        'entrada', 
+                        setCarregando, 
+                        setOpenConfirmar, 
+                        navigate,
+                        materiais
+                    )
+            }}
         >
             <Selecao
                 label="Departamento"

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { enviaNovoForm } from '../../common/utils';
 import NovaOrdemServico from '../../components/NovaOrdemServico';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
@@ -12,17 +11,6 @@ const NovaOrdem = () => {
     const [openConfirmar, setOpenConfirmar] = useState(false);
 
     const navigate = useNavigate();
-    
-    const cadastraOrdem = (e) => {
-        enviaNovoForm(
-            e, 
-            'ordem_servico', 
-            'ordemservico', 
-            setCarregando, 
-            setOpenConfirmar, 
-            navigate
-        );
-    }
 
     return (
         <>
@@ -32,7 +20,8 @@ const NovaOrdem = () => {
                 setOpenCancelar={setOpenCancelar}
                 setOpenConfirmar={setOpenConfirmar}
                 carregando={carregando}
-                cadastraOrdem={cadastraOrdem}
+                setCarregando={setCarregando}
+                navigate={navigate}
             />
             <DialogCancelar
                 paginaAnterior="ordem de serviço"

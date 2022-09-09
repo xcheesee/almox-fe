@@ -8,14 +8,32 @@ import {
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
 import style from './style';
-import { enviaEdicao } from '../../common/utils';
+import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
 const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
-const FormOrdemServico = ({ defaultValue, setCarregando, setOpenEditar, setOpenConfirmar }) => (
+const FormOrdemServico = ({ defaultValue, setCarregando, setOpenEditar, setOpenConfirmar, navigate, acao }) => (
     <FormContainer
         id="nova-ordem"
-        onSubmit={(e) => enviaEdicao(e, 'ordem_servico', defaultValue.id, setCarregando, setOpenEditar, setOpenConfirmar)}
+        onSubmit={(e) => {
+            acao === 'editar'
+                ? enviaEdicao(
+                    e, 
+                    'ordem_servico', 
+                    defaultValue.id, 
+                    setCarregando, 
+                    setOpenEditar, 
+                    setOpenConfirmar
+                )
+                : enviaNovoForm(
+                    e, 
+                    'ordem_servico', 
+                    'ordemservico', 
+                    setCarregando, 
+                    setOpenConfirmar, 
+                    navigate
+                )
+        }}
     >
         <Selecao
             label="Departamento"

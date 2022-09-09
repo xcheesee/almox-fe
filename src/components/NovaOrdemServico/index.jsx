@@ -16,7 +16,8 @@ const NovaOrdemServico = (props) => {
         setOpenCancelar,
         setOpenConfirmar,
         carregando,
-        cadastraOrdem
+        setCarregando,
+        navigate
     } = props;
     
     return (
@@ -25,7 +26,12 @@ const NovaOrdemServico = (props) => {
                 Nova ordem de serviço
             </Titulo>
 
-            <FormOrdemServico onSubmit={cadastraOrdem} />
+            <FormOrdemServico 
+                acao='cadastrar' 
+                navigate={navigate} 
+                setOpenConfirmar={setOpenConfirmar}
+                setCarregando={setCarregando} 
+            />
             
             <BoxMateriais 
                 label="Material utilizado"

@@ -16,7 +16,8 @@ const NovaEntradaMaterial = (props) => {
         setOpenCancelar,
         setOpenConfirmar,
         carregando,
-        cadastraEntrada
+        setCarregando,
+        navigate
     } = props;
 
     return (
@@ -26,7 +27,11 @@ const NovaEntradaMaterial = (props) => {
             </Titulo>
             
             <FormEntradaMaterial
-                onSubmit={cadastraEntrada}
+                acao='cadastrar'
+                navigate={navigate}
+                setOpenConfirmar={setOpenConfirmar}
+                setCarregando={setCarregando}
+                materiais={materiais}
             />
             
             <BoxMateriais 

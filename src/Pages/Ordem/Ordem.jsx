@@ -50,6 +50,7 @@ const Ordem = () => {
                     setCarregando={setCarregandoEdicao}
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
+                    acao="editar"
                 />
             </DialogEditar>
             <DialogConfirmaEdicao
