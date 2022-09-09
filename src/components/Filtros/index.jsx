@@ -14,25 +14,26 @@ const Filtros = (props) => {
         ordem,
         limpaData,
         setFiltros,
+        setPage,
         ...other
     } = props;
-
-    /** TODO: RESET DE PAGINA EM REDEFINICAO DE FILTROS */
 
     const [visibilidade, setVisibilidade] = useState(false);
     const [filtrosAtivos, setFiltrosAtivos] = useState(['']);
 
-    //limpaData usa o setState do filtro da pagina atual
+    //limpaData apaga o dataRange no callback limpar
     const limpar = () => {
         setVisibilidade(false);
         setFiltrosAtivos(['']);
         setFiltros([['','']])
         limpaData(['']);
+        setPage(1)
     }
 
     const salvar = (e) => {
         e.preventDefault();
         const arrFiltros = [];
+        setPage(1)
 
         const formData = new FormData(e.target);
         const [entradaDepoisDe, entradaAntesDe] = validaData(entrada)
@@ -42,16 +43,18 @@ const Filtros = (props) => {
             entrada_antes_de: entradaAntesDe,
             // data_servico: validaData(ordem)
         }
-        setFiltrosAtivos(['', ...arrFiltros]);
+        
         setFiltros(
             Object.entries(inputObject)
                 .filter((filtro) => filtro[1] !== '')
                 .reduce((acc, filtro) => {
-                    return (acc + `&filter[${filtro[0]}]=${filtro[1]}`)
+                    let currFiltro = `&filter[${filtro[0]}]=${filtro[1]}`
+                    arrFiltros.push(currFiltro)
+                    return acc + currFiltro
                     
                 }, '')
         )
-        
+        setFiltrosAtivos(['', ...arrFiltros]);
         setVisibilidade(false);
     }
 

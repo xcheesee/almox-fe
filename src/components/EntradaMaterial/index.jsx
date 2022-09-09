@@ -27,6 +27,7 @@ const EntradaMaterial = (props) => {
 
             <FiltrosEntrada
                 setFiltros={setFiltros}
+                setPage={setPage}
             />
             
             <TabelaEntrada 
@@ -39,7 +40,7 @@ const EntradaMaterial = (props) => {
                 Nova entrada
             </BotaoNovo>
 
-            <Paginacao 
+            <Paginacao
                 page={page}
                 setPage={setPage}
                 count={metaEntradas.last_page}

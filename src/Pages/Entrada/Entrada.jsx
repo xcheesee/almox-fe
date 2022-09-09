@@ -11,7 +11,6 @@ const Entrada = () => {
 
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
-        console.log(filtros, metaEntradas)
     }, [page, filtros])
 
     return (

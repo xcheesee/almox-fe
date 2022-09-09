@@ -37,7 +37,6 @@ export const headers = {
 
 export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}`
-  console.log(url)
   const options = {
       method: 'GET',
       headers: headers
@@ -51,7 +50,6 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) 
           setCarregando(false);
           setData(data.data);
           setMeta(data.meta);
-          console.log(data)
       });
 }
 

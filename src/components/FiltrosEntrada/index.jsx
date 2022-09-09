@@ -4,7 +4,7 @@ import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
 
-const FiltrosEntrada = ({setFiltros}) => {
+const FiltrosEntrada = ({setFiltros, setPage}) => {
     const [datas, setDatas] = useState([''])
     return (
         <Filtros
@@ -12,6 +12,7 @@ const FiltrosEntrada = ({setFiltros}) => {
             entrada={datas}
             limpaData={setDatas}
             setFiltros={setFiltros}
+            setPage={setPage}
         >
             <TextField 
                 label="Processo SEI"
