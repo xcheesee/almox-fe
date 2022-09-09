@@ -46,19 +46,10 @@ const Filtros = (props) => {
         setFiltros(
             Object.entries(inputObject)
                 .filter((filtro) => filtro[1] !== '')
-                .reduce((acc, filtro, index, arr) => {
-                    return (
-                        index !== arr.length - 1
-                        ? acc + `filter[${filtro[0]}]=${filtro[1]}&`
-                        : acc + `filter[${filtro[0]}]=${filtro[1]}`
-                    )
+                .reduce((acc, filtro) => {
+                    return (acc + `&filter[${filtro[0]}]=${filtro[1]}`)
                     
-                }, '&')
-        )
-        console.log(
-            Object.entries(inputObject)
-                .filter((filtro) => filtro[1] !== '')
-                .reduce((acc, filtro) => acc + `filter[${filtro[0]}]=${filtro[1]}&`, '?')
+                }, '')
         )
         
         setVisibilidade(false);
