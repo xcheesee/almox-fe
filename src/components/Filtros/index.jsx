@@ -5,6 +5,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
 
+//TODO: resetar estilo de Pagination quando o filtro faz update nos dados de entrada 
+
 const Filtros = (props) => {
     //O DatePicker do RSuite nao passa values para form a nao ser que seja a implementacao de form do proprio RSuite
     //https://rsuitejs.com/components/form/#code-lt-form-control-gt-code
