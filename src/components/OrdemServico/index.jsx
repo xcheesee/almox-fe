@@ -15,14 +15,19 @@ const OrdemServico = (props) => {
         carregando,
         setOpenEditar,
         setOrdemServico,
-        setCursor, cursor
+        setCursor,
+        cursor,
+        setFiltros
     } = props;
 
     return (
         <ContainerPrincipal carregando={carregando}>
             <Titulo carregando={carregando}>Ordem de serviço</Titulo>
 
-            <FiltrosOrdem />
+            <FiltrosOrdem
+                setFiltros={setFiltros}
+                setPage={setPage}
+            />
 
             <TabelaOrdem 
                 ordens={ordens} 

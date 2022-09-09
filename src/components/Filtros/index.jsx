@@ -38,11 +38,13 @@ const Filtros = (props) => {
 
         const formData = new FormData(e.target);
         const [entradaDepoisDe, entradaAntesDe] = validaData(entrada)
+        const [ordemDepoisDe, ordemAntesDe] = validaData(ordem)
         const inputObject = {
             ...Object.fromEntries(formData),
             entrada_depois_de: entradaDepoisDe,
             entrada_antes_de: entradaAntesDe,
-            // data_servico: validaData(ordem)
+            servico_depois_de: ordemDepoisDe,
+            servico_antes_de: ordemAntesDe
         }
         
         setFiltros(

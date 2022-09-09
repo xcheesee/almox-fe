@@ -16,10 +16,11 @@ const Ordem = () => {
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
     const [cursor, setCursor] = useState('default');
+    const [filtros, setFiltros] = useState('')
 
     useEffect(() => {
-        getTabela('ordem_servico', page, setCarregando, setOrdens, setMetaOrdens);
-    }, [page, openEditar]) // usar o openEditar para atualizar a tabela depois da edição não parece a melhor implementação -> pensar em algo melhor depois
+        getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
+    }, [page, openEditar, filtros]) // usar o openEditar para atualizar a tabela depois da edição não parece a melhor implementação -> pensar em algo melhor depois
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -33,6 +34,8 @@ const Ordem = () => {
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}
                 cursor={cursor}
+                filtros={filtros}
+                setFiltros={setFiltros}
             />
             <DialogEditar
                 titulo="Editar ordem de serviço"
