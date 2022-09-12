@@ -27,15 +27,15 @@ const Filtros = (props) => {
         setFiltros('')
         setPage(1)
         setVisibilidade(false);
-        limpaData(['']);
-        
+        //checa se filtragem possui seletor de data
+        if (typeof limpaData === 'function') {
+            limpaData([''])
+        }
     }
 
     const salvar = (e) => {
         e.preventDefault();
         const arrFiltros = [];
-        
-
         const formData = new FormData(e.target);
         const [entradaDepoisDe, entradaAntesDe] = validaData(entrada)
         const [ordemDepoisDe, ordemAntesDe] = validaData(ordem)
@@ -49,12 +49,11 @@ const Filtros = (props) => {
         
         setFiltros(
             Object.entries(inputObject)
-                .filter((filtro) => filtro[1] !== '')
+                .filter(filtro => filtro[1] !== '')
                 .reduce((acc, filtro) => {
                     let currFiltro = `&filter[${filtro[0]}]=${filtro[1]}`
                     arrFiltros.push(currFiltro)
                     return acc + currFiltro
-                    
                 }, '')
         )
         setFiltrosAtivos(['', ...arrFiltros]);

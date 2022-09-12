@@ -7,7 +7,6 @@ const FiltrosInventario = ({ setFiltros, setPage }) => {
         <Filtros
             setFiltros={setFiltros}
             setPage={setPage}
-            limpaData={(x) => {}} // funcao default para nao gerar erro de falta de data values
         >
             <TextField
                 label="Base"
