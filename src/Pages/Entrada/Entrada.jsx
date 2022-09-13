@@ -8,6 +8,7 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 
 const Entrada = () => {
     const [entradas, setEntradas] = useState([]);
+    const [materiais, setMateriais] = useState([]);
     const [metaEntradas, setMetaEntradas] = useState({});
     const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
@@ -20,6 +21,7 @@ const Entrada = () => {
 
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
+        setMateriais([]);
     }, [page, openEditar, filtros])
 
     return (
@@ -32,6 +34,7 @@ const Entrada = () => {
                 carregando={carregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
+                setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
                 filtros={filtros}
@@ -51,6 +54,8 @@ const Entrada = () => {
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
+                    materiais={materiais}
+                    setMateriais={setMateriais}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao 

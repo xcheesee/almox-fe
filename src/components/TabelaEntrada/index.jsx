@@ -22,7 +22,7 @@ const cabecalhos = [
     "Ação",
 ];
 
-const TabelaEntrada = ({ entradas, carregando, setOpenEditar, setEntradaMaterial, setCursor, cursor }) => {
+const TabelaEntrada = ({ entradas, carregando, setOpenEditar, setEntradaMaterial, setMateriais, setCursor, cursor }) => {
     return (
         <Tabela cabecalhos={cabecalhos} carregando={carregando}>
             {entradas.map(entrada => (
@@ -42,7 +42,9 @@ const TabelaEntrada = ({ entradas, carregando, setOpenEditar, setEntradaMaterial
                             <Tooltip title="Editar" placement="top">
                                 <IconButton 
                                     disabled={cursor === 'progress'}
-                                    onClick={ () => getRegistro('entrada', entrada.id, setOpenEditar, setEntradaMaterial, setCursor) }
+                                    onClick={ () => { 
+                                        getRegistro('entrada', entrada.id, setOpenEditar, setEntradaMaterial, setCursor, setMateriais);
+                                    }}
                                 >
                                     <EditIcon />
                                 </IconButton>

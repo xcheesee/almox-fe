@@ -53,7 +53,26 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) 
       });
 }
 
-export const getRegistro = (rota, id, setOpenEditar, setter, setCursor) => {
+export const getMateriais = (rota, id, setMateriais) => {
+  const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
+  const options = {
+    method: 'GET',
+    headers: headers
+  };
+
+  fetch(url, options)
+    .then(res => res.json())
+    .then(data => {
+      let arr = [];
+      let items = data.data;
+
+      items.forEach(item => arr.push({ id: item.item_id, quantidade: item.quantidade }));
+
+      setMateriais([...arr]);
+    })
+}
+
+export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMateriais) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
@@ -64,11 +83,12 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor) => {
   
   fetch(url, options)
   .then(res => res.json())
-  .then(data => {
-      setOpenEditar(true);
-      setCursor('default');
-      setter(data.data);
-    });
+  .then(data => setter(data.data))
+  .then(() => { 
+    getMateriais(rota, id, setMateriais);
+    setOpenEditar(true);
+    setCursor('auto');
+  })
 }
 
 export const enviaForm = (e, materiais) => {

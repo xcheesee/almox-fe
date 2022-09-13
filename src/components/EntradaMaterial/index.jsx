@@ -15,6 +15,7 @@ const EntradaMaterial = (props) => {
         carregando,
         setOpenEditar,
         setEntradaMaterial,
+        setMateriais,
         setCursor,
         cursor,
         setFiltros
@@ -40,6 +41,7 @@ const EntradaMaterial = (props) => {
                 carregando={carregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
+                setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
             />

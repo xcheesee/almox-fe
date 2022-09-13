@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
-import BoxMateriais from '../BoxMateriais';
 import FormEntradaMaterial from '../FormEntradaMaterial';
 
 const NovaEntradaMaterial = (props) => {
@@ -32,12 +31,7 @@ const NovaEntradaMaterial = (props) => {
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando}
                 materiais={materiais}
-            />
-            
-            <BoxMateriais 
-                label="Materiais entregues" 
-                materiais={materiais} 
-                setMateriais={setMateriais} 
+                setMateriais={setMateriais}
             />
             
             <Box className="flex justify-end gap-4">

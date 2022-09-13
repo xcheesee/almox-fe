@@ -85,6 +85,7 @@ const BoxMateriais = (props) => {
                                     label="Material"
                                     name="id"
                                     size="small"
+                                    defaultValue={material.id}
                                     onChange={(e) => handleChange(e, index)}
                                     fullWidth
                                 >
