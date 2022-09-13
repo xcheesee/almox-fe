@@ -85,7 +85,9 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
   .then(res => res.json())
   .then(data => setter(data.data))
   .then(() => { 
-    getMateriais(rota, id, setMateriais);
+    if (rota === 'entrada')
+      getMateriais(rota, id, setMateriais);
+    
     setOpenEditar(true);
     setCursor('auto');
   })
