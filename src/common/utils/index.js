@@ -160,3 +160,27 @@ export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenCon
     .then(data => console.log(data))
     .catch(err => console.log(err));
 }
+
+export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarregando) => {
+  const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
+  const options = {
+    method: 'DELETE',
+    headers: headers,
+  };
+
+  setOpenExcluir(false);
+  setCarregando(true);
+
+  fetch(urlCompleta, options)
+    .then(res => {
+      if (res.ok) {
+        setOpenEditar(false);
+        setCarregando(false);
+        return res.json()
+      } else {
+        setCarregando(false);
+      }
+    })
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+}

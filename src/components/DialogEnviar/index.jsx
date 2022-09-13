@@ -12,7 +12,7 @@ const DialogEnviar = ({ openConfirmar, setOpenConfirmar, texto, form }) => {
         <Dialog open={openConfirmar}>
             <DialogContent>
                 <DialogContentText>
-                    Deseja cadastrar a nova {`${texto}`}?
+                    Deseja cadastrar a nova {texto}?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

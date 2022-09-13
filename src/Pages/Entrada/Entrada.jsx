@@ -5,6 +5,7 @@ import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
+import DialogExcluir from '../../components/DialogExcluir';
 
 const Entrada = () => {
     const [entradas, setEntradas] = useState([]);
@@ -15,6 +16,7 @@ const Entrada = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
+    const [openExcluir, setOpenExcluir] = useState(false);
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('default');
     const [filtros, setFiltros] = useState('')
@@ -47,6 +49,7 @@ const Entrada = () => {
                 defaultValue={entradaMaterial}
                 carregando={carregandoEdicao}
                 setOpenConfirmar={setOpenConfirmar}
+                setOpenExcluir={setOpenExcluir}
             >
                 <FormEntradaMaterial 
                     defaultValue={entradaMaterial} 
@@ -64,6 +67,15 @@ const Entrada = () => {
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 form="nova-entrada"
+            />
+            <DialogExcluir 
+                rota="entrada"
+                texto="entrada de material"
+                id={entradaMaterial.id}
+                openExcluir={openExcluir}
+                setOpenExcluir={setOpenExcluir}
+                setOpenEditar={setOpenEditar}
+                setCarregando={setCarregandoEdicao}
             />
         </Box>
     );

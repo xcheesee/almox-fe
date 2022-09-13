@@ -5,30 +5,46 @@ import {
     DialogContent,
     DialogActions,
     Button,
-    CircularProgress
+    CircularProgress,
+    Box,
+    Tooltip
 } from '@mui/material';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-const DialogEditar = ({ titulo, openEditar, setOpenEditar, carregando, defaultValue, setOpenConfirmar, ...other }) => {
+const DialogEditar = ({ titulo, openEditar, setOpenEditar, carregando, defaultValue, setOpenConfirmar, setOpenExcluir, ...other }) => {
     return (
         <Dialog open={openEditar} fullWidth maxWidth="md">
             <DialogTitle>{titulo} #{defaultValue.id}</DialogTitle>
             <DialogContent>
                 {other.children}
             </DialogContent>
-            <DialogActions sx={{ margin: '0.5rem', gap: '1rem' }}>
-                <Button onClick={ () => setOpenEditar(false) }>
-                    Cancelar
-                </Button>
-                <Button 
-                    variant="contained" sx={{ gap: '0.5rem' }}
-                    onClick={() => setOpenConfirmar(true)}
-                >
-                    {carregando
-                        ? <CircularProgress color="color" size="1rem" />
-                        : ''
-                    }
-                    Editar
-                </Button>
+            <DialogActions sx={{ justifyContent: 'space-between' }}>
+                <Tooltip title={`Excluir`} placement="right">
+                    <Button 
+                        variant="contained" 
+                        color="error" 
+                        sx={{ margin: '0.5rem' }}
+                        onClick={() => setOpenExcluir(true)}
+                    >
+                        <DeleteForeverIcon />
+                    </Button>
+                </Tooltip>
+
+                <Box sx={{ display: 'flex', margin: '0.5rem', gap: '1rem' }}>
+                    <Button onClick={ () => setOpenEditar(false) }>
+                        Cancelar
+                    </Button>
+                    <Button 
+                        variant="contained" sx={{ gap: '0.5rem' }}
+                        onClick={() => setOpenConfirmar(true)}
+                    >
+                        {carregando
+                            ? <CircularProgress color="color" size="1rem" />
+                            : ''
+                        }
+                        Editar
+                    </Button>
+                </Box>
             </DialogActions>
         </Dialog>
     );

@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import { getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
+import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 
@@ -14,6 +15,7 @@ const Ordem = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
+    const [openExcluir, setOpenExcluir] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
     const [cursor, setCursor] = useState('default');
     const [filtros, setFiltros] = useState('')
@@ -44,6 +46,7 @@ const Ordem = () => {
                 defaultValue={ordemServico}
                 carregando={carregandoEdicao}
                 setOpenConfirmar={setOpenConfirmar}
+                setOpenExcluir={setOpenExcluir}
             >
                 <FormOrdemServico 
                     defaultValue={ordemServico} 
@@ -59,6 +62,15 @@ const Ordem = () => {
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 form="nova-ordem"
+            />
+            <DialogExcluir 
+                rota="ordem_servico"
+                texto="ordem de serviço"
+                id={ordemServico.id}
+                openExcluir={openExcluir}
+                setOpenExcluir={setOpenExcluir}
+                setOpenEditar={setOpenEditar}
+                setCarregando={setCarregandoEdicao}
             />
         </Box>
     );
