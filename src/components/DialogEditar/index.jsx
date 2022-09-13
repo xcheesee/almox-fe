@@ -22,11 +22,11 @@ const DialogEditar = ({ titulo, openEditar, setOpenEditar, carregando, defaultVa
                 <Tooltip title={`Excluir`} placement="right">
                     <Button 
                         variant="contained" 
-                        color="error" 
+                        color="alert" 
                         sx={{ margin: '0.5rem' }}
                         onClick={() => setOpenExcluir(true)}
                     >
-                        <DeleteForeverIcon />
+                        <DeleteForeverIcon color="color" />
                     </Button>
                 </Tooltip>
 

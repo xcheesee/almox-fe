@@ -12,6 +12,7 @@ const theme = createTheme(
     palette: {
       primary: { main: '#64748B' },
       color: { main: '#FFFFFF', bg: '#555555', bgInterno: '#F3F3FF' },
+      alert: { main: '#871818' }
     },
     typography: {
       button: {
