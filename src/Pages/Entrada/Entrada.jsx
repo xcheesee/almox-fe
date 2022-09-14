@@ -6,8 +6,9 @@ import DialogEditar from '../../components/DialogEditar';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
+import SnackbarAlert from '../../components/SnackbarAlert';
 
-const Entrada = () => {
+const Entrada = ({ snackbar, setSnackbar }) => {
     const [entradas, setEntradas] = useState([]);
     const [materiais, setMateriais] = useState([]);
     const [metaEntradas, setMetaEntradas] = useState({});
@@ -76,6 +77,11 @@ const Entrada = () => {
                 setOpenExcluir={setOpenExcluir}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
+                setSnackbar={setSnackbar}
+            />
+            <SnackbarAlert
+                snackbar={snackbar}
+                setSnackbar={setSnackbar}
             />
         </Box>
     );

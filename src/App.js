@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -15,6 +16,12 @@ import PaginaInventario from './Pages/PaginaInventario';
 import { Routes, Route } from 'react-router';
 
 function App() {
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    severity: 'success',
+    message: 'Sucesso!'
+  });
+
   return (
     <Routes>
       <Route path="/" element={
@@ -31,7 +38,10 @@ function App() {
 
       <Route path="/entrada" element={
         <Auth>
-          <Entrada />
+          <Entrada
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+          />
         </Auth>
       } />
 
@@ -43,7 +53,10 @@ function App() {
 
       <Route path="/ordemservico" element={
         <Auth>
-          <Ordem />
+          <Ordem 
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+          />
         </Auth>
       } />
 

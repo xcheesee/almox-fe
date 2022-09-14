@@ -1,3 +1,4 @@
+// formatações
 export const mascaraProcessoSei = (processoSei) => {
     if (processoSei !== null && processoSei !== "" && processoSei !== undefined)
       return processoSei.replace(/([\d]{4})([\d]{4})([\d]{7})([\d]{1})/gm, '$1.$2/$3-$4');
@@ -28,6 +29,11 @@ export const formataDateTime = (dateTime) => {
   return dataFormatada;
 }
 
+export const primeiraLetraMaiuscula = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// variáveis
 export const token = localStorage.getItem('access_token');
 
 export const headers = {
@@ -35,6 +41,51 @@ export const headers = {
   'Authorization': token
 }
 
+// Create
+export const enviaForm = (e, materiais) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  formData.append('user_id', localStorage.getItem('user_id'));
+  
+  if (materiais) {
+    materiais.forEach((material, index) => {
+      const entries = Object.entries(material);
+      entries.forEach(keyValue => {
+        formData.append(`entrada_items[${index}][${keyValue[0]}]`, keyValue[1]);
+      });
+    });
+  }
+  
+  return formData;
+}
+
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, materiais) => {
+  const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
+  const options = {
+      method: 'POST',
+      headers: headers,
+      body: enviaForm(e, materiais)
+  };
+
+  setCarregando(true);
+  setOpenConfirmar(false);
+
+  fetch(urlCompleta, options)
+      .then(res => { 
+          if (res.ok) {
+              setCarregando(false);
+              navigate(`/${paginaAnterior}`, { replace: true });
+              return res.json();
+          } else {
+              setCarregando(false);
+          }
+      })
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+}
+
+// Read
 export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}`
   const options = {
@@ -93,49 +144,7 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
   })
 }
 
-export const enviaForm = (e, materiais) => {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
-  formData.append('user_id', localStorage.getItem('user_id'));
-  
-  if (materiais) {
-    materiais.forEach((material, index) => {
-      const entries = Object.entries(material);
-      entries.forEach(keyValue => {
-        formData.append(`entrada_items[${index}][${keyValue[0]}]`, keyValue[1]);
-      });
-    });
-  }
-  
-  return formData;
-}
-
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, materiais) => {
-  const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
-  const options = {
-      method: 'POST',
-      headers: headers,
-      body: enviaForm(e, materiais)
-  };
-
-  setCarregando(true);
-  setOpenConfirmar(false);
-
-  fetch(urlCompleta, options)
-      .then(res => { 
-          if (res.ok) {
-              setCarregando(false);
-              navigate(`/${paginaAnterior}`, { replace: true });
-              return res.json();
-          } else {
-              setCarregando(false);
-          }
-      })
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
-}
-
+// Update
 export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenConfirmar, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
@@ -161,7 +170,8 @@ export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenCon
     .catch(err => console.log(err));
 }
 
-export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarregando) => {
+// Delete
+export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'DELETE',
@@ -176,9 +186,19 @@ export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarre
       if (res.ok) {
         setOpenEditar(false);
         setCarregando(false);
+        setSnackbar({
+          open: true, 
+          severity: 'success', 
+          message: `${tipoRegistro} excluída com sucesso!`
+        });
         return res.json()
       } else {
         setCarregando(false);
+        setSnackbar({
+          open: true,
+          severity: 'error',
+          message: 'Não foi possível excluir. Tente novamente mais tarde.'
+        })
       }
     })
     .then(data => console.log(data))

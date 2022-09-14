@@ -6,9 +6,9 @@ import {
     DialogActions,
     Button 
 } from '@mui/material';
-import { excluiRegistro } from '../../common/utils';
+import { excluiRegistro, primeiraLetraMaiuscula } from '../../common/utils';
 
-const DialogExcluir = ({ rota, texto, id, openExcluir, setOpenExcluir, setOpenEditar, setCarregando }) => {
+const DialogExcluir = ({ rota, texto, id, openExcluir, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar }) => {
     return (
         <Dialog open={openExcluir}>
             <DialogContent>
@@ -20,7 +20,7 @@ const DialogExcluir = ({ rota, texto, id, openExcluir, setOpenExcluir, setOpenEd
                 <Button onClick={() => setOpenExcluir(false)}>
                     Não
                 </Button>
-                <Button onClick={() => excluiRegistro(rota, id, setOpenExcluir, setOpenEditar, setCarregando)}>
+                <Button onClick={() => excluiRegistro(rota, id, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, primeiraLetraMaiuscula(texto))}>
                     Sim
                 </Button>
             </DialogActions>
