@@ -55,6 +55,7 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
+                    setSnackbar={setSnackbar}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao
@@ -63,6 +64,8 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 form="nova-ordem"
+                snackbar={snackbar}
+                setSnackbar={setSnackbar}
             />
             <DialogExcluir 
                 rota="ordem_servico"
@@ -72,8 +75,6 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                 setOpenExcluir={setOpenExcluir}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                snackbar={snackbar}
-                setSnackbar={setSnackbar}
             />
             <SnackbarAlert
                 snackbar={snackbar}

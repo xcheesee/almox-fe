@@ -145,7 +145,7 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
 }
 
 // Update
-export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenConfirmar, materiais) => {
+export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -161,9 +161,19 @@ export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenCon
       if (res.ok) {
         setOpenEditar(false);
         setCarregando(false);
+        setSnackbar({
+          open: true,
+          severity: 'success',
+          message: `${tipoRegistro} editada com sucesso!`
+        });
         return res.json();
       } else {
         setCarregando(false);
+        setSnackbar({
+          open: true,
+          severity: 'error',
+          message: `Não foi possível editar (Erro ${res.status})`
+        });
       }
     })
     .then(data => console.log(data))
@@ -197,8 +207,8 @@ export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarre
         setSnackbar({
           open: true,
           severity: 'error',
-          message: 'Não foi possível excluir. Tente novamente mais tarde.'
-        })
+          message: `Não foi possível excluir (Erro ${res.status})`
+        });
       }
     })
     .then(data => console.log(data))

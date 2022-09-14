@@ -60,6 +60,7 @@ const Entrada = ({ snackbar, setSnackbar }) => {
                     acao="editar"
                     materiais={materiais}
                     setMateriais={setMateriais}
+                    setSnackbar={setSnackbar}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao 
