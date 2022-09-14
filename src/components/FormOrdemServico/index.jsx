@@ -33,7 +33,9 @@ const FormOrdemServico = ({ defaultValue, setCarregando, setOpenEditar, setOpenC
                     'ordemservico', 
                     setCarregando, 
                     setOpenConfirmar, 
-                    navigate
+                    navigate,
+                    setSnackbar,
+                    'Ordem de serviço'
                 )
         }}
     >

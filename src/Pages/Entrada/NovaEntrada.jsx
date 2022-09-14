@@ -4,7 +4,7 @@ import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 
-const NovaEntrada = () => {
+const NovaEntrada = ({ setSnackbar }) => {
     const [materiais, setMateriais] = useState([{ id: '', quantidade: '' }]);
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
@@ -22,6 +22,7 @@ const NovaEntrada = () => {
                 carregando={carregando}
                 setCarregando={setCarregando}
                 navigate={navigate}
+                setSnackbar={setSnackbar}
             />
             <DialogCancelar 
                 paginaAnterior="entrada de material" 

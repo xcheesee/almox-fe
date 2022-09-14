@@ -60,7 +60,7 @@ export const enviaForm = (e, materiais) => {
   return formData;
 }
 
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, materiais) => {
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
@@ -76,9 +76,19 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
           if (res.ok) {
               setCarregando(false);
               navigate(`/${paginaAnterior}`, { replace: true });
+              setSnackbar({
+                open: true,
+                severity: 'success',
+                message: `${tipoRegistro} enviada com sucesso!`
+              });
               return res.json();
           } else {
               setCarregando(false);
+              setSnackbar({
+                open: true,
+                severity: 'success',
+                message: `Não foi possível enviar (Erro ${res.status})`
+              });
           }
       })
       .then(data => console.log(data))

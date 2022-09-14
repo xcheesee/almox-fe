@@ -39,6 +39,8 @@ const FormEntradaMaterial = ({ defaultValue, setCarregando, setOpenEditar, setOp
                             setCarregando, 
                             setOpenConfirmar, 
                             navigate,
+                            setSnackbar,
+                            'Entrada de material',
                             materiaisInterno
                         )
                 }}

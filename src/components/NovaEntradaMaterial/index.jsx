@@ -16,7 +16,8 @@ const NovaEntradaMaterial = (props) => {
         setOpenConfirmar,
         carregando,
         setCarregando,
-        navigate
+        navigate,
+        setSnackbar
     } = props;
 
     return (
@@ -32,6 +33,7 @@ const NovaEntradaMaterial = (props) => {
                 setCarregando={setCarregando}
                 materiais={materiais}
                 setMateriais={setMateriais}
+                setSnackbar={setSnackbar}
             />
             
             <Box className="flex justify-end gap-4">

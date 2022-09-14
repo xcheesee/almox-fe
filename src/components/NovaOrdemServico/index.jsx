@@ -17,7 +17,8 @@ const NovaOrdemServico = (props) => {
         setOpenConfirmar,
         carregando,
         setCarregando,
-        navigate
+        navigate,
+        setSnackbar
     } = props;
     
     return (
@@ -31,6 +32,7 @@ const NovaOrdemServico = (props) => {
                 navigate={navigate} 
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando} 
+                setSnackbar={setSnackbar}
             />
             
             <BoxMateriais 

@@ -47,7 +47,7 @@ function App() {
 
       <Route path="/entrada/nova-entrada" element={
         <Auth>
-          <NovaEntrada />
+          <NovaEntrada setSnackbar={setSnackbar} />
         </Auth>
       } />
 
@@ -62,7 +62,7 @@ function App() {
 
       <Route path="/ordemservico/nova-ordem" element={
         <Auth>
-          <NovaOrdem />
+          <NovaOrdem setSnackbar={setSnackbar} />
         </Auth>
       } />
 
