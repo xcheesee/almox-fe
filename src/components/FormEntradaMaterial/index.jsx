@@ -139,7 +139,6 @@ const FormEntradaMaterial = (props) => {
                     InputLabelProps={{ shrink: true }}
                     error={errors.hasOwnProperty('arquivo_nota_fiscal')}
                     helperText={errors.arquivo_nota_fiscal || ""}
-                    required
                     fullWidth
                 />
             </FormContainer>

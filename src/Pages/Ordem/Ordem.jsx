@@ -6,9 +6,8 @@ import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
-import SnackbarAlert from '../../components/SnackbarAlert';
 
-const Ordem = ({ snackbar, setSnackbar }) => {
+const Ordem = ({ setSnackbar }) => {
     const [ordens, setOrdens] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [page, setPage] = useState(1);
@@ -78,10 +77,6 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                 setOpenExcluir={setOpenExcluir}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                setSnackbar={setSnackbar}
-            />
-            <SnackbarAlert
-                snackbar={snackbar}
                 setSnackbar={setSnackbar}
             />
         </Box>

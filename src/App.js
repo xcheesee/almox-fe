@@ -41,7 +41,6 @@ function App() {
         <Route path="/entrada" element={
           <Auth>
             <Entrada
-              snackbar={snackbar}
               setSnackbar={setSnackbar}
             />
           </Auth>
@@ -56,7 +55,6 @@ function App() {
         <Route path="/ordemservico" element={
           <Auth>
             <Ordem 
-              snackbar={snackbar}
               setSnackbar={setSnackbar}
             />
           </Auth>
