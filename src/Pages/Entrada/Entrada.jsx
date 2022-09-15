@@ -26,6 +26,7 @@ const Entrada = ({ setSnackbar }) => {
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
         setMateriais([]);
+        setErrors({});
     }, [page, houveMudanca, filtros])
 
     return (

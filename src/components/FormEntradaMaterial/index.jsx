@@ -45,6 +45,7 @@ const FormEntradaMaterial = (props) => {
                             setOpenConfirmar,
                             setSnackbar,
                             'Entrada de material',
+                            setErrors,
                             materiaisInterno
                         )
                         : enviaNovoForm(

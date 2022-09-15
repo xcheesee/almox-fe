@@ -162,7 +162,7 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
 }
 
 // Update
-export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, materiais) => {
+export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -184,6 +184,13 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
           severity: 'success',
           message: `${tipoRegistro} editada com sucesso!`
         });
+      } else if (res.status === 422) {
+        setCarregando(false);
+        setSnackbar({
+            open: true,
+            severity: 'error',
+            message: `Não foi possível editar (Erro ${res.status})`
+        });
         return res.json();
       } else {
         setCarregando(false);
@@ -194,7 +201,7 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
         });
       }
     })
-    .then(data => console.log(data))
+    .then(data => setErrors(data.errors))
     .catch(err => console.log(err));
 }
 

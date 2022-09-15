@@ -24,6 +24,7 @@ const Ordem = ({ setSnackbar }) => {
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
+        setErrors({});
     }, [page, houveMudanca, filtros])
 
     return (

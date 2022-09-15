@@ -40,7 +40,8 @@ const FormOrdemServico = (props) => {
                         setOpenEditar, 
                         setOpenConfirmar,
                         setSnackbar,
-                        'Ordem de serviço'
+                        'Ordem de serviço',
+                        setErrors
                     )
                     : enviaNovoForm(
                         e, 
