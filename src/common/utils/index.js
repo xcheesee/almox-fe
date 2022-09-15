@@ -81,6 +81,7 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
                 severity: 'success',
                 message: `${tipoRegistro} enviada com sucesso!`
             });
+            return res.json();
         } else if (res.status === 422) {
             setCarregando(false);
             setSnackbar({
@@ -98,7 +99,10 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
             });
         }
       })
-      .then(data => setErrors(data.errors))
+      .then(data => {
+        if (data.errors)
+          setErrors(data.errors)
+      })
       .catch(err => console.log(err));
 }
 
@@ -184,6 +188,7 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
           severity: 'success',
           message: `${tipoRegistro} editada com sucesso!`
         });
+        return res.json();
       } else if (res.status === 422) {
         setCarregando(false);
         setSnackbar({
@@ -201,7 +206,10 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
         });
       }
     })
-    .then(data => setErrors(data.errors))
+    .then(data => {
+      if (data.errors)
+        setErrors(data.errors)
+    })
     .catch(err => console.log(err));
 }
 

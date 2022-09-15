@@ -137,6 +137,7 @@ const FormEntradaMaterial = (props) => {
                     name="arquivo_nota_fiscal"
                     label="Arquivo da nota fiscal"
                     type="file"
+                    inputProps={{ accept: "image/*, application/pdf" }}
                     InputLabelProps={{ shrink: true }}
                     error={errors.hasOwnProperty('arquivo_nota_fiscal')}
                     helperText={errors.arquivo_nota_fiscal || ""}
