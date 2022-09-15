@@ -19,7 +19,7 @@ const Entrada = ({ snackbar, setSnackbar }) => {
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [openExcluir, setOpenExcluir] = useState(false);
     const [entradaMaterial, setEntradaMaterial] = useState({});
-    const [cursor, setCursor] = useState('default');
+    const [cursor, setCursor] = useState('auto');
     const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
 

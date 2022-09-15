@@ -18,7 +18,7 @@ const Ordem = ({ snackbar, setSnackbar }) => {
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [openExcluir, setOpenExcluir] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
-    const [cursor, setCursor] = useState('default');
+    const [cursor, setCursor] = useState('auto');
     const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
 
