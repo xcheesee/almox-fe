@@ -1,11 +1,12 @@
 import React from 'react';
-import { FormControl, InputLabel, Select } from '@mui/material';
+import { FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
 
 const Selecao = (props) => {
     const {
         name,
         label,
         defaultValue,
+        helperText,
         ...other
     } = props;
 
@@ -21,6 +22,9 @@ const Selecao = (props) => {
             >
                 {other.children}
             </Select>
+            <FormHelperText>
+                {helperText}
+            </FormHelperText>
         </FormControl>
     );
 }

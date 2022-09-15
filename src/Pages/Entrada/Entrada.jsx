@@ -22,6 +22,7 @@ const Entrada = ({ snackbar, setSnackbar }) => {
     const [cursor, setCursor] = useState('auto');
     const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
@@ -63,6 +64,8 @@ const Entrada = ({ snackbar, setSnackbar }) => {
                     setMateriais={setMateriais}
                     setSnackbar={setSnackbar}
                     setHouveMudanca={setHouveMudanca}
+                    errors={errors}
+                    setErrors={setErrors}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao 

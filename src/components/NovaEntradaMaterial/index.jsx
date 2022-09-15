@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Box, 
     Button,
@@ -20,6 +20,8 @@ const NovaEntradaMaterial = (props) => {
         setSnackbar
     } = props;
 
+    const [errors, setErrors] = useState({});
+
     return (
         <ContainerPrincipal>
             <Titulo voltaPara="/entrada">
@@ -34,6 +36,8 @@ const NovaEntradaMaterial = (props) => {
                 materiais={materiais}
                 setMateriais={setMateriais}
                 setSnackbar={setSnackbar}
+                errors={errors}
+                setErrors={setErrors}
             />
             
             <Box className="flex justify-end gap-4">

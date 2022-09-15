@@ -21,6 +21,7 @@ const Ordem = ({ snackbar, setSnackbar }) => {
     const [cursor, setCursor] = useState('auto');
     const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
@@ -58,6 +59,8 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                     acao="editar"
                     setSnackbar={setSnackbar}
                     setHouveMudanca={setHouveMudanca}
+                    errors={errors}
+                    setErrors={setErrors}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao

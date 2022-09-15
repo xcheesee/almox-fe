@@ -14,6 +14,7 @@ import NovaOrdem from './Pages/Ordem/NovaOrdem';
 import Baixa from './Pages/Ordem/Baixa';
 import PaginaInventario from './Pages/PaginaInventario';
 import { Routes, Route } from 'react-router';
+import SnackbarAlert from './components/SnackbarAlert';
 
 function App() {
   const [snackbar, setSnackbar] = useState({
@@ -23,61 +24,68 @@ function App() {
   });
 
   return (
-    <Routes>
-      <Route path="/" element={
-        <Auth>
-          <Login />
-        </Auth>
-      } />
+    <>
+      <Routes>
+        <Route path="/" element={
+          <Auth>
+            <Login />
+          </Auth>
+        } />
 
-      <Route path="/principal" element={
-        <Auth>
-          <Principal />
-        </Auth>
-      } />
+        <Route path="/principal" element={
+          <Auth>
+            <Principal />
+          </Auth>
+        } />
 
-      <Route path="/entrada" element={
-        <Auth>
-          <Entrada
-            snackbar={snackbar}
-            setSnackbar={setSnackbar}
-          />
-        </Auth>
-      } />
+        <Route path="/entrada" element={
+          <Auth>
+            <Entrada
+              snackbar={snackbar}
+              setSnackbar={setSnackbar}
+            />
+          </Auth>
+        } />
 
-      <Route path="/entrada/nova-entrada" element={
-        <Auth>
-          <NovaEntrada setSnackbar={setSnackbar} />
-        </Auth>
-      } />
+        <Route path="/entrada/nova-entrada" element={
+          <Auth>
+            <NovaEntrada setSnackbar={setSnackbar} />
+          </Auth>
+        } />
 
-      <Route path="/ordemservico" element={
-        <Auth>
-          <Ordem 
-            snackbar={snackbar}
-            setSnackbar={setSnackbar}
-          />
-        </Auth>
-      } />
+        <Route path="/ordemservico" element={
+          <Auth>
+            <Ordem 
+              snackbar={snackbar}
+              setSnackbar={setSnackbar}
+            />
+          </Auth>
+        } />
 
-      <Route path="/ordemservico/nova-ordem" element={
-        <Auth>
-          <NovaOrdem setSnackbar={setSnackbar} />
-        </Auth>
-      } />
+        <Route path="/ordemservico/nova-ordem" element={
+          <Auth>
+            <NovaOrdem setSnackbar={setSnackbar} />
+          </Auth>
+        } />
 
-      <Route path="/ordemservico/baixa/:id" element={
-        <Auth>
-          <Baixa />
-        </Auth>
-      } />
+        <Route path="/ordemservico/baixa/:id" element={
+          <Auth>
+            <Baixa />
+          </Auth>
+        } />
 
-      <Route path="/inventario" element={
-        <Auth>
-          <PaginaInventario />
-        </Auth>
-      } />
-    </Routes>
+        <Route path="/inventario" element={
+          <Auth>
+            <PaginaInventario />
+          </Auth>
+        } />
+      </Routes>
+
+      <SnackbarAlert
+        snackbar={snackbar}
+        setSnackbar={setSnackbar}
+      />
+    </>
   );
 }
 

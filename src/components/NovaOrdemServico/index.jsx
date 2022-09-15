@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Box,
     Button,
@@ -20,6 +20,8 @@ const NovaOrdemServico = (props) => {
         navigate,
         setSnackbar
     } = props;
+
+    const [errors, setErrors] = useState({});
     
     return (
         <ContainerPrincipal>
@@ -33,6 +35,8 @@ const NovaOrdemServico = (props) => {
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando} 
                 setSnackbar={setSnackbar}
+                errors={errors}
+                setErrors={setErrors}
             />
             
             <BoxMateriais 
