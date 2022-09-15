@@ -155,7 +155,7 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
 }
 
 // Update
-export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, materiais) => {
+export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -169,6 +169,7 @@ export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenCon
   fetch(urlCompleta, options)
     .then(res => {
       if (res.ok) {
+        setHouveMudanca(prev => !prev);
         setOpenEditar(false);
         setCarregando(false);
         setSnackbar({

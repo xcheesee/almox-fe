@@ -19,11 +19,12 @@ const Ordem = ({ snackbar, setSnackbar }) => {
     const [openExcluir, setOpenExcluir] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
     const [cursor, setCursor] = useState('default');
-    const [filtros, setFiltros] = useState('')
+    const [filtros, setFiltros] = useState('');
+    const [houveMudanca, setHouveMudanca] = useState(false);
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
-    }, [page, openEditar, filtros]) // usar o openEditar para atualizar a tabela depois da edição não parece a melhor implementação -> pensar em algo melhor depois
+    }, [page, houveMudanca, filtros])
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -56,6 +57,7 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
                     setSnackbar={setSnackbar}
+                    setHouveMudanca={setHouveMudanca}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao

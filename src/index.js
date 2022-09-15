@@ -10,8 +10,8 @@ import { ptBR } from '@mui/material/locale';
 const theme = createTheme(
   {
     palette: {
-      primary: { main: '#64748B' },
-      color: { main: '#FFFFFF', bg: '#555555', bgInterno: '#F3F3FF' },
+      primary: { main: '#5a8391' },
+      color: { main: '#FFFFFF', bg: '#555555', bgInterno: '#F3F6FF' },
       alert: { main: '#871818' }
     },
     typography: {

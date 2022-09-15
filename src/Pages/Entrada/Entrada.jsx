@@ -20,12 +20,13 @@ const Entrada = ({ snackbar, setSnackbar }) => {
     const [openExcluir, setOpenExcluir] = useState(false);
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('default');
-    const [filtros, setFiltros] = useState('')
+    const [filtros, setFiltros] = useState('');
+    const [houveMudanca, setHouveMudanca] = useState(false);
 
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
         setMateriais([]);
-    }, [page, openEditar, filtros])
+    }, [page, houveMudanca, filtros])
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -61,6 +62,7 @@ const Entrada = ({ snackbar, setSnackbar }) => {
                     materiais={materiais}
                     setMateriais={setMateriais}
                     setSnackbar={setSnackbar}
+                    setHouveMudanca={setHouveMudanca}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao 

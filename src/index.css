@@ -8,8 +8,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  background: rgb(226,232,240);
-  background: linear-gradient(73deg, rgba(226,232,240,1) 0%, rgba(198,218,242,1) 27%, rgba(210,224,243,1) 66%, rgba(230,235,244,1) 100%); 
+  background: rgb(208,228,235);
+  background: linear-gradient(40deg, rgba(208,228,235,1) 0%, rgba(206,235,251,1) 53%, rgba(218,233,228,1) 78%, rgba(201,240,223,1) 100%); 
 }
 
 #root {
