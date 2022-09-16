@@ -10,9 +10,6 @@ import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
 const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
-<<<<<<< HEAD
-const FormEntradaMaterial = ({ defaultValue, setCarregando, setOpenEditar, setOpenConfirmar, navigate, acao, materiais, setSnackbar,}) => {
-=======
 const FormEntradaMaterial = (props) => {
     const { 
         defaultValue, 
@@ -28,7 +25,6 @@ const FormEntradaMaterial = (props) => {
         setErrors,
     } = props;
 
->>>>>>> c2e7de5993a7d62151dd0258ef6de18aa056859e
     const [materiaisInterno, setMateriaisInterno] = useState(materiais); // evita renderizações desnecessárias
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
