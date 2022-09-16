@@ -60,7 +60,7 @@ export const enviaForm = (e, materiais) => {
   return formData;
 }
 
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, materiais) => {
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
@@ -73,25 +73,36 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
 
   fetch(urlCompleta, options)
       .then(res => { 
-          if (res.ok) {
-              setCarregando(false);
-              navigate(`/${paginaAnterior}`, { replace: true });
-              setSnackbar({
+        if (res.ok) {
+            setCarregando(false);
+            navigate(`/${paginaAnterior}`, { replace: true });
+            setSnackbar({
                 open: true,
                 severity: 'success',
                 message: `${tipoRegistro} enviada com sucesso!`
-              });
-              return res.json();
-          } else {
-              setCarregando(false);
-              setSnackbar({
+            });
+            return res.json();
+        } else if (res.status === 422) {
+            setCarregando(false);
+            setSnackbar({
                 open: true,
-                severity: 'success',
+                severity: 'error',
                 message: `Não foi possível enviar (Erro ${res.status})`
-              });
-          }
+            });
+            return res.json();
+        } else {
+            setCarregando(false);
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `Não foi possível enviar (Erro ${res.status})`
+            });
+        }
       })
-      .then(data => console.log(data))
+      .then(data => {
+        if (data.errors)
+          setErrors(data.errors)
+      })
       .catch(err => console.log(err));
 }
 
@@ -155,7 +166,7 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
 }
 
 // Update
-export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, materiais) => {
+export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -169,12 +180,21 @@ export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenCon
   fetch(urlCompleta, options)
     .then(res => {
       if (res.ok) {
+        setHouveMudanca(prev => !prev);
         setOpenEditar(false);
         setCarregando(false);
         setSnackbar({
           open: true,
           severity: 'success',
           message: `${tipoRegistro} editada com sucesso!`
+        });
+        return res.json();
+      } else if (res.status === 422) {
+        setCarregando(false);
+        setSnackbar({
+            open: true,
+            severity: 'error',
+            message: `Não foi possível editar (Erro ${res.status})`
         });
         return res.json();
       } else {
@@ -186,7 +206,10 @@ export const enviaEdicao = (e, url, id, setCarregando, setOpenEditar, setOpenCon
         });
       }
     })
-    .then(data => console.log(data))
+    .then(data => {
+      if (data.errors)
+        setErrors(data.errors)
+    })
     .catch(err => console.log(err));
 }
 

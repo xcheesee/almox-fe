@@ -2,7 +2,8 @@ import React from 'react';
 import { 
     Box,
     Typography,
-    IconButton
+    IconButton,
+    Tooltip
 } from '@mui/material';
 import style from './style';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -42,9 +43,11 @@ const Header = () => {
                                 <Typography>Olá, {username}</Typography>
                             </Box>
 
-                            <IconButton onClick={logout}>
-                                <LogoutIcon fontSize="small" />
-                            </IconButton>
+                            <Tooltip title="Sair">
+                                <IconButton onClick={logout}>
+                                    <LogoutIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                 }
             </Box>

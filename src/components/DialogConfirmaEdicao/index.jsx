@@ -24,6 +24,7 @@ const DialogConfirmaEdicao = ({ texto, id, openConfirmar, setOpenConfirmar, form
                 <Button
                     type="submit"
                     form={form}
+                    onClick={() => setOpenConfirmar(false)}
                 >
                     Sim
                 </Button>

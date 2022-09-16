@@ -6,9 +6,8 @@ import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
-import SnackbarAlert from '../../components/SnackbarAlert';
 
-const Ordem = ({ snackbar, setSnackbar }) => {
+const Ordem = ({ setSnackbar }) => {
     const [ordens, setOrdens] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [page, setPage] = useState(1);
@@ -18,12 +17,15 @@ const Ordem = ({ snackbar, setSnackbar }) => {
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [openExcluir, setOpenExcluir] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
-    const [cursor, setCursor] = useState('default');
-    const [filtros, setFiltros] = useState('')
+    const [cursor, setCursor] = useState('auto');
+    const [filtros, setFiltros] = useState('');
+    const [houveMudanca, setHouveMudanca] = useState(false);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
-    }, [page, openEditar, filtros]) // usar o openEditar para atualizar a tabela depois da edição não parece a melhor implementação -> pensar em algo melhor depois
+        setErrors({});
+    }, [page, houveMudanca, filtros])
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -56,6 +58,9 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
                     setSnackbar={setSnackbar}
+                    setHouveMudanca={setHouveMudanca}
+                    errors={errors}
+                    setErrors={setErrors}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao
@@ -73,10 +78,6 @@ const Ordem = ({ snackbar, setSnackbar }) => {
                 setOpenExcluir={setOpenExcluir}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                setSnackbar={setSnackbar}
-            />
-            <SnackbarAlert
-                snackbar={snackbar}
                 setSnackbar={setSnackbar}
             />
         </Box>

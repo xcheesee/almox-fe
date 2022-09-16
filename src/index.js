@@ -10,9 +10,9 @@ import { ptBR } from '@mui/material/locale';
 const theme = createTheme(
   {
     palette: {
-      primary: { main: '#64748B' },
-      color: { main: '#FFFFFF', bg: '#555555', bgInterno: '#F3F3FF' },
-      alert: { main: '#871818' }
+      primary: { main: '#5a8391' },
+      color: { main: '#FFFFFF', bg: '#555555', bgInterno: '#F3F6FF' },
+      alert: { main: '#912c2c' }
     },
     typography: {
       button: {
@@ -21,6 +21,18 @@ const theme = createTheme(
       },
       allVariants: {
         color: '#555555'
+      }
+    },
+    components: {
+      MuiAlert: {
+        styleOverrides: {
+          filledSuccess: {
+            backgroundColor: '#2c9153'
+          },
+          filleddError: {
+            backgroundColor: '#912c2c'
+          }
+        }
       }
     }
   },

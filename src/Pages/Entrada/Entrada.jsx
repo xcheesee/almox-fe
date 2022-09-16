@@ -6,9 +6,8 @@ import DialogEditar from '../../components/DialogEditar';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
-import SnackbarAlert from '../../components/SnackbarAlert';
 
-const Entrada = ({ snackbar, setSnackbar }) => {
+const Entrada = ({ setSnackbar }) => {
     const [entradas, setEntradas] = useState([]);
     const [materiais, setMateriais] = useState([]);
     const [metaEntradas, setMetaEntradas] = useState({});
@@ -19,13 +18,16 @@ const Entrada = ({ snackbar, setSnackbar }) => {
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [openExcluir, setOpenExcluir] = useState(false);
     const [entradaMaterial, setEntradaMaterial] = useState({});
-    const [cursor, setCursor] = useState('default');
-    const [filtros, setFiltros] = useState('')
+    const [cursor, setCursor] = useState('auto');
+    const [filtros, setFiltros] = useState('');
+    const [houveMudanca, setHouveMudanca] = useState(false);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
         setMateriais([]);
-    }, [page, openEditar, filtros])
+        setErrors({});
+    }, [page, houveMudanca, filtros])
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -61,6 +63,9 @@ const Entrada = ({ snackbar, setSnackbar }) => {
                     materiais={materiais}
                     setMateriais={setMateriais}
                     setSnackbar={setSnackbar}
+                    setHouveMudanca={setHouveMudanca}
+                    errors={errors}
+                    setErrors={setErrors}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao 
@@ -78,10 +83,6 @@ const Entrada = ({ snackbar, setSnackbar }) => {
                 setOpenExcluir={setOpenExcluir}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                setSnackbar={setSnackbar}
-            />
-            <SnackbarAlert
-                snackbar={snackbar}
                 setSnackbar={setSnackbar}
             />
         </Box>
