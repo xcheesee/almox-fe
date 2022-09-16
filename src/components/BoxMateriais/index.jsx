@@ -24,11 +24,9 @@ const BoxMateriais = (props) => {
         materiais,
         setMateriais,
     } = props;
-    const [test, setTest] = useState({})
+    const [tiposMats, setTiposMats] = useState({})
 
     const getMateriaisFromTipos = (e, c) => {
-        console.log(e)
-        console.log(c.props.className)
         let mats = [...materiais]
         let mat = {
             ...materiais[c.props.className],
@@ -54,7 +52,6 @@ const BoxMateriais = (props) => {
             qtdDesabilitado: false,
         }
         mats[c.props.matindex] = mat
-        console.log(c)
         setMateriais(mats)
     }
     const removeMaterial = (index) => {
@@ -98,7 +95,7 @@ const BoxMateriais = (props) => {
         const getData = async () => {
             const res = await fetch(url, options)
             const data = await res.json()
-            return setTest(data)
+            return setTiposMats(data)
         }
         getData()
         
@@ -126,7 +123,7 @@ const BoxMateriais = (props) => {
                                     className={`${index}`}
                                     fullWidth
                                 >
-                                    {test.data
+                                    {tiposMats.data
                                         ?.map(val => <MenuItem value={val.id} className={`${index}`}/*  //indice do componente no state materiais */ >{val.nome}</MenuItem>)} {/* adicionar key ao map */}
                                 </Selecao>
 
