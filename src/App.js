@@ -13,6 +13,7 @@ import Ordem from './Pages/Ordem/Ordem';
 import NovaOrdem from './Pages/Ordem/NovaOrdem';
 import Baixa from './Pages/Ordem/Baixa';
 import PaginaInventario from './Pages/PaginaInventario';
+import Pagina404 from './Pages/Pagina404';
 import { Routes, Route } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
 
@@ -75,6 +76,12 @@ function App() {
         <Route path="/inventario" element={
           <Auth>
             <PaginaInventario />
+          </Auth>
+        } />
+
+        <Route path="*" element={
+          <Auth>
+            <Pagina404 />
           </Auth>
         } />
       </Routes>
