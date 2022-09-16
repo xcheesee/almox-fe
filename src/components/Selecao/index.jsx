@@ -7,6 +7,7 @@ const Selecao = (props) => {
         label,
         defaultValue,
         helperText,
+        carregando,
         ...other
     } = props;
 

@@ -6,6 +6,7 @@ import {
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
 import BoxMateriais from '../BoxMateriais';
+import CampoLocais from '../CampoLocais';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
 const departamentos = JSON.parse(localStorage.getItem('departamentos'));
@@ -88,20 +89,14 @@ const FormEntradaMaterial = (props) => {
                     fullWidth
                 />
 
-                <Selecao 
-                    label="Local de destino dos materiais" 
+                <CampoLocais 
                     name="local_id"
+                    label="Local de destino dos materiais"
                     defaultValue={defaultValue?.local_id}
                     error={errors.hasOwnProperty('local_id')}
                     helperText={errors.local_id || ""}
                     required
-                >
-                    <MenuItem value={1}>Teste 1</MenuItem>
-                    <MenuItem value={2}>Teste 2</MenuItem>
-                    <MenuItem value={3}>Teste 3</MenuItem>
-                    <MenuItem value={4}>Teste 4</MenuItem>
-                    <MenuItem value={5}>Teste 5</MenuItem>
-                </Selecao>
+                />
 
                 <TextField 
                     defaultValue={defaultValue?.processo_sei}
@@ -144,12 +139,17 @@ const FormEntradaMaterial = (props) => {
                     fullWidth
                 />
             </FormContainer>
-
-            <BoxMateriais 
-                label="Materiais entregues"
-                materiais={materiaisInterno}
-                setMateriais={setMateriaisInterno}
-            />
+            
+            {acao === 'editar'
+            ?
+                ""
+            :
+                <BoxMateriais 
+                    label="Materiais entregues"
+                    materiais={materiaisInterno}
+                    setMateriais={setMateriaisInterno}
+                />
+            }
         </>
     );
 }

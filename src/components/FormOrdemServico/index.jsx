@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
+import CampoLocais from '../CampoLocais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
@@ -93,36 +94,24 @@ const FormOrdemServico = (props) => {
                 helperText={errors.data_fim_servico || ""}
                 fullWidth
             />
-        
-            <Selecao
+
+            <CampoLocais
                 label="Base de origem dos materiais"
                 name="origem_id"
                 defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors.origem_id || ""}
                 required
-            >
-                <MenuItem value={1}>Teste 1</MenuItem>
-                <MenuItem value={2}>Teste 2</MenuItem>
-                <MenuItem value={3}>Teste 3</MenuItem>
-                <MenuItem value={4}>Teste 4</MenuItem>
-                <MenuItem value={5}>Teste 5</MenuItem>
-            </Selecao>
-        
-            <Selecao
+            />
+
+            <CampoLocais 
                 label="Local de serviço"
                 name="local_servico_id"
                 defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
                 required
-            >
-                <MenuItem value={1}>Teste 1</MenuItem>
-                <MenuItem value={2}>Teste 2</MenuItem>
-                <MenuItem value={3}>Teste 3</MenuItem>
-                <MenuItem value={4}>Teste 4</MenuItem>
-                <MenuItem value={5}>Teste 5</MenuItem>
-            </Selecao>
+            />
         
             <TextField 
                 defaultValue={defaultValue?.especificacao}

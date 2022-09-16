@@ -107,6 +107,24 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
 }
 
 // Read
+export const getLocais = (setCarregando, setLocais) => {
+  const url = `${process.env.REACT_APP_API_URL}/locais`;
+  const options = {
+      method: 'GET',
+      headers: headers
+  };
+
+  setCarregando(true);
+
+  fetch(url, options)
+      .then(res => {
+          setCarregando(false);
+          return res.json()
+      })
+      .then(data => setLocais([...data.data]))
+      .catch(err => console.log(err));
+}
+
 export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}`
   const options = {
@@ -162,7 +180,7 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
     
     setOpenEditar(true);
     setCursor('auto');
-  })
+  });
 }
 
 // Update
