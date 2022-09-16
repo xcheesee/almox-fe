@@ -27,13 +27,30 @@ const BoxMateriais = (props) => {
     const [tiposMats, setTiposMats] = useState({})
 
     const getMateriaisFromTipos = (e, c) => {
-        let mats = [...materiais]
-        let mat = {
-            ...materiais[c.props.className],
-            matDesabilitado: false,
-        }
-        mats[c.props.className] = mat
-        setMateriais(mats)
+        const url = `${process.env.REACT_APP_API_URL}/items/tipo/${c.props.value}`
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        };
+            
+        fetch(url, options)
+            .then(res => res.json())
+            .then(res => {
+                let mats = [...materiais]
+                let mat = {
+                    ...materiais[c.props.matindex],
+                     mats: res.data,
+                    matDesabilitado: false
+                }
+                mats[c.props.matindex] = mat
+                console.log(mats)
+                setMateriais(mats)
+                })
+        
     }
     const adicionaMaterial = () => {
         setMateriais(prev => [...prev, { 
@@ -41,19 +58,23 @@ const BoxMateriais = (props) => {
             mats: [],
             quantidade: '',
             matDesabilitado: true,
-            qtdDesabilitado: false,//true apos aa implementacao da api
+            qtdDesabilitado: true,//true apos aa implementacao da api
             
         }]);
     }
     const modMaterial = (e, c) => {
+
         let mats = [...materiais]
         let mat = {
             ...materiais[c.props.matindex],
             qtdDesabilitado: false,
         }
+        
+
+        
         console.log(c)
         mats[c.props.matindex] = mat
-        handleChange(e, c.props.value)
+        // handleChange(e, c.props.value)
         setMateriais(mats)
     }
     const removeMaterial = (index) => {
@@ -75,7 +96,7 @@ const BoxMateriais = (props) => {
     const handleChange = (e, i) => {
         const novoState = materiais.map((material, index) => {
             if (index === i)
-                return { ...material, [e.target.name]: e.target.value }
+                return { ...material, [e.target.name]: e.target.value, qtdDesabilitado: false}
 
             return material;
         });
@@ -97,11 +118,15 @@ const BoxMateriais = (props) => {
         const getData = async () => {
             const res = await fetch(url, options)
             const data = await res.json()
+            console.log(data)
             return setTiposMats(data)
         }
         getData()
         
     }, [])
+    useEffect(() => {
+
+    }, [materiais])
     useEffect(() => { }, [materiais.length])
 
     
@@ -126,7 +151,7 @@ const BoxMateriais = (props) => {
                                     fullWidth
                                 >
                                     {tiposMats.data
-                                        ?.map(val => <MenuItem value={val.id} className={`${index}`}/*  //indice do componente no state materiais */ >{val.nome}</MenuItem>)} {/* adicionar key ao map */}
+                                        ?.map(val => <MenuItem value={val.id} matindex={`${index}`}/*  //indice do componente no state materiais */ >{val.nome}</MenuItem>)} {/* adicionar key ao map */}
                                 </Selecao>
 
                                 <Selecao
@@ -140,11 +165,11 @@ const BoxMateriais = (props) => {
                                     className={`${index}`}//indice do componente no state materiais
                                     fullWidth
                                 >
-                                    <MenuItem value={1} matindex={`${index}`}>Teste 1</MenuItem> {/* map com iterator sendo o valor selecionado no campo anterior */}
-                                    <MenuItem value={2} matindex={`${index}`}>Teste 2</MenuItem>
-                                    <MenuItem value={3} matindex={`${index}`}>Teste 3</MenuItem>
-                                    <MenuItem value={4} matindex={`${index}`}>Teste 4</MenuItem>
-                                    <MenuItem value={5} matindex={`${index}`}>Teste 5</MenuItem>
+                                    {material.mats
+                                        ?.map(val => {
+                                            console.log(val)
+                                            return <MenuItem value={val.medida_id} matindex={`${index}`}>{val.nome}</MenuItem>
+                                        })}{/* map com iterator sendo o valor selecionado no campo anterior */}
                                 </Selecao>
 
                                 <TextField
