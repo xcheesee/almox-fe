@@ -41,7 +41,7 @@ const BoxMateriais = (props) => {
             mats: [],
             quantidade: '',
             matDesabilitado: true,
-            qtdDesabilitado: true,
+            qtdDesabilitado: false,//true apos aa implementacao da api
             
         }]);
     }
@@ -51,7 +51,9 @@ const BoxMateriais = (props) => {
             ...materiais[c.props.matindex],
             qtdDesabilitado: false,
         }
+        console.log(c)
         mats[c.props.matindex] = mat
+        handleChange(e, c.props.value)
         setMateriais(mats)
     }
     const removeMaterial = (index) => {
@@ -134,7 +136,7 @@ const BoxMateriais = (props) => {
                                     size="small"
                                     disabled={material.matDesabilitado}
                                     defaultValue={material.id}
-                                    onChange={modMaterial}
+                                    onChange={(e) => handleChange(e, index)}
                                     className={`${index}`}//indice do componente no state materiais
                                     fullWidth
                                 >

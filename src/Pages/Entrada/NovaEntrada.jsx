@@ -17,7 +17,7 @@ const NovaEntrada = ({ setSnackbar }) => {
         mats:[], 
         quantidade: '',
         matDesabilitado: true,
-        qtdDesabilitado: true,
+        qtdDesabilitado: false,//definir true apos aa implementacao da api
     }]);
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
