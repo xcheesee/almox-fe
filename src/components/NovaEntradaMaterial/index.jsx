@@ -17,7 +17,7 @@ const NovaEntradaMaterial = (props) => {
         carregando,
         setCarregando,
         navigate,
-        setSnackbar
+        setSnackbar,
     } = props;
 
     return (
