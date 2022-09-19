@@ -28,15 +28,9 @@ const BoxMateriais = (props) => {
     const [tipoDesabilitado, setTipoDesabilitado] = useState(true)
 
     const getMateriaisFromTipos = (e, c) => {
-        // let mats = [...materiais]
-        // let mat = {
-        //     ...materiais[c.props.matindex],
-        //     matDesabilitado: true,
-        // }
-        // mats[c.props.matindex] = mat;
         setMateriais(modMaterial(c.props.matindex, {matDesabilitado: true}));
 
-        const url = `${process.env.REACT_APP_API_URL}/items/tipo/${c.props.value}`
+        const url = `${process.env.REACT_APP_API_URL}/items/tipo/${c.props.value}`;
         const options = {
             method: 'GET',
             headers: {
@@ -45,25 +39,18 @@ const BoxMateriais = (props) => {
                 'Authorization': `Bearer ${token}`
             },
         };
-            
-        fetch(url, options)
-            .then(res => res.json())
-            .then(res => {
-                const mod = {
-                    mats: res.data,
-                    matDesabilitado: false,
-                }
-                // let mats = [...materiais]
-                // let mat = {
-                //     ...materiais[c.props.matindex],
-                //     mats: res.data,
-                //     matDesabilitado: false
-                // }
-                // mats[c.props.matindex] = mat
-                setMateriais(modMaterial(c.props.matindex, mod))
-                })
-        
+
+        (async () => {
+            const res = await fetch(url, options)
+            const data = await res.json()
+            const mod = {
+                mats: data.data,
+                matDesabilitado: false
+            }
+            return setMateriais(modMaterial(c.props.matindex, mod))
+        })();
     }
+
     const adicionaMaterial = () => {
         setMateriais(prev => [...prev, { 
             id: '',
@@ -74,6 +61,7 @@ const BoxMateriais = (props) => {
             medida: '',
         }]);
     }
+
     const modMaterial = (matindex, values) => {
 
         let mats = [...materiais]
@@ -84,6 +72,7 @@ const BoxMateriais = (props) => {
         mats[matindex] = mat;
         return mats
     }
+
     const removeMaterial = (index) => {
         let tempArr = materiais;
         tempArr.splice(index, 1);
@@ -103,10 +92,12 @@ const BoxMateriais = (props) => {
     //         default: return ""
     //     }
     // }
-    const handleChange = (e, i) => {
+
+    const handleChange = (e, c) => {
+        console.log(e, c)
         const mod = {
             qtdDesabilitado: false,
-            medida: materiais[i.props.matindex]['mats'][i.props.mat]['medida'],
+            medida: materiais[c.props.matindex]['mats'][c.props.mat]['medida'],
         }
         // const novoState = materiais.map((material, index) => {
         //     if (index === i) 
@@ -114,14 +105,7 @@ const BoxMateriais = (props) => {
 
         //     return material;
         // });
-        // let mats = [...materiais]
-        // let mat = {
-        //     ...materiais[i.props.matindex],
-        //     qtdDesabilitado: false,
-        //     medida: materiais[i.props.matindex]['mats'][i.props.mat]['medida']
-        // }
-        // mats[i.props.matindex] = mat;
-        setMateriais(modMaterial(i.props.matindex, mod));
+        return setMateriais(modMaterial(c.props.matindex, mod));
     }
     
 
@@ -135,22 +119,14 @@ const BoxMateriais = (props) => {
                 'Authorization': `Bearer ${token}`
             },
         };
-        
-        const getData = async () => {
+        (async () => {
             const res = await fetch(url, options)
             const data = await res.json()
             setTipoDesabilitado(false)
             return setTiposMats(data)
-        }
-        getData()
-        
+        })();
     }, [])
-    // useEffect(() => {
-
-    // }, [materiais])
     // useEffect(() => { }, [materiais.length])
-
-    
 
     return (
         <Box className="mx-8 mb-12">
@@ -161,7 +137,7 @@ const BoxMateriais = (props) => {
             <Paper sx={style.container} >
                 {materiais.map((material, index) => {
                     return (
-                        <Fade in={true} key={index}>
+                        <Fade in={true} key={index} >
                             <Paper className="p-4 mb-4 flex gap-4">
                                 <Selecao
                                     label="Tipo de material"
@@ -169,11 +145,16 @@ const BoxMateriais = (props) => {
                                     size="small"
                                     onChange={getMateriaisFromTipos}
                                     disabled={tipoDesabilitado}
-                                    // className={`${index}`}
+                                    defaultValue={null}
                                     fullWidth
                                 >
-                                    {tiposMats.data
-                                        ?.map(val => <MenuItem value={val.id} matindex={`${index}`}/*  //indice do componente no state materiais */ >{val.nome}</MenuItem>)} {/* adicionar key ao map */}
+                                    {
+                                        tiposMats.data
+                                            ?.map((val, i) => 
+                                                <MenuItem value={val.id} matindex={`${index}`} key={i} >
+                                                    {val.nome}
+                                                </MenuItem>)
+                                    }
                                 </Selecao>
 
                                 <Selecao
@@ -182,12 +163,18 @@ const BoxMateriais = (props) => {
                                     name="id"
                                     size="small"
                                     disabled={material.matDesabilitado}
-                                    // defaultValue={material.id}
-                                    onChange={handleChange}
-                                    // className={`${index}`}//indice do componente no state materiais
+                                    defaultValue={material.id}
+                                    onChange={(e, c) => handleChange(e, c)}
                                     fullWidth
                                 >
-                                    {material.mats?.map((val, matLoc) => <MenuItem value={val.medida_id} matindex={`${index}`} mat={`${matLoc}`}>{val.nome}</MenuItem>) || null}
+                                    {
+                                    material.mats
+                                        ?.map((val, matLoc) => 
+                                            <MenuItem value={matLoc} matindex={index} mat={matLoc} key={matLoc}>
+                                                {val.nome}
+                                            </MenuItem>
+                                            ) || null
+                                    }
                                 </Selecao>
 
                                 <TextField
