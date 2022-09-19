@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import { getTabela } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
+import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
@@ -22,12 +23,13 @@ const Entrada = ({ setSnackbar }) => {
     const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
+    const [openDetalhes, setOpenDetalhes] = useState(false);
 
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
         setMateriais([]);
         setErrors({});
-    }, [page, houveMudanca, filtros])
+    }, [page, houveMudanca, filtros]);
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -44,6 +46,7 @@ const Entrada = ({ setSnackbar }) => {
                 cursor={cursor}
                 filtros={filtros}
                 setFiltros={setFiltros}
+                setOpenDetalhes={setOpenDetalhes}
             />
             <DialogEditar
                 titulo="Editar entrada de material"
@@ -84,6 +87,12 @@ const Entrada = ({ setSnackbar }) => {
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 setSnackbar={setSnackbar}
+            />
+            <DialogDetalhesEntrada 
+                openDetalhes={openDetalhes} 
+                setOpenDetalhes={setOpenDetalhes}
+                entrada={entradaMaterial}
+                materiais={materiais}
             />
         </Box>
     );
