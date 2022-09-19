@@ -9,44 +9,20 @@ import { token } from '../../common/utils';
 
 
 const NovaEntrada = ({ setSnackbar }) => {
-
-
     //propriedades criadas para armazenar dados e comportamentos de cada select individual
     const [materiais, setMateriais] = useState([{ 
         id: '', 
         mats:[], 
         quantidade: '',
         matDesabilitado: true,
-        qtdDesabilitado: true,//definir true apos aa implementacao da api
+        qtdDesabilitado: true,
+        medida: '',
     }]);
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    // const [tipos, setTipos] = useState({})
 
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     const url = `${process.env.REACT_APP_API_URL}/tipo_items`
-    //     const options = {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Authorization': `Bearer ${token}`
-    //         },
-    //     };
-        
-    //     const getData = async () => {
-    //         const res = await fetch(url, options)
-    //         const data = await res.json()
-    //         setTipos(data)
-    //         return
-    //     }
-    //     getData()
-        
-    // }, [])
-
 
     return (
         <>
