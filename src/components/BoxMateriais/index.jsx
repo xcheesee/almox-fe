@@ -24,8 +24,8 @@ const BoxMateriais = (props) => {
         materiais,
         setMateriais,
     } = props;
-    const [tiposMats, setTiposMats] = useState({})
-    const [tipoDesabilitado, setTipoDesabilitado] = useState(true)
+    const [tiposMats, setTiposMats] = useState({});
+    const [tipoDesabilitado, setTipoDesabilitado] = useState(true);
 
     const getMateriaisFromTipos = (e, c) => {
         setMateriais(modMaterial(c.props.matindex, {matDesabilitado: true}));
@@ -36,20 +36,20 @@ const BoxMateriais = (props) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
             },
         };
 
         (async () => {
-            const res = await fetch(url, options)
-            const data = await res.json()
+            const res = await fetch(url, options);
+            const data = await res.json();
             const mod = {
                 mats: data.data,
                 matDesabilitado: false
-            }
+            };
             return setMateriais(modMaterial(c.props.matindex, mod))
         })();
-    }
+    };
 
     const adicionaMaterial = () => {
         setMateriais(prev => [...prev, { 
@@ -60,24 +60,25 @@ const BoxMateriais = (props) => {
             qtdDesabilitado: true,
             medida: '',
         }]);
-    }
+    };
 
     const modMaterial = (matindex, values) => {
 
-        let mats = [...materiais]
+        let mats = [...materiais];
         let mat = {
             ...materiais[matindex],
             ...values
-        }
+        };
         mats[matindex] = mat;
         return mats
-    }
+    };
 
     const removeMaterial = (index) => {
         let tempArr = materiais;
         tempArr.splice(index, 1);
         setMateriais([...tempArr]);
-    }
+    };
+
     // const setUnidadeMedida = (material) => {
     //     /* chamar api no set de dados */
     //     // console.log(materiais[material], material)
@@ -94,35 +95,34 @@ const BoxMateriais = (props) => {
     // }
 
     const handleChange = (e, c) => {
-        console.log(e, c)
         const mod = {
             qtdDesabilitado: false,
             medida: materiais[c.props.matindex]['mats'][c.props.mat]['medida'],
-        }
+        };
         // const novoState = materiais.map((material, index) => {
         //     if (index === i) 
         //         return { ...material, [e.target.name]: e.target.value, qtdDesabilitado: false, medida: materiais[i.props.matindex]['mats'][i.props.mat]['medida']}
 
         //     return material;
         // });
-        return setMateriais(modMaterial(c.props.matindex, mod));
-    }
+        return setMateriais(modMaterial(c.props.matindex, mod))
+    };
     
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_API_URL}/tipo_items`
+        const url = `${process.env.REACT_APP_API_URL}/tipo_items`;
         const options = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
             },
         };
         (async () => {
-            const res = await fetch(url, options)
-            const data = await res.json()
-            setTipoDesabilitado(false)
+            const res = await fetch(url, options);
+            const data = await res.json();
+            setTipoDesabilitado(false);
             return setTiposMats(data)
         })();
     }, [])
@@ -145,7 +145,6 @@ const BoxMateriais = (props) => {
                                     size="small"
                                     onChange={getMateriaisFromTipos}
                                     disabled={tipoDesabilitado}
-                                    defaultValue={null}
                                     fullWidth
                                 >
                                     {
