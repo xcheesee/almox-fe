@@ -17,7 +17,8 @@ const OrdemServico = (props) => {
         setOrdemServico,
         setCursor,
         cursor,
-        setFiltros
+        setFiltros,
+        setOpenDetalhes
     } = props;
 
     return (
@@ -36,6 +37,7 @@ const OrdemServico = (props) => {
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}
                 cursor={cursor}
+                setOpenDetalhes={setOpenDetalhes}
             />
 
             <BotaoNovo caminho="/ordemservico/nova-ordem">

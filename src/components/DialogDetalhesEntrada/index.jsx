@@ -78,7 +78,7 @@ const DialogDetalhesEntrada = ({ openDetalhes, setOpenDetalhes, entrada, materia
 
                 </Box>
 
-                {materiais.length > 0
+                {materiais && materiais.length > 0
                     ?
                         <>
                             <Typography sx={{

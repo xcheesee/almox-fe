@@ -6,6 +6,7 @@ import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
+import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 
 const Ordem = ({ setSnackbar }) => {
     const [ordens, setOrdens] = useState([]);
@@ -21,6 +22,7 @@ const Ordem = ({ setSnackbar }) => {
     const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
+    const [openDetalhes, setOpenDetalhes] = useState(false);
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
@@ -41,6 +43,7 @@ const Ordem = ({ setSnackbar }) => {
                 cursor={cursor}
                 filtros={filtros}
                 setFiltros={setFiltros}
+                setOpenDetalhes={setOpenDetalhes}
             />
             <DialogEditar
                 titulo="Editar ordem de serviço"
@@ -79,6 +82,11 @@ const Ordem = ({ setSnackbar }) => {
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 setSnackbar={setSnackbar}
+            />
+            <DialogDetalhesOrdem 
+                openDetalhes={openDetalhes}
+                setOpenDetalhes={setOpenDetalhes}
+                ordem={ordemServico}
             />
         </Box>
     );
