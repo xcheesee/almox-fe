@@ -28,8 +28,9 @@ const BoxMateriais = (props) => {
     const [tipoDesabilitado, setTipoDesabilitado] = useState(true);
 
     const getMateriaisFromTipos = (e, c) => {
-        setMateriais(modMaterial(c.props.matindex, {matDesabilitado: true}));
-
+        const materialIndex = c.props.matindex
+        setMateriais(modMaterial(materialIndex, {matDesabilitado: true}));
+        console.log(e, c)
         const url = `${process.env.REACT_APP_API_URL}/items/tipo/${c.props.value}`;
         const options = {
             method: 'GET',
@@ -45,16 +46,21 @@ const BoxMateriais = (props) => {
             const data = await res.json();
             const mod = {
                 mats: data.data,
+                tipo: e.target.value,
+                currMat: '',
+                medida: '',
                 matDesabilitado: false
             };
-            return setMateriais(modMaterial(c.props.matindex, mod))
+            return setMateriais(modMaterial(materialIndex, mod))
         })();
     };
 
     const adicionaMaterial = () => {
         setMateriais(prev => [...prev, { 
             id: '',
+            tipo: '',
             mats: [],
+            currMat: '',
             quantidade: '',
             matDesabilitado: true,
             qtdDesabilitado: true,
@@ -95,9 +101,15 @@ const BoxMateriais = (props) => {
     // }
 
     const handleChange = (e, c) => {
+        console.log(e, c)
+        console.log(materiais[c.props.matindex]['mats'][e.target.value])
+        // if(materiais[c.props.matindex]['mats'][e.target.value] === undefined) {
+        //     return setMateriais(modMaterial(c.props.matindex, {medida: '', currMat: ''}))
+        // }
         const mod = {
             qtdDesabilitado: false,
             medida: materiais[c.props.matindex]['mats'][c.props.mat]['medida'],
+            currMat: e.target.value,
         };
         // const novoState = materiais.map((material, index) => {
         //     if (index === i) 
@@ -145,6 +157,7 @@ const BoxMateriais = (props) => {
                                     size="small"
                                     onChange={getMateriaisFromTipos}
                                     disabled={tipoDesabilitado}
+                                    value={material.tipo}
                                     fullWidth
                                 >
                                     {
@@ -162,7 +175,7 @@ const BoxMateriais = (props) => {
                                     name="id"
                                     size="small"
                                     disabled={material.matDesabilitado}
-                                    defaultValue={material.id}
+                                    value={material.currMat}
                                     onChange={(e, c) => handleChange(e, c)}
                                     fullWidth
                                 >

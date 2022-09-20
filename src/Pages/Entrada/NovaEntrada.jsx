@@ -11,8 +11,10 @@ import { token } from '../../common/utils';
 const NovaEntrada = ({ setSnackbar }) => {
     //propriedades criadas para armazenar dados e comportamentos de cada select individual
     const [materiais, setMateriais] = useState([{ 
-        id: '', 
-        mats:[], 
+        id: '',
+        tipo: '', 
+        mats:[],
+        currMat: '',
         quantidade: '',
         matDesabilitado: true,
         qtdDesabilitado: true,
