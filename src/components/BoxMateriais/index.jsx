@@ -15,7 +15,7 @@ import style from './style';
 import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { token } from '../../common/utils';
+import { getMatItens, getMatTipos, primeiraLetraMaiuscula, token } from '../../common/utils';
 import { useState } from 'react';
 
 const BoxMateriais = (props) => {
@@ -24,109 +24,80 @@ const BoxMateriais = (props) => {
         materiais,
         setMateriais,
     } = props;
-    const [tiposMats, setTiposMats] = useState({})
-    const [tipoDesabilitado, setTipoDesabilitado] = useState(true)
+    const [tiposMats, setTiposMats] = useState({});
+    const [carregando, setCarregando] = useState(true);
 
-    const getMateriaisFromTipos = (e, c) => {
-        setMateriais(modMaterial(c.props.matindex, {matDesabilitado: true}));
-
-        const url = `${process.env.REACT_APP_API_URL}/items/tipo/${c.props.value}`;
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+    const getMateriaisFromTipos = async (element, children, formIndex) => {
+        const tipoRota = children.props.value;
+        const tipoId = element.target.value;
+        setMateriais(prev => modMaterial(prev, formIndex, {matDesabilitado: true}));
+        
+        const val = await getMatItens(tipoRota);
+        const mod = {
+            mats: val.data,
+            tipo: tipoId,
+            currMat: '',
+            quantidade: '',
+            medida: '',
+            matDesabilitado: false
         };
-
-        (async () => {
-            const res = await fetch(url, options)
-            const data = await res.json()
-            const mod = {
-                mats: data.data,
-                matDesabilitado: false
-            }
-            return setMateriais(modMaterial(c.props.matindex, mod))
-        })();
-    }
+        return setMateriais(prev => modMaterial(prev, formIndex, mod))
+    };
 
     const adicionaMaterial = () => {
         setMateriais(prev => [...prev, { 
             id: '',
-            mats: [],
-            quantidade: '',
+            tipo: '',
             matDesabilitado: true,
+            mats: [],
+            currMat: '',
             qtdDesabilitado: true,
+            quantidade: '',
             medida: '',
         }]);
-    }
+    };
 
-    const modMaterial = (matindex, values) => {
-
-        let mats = [...materiais]
+    //recebe o array material, o indice do form a ser modificado e um objeto com as modificacoes a serem feitas
+    const modMaterial = (materiais, formIndex, values) => {
+        let mats = [...materiais];
         let mat = {
-            ...materiais[matindex],
+            ...materiais[formIndex],
             ...values
-        }
-        mats[matindex] = mat;
+        };
+        mats[formIndex] = mat;
         return mats
-    }
+    };
 
     const removeMaterial = (index) => {
         let tempArr = materiais;
         tempArr.splice(index, 1);
         setMateriais([...tempArr]);
-    }
-    // const setUnidadeMedida = (material) => {
-    //     /* chamar api no set de dados */
-    //     // console.log(materiais[material], material)
-    //     // return materiais[material]['mats']['medida']
-    //     switch (material.id) {
-    //         case 1: return "CX";
-    //         case 2: return "M³";
-    //         case 3: return "MT";
-    //         case 4: return "SC"
-    //         case 5: return "UN"
-    //         case 6: return "PC"
-    //         default: return ""
-    //     }
-    // }
+    };
 
-    const handleChange = (e, c) => {
-        console.log(e, c)
+    const handleChange = (element, children, formIndex) => {
+        const materialIndex = children.props.value;
+        const materialAlvo = element.target.value;
         const mod = {
             qtdDesabilitado: false,
-            medida: materiais[c.props.matindex]['mats'][c.props.mat]['medida'],
-        }
-        // const novoState = materiais.map((material, index) => {
-        //     if (index === i) 
-        //         return { ...material, [e.target.name]: e.target.value, qtdDesabilitado: false, medida: materiais[i.props.matindex]['mats'][i.props.mat]['medida']}
+            medida: materiais[formIndex]['mats'][materialIndex]['medida'],
+            currMat: materialAlvo,
+        };
+        return setMateriais(prev => modMaterial(prev, formIndex, mod))
+    };
 
-        //     return material;
-        // });
-        return setMateriais(modMaterial(c.props.matindex, mod));
-    }
+    const handleQtdChange = (element, formIndex) => {
+        setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
+        return console.log(materiais[formIndex])
+    };
     
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_API_URL}/tipo_items`
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-        };
         (async () => {
-            const res = await fetch(url, options)
-            const data = await res.json()
-            setTipoDesabilitado(false)
-            return setTiposMats(data)
+            const data = await getMatTipos();
+            setTiposMats(data);
+            setCarregando(false);
         })();
     }, [])
-    // useEffect(() => { }, [materiais.length])
 
     return (
         <Box className="mx-8 mb-12">
@@ -143,16 +114,16 @@ const BoxMateriais = (props) => {
                                     label="Tipo de material"
                                     name="tipo_material"
                                     size="small"
-                                    onChange={getMateriaisFromTipos}
-                                    disabled={tipoDesabilitado}
-                                    defaultValue={null}
+                                    onChange={(e, c) => getMateriaisFromTipos(e, c, index)}
+                                    disabled={carregando}
+                                    value={material.tipo}
                                     fullWidth
                                 >
                                     {
                                         tiposMats.data
                                             ?.map((val, i) => 
-                                                <MenuItem value={val.id} matindex={`${index}`} key={i} >
-                                                    {val.nome}
+                                                <MenuItem value={val.id} key={i} >
+                                                    {primeiraLetraMaiuscula(val.nome)}
                                                 </MenuItem>)
                                     }
                                 </Selecao>
@@ -163,14 +134,14 @@ const BoxMateriais = (props) => {
                                     name="id"
                                     size="small"
                                     disabled={material.matDesabilitado}
-                                    defaultValue={material.id}
-                                    onChange={(e, c) => handleChange(e, c)}
+                                    value={material.currMat}
+                                    onChange={(e, c) => handleChange(e, c, index)}
                                     fullWidth
                                 >
                                     {
                                     material.mats
                                         ?.map((val, matLoc) => 
-                                            <MenuItem value={matLoc} matindex={index} mat={matLoc} key={matLoc}>
+                                            <MenuItem value={matLoc} key={matLoc}>
                                                 {val.nome}
                                             </MenuItem>
                                             ) || null
@@ -182,8 +153,8 @@ const BoxMateriais = (props) => {
                                     name="quantidade"
                                     label="Quantidade"
                                     disabled={material.qtdDesabilitado}
-                                    defaultValue={material.quantidade}
-                                    // onChange={(e) => handleChange(e, index)}
+                                    value={material.quantidade}
+                                    onChange={(e) => handleQtdChange(e, index)}
                                     fullWidth
                                     size="small"
                                     InputProps={{

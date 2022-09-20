@@ -11,11 +11,13 @@ import { token } from '../../common/utils';
 const NovaEntrada = ({ setSnackbar }) => {
     //propriedades criadas para armazenar dados e comportamentos de cada select individual
     const [materiais, setMateriais] = useState([{ 
-        id: '', 
-        mats:[], 
-        quantidade: '',
+        id: '',
+        tipo: '', 
         matDesabilitado: true,
+        mats:[],
+        currMat: '',
         qtdDesabilitado: true,
+        quantidade: '',
         medida: '',
     }]);
     const [carregando, setCarregando] = useState(false);

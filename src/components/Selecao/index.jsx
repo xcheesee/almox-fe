@@ -8,6 +8,7 @@ const Selecao = (props) => {
         defaultValue,
         helperText,
         carregando,
+        value,
         ...other
     } = props;
 
@@ -19,6 +20,7 @@ const Selecao = (props) => {
                 label={label}
                 name={name}
                 defaultValue={defaultValue || ""}
+                value={value}
                 onChange={other.onChange}
             >
                 {other.children}

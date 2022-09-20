@@ -271,3 +271,31 @@ export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarre
     .then(data => console.log(data))
     .catch(err => console.log(err))
 }
+
+export const getMatTipos = async () => {
+  const url = `${process.env.REACT_APP_API_URL}/tipo_items`;
+  const options = {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      },
+  };
+  const res = await fetch(url, options);
+  return await res.json();
+}
+
+export const getMatItens = async (tipoRota) => {
+  const url = `${process.env.REACT_APP_API_URL}/items/tipo/${tipoRota}`;
+  const options = {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      },
+  };
+  const res = await fetch(url, options);
+  return await res.json();
+}
