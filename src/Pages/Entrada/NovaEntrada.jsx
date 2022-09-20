@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NovaEntradaMaterial from '../../components/NovaEntradaMaterial';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
-import { getLocais, token } from '../../common/utils';
+import { token } from '../../common/utils';
 
 
 
 
-const NovaEntrada = ({ setSnackbar }) => {
+const NovaEntrada = ({ setSnackbar, locais, carregandoLocais }) => {
     //propriedades criadas para armazenar dados e comportamentos de cada select individual
     const [materiais, setMateriais] = useState([{ 
         id: '',
@@ -23,14 +23,8 @@ const NovaEntrada = ({ setSnackbar }) => {
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [locais, setLocais] = useState([]);
-    const [carregandoLocais, setCarregandoLocais] = useState(true);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        getLocais(setCarregandoLocais, setLocais);
-    }, [])
 
     return (
         <>

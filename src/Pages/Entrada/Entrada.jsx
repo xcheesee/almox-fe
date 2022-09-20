@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import { getTabela, getLocais } from '../../common/utils';
+import { getTabela } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
 import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
@@ -8,15 +8,13 @@ import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 
-const Entrada = ({ setSnackbar }) => {
+const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
     const [entradas, setEntradas] = useState([]);
     const [materiais, setMateriais] = useState([]);
-    const [locais, setLocais] = useState([]);
     const [metaEntradas, setMetaEntradas] = useState({});
     const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
-    const [carregandoLocais, setCarregandoLocais] = useState(true);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [openExcluir, setOpenExcluir] = useState(false);
@@ -31,7 +29,6 @@ const Entrada = ({ setSnackbar }) => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
         setMateriais([]);
         setErrors({});
-        getLocais(setCarregandoLocais, setLocais);
     }, [page, houveMudanca, filtros]);
 
     return (

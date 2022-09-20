@@ -3,22 +3,14 @@ import NovaOrdemServico from '../../components/NovaOrdemServico';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
-import { useEffect } from 'react';
-import { getLocais } from '../../common/utils';
 
-const NovaOrdem = ({ setSnackbar }) => {
+const NovaOrdem = ({ setSnackbar, locais, carregandoLocais }) => {
     const [materiais, setMateriais] = useState([{ material: '', quantidade: '' }]);
-    const [locais, setLocais] = useState([]);
     const [carregando, setCarregando] = useState(false);
-    const [carregandoLocais, setCarregandoLocais] = useState(true);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        getLocais(setCarregandoLocais, setLocais);
-    }, [])
 
     return (
         <>
