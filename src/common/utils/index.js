@@ -143,7 +143,7 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) 
       });
 }
 
-export const getMateriais = (rota, id, setMateriais) => {
+export const getMateriais = (rota, id, setMateriais, setOpen, setCursor) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
@@ -152,17 +152,22 @@ export const getMateriais = (rota, id, setMateriais) => {
 
   fetch(url, options)
     .then(res => res.json())
+    // .then(data => {
+    //   let arr = [];
+    //   let items = data.data;
+
+    //   items.forEach(item => arr.push({ id: item.item_id, quantidade: item.quantidade }));
+
+    //   setMateriais([...arr]);
+    // })
     .then(data => {
-      let arr = [];
-      let items = data.data;
-
-      items.forEach(item => arr.push({ id: item.item_id, quantidade: item.quantidade }));
-
-      setMateriais([...arr]);
+      setMateriais(data.data);
+      setOpen(true);
+      setCursor('auto');
     })
 }
 
-export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMateriais) => {
+export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
@@ -176,11 +181,12 @@ export const getRegistro = (rota, id, setOpenEditar, setter, setCursor, setMater
   .then(data => setter(data.data))
   .then(() => { 
     if (rota === 'entrada')
-      getMateriais(rota, id, setMateriais);
-    
-    setOpenEditar(true);
-    setCursor('auto');
-  });
+      getMateriais(rota, id, setMateriais, setOpen, setCursor);
+    else {
+      setOpen(true);
+      setCursor('auto');
+    }
+  })
 }
 
 // Update

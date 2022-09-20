@@ -18,7 +18,8 @@ const EntradaMaterial = (props) => {
         setMateriais,
         setCursor,
         cursor,
-        setFiltros
+        setFiltros,
+        setOpenDetalhes
     } = props;
 
     return (
@@ -44,6 +45,7 @@ const EntradaMaterial = (props) => {
                 setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
+                setOpenDetalhes={setOpenDetalhes}
             />
 
             <BotaoNovo caminho="/entrada/nova-entrada">
