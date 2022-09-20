@@ -31,64 +31,70 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem }) => (
             <Box className="mx-4 my-5 grid grid-cols-2 gap-8">
                 <TituloTexto 
                     titulo="Departamento"
-                    texto={ordem.departamento}
+                    texto={ordem.departamento || "---"}
                 />
 
                 <TituloTexto 
                     titulo="Usuário"
-                    texto={ordem.user}
+                    texto={ordem.user || "---"}
                 />
 
                 <TituloTexto 
                     titulo="Origem"
-                    texto={ordem.origem}
+                    texto={ordem.origem || "---"}
                 />
 
                 <TituloTexto
                     titulo="Local de serviço"
-                    texto={ordem.local_servico}
+                    texto={ordem.local_servico || "---"}
                 />
 
                 <TituloTexto 
                     titulo="Data de início do serviço"
-                    texto={ordem.data_inicio_servico}
+                    texto={ordem.data_inicio_servico || "---"}
                 />
 
                 <TituloTexto 
                     titulo="Data de fim do serviço"
-                    texto={ordem.data_fim_servico}
+                    texto={ordem.data_fim_servico || "---"}
                 />
 
                 <TituloTexto 
                     titulo="Nome do almoxarife"
-                    texto={ordem.almoxarife_nome}
+                    texto={ordem.almoxarife_nome || "---"}
                 />
 
                 <TituloTexto 
                     titulo="E-mail do almoxarife"
-                    texto={ordem.almoxarife_email}
+                    texto={ordem.almoxarife_email || "---"}
                 />
 
                 <TituloTexto
                     titulo="Especificações"
-                    texto={ordem.especificacao}
+                    texto={ordem.especificacao || "---"}
                     className="col-span-2"
+                    component="code"
+                    childComponent="pre"
+                    childStyle={{ whiteSpace: 'pre-wrap' }}
                 />
 
                 <TituloTexto 
                     titulo="Observações"
-                    texto={ordem.observacoes}
+                    texto={ordem.observacoes || "---"}
                     className="col-span-2"
+                    component="code"
+                    childComponent="pre"
+                    childStyle={{ whiteSpace: 'pre-wrap' }}
                 />
 
                 <TituloTexto 
                     titulo="Profissional"
-                    texto={ordem.profissional}
+                    texto={ordem.profissional || "---"}
                 />
 
                 <TituloTexto 
                     titulo="Horas de execução"
-                    texto={`${ordem.horas_execucao} ${ordem.horas_execucao > 1 ? "horas" : "hora"}`}
+                    texto={`${ordem.horas_execucao || "---"} ${ordem.horas_execucao > 1 ? "horas" : "hora"}`}
                 />
             </Box>
         </DialogContent>

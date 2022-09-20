@@ -25,53 +25,47 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id }) => {
         </Typography>
 
         <Collapse in={!carregando}>
-          <Box className="p-6 grid grid-rows-3 gap-8 items-center">
-            <Box className='grid grid-cols-3 self-start'>
-              <Typography sx={style.textoNegrito}>
-                Origem
-                <Typography sx={style.span} component="span">{ordemServico.origem}</Typography>
-              </Typography>
+          <Box className="p-6 grid grid-cols-3 gap-8">
+            <Typography sx={style.textoNegrito}>
+              Origem
+              <Typography sx={style.span} component="span">{ordemServico.origem}</Typography>
+            </Typography>
 
-              <Typography sx={style.textoNegrito}>
-                Local de serviço
-                <Typography sx={style.span} component="span">{ordemServico.local_servico}</Typography>
-              </Typography>
+            <Typography sx={style.textoNegrito}>
+              Local de serviço
+              <Typography sx={style.span} component="span">{ordemServico.local_servico}</Typography>
+            </Typography>
 
-              <Typography sx={style.textoNegrito}>
-                Profissional
-                <Typography sx={style.span} component="span">{ordemServico.profissional}</Typography>
+            <Typography sx={style.textoNegrito}>
+              Profissional
+              <Typography sx={style.span} component="span">{ordemServico.profissional}</Typography>
+            </Typography>
+          
+            <Typography sx={style.textoNegrito} className="col-span-3">
+              Especificações
+              <Typography sx={{...style.span, whiteSpace: 'pre-wrap'}} component="pre">{ordemServico.especificacao}</Typography>
+            </Typography>
+          
+            <Typography sx={style.textoNegrito}>
+              Horas execução
+              <Typography sx={style.span} component="span">
+                {ordemServico.horas_execucao} {ordemServico.horas_execucao <= 1 ? 'hora' : 'horas'}
               </Typography>
-            </Box>
-
-            <Box className='grid grid-cols-3 self-start'>
-              <Typography sx={style.textoNegrito}>
-                Especificações
-                <Typography sx={style.span} component="span">{ordemServico.especificacao}</Typography>
+            </Typography>
+            
+            <Typography sx={style.textoNegrito}>
+              Data de início do serviço
+              <Typography sx={style.span} component="span">
+                { formataDateTime(ordemServico.data_inicio_servico) || "Sem data de início" }
               </Typography>
-            </Box>
-
-            <Box className='grid grid-cols-3 self-end'>
-              <Typography sx={style.textoNegrito}>
-                Horas execução
-                <Typography sx={style.span} component="span">
-                  {ordemServico.horas_execucao} {ordemServico.horas_execucao <= 1 ? 'hora' : 'horas'}
-                </Typography>
+            </Typography>
+            
+            <Typography sx={style.textoNegrito}>
+              Data de fim do serviço
+              <Typography sx={style.span} component="span">
+                { formataDateTime(ordemServico.data_fim_servico) || "Sem data de fim" }
               </Typography>
-              
-              <Typography sx={style.textoNegrito}>
-                Data de início do serviço
-                <Typography sx={style.span} component="span">
-                  { formataDateTime(ordemServico.data_inicio_servico) || "Sem data de início" }
-                </Typography>
-              </Typography>
-              
-              <Typography sx={style.textoNegrito}>
-                Data de fim do serviço
-                <Typography sx={style.span} component="span">
-                  { formataDateTime(ordemServico.data_fim_servico) || "Sem data de fim" }
-                </Typography>
-              </Typography>
-            </Box>
+            </Typography>
           </Box>
         </Collapse>
       </Box>

@@ -34,32 +34,32 @@ const DialogDetalhesEntrada = ({ openDetalhes, setOpenDetalhes, entrada, materia
                 <Box className="mx-4 my-5 grid grid-cols-2 gap-8">
                     <TituloTexto 
                         titulo="Departamento"
-                        texto={entrada.departamento}
+                        texto={entrada.departamento || "---"}
                     />
 
                     <TituloTexto 
                         titulo="Local"
-                        texto={entrada.local}
+                        texto={entrada.local || "---"}
                     />
 
                     <TituloTexto 
                         titulo="Data de entrada"
-                        texto={entrada.data_entrada}
+                        texto={entrada.data_entrada || "---"}
                     />
 
                     <TituloTexto 
                         titulo="Processo SEI"
-                        texto={mascaraProcessoSei(entrada.processo_sei)}
+                        texto={mascaraProcessoSei(entrada.processo_sei || "---")}
                     />
 
                     <TituloTexto 
                         titulo="Número do contrato"
-                        texto={mascaraContrato(entrada.numero_contrato)}
+                        texto={mascaraContrato(entrada.numero_contrato || "---")}
                     />
 
                     <TituloTexto 
                         titulo="Número da nota fiscal"
-                        texto={entrada.numero_nota_fiscal}
+                        texto={entrada.numero_nota_fiscal || "---"}
                     />
 
                     <TituloTexto
@@ -68,9 +68,9 @@ const DialogDetalhesEntrada = ({ openDetalhes, setOpenDetalhes, entrada, materia
                             <a 
                                 target="_blank"
                                 rel="noreferrer"
-                                href={entrada.arquivo_nota_fiscal_url}
+                                href={entrada.arquivo_nota_fiscal_url || "#"}
                             >
-                                {entrada.arquivo_nota_fiscal}
+                                {entrada.arquivo_nota_fiscal || "---"}
                             </a>
                         }
                         className="col-span-2"
