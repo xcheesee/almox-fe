@@ -30,7 +30,7 @@ const BoxMateriais = (props) => {
     const getMateriaisFromTipos = async (element, children, formIndex) => {
         const tipoRota = children.props.value;
         const tipoId = element.target.value;
-        setMateriais(modMaterial(materiais, formIndex, {matDesabilitado: true}));
+        setMateriais(prev => modMaterial(prev, formIndex, {matDesabilitado: true}));
         
         const val = await getMatItens(tipoRota);
         const mod = {
@@ -41,7 +41,7 @@ const BoxMateriais = (props) => {
             medida: '',
             matDesabilitado: false
         };
-        return setMateriais(modMaterial(materiais, formIndex, mod))
+        return setMateriais(prev => modMaterial(prev, formIndex, mod))
     };
 
     const adicionaMaterial = () => {
@@ -82,14 +82,12 @@ const BoxMateriais = (props) => {
             medida: materiais[formIndex]['mats'][materialIndex]['medida'],
             currMat: materialAlvo,
         };
-        return setMateriais(modMaterial(materiais, formIndex, mod))
+        return setMateriais(prev => modMaterial(prev, formIndex, mod))
     };
 
     const handleQtdChange = (element, formIndex) => {
-        const mod = {
-            quantidade: element.target.value,
-        }
-        return setMateriais(modMaterial(materiais, formIndex, mod))
+        setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
+        return console.log(materiais[formIndex])
     };
     
 
