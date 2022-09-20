@@ -18,7 +18,9 @@ const NovaOrdemServico = (props) => {
         carregando,
         setCarregando,
         navigate,
-        setSnackbar
+        setSnackbar,
+        locais,
+        carregandoLocais
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -37,6 +39,8 @@ const NovaOrdemServico = (props) => {
                 setSnackbar={setSnackbar}
                 errors={errors}
                 setErrors={setErrors}
+                locais={locais}
+                carregandoLocais={carregandoLocais}
             />
             
             <BoxMateriais 

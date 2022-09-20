@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import { getTabela } from '../../common/utils';
+import { getLocais, getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
@@ -10,10 +10,12 @@ import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 
 const Ordem = ({ setSnackbar }) => {
     const [ordens, setOrdens] = useState([]);
+    const [locais, setLocais] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
+    const [carregandoLocais, setCarregandoLocais] = useState(true);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [openExcluir, setOpenExcluir] = useState(false);
@@ -27,6 +29,7 @@ const Ordem = ({ setSnackbar }) => {
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
         setErrors({});
+        getLocais(setCarregandoLocais, setLocais);
     }, [page, houveMudanca, filtros])
 
     return (
@@ -64,6 +67,8 @@ const Ordem = ({ setSnackbar }) => {
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
+                    locais={locais}
+                    carregandoLocais={carregandoLocais}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao
