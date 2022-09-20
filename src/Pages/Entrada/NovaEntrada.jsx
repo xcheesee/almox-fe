@@ -3,7 +3,7 @@ import NovaEntradaMaterial from '../../components/NovaEntradaMaterial';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
-import { token } from '../../common/utils';
+import { getLocais, token } from '../../common/utils';
 
 
 
@@ -23,8 +23,14 @@ const NovaEntrada = ({ setSnackbar }) => {
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
+    const [locais, setLocais] = useState([]);
+    const [carregandoLocais, setCarregandoLocais] = useState(true);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        getLocais(setCarregandoLocais, setLocais);
+    }, [])
 
     return (
         <>
@@ -37,6 +43,8 @@ const NovaEntrada = ({ setSnackbar }) => {
                 setCarregando={setCarregando}
                 navigate={navigate}
                 setSnackbar={setSnackbar}
+                locais={locais}
+                carregandoLocais={carregandoLocais}
             />
             <DialogCancelar 
                 paginaAnterior="entrada de material" 
