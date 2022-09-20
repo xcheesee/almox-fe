@@ -27,8 +27,7 @@ const BoxMateriais = (props) => {
     const [tiposMats, setTiposMats] = useState({});
     const [carregando, setCarregando] = useState(true);
 
-    const getMateriaisFromTipos = async (element, children) => {
-        const formIndex = children.props.matindex;
+    const getMateriaisFromTipos = async (element, children, formIndex) => {
         const tipoRota = children.props.value;
         const tipoId = element.target.value;
         setMateriais(modMaterial(materiais, formIndex, {matDesabilitado: true}));
@@ -75,8 +74,7 @@ const BoxMateriais = (props) => {
         setMateriais([...tempArr]);
     };
 
-    const handleChange = (element, children) => {
-        const formIndex = children.props.matindex;
+    const handleChange = (element, children, formIndex) => {
         const materialIndex = children.props.value;
         const materialAlvo = element.target.value;
         const mod = {
@@ -85,6 +83,15 @@ const BoxMateriais = (props) => {
             currMat: materialAlvo,
         };
         return setMateriais(modMaterial(materiais, formIndex, mod))
+    };
+
+    const handleQtdChange = (element, formIndex) => {
+        console.log(element.target.value)
+        const mod = {
+            quantidade: element.target.value,
+        }
+        setMateriais(modMaterial(materiais, formIndex, mod))
+        return console.log(materiais[formIndex])
     };
     
 
@@ -111,7 +118,7 @@ const BoxMateriais = (props) => {
                                     label="Tipo de material"
                                     name="tipo_material"
                                     size="small"
-                                    onChange={getMateriaisFromTipos}
+                                    onChange={(e, c) => getMateriaisFromTipos(e, c, index)}
                                     disabled={carregando}
                                     value={material.tipo}
                                     fullWidth
@@ -119,7 +126,7 @@ const BoxMateriais = (props) => {
                                     {
                                         tiposMats.data
                                             ?.map((val, i) => 
-                                                <MenuItem value={val.id} matindex={`${index}`} key={i} >
+                                                <MenuItem value={val.id} key={i} >
                                                     {primeiraLetraMaiuscula(val.nome)}
                                                 </MenuItem>)
                                     }
@@ -132,13 +139,13 @@ const BoxMateriais = (props) => {
                                     size="small"
                                     disabled={material.matDesabilitado}
                                     value={material.currMat}
-                                    onChange={(e, c) => handleChange(e, c)}
+                                    onChange={(e, c) => handleChange(e, c, index)}
                                     fullWidth
                                 >
                                     {
                                     material.mats
                                         ?.map((val, matLoc) => 
-                                            <MenuItem value={matLoc} matindex={index} key={matLoc}>
+                                            <MenuItem value={matLoc} key={matLoc}>
                                                 {val.nome}
                                             </MenuItem>
                                             ) || null
@@ -150,8 +157,8 @@ const BoxMateriais = (props) => {
                                     name="quantidade"
                                     label="Quantidade"
                                     disabled={material.qtdDesabilitado}
-                                    defaultValue={material.quantidade}
-                                    // onChange={(e) => handleChange(e, index)}
+                                    value={material.quantidade}
+                                    onChange={(e) => handleQtdChange(e, index)}
                                     fullWidth
                                     size="small"
                                     InputProps={{
