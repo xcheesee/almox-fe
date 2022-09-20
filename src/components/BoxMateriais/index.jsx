@@ -86,12 +86,10 @@ const BoxMateriais = (props) => {
     };
 
     const handleQtdChange = (element, formIndex) => {
-        console.log(element.target.value)
         const mod = {
             quantidade: element.target.value,
         }
-        setMateriais(modMaterial(materiais, formIndex, mod))
-        return console.log(materiais[formIndex])
+        return setMateriais(modMaterial(materiais, formIndex, mod))
     };
     
 
