@@ -13,11 +13,11 @@ const NovaEntrada = ({ setSnackbar }) => {
     const [materiais, setMateriais] = useState([{ 
         id: '',
         tipo: '', 
+        matDesabilitado: true,
         mats:[],
         currMat: '',
-        quantidade: '',
-        matDesabilitado: true,
         qtdDesabilitado: true,
+        quantidade: '',
         medida: '',
     }]);
     const [carregando, setCarregando] = useState(false);
