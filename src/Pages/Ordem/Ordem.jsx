@@ -84,6 +84,7 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 setSnackbar={setSnackbar}
+                setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesOrdem 
                 openDetalhes={openDetalhes}

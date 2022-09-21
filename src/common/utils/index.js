@@ -42,7 +42,7 @@ export const headers = {
 }
 
 // Create
-export const enviaForm = (e, materiais) => {
+export const enviaForm = (e, materiais, campo) => {
   e.preventDefault();
 
   const formData = new FormData(e.target);
@@ -52,7 +52,7 @@ export const enviaForm = (e, materiais) => {
     materiais.forEach((material, index) => {
       const entries = Object.entries(material);
       entries.forEach(keyValue => {
-        formData.append(`entrada_items[${index}][${keyValue[0]}]`, keyValue[1]);
+        formData.append(`${campo}[${index}][${keyValue[0]}]`, keyValue[1]);
       });
     });
   }
@@ -60,12 +60,12 @@ export const enviaForm = (e, materiais) => {
   return formData;
 }
 
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais) => {
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
       headers: headers,
-      body: enviaForm(e, materiais)
+      body: enviaForm(e, materiais, campo)
   };
 
   setCarregando(true);
@@ -190,12 +190,12 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
 }
 
 // Update
-export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais) => {
+export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
     headers: headers,
-    body: enviaForm(e, materiais)
+    body: enviaForm(e, materiais, campo)
   };
 
   setCarregando(true);
@@ -238,7 +238,7 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
 }
 
 // Delete
-export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
+export const excluiRegistro = (rota, id, setHouveMudanca, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'DELETE',
@@ -251,6 +251,7 @@ export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarre
   fetch(urlCompleta, options)
     .then(res => {
       if (res.ok) {
+        setHouveMudanca(prev => !prev);
         setOpenEditar(false);
         setCarregando(false);
         setSnackbar({

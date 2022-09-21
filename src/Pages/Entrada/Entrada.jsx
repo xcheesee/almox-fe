@@ -89,6 +89,7 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 setSnackbar={setSnackbar}
+                setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesEntrada 
                 openDetalhes={openDetalhes} 

@@ -5,7 +5,16 @@ import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 
 const NovaOrdem = ({ setSnackbar, locais, carregandoLocais }) => {
-    const [materiais, setMateriais] = useState([{ material: '', quantidade: '' }]);
+    const [materiais, setMateriais] = useState([{ 
+        id: '',
+        tipo: '', 
+        matDesabilitado: true,
+        mats:[],
+        currMat: '',
+        qtdDesabilitado: true,
+        quantidade: '',
+        medida: '',
+    }]);
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);

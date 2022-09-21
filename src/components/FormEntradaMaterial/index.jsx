@@ -49,7 +49,8 @@ const FormEntradaMaterial = (props) => {
                             setSnackbar,
                             'Entrada de material',
                             setErrors,
-                            materiaisInterno
+                            materiaisInterno,
+                            'entrada_items'
                         )
                         : enviaNovoForm(
                             e, 
@@ -61,7 +62,8 @@ const FormEntradaMaterial = (props) => {
                             setSnackbar,
                             'Entrada de material',
                             setErrors,
-                            materiaisInterno
+                            materiaisInterno,
+                            'entrada_items'
                         )
                 }}
             >
