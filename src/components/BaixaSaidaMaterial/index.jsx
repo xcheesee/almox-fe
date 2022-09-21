@@ -41,7 +41,7 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id }) => {
               <Typography sx={style.span} component="span">{ordemServico.profissional}</Typography>
             </Typography>
           
-            <Typography sx={style.textoNegrito} className="col-span-3">
+            <Typography sx={style.textoNegrito} className="col-span-3" component="code">
               Especificações
               <Typography sx={{...style.span, whiteSpace: 'pre-wrap'}} component="pre">{ordemServico.especificacao}</Typography>
             </Typography>
