@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Box,
     Typography,
@@ -8,9 +8,12 @@ import {
 import style from './style';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
+import DialogLogout from '../DialogLogout';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+    const [openLogout, setOpenLogout] = useState(false);
+
     const username = localStorage.getItem('username');
     const location = useLocation();
     const navigate = useNavigate();
@@ -44,13 +47,19 @@ const Header = () => {
                             </Box>
 
                             <Tooltip title="Sair">
-                                <IconButton onClick={logout}>
+                                <IconButton onClick={() => setOpenLogout(true)}>
                                     <LogoutIcon fontSize="small" />
                                 </IconButton>
                             </Tooltip>
                         </Box>
                 }
             </Box>
+
+            <DialogLogout 
+                fnLogout={logout}
+                openLogout={openLogout}
+                setOpenLogout={setOpenLogout}
+            />
         </Box>
     );
 }
