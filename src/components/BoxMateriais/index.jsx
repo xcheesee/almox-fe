@@ -80,6 +80,7 @@ const BoxMateriais = (props) => {
         const mod = {
             qtdDesabilitado: false,
             medida: materiais[formIndex]['mats'][materialIndex]['medida'],
+            id: materiais[formIndex]['mats'][materialIndex]['id'],
             currMat: materialAlvo,
         };
         return setMateriais(prev => modMaterial(prev, formIndex, mod))
