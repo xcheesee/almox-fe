@@ -180,12 +180,7 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   .then(res => res.json())
   .then(data => setter(data.data))
   .then(() => { 
-    if (rota === 'entrada')
-      getMateriais(rota, id, setMateriais, setOpen, setCursor);
-    else {
-      setOpen(true);
-      setCursor('auto');
-    }
+    getMateriais(rota, id, setMateriais, setOpen, setCursor);
   })
 }
 

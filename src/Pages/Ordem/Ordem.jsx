@@ -10,6 +10,7 @@ import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 
 const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
     const [ordens, setOrdens] = useState([]);
+    const [materiais, setMateriais] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
@@ -26,6 +27,7 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
+        setMateriais([]);
         setErrors({});
     }, [page, houveMudanca, filtros])
 
@@ -38,6 +40,7 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                 setPage={setPage}
                 carregando={carregando}
                 setOpenEditar={setOpenEditar}
+                setMateriais={setMateriais}
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}
                 cursor={cursor}
@@ -90,6 +93,7 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                 openDetalhes={openDetalhes}
                 setOpenDetalhes={setOpenDetalhes}
                 ordem={ordemServico}
+                materiais={materiais}
             />
         </Box>
     );

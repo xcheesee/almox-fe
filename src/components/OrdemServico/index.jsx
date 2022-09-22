@@ -15,6 +15,7 @@ const OrdemServico = (props) => {
         carregando,
         setOpenEditar,
         setOrdemServico,
+        setMateriais,
         setCursor,
         cursor,
         setFiltros,
@@ -35,6 +36,7 @@ const OrdemServico = (props) => {
                 carregando={carregando} 
                 setOpenEditar={setOpenEditar}
                 setOrdemServico={setOrdemServico}
+                setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
                 setOpenDetalhes={setOpenDetalhes}
