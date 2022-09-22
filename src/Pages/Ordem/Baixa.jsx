@@ -7,10 +7,12 @@ const Baixa = () => {
   let params = useParams();
   const navigate = useNavigate();
   const [ordemServico, setOrdemServico] = useState({});
+  const [materiais, setMateriais] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}`
+    const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}`;
+    const urlItems = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/items`;
     const options = {
         method: 'GET',
         headers: headers
@@ -19,23 +21,26 @@ const Baixa = () => {
     setCarregando(true);
   
     fetch(url, options)
-      .then(res => {
+      .then(async res => {
         if (res.status === 404) {
           navigate('/404', { replace: true });
           return res.json();
         } else {
-          return res.json();
+          const data = await res.json();
+          setOrdemServico(data.data || {});
+          fetch(urlItems, options)
+            .then(resItems => resItems.json())
+            .then(dataItems => {
+              setMateriais(dataItems.data);
+              setCarregando(false);
+            });
         }
       })
-      .then(data => { 
-        setCarregando(false);
-        setOrdemServico(data.data || {}); 
-      });
+      .catch(err => console.log(err));
   }, [params, navigate]);
 
-
   return (
-    <BaixaSaidaMaterial ordemServico={ordemServico} carregando={carregando} id={params.id} />
+    <BaixaSaidaMaterial ordemServico={ordemServico} carregando={carregando} id={params.id} materiais={materiais} />
   );
 }
 

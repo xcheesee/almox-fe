@@ -3,7 +3,7 @@ import {
   Typography,
   Box,
   Paper,
-  // TextField,
+  TextField,
   Button,
   Collapse,
 } from '@mui/material';
@@ -12,7 +12,7 @@ import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import { formataDateTime } from '../../common/utils';
 
-const BaixaSaidaMaterial = ({ ordemServico, carregando, id }) => {
+const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
   return (
     <ContainerPrincipal>
       <Titulo voltaPara="/ordemservico" carregando={carregando}>
@@ -76,14 +76,15 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id }) => {
         </Typography>
 
         <Paper sx={style.paperBg}>
-          {/* {ordemServico.material_utilizado.map((material, index) => (
-            <Paper className='p-4 grid grid-cols-2 items-center' key={index}>
-              <Typography>{material.material}</Typography>
+          <Collapse in={!carregando}>
+          {materiais.map(material => (
+            <Paper className='p-4 grid grid-cols-2 items-center' key={material.id}>
+              <Typography>{material.item}</Typography>
 
               <Box className='flex gap-4'>
                 <TextField
                   label="Solicitado"
-                  defaultValue={material.solicitado}
+                  value={material.quantidade}
                   size="small"
                   disabled
                 />
@@ -107,7 +108,8 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id }) => {
                 />
               </Box>
             </Paper>
-          ))} */}
+          ))}
+        </Collapse>
         </Paper>
       </Box>
 
