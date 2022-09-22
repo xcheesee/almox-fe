@@ -23,8 +23,8 @@ export const formataDateTime = (dateTime) => {
     minute: "2-digit"
   });
 
-  if (dataFormatada === "Invalid Date")
-    return "---";
+  if (dataFormatada === "Invalid Date" || dateTime === null)
+    return "";
 
   return dataFormatada;
 }

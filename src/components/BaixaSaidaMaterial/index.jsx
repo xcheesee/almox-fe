@@ -10,6 +10,7 @@ import {
 import style from './style';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
+import TituloTexto from '../TituloTexto';
 import { formataDateTime } from '../../common/utils';
 
 const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
@@ -26,46 +27,50 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
 
         <Collapse in={!carregando}>
           <Box className="p-6 grid grid-cols-3 gap-8">
-            <Typography sx={style.textoNegrito}>
-              Origem
-              <Typography sx={style.span} component="span">{ordemServico.origem}</Typography>
-            </Typography>
+            <TituloTexto 
+              titulo="Origem"
+              texto={ordemServico.origem}
+            />
 
-            <Typography sx={style.textoNegrito}>
-              Local de serviço
-              <Typography sx={style.span} component="span">{ordemServico.local_servico}</Typography>
-            </Typography>
+            <TituloTexto 
+              titulo="Local de serviço"
+              texto={ordemServico.local_servico}
+            />
 
-            <Typography sx={style.textoNegrito}>
-              Profissional
-              <Typography sx={style.span} component="span">{ordemServico.profissional}</Typography>
-            </Typography>
+            <TituloTexto 
+              titulo="Profissional"
+              texto={ordemServico.profissional || "---"}
+            />
+
+            <TituloTexto
+              titulo="Especificações"
+              texto={ordemServico.especificacao || "---"}
+              className="col-span-3"
+              component="code"
+              childComponent="pre"
+              childStyle={{ whiteSpace: 'pre-wrap' }}
+            />
           
-            <Typography sx={style.textoNegrito} className="col-span-3" component="code">
-              Especificações
-              <Typography sx={{...style.span, whiteSpace: 'pre-wrap'}} component="pre">{ordemServico.especificacao}</Typography>
-            </Typography>
-          
-            <Typography sx={style.textoNegrito}>
-              Horas execução
-              <Typography sx={style.span} component="span">
-                {ordemServico.horas_execucao} {ordemServico.horas_execucao <= 1 ? 'hora' : 'horas'}
-              </Typography>
-            </Typography>
+            <TituloTexto 
+              titulo="Horas de execução"
+              texto={`
+                ${ordemServico.horas_execucao || "---"} 
+                ${ordemServico.horas_execucao 
+                  ? ordemServico.horas_execucao > 1 ? "horas" : "hora" 
+                  : ""
+                }`
+              }
+            />
             
-            <Typography sx={style.textoNegrito}>
-              Data de início do serviço
-              <Typography sx={style.span} component="span">
-                { formataDateTime(ordemServico.data_inicio_servico) || "Sem data de início" }
-              </Typography>
-            </Typography>
-            
-            <Typography sx={style.textoNegrito}>
-              Data de fim do serviço
-              <Typography sx={style.span} component="span">
-                { formataDateTime(ordemServico.data_fim_servico) || "Sem data de fim" }
-              </Typography>
-            </Typography>
+            <TituloTexto 
+              titulo="Data de início do serviço"
+              texto={ formataDateTime(ordemServico.data_inicio_servico) || "Data de início indeterminada" }
+            />
+
+            <TituloTexto 
+              titulo="Data de fim do serviço"
+              texto={ formataDateTime(ordemServico.data_fim_servico) || "Data de fim indeterminada" }
+            />
           </Box>
         </Collapse>
       </Box>
@@ -75,42 +80,48 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
           Material utilizado
         </Typography>
 
-        <Paper sx={style.paperBg}>
-          <Collapse in={!carregando}>
-          {materiais.map(material => (
-            <Paper className='p-4 grid grid-cols-2 items-center' key={material.id}>
-              <Typography>{material.item}</Typography>
+        <Collapse in={!carregando}>
+          {
+            materiais.length > 0
+            ?
+              materiais.map(material => (
+                <Paper sx={style.paperBg} key={material.id}>
+                  <Paper className='p-4 grid grid-cols-2 items-center'>
+                    <Typography>{material.item}</Typography>
 
-              <Box className='flex gap-4'>
-                <TextField
-                  label="Solicitado"
-                  value={material.quantidade}
-                  size="small"
-                  disabled
-                />
+                    <Box className='flex gap-4'>
+                      <TextField
+                        label="Solicitado"
+                        value={material.quantidade}
+                        size="small"
+                        disabled
+                      />
 
-                <TextField
-                  label="Enviado"
-                  defaultValue={material.enviado}
-                  size="small"
-                />
+                      <TextField
+                        label="Enviado"
+                        defaultValue={material.enviado}
+                        size="small"
+                      />
 
-                <TextField
-                  label="Usado"
-                  defaultValue={material.usado}
-                  size="small"
-                />
+                      <TextField
+                        label="Usado"
+                        defaultValue={material.usado}
+                        size="small"
+                      />
 
-                <TextField
-                  label="Retorno"
-                  defaultValue={material.retorno}
-                  size="small"
-                />
-              </Box>
-            </Paper>
-          ))}
+                      <TextField
+                        label="Retorno"
+                        defaultValue={material.retorno}
+                        size="small"
+                      />
+                    </Box>
+                  </Paper>
+                </Paper>
+              ))
+            :
+              <Typography sx={style.span}>Não há materiais a serem exibidos</Typography>
+          }
         </Collapse>
-        </Paper>
       </Box>
 
       <Box className="flex justify-end gap-4 pt-4">

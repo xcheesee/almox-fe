@@ -47,7 +47,7 @@ const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setMa
                             <Tooltip title="Editar" placement="top">
                                 <IconButton 
                                     disabled={cursor === 'progress'} 
-                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor) }
+                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
                                 >
                                     <EditIcon />
                                 </IconButton>
