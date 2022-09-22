@@ -143,7 +143,7 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) 
       });
 }
 
-export const getMateriais = (rota, id, setMateriais, setOpen, setCursor) => {
+export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
@@ -180,7 +180,12 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   .then(res => res.json())
   .then(data => setter(data.data))
   .then(() => { 
-    getMateriais(rota, id, setMateriais, setOpen, setCursor);
+    if (setMateriais) {
+      getMateriais(rota, id, setOpen, setCursor, setMateriais);
+    } else {
+      setOpen(true);
+      setCursor('auto');
+    }
   })
 }
 

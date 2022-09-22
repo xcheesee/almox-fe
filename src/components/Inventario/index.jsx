@@ -15,7 +15,10 @@ const Inventario = (props) => {
         carregando,
         setIdAlerta, 
         setOpenDefinir,
-        setFiltros
+        setFiltros,
+        setRegistro,
+        cursor,
+        setCursor
     } = props;
     
     return (
@@ -35,6 +38,9 @@ const Inventario = (props) => {
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
                 carregando={carregando}
+                setRegistro={setRegistro}
+                cursor={cursor}
+                setCursor={setCursor}
             />
 
             <Box className="mt-10">
