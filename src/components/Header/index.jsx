@@ -84,18 +84,17 @@ const Header = () => {
             />
 
             <Dialog open={openAltSenha} fullWidth maxWidth="md">
-            
                 <DialogTitle>
-                <Tooltip title="Voltar">
-                    <IconButton onClick={() => setOpenAltSenha(false)}>
-                        <ArrowBackIosNewIcon fontSize="small" />
-                    </IconButton>
-                    
-            </Tooltip>
-            Alterar Senha</DialogTitle>
+                    <Tooltip title="Voltar">
+                        <IconButton onClick={() => setOpenAltSenha(false)}>
+                            <ArrowBackIosNewIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    Alterar Senha
+                </DialogTitle>
                 <DialogContent>
                     <Box 
-                        sx={style.gridFiltro}
+                        sx={style.gridAlt}
                         component="form"
                         id="senha"
                         name="senha"
@@ -118,32 +117,33 @@ const Header = () => {
                             label="Email"
                             name="email"
                             id="email"
+                            required
                         />
 
                         <TextField 
                             label="Senha Atual"
                             name="atualPw"
                             id="atualPw"
+                            required
                         />
 
                         <TextField 
                             label="Nova Senha"
                             name="novaPw"
                             id="novaPw"
+                            required
                         />
 
                         <TextField
                             name="novaPwConf"
                             label="Confirmacao Nova Senha"
                             id="novaPwConf"
+                            required
                         />
                     </Box>
                 </DialogContent>
-                <DialogActions sx={{ justifyContent: 'space-between' }}>
+                <DialogActions sx={{ justifyContent: 'space-between' , padding: "0 0 1rem 2rem"}}>
                     <Box sx={{ display: 'flex', margin: '0.5rem', gap: '1rem' }}>
-                        <Button onClick={ () => setOpenAltSenha(false) }>
-                            Cancelar
-                        </Button>
                         <Button 
                             type="submit"
                             form="senha"

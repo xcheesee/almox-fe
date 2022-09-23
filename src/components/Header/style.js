@@ -7,7 +7,7 @@ const style = {
         fontSize: '1.5rem',
         '&:hover': { cursor: 'pointer' } 
     },
-    gridFiltro: { 
+    gridAlt: { 
         display: 'grid', 
         gridTemplateColumns: '1fr', 
         gap: '2rem',
