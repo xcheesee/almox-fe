@@ -136,7 +136,7 @@ const Header = () => {
 
                         <TextField
                             name="novaPwConf"
-                            label="Confirmacao Nova Senha"
+                            label="Confirmação Nova Senha"
                             id="novaPwConf"
                             required
                         />
