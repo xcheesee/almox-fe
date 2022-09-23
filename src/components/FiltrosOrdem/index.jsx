@@ -37,14 +37,6 @@ const FiltrosOrdem = ({setFiltros, setPage}) => {
                 InputLabelProps={{ shrink: true }}
             />
 
-            {/* <TextField 
-                label="Data serviço"
-                name="data_servico"
-                type="date"
-                className="col-span-2"
-                InputLabelProps={{ shrink: true }}
-            /> */}
-
             <CampoDataRange
                 className={'col-span-2'}
                 label={'Data de serviço - faixa de pesquisa'}

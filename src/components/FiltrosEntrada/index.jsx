@@ -38,13 +38,6 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
                 InputLabelProps={{ shrink: true }}
             />
 
-            {/* <TextField 
-                label="Data de entrada"
-                name="data_entrada"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-            /> */}
-
             <CampoDataRange
                 label={'Data de entrada - faixa de pesquisa'}
                 intervalo={datas}

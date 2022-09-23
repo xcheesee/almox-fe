@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Typography,
     Paper,
@@ -15,8 +15,7 @@ import style from './style';
 import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { getMatItens, getMatTipos, primeiraLetraMaiuscula, token } from '../../common/utils';
-import { useState } from 'react';
+import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
 
 const BoxMateriais = (props) => {
     const {
@@ -29,13 +28,13 @@ const BoxMateriais = (props) => {
 
     const getMateriaisFromTipos = async (element, children, formIndex) => {
         const tipoRota = children.props.value;
-        const tipoId = element.target.value;
+        const tipoAlvoId = element.target.value;
         setMateriais(prev => modMaterial(prev, formIndex, {matDesabilitado: true}));
         
         const val = await getMatItens(tipoRota);
         const mod = {
             mats: val.data,
-            tipo: tipoId,
+            tipo: tipoAlvoId,
             currMat: '',
             quantidade: '',
             medida: '',
@@ -86,8 +85,7 @@ const BoxMateriais = (props) => {
     };
 
     const handleQtdChange = (element, formIndex) => {
-        setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
-        return console.log(materiais[formIndex])
+        return setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
     };
     
 
@@ -144,7 +142,7 @@ const BoxMateriais = (props) => {
                                             <MenuItem value={matLoc} key={matLoc}>
                                                 {val.nome}
                                             </MenuItem>
-                                            ) || null
+                                            )
                                     }
                                 </Selecao>
 

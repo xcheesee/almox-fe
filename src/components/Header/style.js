@@ -6,7 +6,13 @@ const style = {
     logo: { 
         fontSize: '1.5rem',
         '&:hover': { cursor: 'pointer' } 
-    }
+    },
+    gridFiltro: { 
+        display: 'grid', 
+        gridTemplateColumns: '1fr', 
+        gap: '2rem',
+        padding: '1em 0.5em'
+    },
 }
 
 export default style;
