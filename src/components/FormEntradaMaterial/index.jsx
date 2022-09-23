@@ -7,6 +7,8 @@ import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
 import BoxMateriais from '../BoxMateriais';
 import CampoLocais from '../CampoLocais';
+import CampoProcessoSei from '../CampoProcessoSei';
+import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
 const departamentos = JSON.parse(localStorage.getItem('departamentos'));
@@ -104,20 +106,20 @@ const FormEntradaMaterial = (props) => {
                     required
                 />
 
-                <TextField 
-                    defaultValue={defaultValue?.processo_sei}
+                <CampoProcessoSei 
                     name="processo_sei"
                     label="Processo SEI"
+                    defaultValue={defaultValue?.processo_sei}
                     error={errors.hasOwnProperty('processo_sei')}
                     helperText={errors.processo_sei || ""}
                     required
                     fullWidth
                 />
 
-                <TextField 
-                    defaultValue={defaultValue?.numero_contrato}
+                <CampoNumContrato 
                     name="numero_contrato"
                     label="Número do contrato"
+                    defaultValue={defaultValue?.numero_contrato}
                     error={errors.hasOwnProperty('numero_contrato')}
                     helperText={errors.numero_contrato || ""}
                     required

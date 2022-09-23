@@ -95,7 +95,13 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais }
 
                 <TituloTexto 
                     titulo="Horas de execução"
-                    texto={`${ordem.horas_execucao || "---"} ${ordem.horas_execucao > 1 ? "horas" : "hora"}`}
+                    texto={`
+                        ${ordem.horas_execucao || "---"} 
+                        ${ordem.horas_execucao 
+                            ? ordem.horas_execucao > 1 ? "horas" : "hora" 
+                            : ""
+                        }`
+                    }
                 />
             </Box>
 

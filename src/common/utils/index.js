@@ -48,6 +48,12 @@ export const enviaForm = (e, materiais, campo) => {
   const formData = new FormData(e.target);
   formData.append('user_id', localStorage.getItem('user_id'));
   
+  if (formData.get('numero_contrato') !== null) 
+    formData.set('numero_contrato', formData.get('numero_contrato').replace(/\//gm, '').toUpperCase());
+  
+  if (formData.get('processo_sei') !== null) 
+    formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
+  
   if (materiais) {
     materiais.forEach((material, index) => {
       const entries = Object.entries(material);
