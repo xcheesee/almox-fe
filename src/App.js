@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -16,6 +16,7 @@ import PaginaInventario from './Pages/PaginaInventario';
 import Pagina404 from './Pages/Pagina404';
 import { Routes, Route } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
+import { getLocais } from './common/utils';
 
 function App() {
   const [snackbar, setSnackbar] = useState({
@@ -23,6 +24,12 @@ function App() {
     severity: 'success',
     message: 'Sucesso!'
   });
+  const [locais, setLocais] = useState({});
+  const [carregandoLocais, setCarregandoLocais] = useState(true);
+
+  useEffect(() => {
+    getLocais(setCarregandoLocais, setLocais);
+  }, [])
 
   return (
     <>
@@ -43,13 +50,19 @@ function App() {
           <Auth>
             <Entrada
               setSnackbar={setSnackbar}
+              locais={locais}
+              carregandoLocais={carregandoLocais}
             />
           </Auth>
         } />
 
         <Route path="/entrada/nova-entrada" element={
           <Auth>
-            <NovaEntrada setSnackbar={setSnackbar} />
+            <NovaEntrada 
+              setSnackbar={setSnackbar}
+              locais={locais}
+              carregandoLocais={carregandoLocais}
+            />
           </Auth>
         } />
 
@@ -57,13 +70,19 @@ function App() {
           <Auth>
             <Ordem 
               setSnackbar={setSnackbar}
+              locais={locais}
+              carregandoLocais={carregandoLocais}
             />
           </Auth>
         } />
 
         <Route path="/ordemservico/nova-ordem" element={
           <Auth>
-            <NovaOrdem setSnackbar={setSnackbar} />
+            <NovaOrdem 
+              setSnackbar={setSnackbar}
+              locais={locais}
+              carregandoLocais={carregandoLocais}
+            />
           </Auth>
         } />
 
@@ -75,7 +94,7 @@ function App() {
 
         <Route path="/inventario" element={
           <Auth>
-            <PaginaInventario />
+            <PaginaInventario setSnackbar={setSnackbar} />
           </Auth>
         } />
 

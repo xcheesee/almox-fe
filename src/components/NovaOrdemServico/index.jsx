@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
-import BoxMateriais from '../BoxMateriais';
 import FormOrdemServico from '../FormOrdemServico';
 
 const NovaOrdemServico = (props) => {
@@ -18,7 +17,9 @@ const NovaOrdemServico = (props) => {
         carregando,
         setCarregando,
         navigate,
-        setSnackbar
+        setSnackbar,
+        locais,
+        carregandoLocais
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -34,15 +35,13 @@ const NovaOrdemServico = (props) => {
                 navigate={navigate} 
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando} 
+                materiais={materiais}
+                setMateriais={setMateriais}
                 setSnackbar={setSnackbar}
                 errors={errors}
                 setErrors={setErrors}
-            />
-            
-            <BoxMateriais 
-                label="Material utilizado"
-                materiais={materiais}
-                setMateriais={setMateriais}
+                locais={locais}
+                carregandoLocais={carregandoLocais}
             />
 
             <Box className="flex justify-end gap-4">

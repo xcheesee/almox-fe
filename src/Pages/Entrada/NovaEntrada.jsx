@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NovaEntradaMaterial from '../../components/NovaEntradaMaterial';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
@@ -8,7 +8,7 @@ import { token } from '../../common/utils';
 
 
 
-const NovaEntrada = ({ setSnackbar }) => {
+const NovaEntrada = ({ setSnackbar, locais, carregandoLocais }) => {
     //propriedades criadas para armazenar dados e comportamentos de cada select individual
     const [materiais, setMateriais] = useState([{ 
         id: '',
@@ -37,6 +37,8 @@ const NovaEntrada = ({ setSnackbar }) => {
                 setCarregando={setCarregando}
                 navigate={navigate}
                 setSnackbar={setSnackbar}
+                locais={locais}
+                carregandoLocais={carregandoLocais}
             />
             <DialogCancelar 
                 paginaAnterior="entrada de material" 

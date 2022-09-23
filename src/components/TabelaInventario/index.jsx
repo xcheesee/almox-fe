@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import Tabela from '../Tabela';
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import { getRegistro } from '../../common/utils';
 
 const cabecalhos = [
     "ID",
@@ -23,7 +24,10 @@ const TabelaInventario = (props) => {
         itens,
         setIdAlerta, 
         setOpenDefinir,
-        carregando
+        carregando,
+        setRegistro,
+        cursor,
+        setCursor
     } = props;
 
     return (
@@ -38,7 +42,13 @@ const TabelaInventario = (props) => {
                         <TableCell align="center">{item.quantidade}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Definir alerta" placement="right">
-                                <IconButton onClick={() => { setOpenDefinir(true); setIdAlerta(item.id); }}>
+                                <IconButton 
+                                    onClick={() => {
+                                        getRegistro('inventario', item.id, setOpenDefinir, setRegistro, setCursor);
+                                        setIdAlerta(item.id);
+                                    }}
+                                    disabled={cursor === 'progress'}
+                                >
                                     <NotificationAddIcon />
                                 </IconButton>
                             </Tooltip>

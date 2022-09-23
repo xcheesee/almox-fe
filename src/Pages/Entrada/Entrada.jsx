@@ -8,7 +8,7 @@ import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 
-const Entrada = ({ setSnackbar }) => {
+const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
     const [entradas, setEntradas] = useState([]);
     const [materiais, setMateriais] = useState([]);
     const [metaEntradas, setMetaEntradas] = useState({});
@@ -69,6 +69,8 @@ const Entrada = ({ setSnackbar }) => {
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
+                    locais={locais}
+                    carregandoLocais={carregandoLocais}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao 
@@ -87,6 +89,7 @@ const Entrada = ({ setSnackbar }) => {
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 setSnackbar={setSnackbar}
+                setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesEntrada 
                 openDetalhes={openDetalhes} 

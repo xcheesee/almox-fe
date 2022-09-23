@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { 
     Box,
     Typography,
@@ -15,9 +15,12 @@ import style from './style';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock'
+import DialogLogout from '../DialogLogout';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+    const [openLogout, setOpenLogout] = useState(false);
+
     const username = localStorage.getItem('username');
     const location = useLocation();
     const navigate = useNavigate();
@@ -62,7 +65,7 @@ const Header = () => {
                             </Tooltip>
 
                             <Tooltip title="Sair">
-                                <IconButton onClick={logout}>
+                                <IconButton onClick={() => setOpenLogout(true)}>
                                     <LogoutIcon fontSize="small" />
                                 </IconButton>
                             </Tooltip>
@@ -70,6 +73,12 @@ const Header = () => {
                         </Box>
                 }
             </Box>
+
+            <DialogLogout 
+                fnLogout={logout}
+                openLogout={openLogout}
+                setOpenLogout={setOpenLogout}
+            />
 
             <Dialog open={openAltSenha} fullWidth maxWidth="md">
                 <DialogTitle>Alterar Senha</DialogTitle>

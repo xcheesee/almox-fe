@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -6,16 +6,22 @@ import {
   DialogActions,
   TextField,
   Box,
-  Button
+  Button,
+  CircularProgress
 } from '@mui/material';
+import { headers } from '../../common/utils';
 
 const DialogDefinirAlerta = (props) => {
   const {
     openDefinir,
     setOpenDefinir,
     idAlerta,
-    setIdAlerta
+    setIdAlerta,
+    registro,
+    setSnackbar
   } = props;
+
+  const [carregando, setCarregando] = useState(false);
 
   const cancelar = () => {
     setOpenDefinir(false);
@@ -26,10 +32,40 @@ const DialogDefinirAlerta = (props) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
-    console.log({
-      id: idAlerta,
-      ...inputObject
-    })
+    
+    const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
+    const options = {
+      method: 'PUT',
+      headers: {...headers, 'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        ...registro, 
+        ...inputObject
+      })
+    };
+
+    setCarregando(true);
+
+    fetch(url, options)
+      .then(res => {
+        if (res.ok) {
+          setSnackbar({
+            open: true, 
+            severity: 'success', 
+            message: `Alerta definido com sucesso!`
+          });
+          setOpenDefinir(false);
+          setCarregando(false);
+          return(res.json());
+        } else {
+          setSnackbar({
+            open: true, 
+            severity: 'error', 
+            message: `Não foi possível definir o alerta (Erro ${res.status})`
+          });
+          setCarregando(false);
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   return (
@@ -45,7 +81,8 @@ const DialogDefinirAlerta = (props) => {
         >
           <TextField
             label="Quantidade"
-            name="quantidade"
+            defaultValue={registro.qtd_alerta}
+            name="qtd_alerta"
             margin="dense"
             fullWidth
           />
@@ -55,7 +92,11 @@ const DialogDefinirAlerta = (props) => {
         <Button onClick={cancelar}>
           Cancelar
         </Button>
-        <Button type="submit" form="quantidade-alerta">
+        <Button type="submit" form="quantidade-alerta" disabled={carregando}>
+          {carregando
+            ? <CircularProgress size="1rem" className="mr-2" />
+            : ""
+          }
           Enviar
         </Button>
       </DialogActions>

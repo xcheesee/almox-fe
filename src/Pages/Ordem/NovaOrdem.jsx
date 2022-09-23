@@ -4,8 +4,17 @@ import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 
-const NovaOrdem = ({ setSnackbar }) => {
-    const [materiais, setMateriais] = useState([{ material: '', quantidade: '' }]);
+const NovaOrdem = ({ setSnackbar, locais, carregandoLocais }) => {
+    const [materiais, setMateriais] = useState([{ 
+        id: '',
+        tipo: '', 
+        matDesabilitado: true,
+        mats:[],
+        currMat: '',
+        qtdDesabilitado: true,
+        quantidade: '',
+        medida: '',
+    }]);
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
@@ -23,6 +32,8 @@ const NovaOrdem = ({ setSnackbar }) => {
                 setCarregando={setCarregando}
                 navigate={navigate}
                 setSnackbar={setSnackbar}
+                locais={locais}
+                carregandoLocais={carregandoLocais}
             />
             <DialogCancelar
                 paginaAnterior="ordem de serviço"

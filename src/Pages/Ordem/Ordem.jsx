@@ -6,9 +6,11 @@ import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
+import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 
-const Ordem = ({ setSnackbar }) => {
+const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
     const [ordens, setOrdens] = useState([]);
+    const [materiais, setMateriais] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
@@ -21,9 +23,11 @@ const Ordem = ({ setSnackbar }) => {
     const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
+    const [openDetalhes, setOpenDetalhes] = useState(false);
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
+        setMateriais([]);
         setErrors({});
     }, [page, houveMudanca, filtros])
 
@@ -36,11 +40,13 @@ const Ordem = ({ setSnackbar }) => {
                 setPage={setPage}
                 carregando={carregando}
                 setOpenEditar={setOpenEditar}
+                setMateriais={setMateriais}
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}
                 cursor={cursor}
                 filtros={filtros}
                 setFiltros={setFiltros}
+                setOpenDetalhes={setOpenDetalhes}
             />
             <DialogEditar
                 titulo="Editar ordem de serviço"
@@ -61,6 +67,8 @@ const Ordem = ({ setSnackbar }) => {
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
+                    locais={locais}
+                    carregandoLocais={carregandoLocais}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao
@@ -79,6 +87,13 @@ const Ordem = ({ setSnackbar }) => {
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 setSnackbar={setSnackbar}
+                setHouveMudanca={setHouveMudanca}
+            />
+            <DialogDetalhesOrdem 
+                openDetalhes={openDetalhes}
+                setOpenDetalhes={setOpenDetalhes}
+                ordem={ordemServico}
+                materiais={materiais}
             />
         </Box>
     );

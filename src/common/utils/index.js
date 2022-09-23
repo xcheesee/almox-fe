@@ -23,8 +23,8 @@ export const formataDateTime = (dateTime) => {
     minute: "2-digit"
   });
 
-  if (dataFormatada === "Invalid Date")
-    return "---";
+  if (dataFormatada === "Invalid Date" || dateTime === null)
+    return "";
 
   return dataFormatada;
 }
@@ -42,7 +42,7 @@ export const headers = {
 }
 
 // Create
-export const enviaForm = (e, materiais) => {
+export const enviaForm = (e, materiais, campo) => {
   e.preventDefault();
 
   const formData = new FormData(e.target);
@@ -52,7 +52,7 @@ export const enviaForm = (e, materiais) => {
     materiais.forEach((material, index) => {
       const entries = Object.entries(material);
       entries.forEach(keyValue => {
-        formData.append(`entrada_items[${index}][${keyValue[0]}]`, keyValue[1]);
+        formData.append(`${campo}[${index}][${keyValue[0]}]`, keyValue[1]);
       });
     });
   }
@@ -60,12 +60,12 @@ export const enviaForm = (e, materiais) => {
   return formData;
 }
 
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais) => {
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
       headers: headers,
-      body: enviaForm(e, materiais)
+      body: enviaForm(e, materiais, campo)
   };
 
   setCarregando(true);
@@ -143,7 +143,7 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) 
       });
 }
 
-export const getMateriais = (rota, id, setMateriais, setOpen, setCursor) => {
+export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
@@ -180,9 +180,9 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   .then(res => res.json())
   .then(data => setter(data.data))
   .then(() => { 
-    if (rota === 'entrada')
-      getMateriais(rota, id, setMateriais, setOpen, setCursor);
-    else {
+    if (setMateriais) {
+      getMateriais(rota, id, setOpen, setCursor, setMateriais);
+    } else {
       setOpen(true);
       setCursor('auto');
     }
@@ -190,12 +190,12 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
 }
 
 // Update
-export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais) => {
+export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
     headers: headers,
-    body: enviaForm(e, materiais)
+    body: enviaForm(e, materiais, campo)
   };
 
   setCarregando(true);
@@ -238,7 +238,7 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
 }
 
 // Delete
-export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
+export const excluiRegistro = (rota, id, setHouveMudanca, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'DELETE',
@@ -251,6 +251,7 @@ export const excluiRegistro = (rota, id, setOpenExcluir, setOpenEditar, setCarre
   fetch(urlCompleta, options)
     .then(res => {
       if (res.ok) {
+        setHouveMudanca(prev => !prev);
         setOpenEditar(false);
         setCarregando(false);
         setSnackbar({

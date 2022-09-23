@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     MenuItem,
     TextField,
@@ -8,6 +8,7 @@ import {
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
 import CampoLocais from '../CampoLocais';
+import BoxMateriais from '../BoxMateriais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
@@ -21,13 +22,21 @@ const FormOrdemServico = (props) => {
         setOpenConfirmar, 
         navigate, 
         acao, 
+        materiais,
         setSnackbar, 
         setHouveMudanca, 
         errors,
         setErrors,
+        locais,
+        carregandoLocais
     } = props;
 
+    const [materiaisInterno, setMateriaisInterno] = useState(materiais);
+    
+    useEffect(() => setMateriaisInterno(materiais), [materiais]);
+
     return (
+        <>
         <FormContainer
             id="nova-ordem"
             onSubmit={(e) => {
@@ -42,7 +51,9 @@ const FormOrdemServico = (props) => {
                         setOpenConfirmar,
                         setSnackbar,
                         'Ordem de serviço',
-                        setErrors
+                        setErrors,
+                        materiaisInterno,
+                        'ordem_servico_items'
                     )
                     : enviaNovoForm(
                         e, 
@@ -53,7 +64,9 @@ const FormOrdemServico = (props) => {
                         navigate,
                         setSnackbar,
                         'Ordem de serviço',
-                        setErrors
+                        setErrors,
+                        materiaisInterno,
+                        'ordem_servico_items'
                     )
             }}
         >
@@ -101,6 +114,8 @@ const FormOrdemServico = (props) => {
                 defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors.origem_id || ""}
+                locais={locais}
+                carregando={carregandoLocais}
                 required
             />
 
@@ -110,6 +125,8 @@ const FormOrdemServico = (props) => {
                 defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
+                locais={locais}
+                carregando={carregandoLocais}
                 required
             />
         
@@ -189,8 +206,21 @@ const FormOrdemServico = (props) => {
                         fullWidth
                     />
                 </Box>
+
             </Box>
         </FormContainer>
+        
+        {acao === 'editar'
+        ?
+            ""
+        :
+            <BoxMateriais 
+                label="Material utilizado"
+                materiais={materiaisInterno}
+                setMateriais={setMateriaisInterno}
+            />
+        }
+        </>
     );
 }
     

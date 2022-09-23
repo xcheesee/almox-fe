@@ -21,7 +21,7 @@ const cabecalhos = [
     "Ação"
 ];
 
-const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setCursor, cursor }) => {
+const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setMateriais, setCursor, cursor, setOpenDetalhes }) => {
     return (
         <Tabela cabecalhos={cabecalhos} carregando={carregando}>
             {ordens.map(ordem => (
@@ -37,14 +37,17 @@ const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setCu
                         <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
-                                <IconButton disabled={cursor === 'progress'}>
+                                <IconButton 
+                                    disabled={cursor === 'progress'}
+                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais) }
+                                >
                                     <ManageSearchIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Editar" placement="top">
                                 <IconButton 
                                     disabled={cursor === 'progress'} 
-                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor) }
+                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
                                 >
                                     <EditIcon />
                                 </IconButton>
