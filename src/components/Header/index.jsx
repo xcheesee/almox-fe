@@ -4,22 +4,15 @@ import {
     Typography,
     IconButton,
     Tooltip,
-    Dialog, 
-    DialogTitle, 
-    DialogContent, 
-    DialogActions, 
-    Button,
-    TextField,
-    CircularProgress,
 } from '@mui/material';
 import style from './style';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import DialogLogout from '../DialogLogout';
 import DialogAltSenh  from '../DialogAltSenh';
-import { Link, resolvePath, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { token } from '../../common/utils';
 
 const Header = () => {
     const [openLogout, setOpenLogout] = useState(false);
@@ -29,6 +22,7 @@ const Header = () => {
     const navigate = useNavigate();
     const [openAltSenha, setOpenAltSenha] = useState(false)
     const [carregando, setCarregando] = useState(false)
+    const [pwResponse, setPwResponse] = useState('')
 
     const logout = () => {
         localStorage.removeItem('access_token');
@@ -39,6 +33,29 @@ const Header = () => {
 
     const showSenhaForm = () => {
         setOpenAltSenha(true)
+    }
+
+    const newPwRequest = async (formData) => {
+        const url = new URL(
+            `${process.env.REACT_APP_API_URL}/alterar_senha`
+        );
+        
+        const headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+        
+        let body = formData;
+        
+        setCarregando(true)
+        const res = await fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(body),
+        })
+        console.log(res)
+        return setPwResponse(res.status)
     }
 
     return (
@@ -89,6 +106,14 @@ const Header = () => {
                 setOpenAltSenha={setOpenAltSenha}
                 carregando={carregando}
                 setCarregando={setCarregando}
+                pwRequest={newPwRequest}
+                pwRes={pwResponse}
+            />
+            
+            <DialogLogout 
+                fnLogout={logout}
+                openLogout={openLogout}
+                setOpenLogout={setOpenLogout}
             />
             
         </Box>
