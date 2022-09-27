@@ -15,7 +15,6 @@ const Login = () => {
 
         const formData = new FormData(e.target);
         const inputObject = Object.fromEntries(formData);
-
         const url = `${process.env.REACT_APP_API_URL}/login`;
         const options = {
             method: 'POST',
@@ -32,6 +31,7 @@ const Login = () => {
                     setCarregando(false);
                     return res.json()
                         .then(data => {
+                            localStorage.setItem('usermail', inputObject.email)
                             localStorage.setItem('access_token', `${data.token_type} ${data.access_token}`);
                             localStorage.setItem('username', data.username);
                             localStorage.setItem('departamentos', JSON.stringify(data.departamentos));

@@ -38,7 +38,6 @@ const DialogAltSenh = ({openAltSenha, setOpenAltSenha, carregando, setCarregando
                                 onSubmit={async (e) => {
                                     e.preventDefault()
                                     const formData = Object.fromEntries(new FormData(e.target))
-                                    console.log(formData)
                                     setCarregando(true)
                                     const res = await pwRequest(formData)
                                     setReqResponse(res)
@@ -49,7 +48,8 @@ const DialogAltSenh = ({openAltSenha, setOpenAltSenha, carregando, setCarregando
                                     label="Email"
                                     name="email"
                                     id="email"
-                                    required
+                                    value={localStorage.getItem('usermail')}
+                                    disabled
                                 />
                                 <TextField
                                     label="Senha Atual"
