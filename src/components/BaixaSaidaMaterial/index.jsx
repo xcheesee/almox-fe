@@ -11,9 +11,36 @@ import style from './style';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import TituloTexto from '../TituloTexto';
-import { formataDateTime } from '../../common/utils';
+import { formataDateTime, headers } from '../../common/utils';
 
 const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
+  const enviaBaixa = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const inputObject = Object.fromEntries(formData);
+    let arr = [];
+    
+    Object.entries(inputObject).forEach(item => {
+      let index = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$1');
+      let key = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$2');
+      
+      arr[index] = { ...arr[index], [`${key}`]: item[1]};
+    });
+    
+    const items = { ordem_servico_items: [...arr] };
+    const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/baixa`;
+    const options = {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify(items)
+    };
+
+    fetch(url, options)
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+  }
+
   return (
     <ContainerPrincipal>
       <Titulo voltaPara="/ordemservico" carregando={carregando}>
@@ -80,11 +107,16 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
           Material utilizado
         </Typography>
 
-        <Collapse in={!carregando}>
+        <Collapse 
+          in={!carregando} 
+          component="form" 
+          id="baixa-items"
+          onSubmit={enviaBaixa}
+        >
           {
             materiais.length > 0
             ?
-              materiais.map(material => (
+              materiais.map((material, index) => (
                 <Paper sx={style.paperBg} key={material.id}>
                   <Paper className='p-4 grid grid-cols-2 items-center'>
                     <Typography>{material.item}</Typography>
@@ -97,21 +129,32 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
                         disabled
                       />
 
+                      {/* adiciona o id ao FormData */}
+                      <input 
+                        type="text" 
+                        name={`ordem_servico_items[${index}].id`} 
+                        defaultValue={material.id} 
+                        style={{ display: 'none' }} 
+                      />
+
                       <TextField
                         label="Enviado"
                         defaultValue={material.enviado}
+                        name={`ordem_servico_items[${index}].enviado`}
                         size="small"
                       />
 
                       <TextField
                         label="Usado"
                         defaultValue={material.usado}
+                        name={`ordem_servico_items[${index}].usado`}
                         size="small"
                       />
 
                       <TextField
                         label="Retorno"
                         defaultValue={material.retorno}
+                        name={`ordem_servico_items[${index}].retorno`}
                         size="small"
                       />
                     </Box>
@@ -130,6 +173,8 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
         </Button>
         <Button
           variant="contained"
+          type="submit"
+          form="baixa-items"
         >
           Enviar
         </Button>
@@ -139,3 +184,26 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
 }
 
 export default BaixaSaidaMaterial;
+
+// {
+//   "ordem_servico_items": [
+//     {
+//       "id":"10",
+//       "enviado":"6",
+//       "usado":"4",
+//       "retorno":"2"
+//     },
+//     {
+//       "id":"11",
+//       "enviado":"6",
+//       "usado":"6",
+//       "retorno":"0"
+//     },
+//     {
+//       "id":"12",
+//       "enviado":"1",
+//       "usado":"1",
+//       "retorno":"0"
+//     }
+//   ]
+// }
