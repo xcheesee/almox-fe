@@ -91,7 +91,7 @@ const DialogAltSenh = ({openAltSenha, setOpenAltSenha, carregando, setCarregando
             :
             <>
                 <DialogContent>{reqResponse.message}</DialogContent>
-                <DialogActions sx={{ justifyContent: 'space-between' , padding: "0 0 1rem 2rem"}}>
+                <DialogActions sx={{ justifyContent: 'center'}}>
                     <Box sx={{ display: 'flex', margin: '0.5rem', gap: '1rem' }}>
                         <Button
                             onClick={async () => {
