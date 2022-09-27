@@ -45,11 +45,12 @@ const Header = () => {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
         };
+        const data = {...formData, email: localStorage.getItem('usermail')}
 
         const res = await fetch(url, {
             method: "POST",
             headers: headers,
-            body: JSON.stringify(formData),
+            body: JSON.stringify(data),
         })
         return await res.json()
     }
