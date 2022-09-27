@@ -27,6 +27,7 @@ const Header = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('departamentos');
         localStorage.removeItem('username');
+        localStorage.removeItem('usermail')
         navigate('/', { replace: true });
     }
 
