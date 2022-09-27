@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   Box,
@@ -6,14 +6,20 @@ import {
   TextField,
   Button,
   Collapse,
+  CircularProgress
 } from '@mui/material';
 import style from './style';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import TituloTexto from '../TituloTexto';
 import { formataDateTime, headers } from '../../common/utils';
+import { useNavigate } from 'react-router-dom';
 
-const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
+const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, setSnackbar }) => {
+  const [carregandoBaixa, setCarregandoBaixa] = useState(false);
+
+  const navigate = useNavigate();
+
   const enviaBaixa = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -35,8 +41,29 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
       body: JSON.stringify(items)
     };
 
+    setCarregandoBaixa(true);
+
     fetch(url, options)
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          setCarregandoBaixa(false);
+          setSnackbar({
+            open: true,
+            severity: 'success',
+            message: 'Baixa da ordem de serviço efetuada com sucesso!'
+          });
+          navigate('/ordemservico', { replace: true });
+          return res.json();
+        } else {
+          setCarregandoBaixa(false);
+          setSnackbar({
+            open: true,
+            severity: 'error',
+            message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
+          });
+          return res.json();
+        }
+      })
       .then(data => console.log(data))
       .catch(err => console.log(err));
   }
@@ -176,6 +203,10 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
           type="submit"
           form="baixa-items"
         >
+          {carregandoBaixa
+            ? <CircularProgress color="color" size="1rem" className='mr-2' />
+            : ""
+          }
           Enviar
         </Button>
       </Box>
@@ -184,26 +215,3 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais }) => {
 }
 
 export default BaixaSaidaMaterial;
-
-// {
-//   "ordem_servico_items": [
-//     {
-//       "id":"10",
-//       "enviado":"6",
-//       "usado":"4",
-//       "retorno":"2"
-//     },
-//     {
-//       "id":"11",
-//       "enviado":"6",
-//       "usado":"6",
-//       "retorno":"0"
-//     },
-//     {
-//       "id":"12",
-//       "enviado":"1",
-//       "usado":"1",
-//       "retorno":"0"
-//     }
-//   ]
-// }

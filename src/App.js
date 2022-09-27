@@ -88,7 +88,7 @@ function App() {
 
         <Route path="/ordemservico/baixa/:id" element={
           <Auth>
-            <Baixa />
+            <Baixa setSnackbar={setSnackbar} />
           </Auth>
         } />
 
