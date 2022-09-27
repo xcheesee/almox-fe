@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Box,
     IconButton,
@@ -14,11 +14,13 @@ import {
 import style from './style';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-const DialogAltSenh = ({openAltSenha, setOpenAltSenha, carregando, setCarregando, pwRequest, pwRes}) => {
+const DialogAltSenh = ({openAltSenha, setOpenAltSenha, carregando, setCarregando, pwRequest}) => {
+    const [reqResponse, setReqResponse] = useState('')
+
     return(
-        <Dialog open={openAltSenha} fullWidth={pwRes === ''} maxWidth="md">
+        <Dialog open={openAltSenha} fullWidth={reqResponse === ''} maxWidth="md">
             
-           { pwRes === ''
+           { reqResponse === ''
            ? <>
                <DialogTitle>
                     <Tooltip title="Voltar">
@@ -38,15 +40,10 @@ const DialogAltSenh = ({openAltSenha, setOpenAltSenha, carregando, setCarregando
                             e.preventDefault()
                             const formData = Object.fromEntries(new FormData(e.target))
                             console.log(formData)
-                            //simulacao de envio
+                            setCarregando(true)
                             const res = await pwRequest(formData)
-                            console.log(res)
-                            await(new Promise((res, rej) => {
-                                setTimeout(() => res('true'), 3000)
-                            }))
-                            //simulacao de envio
-                            setOpenAltSenha(false)
-                            setCarregando(false)
+                            setReqResponse(res)
+                            setCarregando(false)         
                         }}
                     >
                         <TextField
@@ -91,7 +88,26 @@ const DialogAltSenh = ({openAltSenha, setOpenAltSenha, carregando, setCarregando
                     </Box>
                 </DialogActions>
            </>
-            :<DialogContent>Senha alterada com sucesso!</DialogContent>
+            :
+            <>
+                <DialogContent>{reqResponse.message}</DialogContent>
+                <DialogActions sx={{ justifyContent: 'space-between' , padding: "0 0 1rem 2rem"}}>
+                    <Box sx={{ display: 'flex', margin: '0.5rem', gap: '1rem' }}>
+                        <Button
+                            onClick={async () => {
+                                setOpenAltSenha(false)
+                                //timeout para evitar flicker de dialog
+                                await(new Promise((res, rej) => {
+                                    setTimeout(() => res('true'), 500)
+                                }))
+                                setReqResponse('')
+                            }}
+                            form="senha"
+                            variant="contained" sx={{ gap: '0.5rem' }}
+                        >Ok</Button>
+                    </Box>
+                </DialogActions>
+            </>
             }
 
         </Dialog>

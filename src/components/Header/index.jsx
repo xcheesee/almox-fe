@@ -22,7 +22,6 @@ const Header = () => {
     const navigate = useNavigate();
     const [openAltSenha, setOpenAltSenha] = useState(false)
     const [carregando, setCarregando] = useState(false)
-    const [pwResponse, setPwResponse] = useState('')
 
     const logout = () => {
         localStorage.removeItem('access_token');
@@ -45,17 +44,13 @@ const Header = () => {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
         };
-        
-        let body = formData;
-        
-        setCarregando(true)
+
         const res = await fetch(url, {
             method: "POST",
             headers: headers,
-            body: JSON.stringify(body),
+            body: JSON.stringify(formData),
         })
-        console.log(res)
-        return setPwResponse(res.status)
+        return await res.json()
     }
 
     return (
@@ -107,15 +102,7 @@ const Header = () => {
                 carregando={carregando}
                 setCarregando={setCarregando}
                 pwRequest={newPwRequest}
-                pwRes={pwResponse}
-            />
-            
-            <DialogLogout 
-                fnLogout={logout}
-                openLogout={openLogout}
-                setOpenLogout={setOpenLogout}
-            />
-            
+            />  
         </Box>
     );
 }
