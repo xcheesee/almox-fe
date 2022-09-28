@@ -3,7 +3,7 @@ import { headers } from '../../common/utils';
 import BaixaSaidaMaterial from '../../components/BaixaSaidaMaterial';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const Baixa = () => {
+const Baixa = ({ setSnackbar }) => {
   let params = useParams();
   const navigate = useNavigate();
   const [ordemServico, setOrdemServico] = useState({});
@@ -40,7 +40,13 @@ const Baixa = () => {
   }, [params, navigate]);
 
   return (
-    <BaixaSaidaMaterial ordemServico={ordemServico} carregando={carregando} id={params.id} materiais={materiais} />
+    <BaixaSaidaMaterial 
+      ordemServico={ordemServico}
+      carregando={carregando} 
+      id={params.id} 
+      materiais={materiais} 
+      setSnackbar={setSnackbar}  
+    />
   );
 }
 
