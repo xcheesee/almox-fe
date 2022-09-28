@@ -31,9 +31,7 @@ const Header = () => {
         navigate('/', { replace: true });
     }
 
-    const showSenhaForm = () => {
-        setOpenAltSenha(true)
-    }
+    const showSenhaForm = () => setOpenAltSenha(true)
 
     const newPwRequest = async (formData) => {
         const url = new URL(
@@ -52,6 +50,7 @@ const Header = () => {
             headers: headers,
             body: JSON.stringify(data),
         })
+        
         return await res.json()
     }
 
