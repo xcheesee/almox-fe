@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Typography,
   Box,
@@ -12,62 +12,9 @@ import style from './style';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import TituloTexto from '../TituloTexto';
-import { formataDateTime, headers } from '../../common/utils';
-import { useNavigate } from 'react-router-dom';
+import { formataDateTime } from '../../common/utils';
 
-const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, setSnackbar }) => {
-  const [carregandoBaixa, setCarregandoBaixa] = useState(false);
-
-  const navigate = useNavigate();
-
-  const enviaBaixa = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const inputObject = Object.fromEntries(formData);
-    let arr = [];
-    
-    Object.entries(inputObject).forEach(item => {
-      let index = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$1');
-      let key = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$2');
-      
-      arr[index] = { ...arr[index], [`${key}`]: item[1]};
-    });
-    
-    const items = { ordem_servico_items: [...arr] };
-    const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/baixa`;
-    const options = {
-      method: 'POST',
-      headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify(items)
-    };
-
-    setCarregandoBaixa(true);
-
-    fetch(url, options)
-      .then(res => {
-        if (res.ok) {
-          setCarregandoBaixa(false);
-          setSnackbar({
-            open: true,
-            severity: 'success',
-            message: 'Baixa da ordem de serviço efetuada com sucesso!'
-          });
-          navigate('/ordemservico', { replace: true });
-          return res.json();
-        } else {
-          setCarregandoBaixa(false);
-          setSnackbar({
-            open: true,
-            severity: 'error',
-            message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
-          });
-          return res.json();
-        }
-      })
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
-  }
-
+const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErros, errors, setErrors, carregandoBaixa }) => {
   return (
     <ContainerPrincipal>
       <Titulo voltaPara="/ordemservico" carregando={carregando}>
@@ -138,14 +85,14 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, setSnackb
           in={!carregando} 
           component="form" 
           id="baixa-items"
-          onSubmit={enviaBaixa}
+          onSubmit={checaErros}
         >
+          <Paper sx={style.paperBg}>
           {
             materiais.length > 0
             ?
               materiais.map((material, index) => (
-                <Paper sx={style.paperBg} key={material.id}>
-                  <Paper className='p-4 grid grid-cols-2 items-center'>
+                  <Paper className='p-4 grid grid-cols-2 items-center' key={material.id}>
                     <Typography>{material.item}</Typography>
 
                     <Box className='flex gap-4'>
@@ -183,14 +130,17 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, setSnackb
                         defaultValue={material.retorno}
                         name={`ordem_servico_items[${index}].retorno`}
                         size="small"
+                        onBlur={() => setErrors({})}
+                        error={errors.hasOwnProperty(`retorno[${index}]`)}
+                        helperText={errors[`retorno[${index}]`] || ''}
                       />
                     </Box>
                   </Paper>
-                </Paper>
               ))
             :
               <Typography sx={style.span}>Não há materiais a serem exibidos</Typography>
           }
+          </Paper>
         </Collapse>
       </Box>
 

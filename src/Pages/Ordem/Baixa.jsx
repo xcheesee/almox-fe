@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { headers } from '../../common/utils';
 import BaixaSaidaMaterial from '../../components/BaixaSaidaMaterial';
+import DialogConfirmaBaixa from '../../components/DialogConfirmaBaixa';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const Baixa = ({ setSnackbar }) => {
@@ -9,6 +10,10 @@ const Baixa = ({ setSnackbar }) => {
   const [ordemServico, setOrdemServico] = useState({});
   const [materiais, setMateriais] = useState([]);
   const [carregando, setCarregando] = useState(true);
+  const [openBaixa, setOpenBaixa] = useState(false);
+  const [carregandoBaixa, setCarregandoBaixa] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}`;
@@ -37,16 +42,94 @@ const Baixa = ({ setSnackbar }) => {
         }
       })
       .catch(err => console.log(err));
-  }, [params, navigate]);
+  }, [params.id, navigate]);
+
+  const enviaBaixa = () => {
+    setOpenBaixa(false);
+
+    const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/baixa`;
+    const options = {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify(items)
+    };
+  
+    setCarregandoBaixa(true);
+  
+    fetch(url, options)
+      .then(res => {
+        if (res.ok) {
+          setCarregandoBaixa(false);
+          setSnackbar({
+            open: true,
+            severity: 'success',
+            message: 'Baixa da ordem de serviço efetuada com sucesso!'
+          });
+          navigate('/ordemservico', { replace: true });
+          return res.json();
+        } else {
+          setCarregandoBaixa(false);
+          setSnackbar({
+            open: true,
+            severity: 'error',
+            message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
+          });
+          return res.json();
+        }
+      })
+      .then(data => data)
+      .catch(err => console.log(err));
+  }
+
+  const checaErros = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const inputObject = Object.fromEntries(formData);
+    let arr = [];
+    let objErros = {};
+    
+    Object.entries(inputObject).forEach(item => {
+      let index = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$1');
+      let key = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$2');
+      
+      arr[index] = { ...arr[index], [`${key}`]: item[1]};
+    });
+
+    arr.forEach((item, index) => {
+      if (item.retorno > item.enviado)
+        objErros = { ...objErros, [`retorno[${index}]`]: 'O valor de retorno não pode ser maior do que o valor de enviado' };
+    });
+    
+    setItems({ ordem_servico_items: [...arr] });
+    setErrors(objErros);
+
+    if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 )
+      setOpenBaixa(true);
+  }
 
   return (
-    <BaixaSaidaMaterial 
-      ordemServico={ordemServico}
-      carregando={carregando} 
-      id={params.id} 
-      materiais={materiais} 
-      setSnackbar={setSnackbar}  
-    />
+    <>
+      <BaixaSaidaMaterial 
+        ordemServico={ordemServico}
+        carregando={carregando} 
+        id={params.id} 
+        materiais={materiais} 
+        setSnackbar={setSnackbar}
+        checaErros={checaErros}
+        errors={errors}
+        setErrors={setErrors}
+        setOpenBaixa={setOpenBaixa}
+        carregandoBaixa={carregandoBaixa}
+      />
+
+      <DialogConfirmaBaixa 
+        openBaixa={openBaixa}
+        setOpenBaixa={setOpenBaixa}
+        id={params.id}
+        enviaBaixa={enviaBaixa}
+      />
+    </>
   );
 }
 
