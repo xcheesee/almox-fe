@@ -13,6 +13,7 @@ import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
 import TituloTexto from '../TituloTexto';
 import { formataDateTime } from '../../common/utils';
+import { Link } from 'react-router-dom';
 
 const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErros, errors, setErrors, carregandoBaixa }) => {
   return (
@@ -145,9 +146,11 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
       </Box>
 
       <Box className="flex justify-end gap-4 pt-4">
-        <Button>
-          Cancelar
-        </Button>
+        <Link to="/ordemservico">
+          <Button>
+            Cancelar
+          </Button>
+        </Link>
         <Button
           variant="contained"
           type="submit"
