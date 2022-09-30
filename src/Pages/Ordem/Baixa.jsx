@@ -97,15 +97,17 @@ const Baixa = ({ setSnackbar }) => {
     });
 
     arr.forEach((item, index) => {
-      if (item.retorno > item.enviado)
+      if (parseInt(item.retorno) > parseInt(item.enviado)) {
         objErros = { ...objErros, [`retorno[${index}]`]: 'O valor de retorno não pode ser maior do que o valor de enviado' };
+      }
     });
     
     setItems({ ordem_servico_items: [...arr] });
     setErrors(objErros);
 
-    if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 )
+    if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 ) {
       setOpenBaixa(true);
+    }
   }
 
   return (
