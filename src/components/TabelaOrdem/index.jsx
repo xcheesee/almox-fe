@@ -10,6 +10,7 @@ import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
+import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
 
 const cabecalhos = [
@@ -52,13 +53,29 @@ const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setMa
                                     <EditIcon />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Baixa" placement="right">
-                                <Link to={`/ordemservico/baixa/${ordem.id}`}>
-                                    <IconButton disabled={cursor === 'progress'}>
-                                        <GradingIcon />
-                                    </IconButton>
-                                </Link>
-                            </Tooltip>
+                            {
+                                ordem.flg_baixa === 0
+                                ?
+                                    <Tooltip title="Baixa" placement="right" >
+                                        <Link to={`/ordemservico/baixa/${ordem.id}`}>
+                                            <IconButton disabled={cursor === 'progress'}>
+                                                <GradingIcon />
+                                            </IconButton>
+                                        </Link>
+                                    </Tooltip>
+                                :
+                                    <Tooltip title="Imprimir baixa" placement="right" >
+                                        <a 
+                                            href={`${process.env.REACT_APP_API_URL}/ordem_servico/${ordem.id}/baixa_pdf`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            <IconButton disabled={cursor === 'progress'}>
+                                                <PrintIcon />
+                                            </IconButton>
+                                        </a>
+                                    </Tooltip>
+                            }
                         </TableCell>
                     </TableRow>
                 )
