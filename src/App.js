@@ -24,7 +24,7 @@ function App() {
     severity: 'success',
     message: 'Sucesso!'
   });
-  const [locais, setLocais] = useState({});
+  const [locais, setLocais] = useState();
   const [carregandoLocais, setCarregandoLocais] = useState(true);
 
   useEffect(() => {

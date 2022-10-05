@@ -12,7 +12,7 @@ const CampoLocais = ({ name, label, defaultValue, locais, carregando, ...props }
             fullWidth
             {...props}
         >
-            {locais.map(local => (
+            {locais?.map(local => (
                 <MenuItem key={local.id} value={local.id}>
                     {local.nome}
                 </MenuItem>
