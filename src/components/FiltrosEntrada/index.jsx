@@ -67,7 +67,7 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
                 {                                    
                     tiposMats.data
                         ?.map((val, i) => 
-                            <MenuItem value={val.id} key={i} >
+                            <MenuItem value={val.nome} key={i} >
                                 {primeiraLetraMaiuscula(val.nome)}
                             </MenuItem>)
                 }

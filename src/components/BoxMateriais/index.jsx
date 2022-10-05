@@ -107,8 +107,7 @@ const BoxMateriais = (props) => {
             <Paper sx={style.container} >
                 {materiais.map((material, index) => {
                     return (
-                        <Fade in={true} key={index} >
-                            <Paper className="p-4 mb-4 flex gap-4">
+                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[1fr_1fr_max-content]">
                                 <Selecao
                                     label="Tipo de material"
                                     name="tipo_material"
@@ -126,50 +125,55 @@ const BoxMateriais = (props) => {
                                                 </MenuItem>)
                                     }
                                 </Selecao>
+                                {
+                                    material.tipo != ""
+                                        ?<Fade in={true} key={index} >
+                                            <Box className='row-start-2 col-span-2 flex gap-4'>
+                                                <Selecao
+                                                /* desabilitado se valor anterior nao selecionado */
+                                                label="Material"
+                                                name="id"
+                                                size="small"
+                                                disabled={material.matDesabilitado}
+                                                value={material.currMat}
+                                                onChange={(e, c) => handleChange(e, c, index)}
+                                                fullWidth
+                                                >
+                                                {
+                                                material.mats
+                                                    ?.map((val, matLoc) => 
+                                                        <MenuItem value={matLoc} key={matLoc}>
+                                                            {val.nome}
+                                                        </MenuItem>
+                                                        )
+                                                }
+                                                </Selecao>
 
-                                <Selecao
-                                    /* desabilitado se valor anterior nao selecionado */
-                                    label="Material"
-                                    name="id"
-                                    size="small"
-                                    disabled={material.matDesabilitado}
-                                    value={material.currMat}
-                                    onChange={(e, c) => handleChange(e, c, index)}
-                                    fullWidth
-                                >
-                                    {
-                                    material.mats
-                                        ?.map((val, matLoc) => 
-                                            <MenuItem value={matLoc} key={matLoc}>
-                                                {val.nome}
-                                            </MenuItem>
-                                            )
-                                    }
-                                </Selecao>
-
-                                <TextField
-                                    /* desabilitado se valor anterior nao selecionado */
-                                    name="quantidade"
-                                    label="Quantidade"
-                                    disabled={material.qtdDesabilitado}
-                                    value={material.quantidade}
-                                    onChange={(e) => handleQtdChange(e, index)}
-                                    fullWidth
-                                    size="small"
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="end">{material.medida}</InputAdornment>,
-                                    }}
-                                />
-
+                                                <TextField
+                                                    /* desabilitado se valor anterior nao selecionado */
+                                                    name="quantidade"
+                                                    label="Quantidade"
+                                                    disabled={material.qtdDesabilitado}
+                                                    value={material.quantidade}
+                                                    onChange={(e) => handleQtdChange(e, index)}
+                                                    fullWidth
+                                                    size="small"
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment position="end">{material.medida}</InputAdornment>,
+                                                    }}
+                                                />
+                                            </Box>
+                                        </Fade>
+                                        : ""
+                            }
                                 <Tooltip title="Remover" placement="right">
-                                    <Box>
+                                    <Box className='col-start-3 row-span-full self-center'>
                                         <IconButton onClick={() => removeMaterial(index)} disabled={index === 0}>
                                             <CloseIcon />
                                         </IconButton>
                                     </Box>
                                 </Tooltip>
-                            </Paper>
-                        </Fade>
+                            </Paper> 
                     );
                 })}
 
