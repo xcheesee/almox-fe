@@ -143,9 +143,11 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) 
   fetch(url, options)
       .then(res => res.json())
       .then(data => {
-          setCarregando(false);
-          setData(data.data);
-          setMeta(data.meta);
+          setTimeout(() => {
+            setCarregando(false);
+            setData(data.data);
+            setMeta(data.meta);
+          }, 250);
       });
 }
 
