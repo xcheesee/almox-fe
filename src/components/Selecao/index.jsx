@@ -21,6 +21,7 @@ const Selecao = (props) => {
                 name={name}
                 defaultValue={defaultValue || ""}
                 value={value}
+                disabled={carregando || false}
                 onChange={other.onChange}
             >
                 {other.children}

@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, MenuItem } from '@mui/material';
 import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
+import { primeiraLetraMaiuscula, getMatTipos } from '../../common/utils';
 
 const FiltrosEntrada = ({setFiltros, setPage}) => {
-    const [datas, setDatas] = useState([''])
+    const [datas, setDatas] = useState(['']);
+    const [tiposMats, setTiposMats] = useState({});
+    const [carregando, setCarregando] = useState(true);
+
+    useEffect(() => {
+        (async () => {
+            const data = await getMatTipos();
+            setTiposMats(data);
+            setCarregando(false);
+        })();
+    }, [])
+
     return (
         <Filtros
             //valor da data de entrada e funcao para limpar tal data
@@ -50,12 +62,15 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
             <Selecao
                 label="Tipo"
                 name="tipo"
+                carregando={carregando}
             >
-                <MenuItem value={1}>Teste 1</MenuItem>
-                <MenuItem value={2}>Teste 2</MenuItem>
-                <MenuItem value={3}>Teste 3</MenuItem>
-                <MenuItem value={4}>Teste 4</MenuItem>
-                <MenuItem value={5}>Teste 5</MenuItem>
+                {                                    
+                    tiposMats.data
+                        ?.map((val, i) => 
+                            <MenuItem value={val.id} key={i} >
+                                {primeiraLetraMaiuscula(val.nome)}
+                            </MenuItem>)
+                }
             </Selecao>
         </Filtros>
     );
