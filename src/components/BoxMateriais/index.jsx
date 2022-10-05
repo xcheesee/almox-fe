@@ -107,7 +107,7 @@ const BoxMateriais = (props) => {
             <Paper sx={style.container} >
                 {materiais.map((material, index) => {
                     return (
-                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[1fr_1fr_max-content]">
+                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[1fr_1fr_max-content]" key={`${index}paper`}>
                                 <Selecao
                                     label="Tipo de material"
                                     name="tipo_material"
