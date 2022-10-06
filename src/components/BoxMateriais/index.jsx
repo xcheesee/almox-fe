@@ -107,6 +107,7 @@ const BoxMateriais = (props) => {
             <Paper sx={style.container} >
                 {materiais.map((material, index) => {
                     return (
+                        <Fade in={true} key={index} >
                             <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[1fr_1fr_max-content]" key={`${index}paper`}>
                                 <Selecao
                                     label="Tipo de material"
@@ -127,8 +128,8 @@ const BoxMateriais = (props) => {
                                 </Selecao>
                                 {
                                     material.tipo != ""
-                                        ?<Fade in={true} key={index} >
-                                            <Box className='row-start-2 col-span-2 flex gap-4'>
+                                        ?<Fade in={true} key={`${index}a`} >
+                                            <Box className='grid col-span-2 grid-cols-2 gap-4 row-start-2'>
                                                 <Selecao
                                                 /* desabilitado se valor anterior nao selecionado */
                                                 label="Material"
@@ -141,14 +142,13 @@ const BoxMateriais = (props) => {
                                                 >
                                                 {
                                                 material.mats
-                                                    ?.map((val, matLoc) => 
+                                                    ?.map((val, matLoc) =>
                                                         <MenuItem value={matLoc} key={matLoc}>
                                                             {val.nome}
                                                         </MenuItem>
                                                         )
                                                 }
                                                 </Selecao>
-
                                                 <TextField
                                                     /* desabilitado se valor anterior nao selecionado */
                                                     name="quantidade"
@@ -173,7 +173,8 @@ const BoxMateriais = (props) => {
                                         </IconButton>
                                     </Box>
                                 </Tooltip>
-                            </Paper> 
+                            </Paper>
+                        </Fade>
                     );
                 })}
 
