@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
     MenuItem,
     TextField,
 } from '@mui/material';
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
-import BoxMateriais from '../BoxMateriais';
+import BoxMateriaisEntrada from '../BoxMateriaisEntrada';
 import CampoLocais from '../CampoLocais';
 import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
@@ -19,7 +19,6 @@ const FormEntradaMaterial = (props) => {
         setOpenConfirmar, 
         navigate, 
         acao, 
-        materiais, 
         setSnackbar, 
         setHouveMudanca, 
         errors,
@@ -28,11 +27,9 @@ const FormEntradaMaterial = (props) => {
         carregandoLocais
     } = props;
 
-    const [materiaisInterno, setMateriaisInterno] = useState(materiais); // evita renderizações desnecessárias
+    const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-    
-    useEffect(() => setMateriaisInterno(materiais), [materiais]);
 
     return (
         <>
@@ -152,8 +149,13 @@ const FormEntradaMaterial = (props) => {
             ?
                 ""
             :
-                <BoxMateriais 
-                    label="Materiais entregues"
+                // <BoxMateriais 
+                //     label="Materiais entregues"
+                //     materiais={materiaisInterno}
+                //     setMateriais={setMateriaisInterno}
+                // />
+
+                <BoxMateriaisEntrada 
                     materiais={materiaisInterno}
                     setMateriais={setMateriaisInterno}
                 />

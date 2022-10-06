@@ -108,7 +108,7 @@ const BoxMateriais = (props) => {
                 {materiais.map((material, index) => {
                     return (
                         <Fade in={true} key={index} >
-                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[1fr_1fr_max-content]" key={`${index}paper`}>
+                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
                                 <Selecao
                                     label="Tipo de material"
                                     name="tipo_material"
@@ -116,6 +116,7 @@ const BoxMateriais = (props) => {
                                     onChange={(e, c) => getMateriaisFromTipos(e, c, index)}
                                     disabled={carregando}
                                     value={material.tipo}
+                                    className="col-span-2"
                                     fullWidth
                                 >
                                     {
@@ -129,7 +130,7 @@ const BoxMateriais = (props) => {
                                 {
                                     material.tipo != ""
                                         ?<Fade in={true} key={`${index}a`} >
-                                            <Box className='grid col-span-2 grid-cols-2 gap-4 row-start-2'>
+                                            <Box className='grid col-span-2 grid-cols-3 gap-4 row-start-2'>
                                                 <Selecao
                                                 /* desabilitado se valor anterior nao selecionado */
                                                 label="Material"
@@ -138,6 +139,7 @@ const BoxMateriais = (props) => {
                                                 disabled={material.matDesabilitado}
                                                 value={material.currMat}
                                                 onChange={(e, c) => handleChange(e, c, index)}
+                                                className="col-span-2"
                                                 fullWidth
                                                 >
                                                 {
