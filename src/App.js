@@ -14,7 +14,7 @@ import NovaOrdem from './Pages/Ordem/NovaOrdem';
 import Baixa from './Pages/Ordem/Baixa';
 import PaginaInventario from './Pages/PaginaInventario';
 import Pagina404 from './Pages/Pagina404';
-import { Routes, Route } from 'react-router';
+import { Routes, Route, useLocation } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
 import { getLocais } from './common/utils';
 
@@ -27,9 +27,12 @@ function App() {
   const [locais, setLocais] = useState();
   const [carregandoLocais, setCarregandoLocais] = useState(true);
 
+  const location = useLocation();
+
   useEffect(() => {
-    getLocais(setCarregandoLocais, setLocais);
-  }, [])
+    if (location.pathname !== '/')
+      getLocais(setCarregandoLocais, setLocais);
+  }, [location.pathname])
 
   return (
     <>

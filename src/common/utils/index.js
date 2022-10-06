@@ -70,7 +70,10 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
-      headers: headers,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('access_token')
+      },
       body: enviaForm(e, materiais, campo)
   };
 
@@ -117,7 +120,10 @@ export const getLocais = (setCarregando, setLocais) => {
   const url = `${process.env.REACT_APP_API_URL}/locais`;
   const options = {
       method: 'GET',
-      headers: headers
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('access_token')
+      }
   };
 
   setCarregando(true);
@@ -135,7 +141,10 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) 
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}`
   const options = {
       method: 'GET',
-      headers: headers
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('access_token')
+      }
   };
 
   setCarregando(true);
@@ -155,7 +164,10 @@ export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
-    headers: headers
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    }
   };
 
   fetch(url, options)
@@ -179,7 +191,10 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
-    headers: headers
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    }
   };
   
   setCursor('progress');
@@ -202,7 +217,10 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
-    headers: headers,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    },
     body: enviaForm(e, materiais, campo)
   };
 
@@ -250,7 +268,10 @@ export const excluiRegistro = (rota, id, setHouveMudanca, setOpenExcluir, setOpe
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'DELETE',
-    headers: headers,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    },
   };
 
   setOpenExcluir(false);
@@ -288,7 +309,7 @@ export const getMatTipos = async () => {
       headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': localStorage.getItem('access_token'),
       },
   };
   const res = await fetch(url, options);
@@ -302,7 +323,7 @@ export const getMatItens = async (tipoRota) => {
       headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': localStorage.getItem('access_token'),
       },
   };
   const res = await fetch(url, options);

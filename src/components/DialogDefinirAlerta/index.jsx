@@ -9,7 +9,6 @@ import {
   Button,
   CircularProgress
 } from '@mui/material';
-import { headers } from '../../common/utils';
 
 const DialogDefinirAlerta = (props) => {
   const {
@@ -36,7 +35,10 @@ const DialogDefinirAlerta = (props) => {
     const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
     const options = {
       method: 'PUT',
-      headers: {...headers, 'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
       body: JSON.stringify({
         ...registro, 
         ...inputObject

@@ -12,8 +12,6 @@ import BoxMateriais from '../BoxMateriais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
-const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-
 const FormOrdemServico = (props) => {
     const { 
         defaultValue, 
@@ -32,6 +30,8 @@ const FormOrdemServico = (props) => {
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
+
+    const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
 

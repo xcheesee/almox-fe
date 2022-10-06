@@ -11,8 +11,6 @@ import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
-const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-
 const FormEntradaMaterial = (props) => {
     const { 
         defaultValue, 
@@ -31,6 +29,8 @@ const FormEntradaMaterial = (props) => {
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState(materiais); // evita renderizações desnecessárias
+
+    const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
 

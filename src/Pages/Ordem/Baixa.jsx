@@ -50,7 +50,11 @@ const Baixa = ({ setSnackbar }) => {
     const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/baixa`;
     const options = {
       method: 'POST',
-      headers: { ...headers, 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('access_token'),
+      },
       body: JSON.stringify(items)
     };
   
