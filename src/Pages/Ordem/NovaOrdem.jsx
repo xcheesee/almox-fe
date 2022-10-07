@@ -18,6 +18,7 @@ const NovaOrdem = ({ setSnackbar, locais, carregandoLocais }) => {
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
+    const [baseSelecionada, setBaseSelecionada] = useState('');
 
     const navigate = useNavigate();
 
@@ -34,6 +35,8 @@ const NovaOrdem = ({ setSnackbar, locais, carregandoLocais }) => {
                 setSnackbar={setSnackbar}
                 locais={locais}
                 carregandoLocais={carregandoLocais}
+                baseSelecionada={baseSelecionada}
+                setBaseSelecionada={setBaseSelecionada}
             />
             <DialogCancelar
                 paginaAnterior="ordem de serviço"

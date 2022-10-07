@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, MenuItem } from '@mui/material';
+import { TextField, MenuItem, Box } from '@mui/material';
 import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
@@ -26,6 +26,17 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
             setFiltros={setFiltros}
             setPage={setPage}
         >
+            <Box className='col-span-2 border-b border-material-border p-1 pt-0'>
+                <CampoDataRange
+                    label={'Data de entrada - faixa de pesquisa'}
+                    intervalo={datas}
+                    onChange={setDatas}
+                    separador={' - '}
+                    placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
+                    size={'lg'}
+                />
+            </Box>
+
             <TextField 
                 label="Processo SEI"
                 name="processo_sei"
@@ -49,20 +60,12 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
                 name="numero_nota_fiscal"
                 InputLabelProps={{ shrink: true }}
             />
-
-            <CampoDataRange
-                label={'Data de entrada - faixa de pesquisa'}
-                intervalo={datas}
-                onChange={setDatas}
-                separador={' - '}
-                placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
-                size={'lg'}
-            />
-
+            
             <Selecao
                 label="Tipo"
                 name="tipo"
                 carregando={carregando}
+                className="col-span-2"
             >
                 {                                    
                     tiposMats.data
