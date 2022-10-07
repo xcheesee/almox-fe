@@ -38,6 +38,7 @@ const DialogDefinirAlerta = (props) => {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': localStorage.getItem('access_token')
       },
       body: JSON.stringify({
         ...registro, 
