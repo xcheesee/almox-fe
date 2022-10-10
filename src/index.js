@@ -29,7 +29,7 @@ const theme = createTheme(
           filledSuccess: {
             backgroundColor: '#2c9153'
           },
-          filleddError: {
+          filledError: {
             backgroundColor: '#912c2c'
           }
         }

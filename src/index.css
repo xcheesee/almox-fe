@@ -17,6 +17,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
+  --rs-picker-value: #676767;
 }
 
 a:hover {
