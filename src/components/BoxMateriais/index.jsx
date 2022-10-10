@@ -22,7 +22,8 @@ const BoxMateriais = (props) => {
         label,
         materiais,
         setMateriais,
-        baseSelecionada
+        baseSelecionada,
+        deptoSelecionado,
     } = props;
     const [tiposMats, setTiposMats] = useState({});
     const [carregando, setCarregando] = useState(true);
@@ -32,8 +33,8 @@ const BoxMateriais = (props) => {
         const tipoAlvoId = element.target.value;
         setMateriais(prev => modMaterial(prev, formIndex, {matDesabilitado: true}));
         
-        const val = await getMatItens(tipoRota);
-        // const val = await getMatItens(`${tipoRota}/${baseSelecionada}`) <--- quando a rota estiver pronta
+        //const val = await getMatItens(tipoRota);
+        const val = await getMatItens(tipoRota, true, baseSelecionada, deptoSelecionado);
         const mod = {
             mats: val.data,
             tipo: tipoAlvoId,

@@ -316,8 +316,11 @@ export const getMatTipos = async () => {
   return await res.json();
 }
 
-export const getMatItens = async (tipoRota) => {
-  const url = `${process.env.REACT_APP_API_URL}/items/tipo/${tipoRota}`;
+export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
+  const url = 
+    ordemServico
+    ? `${process.env.REACT_APP_API_URL}/base/items?base=${baseSelecionada}&depto=${deptoSelecionado}&tipo=${tipoRota}`
+    : `${process.env.REACT_APP_API_URL}/items/tipo/${tipoRota}`
   const options = {
       method: 'GET',
       headers: {

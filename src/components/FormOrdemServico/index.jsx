@@ -28,7 +28,9 @@ const FormOrdemServico = (props) => {
         locais,
         carregandoLocais,
         baseSelecionada,
-        setBaseSelecionada
+        setBaseSelecionada,
+        deptoSelecionado,
+        setDeptoSelecionado
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
@@ -75,6 +77,7 @@ const FormOrdemServico = (props) => {
             <Selecao
                 label="Departamento"
                 name="departamento_id"
+                onChange={(e) => setDeptoSelecionado(e.target.value)}
                 defaultValue={defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
                 helperText={errors.departamento_id || ""}
@@ -217,6 +220,7 @@ const FormOrdemServico = (props) => {
                 materiais={materiaisInterno}
                 setMateriais={setMateriaisInterno}
                 baseSelecionada={baseSelecionada}
+                deptoSelecionado={deptoSelecionado}
             />
         }
         </>
