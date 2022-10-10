@@ -1,8 +1,6 @@
 import React from 'react';
 import { 
     Box,
-    IconButton,
-    Tooltip,
     DialogTitle, 
     DialogContent, 
     DialogActions, 
@@ -11,7 +9,6 @@ import {
     CircularProgress,
 } from '@mui/material';
 import style from './style';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const SenhaForm = (props) => {
     const {setOpenAltSenha, carregando, setCarregando, pwRequest, setReqResponse} = props
@@ -29,12 +26,7 @@ const SenhaForm = (props) => {
     return (
         <>
             <DialogTitle>
-                <Tooltip title="Voltar">
-                    <IconButton onClick={() => setOpenAltSenha(false)}>
-                        <ArrowBackIosNewIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
-                Alterar Senha
+                Alterar senha
             </DialogTitle>
             <DialogContent>
                 <Box
@@ -45,21 +37,21 @@ const SenhaForm = (props) => {
                     onSubmit={async (e) => sendData(e)}
                 >
                     <TextField
-                        label="Email"
+                        label="E-mail"
                         name="email"
                         id="email"
                         value={localStorage.getItem('usermail')}
                         disabled
                     />
                     <TextField
-                        label="Senha Atual"
+                        label="Senha atual"
                         name="password"
                         id="password"
                         type="password"
                         required
                     />
                     <TextField
-                        label="Nova Senha"
+                        label="Nova senha"
                         name="newpassword"
                         type="password"
                         id="newpassword"
@@ -67,15 +59,18 @@ const SenhaForm = (props) => {
                     />
                     <TextField
                         name="password_confirmation"
-                        label="Confirmação Nova Senha"
+                        label="Confirmação de nova senha"
                         type="password"
                         id="password_confirmation"
                         required
                     />
                 </Box>
             </DialogContent>
-            <DialogActions sx={{ justifyContent: 'space-between' , padding: "0 0 1rem 2rem"}}>
+            <DialogActions sx={{ justifyContent: 'flex-end' , padding: "1.5rem", pt: '0' }}>
                 <Box sx={{ display: 'flex', margin: '0.5rem', gap: '1rem' }}>
+                    <Button onClick={() => setOpenAltSenha(false)}>
+                        Cancelar
+                    </Button>
                     <Button
                         type="submit"
                         form="senha"

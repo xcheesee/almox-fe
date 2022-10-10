@@ -26,7 +26,9 @@ const FormOrdemServico = (props) => {
         errors,
         setErrors,
         locais,
-        carregandoLocais
+        carregandoLocais,
+        baseSelecionada,
+        setBaseSelecionada
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
@@ -111,6 +113,7 @@ const FormOrdemServico = (props) => {
             <CampoLocais
                 label="Base de origem dos materiais"
                 name="origem_id"
+                onChange={(e) => setBaseSelecionada(e.target.value)}
                 defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors.origem_id || ""}
@@ -213,6 +216,7 @@ const FormOrdemServico = (props) => {
                 label="Material utilizado"
                 materiais={materiaisInterno}
                 setMateriais={setMateriaisInterno}
+                baseSelecionada={baseSelecionada}
             />
         }
         </>

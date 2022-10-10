@@ -19,7 +19,9 @@ const NovaOrdemServico = (props) => {
         navigate,
         setSnackbar,
         locais,
-        carregandoLocais
+        carregandoLocais,
+        baseSelecionada,
+        setBaseSelecionada
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -42,6 +44,8 @@ const NovaOrdemServico = (props) => {
                 setErrors={setErrors}
                 locais={locais}
                 carregandoLocais={carregandoLocais}
+                baseSelecionada={baseSelecionada}
+                setBaseSelecionada={setBaseSelecionada}
             />
 
             <Box className="flex justify-end gap-4">

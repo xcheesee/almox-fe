@@ -22,6 +22,7 @@ const BoxMateriais = (props) => {
         label,
         materiais,
         setMateriais,
+        baseSelecionada
     } = props;
     const [tiposMats, setTiposMats] = useState({});
     const [carregando, setCarregando] = useState(true);
@@ -32,6 +33,7 @@ const BoxMateriais = (props) => {
         setMateriais(prev => modMaterial(prev, formIndex, {matDesabilitado: true}));
         
         const val = await getMatItens(tipoRota);
+        // const val = await getMatItens(`${tipoRota}/${baseSelecionada}`) <--- quando a rota estiver pronta
         const mod = {
             mats: val.data,
             tipo: tipoAlvoId,
@@ -40,6 +42,7 @@ const BoxMateriais = (props) => {
             medida: '',
             matDesabilitado: false
         };
+
         return setMateriais(prev => modMaterial(prev, formIndex, mod))
     };
 
@@ -128,7 +131,7 @@ const BoxMateriais = (props) => {
                                     }
                                 </Selecao>
                                 {
-                                    material.tipo != ""
+                                    material.tipo !== ""
                                         ?<Fade in={true} key={`${index}a`} >
                                             <Box className='grid col-span-2 grid-cols-3 gap-4 row-start-2'>
                                                 <Selecao

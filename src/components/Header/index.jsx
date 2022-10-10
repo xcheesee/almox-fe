@@ -12,7 +12,6 @@ import LockIcon from '@mui/icons-material/Lock'
 import DialogLogout from '../DialogLogout';
 import DialogAltSenh  from '../DialogAltSenh';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { token } from '../../common/utils';
 
 const Header = () => {
     const [openLogout, setOpenLogout] = useState(false);
@@ -41,7 +40,7 @@ const Header = () => {
         const headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": `Bearer ${token}`,
+            "Authorization": localStorage.getItem('access_token'),
         };
         const data = {...formData, email: localStorage.getItem('usermail')}
 

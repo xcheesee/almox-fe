@@ -20,6 +20,7 @@ const CampoDataRange = ({intervalo, onChange, label, separador, size, placeholde
                     value={datas}
                     format={"dd/MM/yyyy"}
                     placeholder={placeholder}
+                    appearance="subtle"
                     onChange={
                         //tranforma o output em string aaaa-mm-dd e envia-o para setFiltros
                         e => {

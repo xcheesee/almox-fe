@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { headers } from '../../common/utils';
 import BaixaSaidaMaterial from '../../components/BaixaSaidaMaterial';
 import DialogConfirmaBaixa from '../../components/DialogConfirmaBaixa';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -20,7 +19,11 @@ const Baixa = ({ setSnackbar }) => {
     const urlItems = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/items`;
     const options = {
         method: 'GET',
-        headers: headers
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': localStorage.getItem('access_token'),
+        },
     };
   
     setCarregando(true);
