@@ -108,7 +108,7 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
                       <input 
                         type="text" 
                         name={`ordem_servico_items[${index}].id`} 
-                        defaultValue={material.id} 
+                        defaultValue={material.item_id} 
                         style={{ display: 'none' }} 
                       />
 

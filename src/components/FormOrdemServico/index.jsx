@@ -141,19 +141,14 @@ const FormOrdemServico = (props) => {
                 fullWidth
             />
         
-            <Selecao
+            <TextField 
+                defaultValue={defaultValue?.profissional}
                 name="profissional"
                 label="Profissional"
                 error={errors.hasOwnProperty('profissional')}
                 helperText={errors.profissional || ""}
-                defaultValue={defaultValue?.profissional}
-            >
-                <MenuItem value="Fulano">Fulano</MenuItem>
-                <MenuItem value="Sicrano">Sicrano</MenuItem>
-                <MenuItem value="Beltrano">Beltrano</MenuItem>
-                <MenuItem value="José">José</MenuItem>
-                <MenuItem value="Maria">Maria</MenuItem>
-            </Selecao>
+                fullWidth
+            />
         
             <TextField 
                 defaultValue={defaultValue?.horas_execucao}
