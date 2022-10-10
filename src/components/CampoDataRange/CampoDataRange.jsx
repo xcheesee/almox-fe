@@ -3,6 +3,7 @@ import { DateRangePicker, CustomProvider } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import './CampoDataRange.css'
 import pt_BR from 'rsuite/locales/pt_BR'
+import { Box } from '@mui/material';
 
 const CampoDataRange = ({intervalo, onChange, label, separador, size, placeholder, className}) => {
     //input recebido e convertido ao formato permitido de DateRangePicker. 
@@ -12,7 +13,7 @@ const CampoDataRange = ({intervalo, onChange, label, separador, size, placeholde
         : [new Date(intervalo[0]+'T00:00:00'), new Date(intervalo[1]+'T00:00:00')];
     
     return (
-        <div className={`inputContainer ${className}`}>
+        <Box className={`inputContainer ${className} col-span-2 border-b border-material-border p-1 pt-0`}>
             <span className='input'>{label}</span>
             <CustomProvider locale={pt_BR}>
                 <DateRangePicker
@@ -32,7 +33,7 @@ const CampoDataRange = ({intervalo, onChange, label, separador, size, placeholde
                     size={size}
                 />
             </CustomProvider>
-        </div>
+        </Box>
     )
 }
 

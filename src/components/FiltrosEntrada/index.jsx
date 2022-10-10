@@ -26,16 +26,14 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
             setFiltros={setFiltros}
             setPage={setPage}
         >
-            <Box className='col-span-2 border-b border-material-border p-1 pt-0'>
-                <CampoDataRange
-                    label={'Data de entrada - faixa de pesquisa'}
-                    intervalo={datas}
-                    onChange={setDatas}
-                    separador={' - '}
-                    placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
-                    size={'lg'}
-                />
-            </Box>
+            <CampoDataRange
+                label={'Data de entrada - faixa de pesquisa'}
+                intervalo={datas}
+                onChange={setDatas}
+                separador={' - '}
+                placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
+                size={'lg'}
+            />
 
             <TextField 
                 label="Processo SEI"
