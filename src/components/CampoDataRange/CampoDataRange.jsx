@@ -13,7 +13,7 @@ const CampoDataRange = ({intervalo, onChange, label, separador, size, placeholde
         : [new Date(intervalo[0]+'T00:00:00'), new Date(intervalo[1]+'T00:00:00')];
     
     return (
-        <Box className={`inputContainer ${className} col-span-2 border-b border-material-border p-1 pt-0`}>
+        <Box className={`inputContainer ${className} border-b border-material-border p-1 pt-0`}>
             <span className='input'>{label}</span>
             <CustomProvider locale={pt_BR}>
                 <DateRangePicker

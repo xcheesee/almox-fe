@@ -31,6 +31,7 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
                 intervalo={datas}
                 onChange={setDatas}
                 separador={' - '}
+                className={"col-span-2"}
                 placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
                 size={'lg'}
             />
