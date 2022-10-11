@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     Box,
     Typography,
@@ -7,11 +7,12 @@ import {
 } from '@mui/material';
 import style from './style';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock'
+import MenuItemsAcabando from '../MenuItemsAcabando';
 import DialogLogout from '../DialogLogout';
 import DialogAltSenh  from '../DialogAltSenh';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { getItemsAcabando } from '../../common/utils';
 
 const Header = () => {
     const [openLogout, setOpenLogout] = useState(false);
@@ -19,8 +20,14 @@ const Header = () => {
     const username = localStorage.getItem('username');
     const location = useLocation();
     const navigate = useNavigate();
-    const [openAltSenha, setOpenAltSenha] = useState(false)
-    const [carregando, setCarregando] = useState(false)
+    const [openAltSenha, setOpenAltSenha] = useState(false);
+    const [carregando, setCarregando] = useState(false);
+    const [itemsAcabando, setItemsAcabando] = useState([]);
+
+    useEffect(() => {
+        if (location.pathname !== '/')
+            getItemsAcabando(setItemsAcabando);
+    }, [location.pathname]);
 
     const logout = () => {
         localStorage.removeItem('access_token');
@@ -69,10 +76,11 @@ const Header = () => {
                         ""
                     :
                         <Box className="flex items-center gap-5">
-                            <Box className="flex items-center gap-1">
-                                <PersonIcon fontSize="small"/>
-                                <Typography>Olá, {username}</Typography>
-                            </Box>
+                            <MenuItemsAcabando 
+                                username={username}
+                                style={style}
+                                itemsAcabando={itemsAcabando}
+                            />
 
                             <Tooltip title="Alterar Senha">
                                 <IconButton onClick={showSenhaForm}>

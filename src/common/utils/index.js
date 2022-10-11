@@ -212,6 +212,22 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   })
 }
 
+export const getItemsAcabando = (setItemsAcabando) => {
+  const url = `${process.env.REACT_APP_API_URL}/items_acabando`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    }
+  };
+
+  fetch(url, options)
+    .then(res => res.json())
+    .then(data => setItemsAcabando(data.data))
+    .catch(err => console.log(err))
+}
+
 // Update
 export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;

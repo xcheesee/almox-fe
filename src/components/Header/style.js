@@ -13,6 +13,11 @@ const style = {
         gap: '2rem',
         padding: '1em 0.5em'
     },
+    iconButton: { 
+        borderRadius: 1, 
+        boxSizing: 'border-box',
+        padding: '0.2rem 0.5rem'
+    },
 }
 
 export default style;
