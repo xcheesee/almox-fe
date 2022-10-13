@@ -13,13 +13,16 @@ const EntradaMaterial = (props) => {
         page,
         setPage,
         carregando,
+        setCarregando,
         setOpenEditar,
         setEntradaMaterial,
         setMateriais,
         setCursor,
         cursor,
         setFiltros,
-        setOpenDetalhes
+        setOpenDetalhes,
+        sort,
+        setSort
     } = props;
 
     return (
@@ -40,12 +43,15 @@ const EntradaMaterial = (props) => {
                 entradas={entradas} 
                 metaEntradas={metaEntradas} 
                 carregando={carregando}
+                setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
                 setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
                 setOpenDetalhes={setOpenDetalhes}
+                sort={sort}
+                setSort={setSort}
             />
 
             <BotaoNovo caminho="/entrada/nova-entrada">

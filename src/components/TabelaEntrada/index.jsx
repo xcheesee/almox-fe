@@ -11,19 +11,39 @@ import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 
-const cabecalhos = [
-    "ID",
-    "Data",
-    "Processo SEI",
-    "Contrato",
-    "Local",
-    "Nota Fiscal",
-    "Ação",
-];
+const cabecalhos = {
+    "ID": null,
+    "Data": "data_entrada",
+    "Processo SEI": "processo_sei",
+    "Contrato": "numero_contrato",
+    "Local": "locais.nome",
+    "Nota fiscal": "numero_nota_fiscal",
+    "Ação": null
+}
 
-const TabelaEntrada = ({ entradas, carregando, setOpenEditar, setEntradaMaterial, setMateriais, setCursor, cursor, setOpenDetalhes }) => {
+const TabelaEntrada = (props) => {
+    const { 
+        entradas, 
+        carregando, 
+        setCarregando,
+        setOpenEditar, 
+        setEntradaMaterial, 
+        setMateriais, 
+        setCursor, 
+        cursor, 
+        setOpenDetalhes,
+        sort,
+        setSort
+    } = props;
+
     return (
-        <Tabela cabecalhos={cabecalhos} carregando={carregando}>
+        <Tabela 
+            cabecalhos={cabecalhos} 
+            carregando={carregando} 
+            setCarregando={setCarregando}
+            sort={sort} 
+            setSort={setSort}
+        >
             {entradas.map(entrada => (
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>

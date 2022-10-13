@@ -137,8 +137,8 @@ export const getLocais = (setCarregando, setLocais) => {
       .catch(err => console.log(err));
 }
 
-export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros) => {
-  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}`
+export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros, sort) => {
+  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}&sort=${sort || ''}`
   const options = {
       method: 'GET',
       headers: {

@@ -9,11 +9,23 @@ import {
     TableBody,
     Fade,
     Collapse,
+    Box,
 } from '@mui/material';
+import IconeSort from '../IconeSort';
 import style from './style';
 
 const Tabela = (props) => {
-    const { cabecalhos, carregando, ...other } = props;
+    const { cabecalhos, carregando, setCarregando, sort, setSort, ...other } = props;
+
+    const handleClickSort = (valor) => {
+        setCarregando(true);
+
+        if (valor !== null) {
+            sort === valor && valor !== null
+            ? setSort(`-${valor}`)
+            : setSort(valor)
+        }
+    }
 
     return (
         <Fade in={true} timeout={400}>
@@ -22,11 +34,39 @@ const Tabela = (props) => {
                     <Table size="small">
                         <TableHead sx={style.tableHead}>
                             <TableRow>
-                                {cabecalhos.map((cabecalho, index) => (
-                                    <TableCell sx={style.tableCell} align="center" key={index}>
-                                        {cabecalho}
-                                    </TableCell>
-                                ))}
+                                {Object.entries(cabecalhos).map((cabecalho, index) => {
+                                    const chave = cabecalho[0];
+                                    const valor = cabecalho[1];
+
+                                    return (
+                                        <TableCell 
+                                            sx={style.tableCell} 
+                                            align="center" 
+                                            key={index}
+                                            onClick={() => handleClickSort(valor)}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    ...style.boxTableCell,
+                                                    '&:hover': {
+                                                        cursor: valor ? 'pointer' : 'auto',
+                                                        fontWeight: valor ? 'bold' : 'auto',
+                                                        background: valor ? 'rgba(50, 50, 50, 0.2)' : 'none',
+                                                        transition: '0.2s'
+                                                    }
+                                                }}
+                                            >
+                                                {chave}
+    
+                                                <IconeSort
+                                                    sort={sort}
+                                                    valor={valor}
+                                                    carregando={valor ? carregando : false}
+                                                />
+                                            </Box>
+                                        </TableCell>
+                                    )
+                                })}
                             </TableRow>
                         </TableHead>
                         <TableBody>

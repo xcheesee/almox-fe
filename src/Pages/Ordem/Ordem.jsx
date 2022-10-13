@@ -24,12 +24,13 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
     const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
+    const [sort, setSort] = useState('');
 
     useEffect(() => {
-        getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros);
+        getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros, sort);
         setMateriais([]);
         setErrors({});
-    }, [page, houveMudanca, filtros])
+    }, [page, houveMudanca, filtros, sort])
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -39,6 +40,7 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                 page={page}
                 setPage={setPage}
                 carregando={carregando}
+                setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setMateriais={setMateriais}
                 setOrdemServico={setOrdemServico}
@@ -47,6 +49,8 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                 filtros={filtros}
                 setFiltros={setFiltros}
                 setOpenDetalhes={setOpenDetalhes}
+                sort={sort}
+                setSort={setSort}
             />
             <DialogEditar
                 titulo="Editar ordem de serviço"

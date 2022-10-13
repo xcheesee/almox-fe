@@ -24,12 +24,13 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
     const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
+    const [sort, setSort] = useState('');
 
     useEffect(() => {
-        getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros);
+        getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros, sort);
         setMateriais([]);
         setErrors({});
-    }, [page, houveMudanca, filtros]);
+    }, [page, houveMudanca, filtros, sort]);
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -39,6 +40,7 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
                 page={page}
                 setPage={setPage}
                 carregando={carregando}
+                setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
                 setMateriais={setMateriais}
@@ -47,6 +49,8 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
                 filtros={filtros}
                 setFiltros={setFiltros}
                 setOpenDetalhes={setOpenDetalhes}
+                sort={sort}
+                setSort={setSort}
             />
             <DialogEditar
                 titulo="Editar entrada de material"

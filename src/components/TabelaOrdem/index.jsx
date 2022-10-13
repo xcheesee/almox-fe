@@ -13,18 +13,18 @@ import GradingIcon from '@mui/icons-material/Grading';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
 
-const cabecalhos = [
-    "ID",
-    "Data de início do serviço",
-    "Data de fim do serviço",
-    "Base origem",
-    "Local serviço",
-    "Ação"
-];
+const cabecalhos = {
+    "ID": "id",
+    "Início do serviço": "data_inicio_servico",
+    "Fim do serviço": "data_fim_servico",
+    "Base origem": "origem.nome",
+    "Local serviço": "locais.nome",
+    "Ação": null
+};
 
-const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setMateriais, setCursor, cursor, setOpenDetalhes }) => {
+const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrdemServico, setMateriais, setCursor, cursor, setOpenDetalhes, sort, setSort }) => {
     return (
-        <Tabela cabecalhos={cabecalhos} carregando={carregando}>
+        <Tabela cabecalhos={cabecalhos} carregando={carregando} setCarregando={setCarregando} sort={sort} setSort={setSort}>
             {ordens.map(ordem => (
                     <TableRow key={ordem.id}>
                         <TableCell align="center">{ordem.id}</TableCell>

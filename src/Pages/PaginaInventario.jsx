@@ -14,10 +14,11 @@ const PaginaInventario = ({ setSnackbar }) => {
     const [idAlerta, setIdAlerta] = useState('');
     const [filtros, setFiltros] = useState('');
     const [cursor, setCursor] = useState('auto');
+    const [sort, setSort] = useState('');
 
     useEffect(() => {
-        getTabela('inventarios', page, setCarregando, setItens, setMetaItens, filtros);
-    }, [page, filtros])
+        getTabela('inventarios', page, setCarregando, setItens, setMetaItens, filtros, sort);
+    }, [page, filtros, sort])
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -27,12 +28,15 @@ const PaginaInventario = ({ setSnackbar }) => {
                 page={page}
                 setPage={setPage}
                 carregando={carregando}
+                setCarregando={setCarregando}
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
                 setFiltros={setFiltros}
                 setRegistro={setRegistro}
                 cursor={cursor}
                 setCursor={setCursor}
+                sort={sort}
+                setSort={setSort}
             />
             <DialogDefinirAlerta
                 openDefinir={openDefinir}

@@ -13,13 +13,16 @@ const OrdemServico = (props) => {
         page,
         setPage,
         carregando,
+        setCarregando,
         setOpenEditar,
         setOrdemServico,
         setMateriais,
         setCursor,
         cursor,
         setFiltros,
-        setOpenDetalhes
+        setOpenDetalhes,
+        sort,
+        setSort
     } = props;
 
     return (
@@ -34,12 +37,15 @@ const OrdemServico = (props) => {
             <TabelaOrdem 
                 ordens={ordens} 
                 carregando={carregando} 
+                setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setOrdemServico={setOrdemServico}
                 setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
                 setOpenDetalhes={setOpenDetalhes}
+                sort={sort}
+                setSort={setSort}
             />
 
             <BotaoNovo caminho="/ordemservico/nova-ordem">

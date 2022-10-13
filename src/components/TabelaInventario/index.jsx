@@ -9,15 +9,15 @@ import Tabela from '../Tabela';
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 import { getRegistro } from '../../common/utils';
 
-const cabecalhos = [
-    "ID",
-    "Item",
-    "Tipo",
-    "Medida",
-    "Local",
-    "Quantidade",
-    "Ação"
-];
+const cabecalhos = {
+    "ID": "id",
+    "Item": "items.nome",
+    "Tipo": "tipo_items.nome",
+    "Medida": "medidas.tipo",
+    "Local": "locais.nome",
+    "Quantidade": "quantidade",
+    "Ação": null
+};
 
 const TabelaInventario = (props) => {
     const { 
@@ -25,13 +25,22 @@ const TabelaInventario = (props) => {
         setIdAlerta, 
         setOpenDefinir,
         carregando,
+        setCarregando,
         setRegistro,
         cursor,
-        setCursor
+        setCursor,
+        sort,
+        setSort
     } = props;
 
     return (
-        <Tabela cabecalhos={cabecalhos} carregando={carregando}>
+        <Tabela 
+            cabecalhos={cabecalhos} 
+            carregando={carregando}
+            setCarregando={setCarregando}
+            sort={sort}
+            setSort={setSort}    
+        >
             {itens.map(item => (
                     <TableRow key={item.id}>
                         <TableCell align="center">{item.id}</TableCell>

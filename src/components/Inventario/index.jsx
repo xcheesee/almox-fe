@@ -13,12 +13,15 @@ const Inventario = (props) => {
         page,
         setPage,
         carregando,
+        setCarregando,
         setIdAlerta, 
         setOpenDefinir,
         setFiltros,
         setRegistro,
         cursor,
-        setCursor
+        setCursor,
+        sort,
+        setSort
     } = props;
     
     return (
@@ -38,9 +41,12 @@ const Inventario = (props) => {
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
                 carregando={carregando}
+                setCarregando={setCarregando}
                 setRegistro={setRegistro}
                 cursor={cursor}
                 setCursor={setCursor}
+                sort={sort}
+                setSort={setSort}
             />
 
             <Box className="mt-10">
