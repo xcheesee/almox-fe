@@ -12,7 +12,7 @@ import style from './style';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
-import CachedIcon from '@mui/icons-material/Cached';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const Filtros = (props) => {
     //O DatePicker do RSuite nao passa values para form a nao ser que seja a implementacao de form do proprio RSuite
@@ -150,9 +150,9 @@ const Filtros = (props) => {
                         {
                             filtros !== ''
                             ?
-                                <Tooltip title="Repetir pesquisa" placement="right">
-                                    <Button sx={{ padding: '0' }} onClick={repetirPesquisa}>
-                                        <CachedIcon />
+                                <Tooltip title="Repetir consulta">
+                                    <Button sx={{ minWidth: '2.5rem' }} onClick={repetirPesquisa}>
+                                        <RefreshIcon />
                                     </Button>
                                 </Tooltip>
                             :
