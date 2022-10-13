@@ -15,10 +15,11 @@ const PaginaInventario = ({ setSnackbar }) => {
     const [filtros, setFiltros] = useState('');
     const [cursor, setCursor] = useState('auto');
     const [sort, setSort] = useState('');
+    const [houveMudanca, setHouveMudanca] = useState(true);
 
     useEffect(() => {
         getTabela('inventarios', page, setCarregando, setItens, setMetaItens, filtros, sort);
-    }, [page, filtros, sort])
+    }, [page, filtros, sort, houveMudanca])
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -31,8 +32,10 @@ const PaginaInventario = ({ setSnackbar }) => {
                 setCarregando={setCarregando}
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
+                filtros={filtros}
                 setFiltros={setFiltros}
                 setRegistro={setRegistro}
+                setHouveMudanca={setHouveMudanca}
                 cursor={cursor}
                 setCursor={setCursor}
                 sort={sort}

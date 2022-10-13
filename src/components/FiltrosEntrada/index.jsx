@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, MenuItem, Box } from '@mui/material';
+import { TextField, MenuItem } from '@mui/material';
 import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
 import { primeiraLetraMaiuscula, getMatTipos } from '../../common/utils';
 
-const FiltrosEntrada = ({setFiltros, setPage}) => {
+const FiltrosEntrada = ({ filtros, setFiltros, setPage, setHouveMudanca }) => {
     const [datas, setDatas] = useState(['']);
     const [tiposMats, setTiposMats] = useState({});
     const [carregando, setCarregando] = useState(true);
@@ -23,8 +23,10 @@ const FiltrosEntrada = ({setFiltros, setPage}) => {
             //valor da data de entrada e funcao para limpar tal data
             entrada={datas}
             limpaData={setDatas}
+            filtros={filtros}
             setFiltros={setFiltros}
             setPage={setPage}
+            setHouveMudanca={setHouveMudanca}
         >
             <CampoDataRange
                 label={'Data de entrada - faixa de pesquisa'}

@@ -45,6 +45,7 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                 setMateriais={setMateriais}
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}
+                setHouveMudanca={setHouveMudanca}
                 cursor={cursor}
                 filtros={filtros}
                 setFiltros={setFiltros}

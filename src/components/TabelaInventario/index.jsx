@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import Tabela from '../Tabela';
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
-import { getRegistro } from '../../common/utils';
+import { getRegistro, primeiraLetraMaiuscula } from '../../common/utils';
 
 const cabecalhos = {
     "ID": "id",
@@ -45,7 +45,7 @@ const TabelaInventario = (props) => {
                     <TableRow key={item.id}>
                         <TableCell align="center">{item.id}</TableCell>
                         <TableCell align="center">{item.item}</TableCell>
-                        <TableCell align="center">{item.tipo_item}</TableCell>
+                        <TableCell align="center">{primeiraLetraMaiuscula(item.tipo_item)}</TableCell>
                         <TableCell align="center">{item.medida}</TableCell>
                         <TableCell align="center">{item.local}</TableCell>
                         <TableCell align="center">{item.quantidade}</TableCell>

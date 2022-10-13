@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import { IconButton, Box, Badge, Typography, Collapse, Button } from '@mui/material';
+import { 
+    IconButton, 
+    Box, 
+    Badge, 
+    Typography, 
+    Collapse, 
+    Button, 
+    Tooltip,
+} from '@mui/material';
 import style from './style';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
+import CachedIcon from '@mui/icons-material/Cached';
 
 const Filtros = (props) => {
     //O DatePicker do RSuite nao passa values para form a nao ser que seja a implementacao de form do proprio RSuite
@@ -13,8 +22,10 @@ const Filtros = (props) => {
         entrada,
         ordem,
         limpaData,
+        filtros,
         setFiltros,
         setPage,
+        setHouveMudanca,
         ...other
     } = props;
 
@@ -58,6 +69,11 @@ const Filtros = (props) => {
         )
         setFiltrosAtivos(['', ...arrFiltros]);
         setPage(1)
+        setVisibilidade(false);
+    }
+
+    const repetirPesquisa = () => {
+        setHouveMudanca(prev => !prev);
         setVisibilidade(false);
     }
 
@@ -131,6 +147,17 @@ const Filtros = (props) => {
                         >
                             Salvar
                         </Button>
+                        {
+                            filtros !== ''
+                            ?
+                                <Tooltip title="Repetir pesquisa" placement="right">
+                                    <Button sx={{ padding: '0' }} onClick={repetirPesquisa}>
+                                        <CachedIcon />
+                                    </Button>
+                                </Tooltip>
+                            :
+                                ""
+                        }
                     </Box>
                 </Box>
             </Collapse>

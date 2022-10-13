@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { TextField, Box } from '@mui/material';
+import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
 import CampoDataRange from '../CampoDataRange';
 
-const FiltrosOrdem = ({setFiltros, setPage}) => {
+const FiltrosOrdem = ({filtros, setFiltros, setPage, setHouveMudanca}) => {
     const [datas, setDatas] = useState([''])
     return (
         <Filtros
             //valor da data de servico e funcao para limpar tal data
             ordem={datas}
             limpaData={setDatas}
+            filtros={filtros}
             setFiltros={setFiltros}
             setPage={setPage}
+            setHouveMudanca={setHouveMudanca}
         >
             <CampoDataRange
                 label={'Data de serviço - faixa de pesquisa'}

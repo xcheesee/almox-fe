@@ -16,8 +16,10 @@ const Inventario = (props) => {
         setCarregando,
         setIdAlerta, 
         setOpenDefinir,
+        filtros,
         setFiltros,
         setRegistro,
+        setHouveMudanca,
         cursor,
         setCursor,
         sort,
@@ -31,8 +33,10 @@ const Inventario = (props) => {
             </Titulo>
 
             <FiltrosInventario
+                filtros={filtros}
                 setFiltros={setFiltros}
-                setPage={setPage}            
+                setPage={setPage}
+                setHouveMudanca={setHouveMudanca}     
             />
 
             <TabelaInventario

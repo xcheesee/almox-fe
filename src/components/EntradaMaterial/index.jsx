@@ -18,7 +18,9 @@ const EntradaMaterial = (props) => {
         setEntradaMaterial,
         setMateriais,
         setCursor,
+        setHouveMudanca,
         cursor,
+        filtros,
         setFiltros,
         setOpenDetalhes,
         sort,
@@ -35,8 +37,10 @@ const EntradaMaterial = (props) => {
             </Titulo>
 
             <FiltrosEntrada
+                filtros={filtros}
                 setFiltros={setFiltros}
                 setPage={setPage}
+                setHouveMudanca={setHouveMudanca}
             />
             
             <TabelaEntrada 

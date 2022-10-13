@@ -45,6 +45,7 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
                 setEntradaMaterial={setEntradaMaterial}
                 setMateriais={setMateriais}
                 setCursor={setCursor}
+                setHouveMudanca={setHouveMudanca}
                 cursor={cursor}
                 filtros={filtros}
                 setFiltros={setFiltros}
