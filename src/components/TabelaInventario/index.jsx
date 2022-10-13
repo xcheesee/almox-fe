@@ -36,7 +36,7 @@ const TabelaInventario = (props) => {
                     <TableRow key={item.id}>
                         <TableCell align="center">{item.id}</TableCell>
                         <TableCell align="center">{item.item}</TableCell>
-                        <TableCell align="center">{item.local_tipo}</TableCell>
+                        <TableCell align="center">{item.tipo_item}</TableCell>
                         <TableCell align="center">{item.medida}</TableCell>
                         <TableCell align="center">{item.local}</TableCell>
                         <TableCell align="center">{item.quantidade}</TableCell>
