@@ -16,7 +16,7 @@ import PaginaInventario from './Pages/PaginaInventario';
 import Pagina404 from './Pages/Pagina404';
 import { Routes, Route, useLocation } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
-import { getLocais } from './common/utils';
+import { getLocais, getItemsAcabando } from './common/utils';
 
 function App() {
   const [snackbar, setSnackbar] = useState({
@@ -26,31 +26,34 @@ function App() {
   });
   const [locais, setLocais] = useState();
   const [carregandoLocais, setCarregandoLocais] = useState(true);
+  const [itemsAcabando, setItemsAcabando] = useState([]);
 
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname !== '/')
+    if (location.pathname !== '/') {
       getLocais(setCarregandoLocais, setLocais);
+      getItemsAcabando(setItemsAcabando);
+    }
   }, [location.pathname])
 
   return (
     <>
       <Routes>
         <Route path="/" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <Login />
           </Auth>
         } />
 
         <Route path="/principal" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <Principal />
           </Auth>
         } />
 
         <Route path="/entrada" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <Entrada
               setSnackbar={setSnackbar}
               locais={locais}
@@ -60,7 +63,7 @@ function App() {
         } />
 
         <Route path="/entrada/nova-entrada" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <NovaEntrada 
               setSnackbar={setSnackbar}
               locais={locais}
@@ -70,7 +73,7 @@ function App() {
         } />
 
         <Route path="/ordemservico" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <Ordem 
               setSnackbar={setSnackbar}
               locais={locais}
@@ -80,7 +83,7 @@ function App() {
         } />
 
         <Route path="/ordemservico/nova-ordem" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <NovaOrdem 
               setSnackbar={setSnackbar}
               locais={locais}
@@ -90,19 +93,19 @@ function App() {
         } />
 
         <Route path="/ordemservico/baixa/:id" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <Baixa setSnackbar={setSnackbar} />
           </Auth>
         } />
 
         <Route path="/inventario" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <PaginaInventario setSnackbar={setSnackbar} />
           </Auth>
         } />
 
         <Route path="*" element={
-          <Auth>
+          <Auth itemsAcabando={itemsAcabando}>
             <Pagina404 />
           </Auth>
         } />

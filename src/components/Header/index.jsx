@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
     Box,
     Typography,
@@ -12,9 +12,8 @@ import MenuItemsAcabando from '../MenuItemsAcabando';
 import DialogLogout from '../DialogLogout';
 import DialogAltSenh  from '../DialogAltSenh';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getItemsAcabando } from '../../common/utils';
 
-const Header = () => {
+const Header = ({ itemsAcabando }) => {
     const [openLogout, setOpenLogout] = useState(false);
 
     const username = localStorage.getItem('username');
@@ -22,12 +21,6 @@ const Header = () => {
     const navigate = useNavigate();
     const [openAltSenha, setOpenAltSenha] = useState(false);
     const [carregando, setCarregando] = useState(false);
-    const [itemsAcabando, setItemsAcabando] = useState([]);
-
-    useEffect(() => {
-        if (location.pathname !== '/')
-            getItemsAcabando(setItemsAcabando);
-    }, [location.pathname]);
 
     const logout = () => {
         localStorage.removeItem('access_token');

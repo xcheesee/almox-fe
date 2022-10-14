@@ -5,7 +5,7 @@ import Footer from '../Footer';
 const Margens = (props) => {
     return (
         <>
-            <Header />
+            <Header itemsAcabando={props.itemsAcabando} />
             {props.children}
             <Footer />
         </>
