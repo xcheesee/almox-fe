@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 
 const cabecalhos = {
     "ID": "id",
+    "Status": "status",
     "Início do serviço": "data_inicio_servico",
     "Fim do serviço": "data_fim_servico",
     "Base origem": "origem.nome",
@@ -28,6 +29,7 @@ const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrde
             {ordens.map(ordem => (
                     <TableRow key={ordem.id}>
                         <TableCell align="center">{ordem.id}</TableCell>
+                        <TableCell align="center">{ordem.status}</TableCell>
                         <TableCell align="center">
                             {ordem.data_inicio_servico || "---"}
                         </TableCell>
