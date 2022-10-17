@@ -34,8 +34,8 @@ const FormOrdemServico = (props) => {
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
+    const statusEnum = ['A iniciar', 'Iniciada', 'Finalizada']
     const [status, setStatus] = useState('')
-    const statusEnum = ['A Iniciar', 'Iniciada', 'Finalizada']
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
@@ -82,7 +82,7 @@ const FormOrdemServico = (props) => {
                 defaultValue={defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
                 helperText={errors.departamento_id || ""}
-                // //required
+                required
             >
                 {Object.entries(departamentos).map(departamento => (
                     <MenuItem key={departamento[0]} value={departamento[0]}>
@@ -99,7 +99,7 @@ const FormOrdemServico = (props) => {
                 // defaultValue={defaultValue?.status}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors.status || ""}
-                // //required
+                required
             >
                 {statusEnum.map((status, index) => (
                     <MenuItem key={`status${index}`} value={status}>
@@ -116,7 +116,7 @@ const FormOrdemServico = (props) => {
                 InputLabelProps={{ shrink: true }}
                 error={errors.hasOwnProperty('data_inicio_servico')}
                 helperText={errors.data_inicio_servico || ""}
-                //required
+                required
                 fullWidth
             />
         
@@ -140,7 +140,7 @@ const FormOrdemServico = (props) => {
                 helperText={errors.origem_id || ""}
                 locais={locais}
                 carregando={carregandoLocais}
-                //required
+                required
             />
 
             <CampoLocais 
@@ -151,7 +151,7 @@ const FormOrdemServico = (props) => {
                 helperText={errors.local_servico_id || ""}
                 locais={locais}
                 carregando={carregandoLocais}
-                //required
+                required
             />
         
             <TextField 
@@ -210,7 +210,7 @@ const FormOrdemServico = (props) => {
                         label="Nome"
                         error={errors.hasOwnProperty('almoxarife_nome')}
                         helperText={errors.almoxarife_nome || ""}
-                        //required
+                        required
                         fullWidth
                     />
         
@@ -221,7 +221,7 @@ const FormOrdemServico = (props) => {
                         type="email"
                         error={errors.hasOwnProperty('almoxarife_email')}
                         helperText={errors.almoxarife_email || ""}
-                        //required
+                        required
                         fullWidth
                     />
                 </Box>
