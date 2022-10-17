@@ -10,10 +10,12 @@ const Auth = (props) => {
     useEffect(() => {
         if (!access_token && location.pathname !== "/")
             navigate("/", { replace: true })
+        else if (access_token && location.pathname === "/")
+            navigate("/principal", { replace: true })
     })
     
     return (
-        <Margens>
+        <Margens itemsAcabando={props.itemsAcabando}>
             {props.children}
         </Margens>
     );

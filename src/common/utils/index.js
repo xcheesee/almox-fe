@@ -223,7 +223,10 @@ export const getItemsAcabando = (setItemsAcabando) => {
   };
 
   fetch(url, options)
-    .then(res => res.json())
+    .then(res => {
+      if (res.ok)
+        return res.json();
+    })
     .then(data => setItemsAcabando(data.data))
     .catch(err => console.log(err))
 }

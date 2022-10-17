@@ -74,15 +74,15 @@ const MenuItemsAcabando = ({ username, style, itemsAcabando }) => {
                                 <TableCell align='right'>Local</TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
-                            {itemsAcabando.map(item => (
-                                <TableRow key={item.id}>
-                                    <TableCell>{item.item}</TableCell>
-                                    <TableCell align='right'>{item.quantidade} {item.medida}</TableCell>
-                                    <TableCell align='right'>{item.local}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                            <TableBody>
+                                {itemsAcabando.map(item => (
+                                    <TableRow key={item.id}>
+                                        <TableCell>{item.item}</TableCell>
+                                        <TableCell align='right'>{item.quantidade} {item.medida}</TableCell>
+                                        <TableCell align='right'>{item.local}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
                     </Table>
                 </TableContainer>
             </Menu>
