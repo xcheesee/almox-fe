@@ -95,7 +95,7 @@ const FormOrdemServico = (props) => {
                 label="Status"
                 name="status"
                 onChange={(e) => setStatus(e.target.value)}
-                value={status}
+                value={status !== '' ? status : defaultValue?.status}
                 // defaultValue={defaultValue?.status}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors.status || ""}
