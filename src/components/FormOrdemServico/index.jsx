@@ -11,7 +11,7 @@ import CampoLocais from '../CampoLocais';
 import BoxMateriais from '../BoxMateriais';
 import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
-import { enviaEdicao, enviaNovoForm } from '../../common/utils';
+import { enviaEdicao, enviaNovoForm, getStatusEnum } from '../../common/utils';
 
 const FormOrdemServico = (props) => {
     const { 
@@ -35,7 +35,7 @@ const FormOrdemServico = (props) => {
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
-    const statusEnum = ['A iniciar', 'Iniciada', 'Finalizada']
+    const [statusEnum, setStatusEnum] = useState()
     const [status, setStatus] = useState('')
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
         nome: '',
@@ -45,6 +45,13 @@ const FormOrdemServico = (props) => {
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
+    useEffect(() => {
+        (async () => {
+            const data = await getStatusEnum()
+            console.log(data)
+            setStatusEnum(data)
+        })();
+    },[])
 
     return (
         <>
@@ -102,13 +109,13 @@ const FormOrdemServico = (props) => {
                 label="Status"
                 name="status"
                 onChange={(e) => setStatus(e.target.value)}
-                value={status !== '' ? status : defaultValue?.status}
+                value={status !== '' ? status : defaultValue?.status || ""}
                 // defaultValue={defaultValue?.status}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors.status || ""}
                 required
             >
-                {statusEnum.map((status, index) => (
+                {statusEnum?.map((status, index) => (
                     <MenuItem key={`status${index}`} value={status}>
                         {status}
                     </MenuItem>

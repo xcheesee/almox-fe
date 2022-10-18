@@ -363,8 +363,13 @@ export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionad
 }
 
 export const getProfissionais = async (base, depto) => {
-  console.log(`${process.env.REACT_APP_API_URL}/${base}/${depto}`)
   const profissionais = ['Scarpinha', 'Navagol', 'WesleyShow', 'Rony Rustico', 'Endrick(Bagre)', 'Veiga(Brabo)']
 
   return await profissionais
+}
+
+export const getStatusEnum = async () => {
+  const status = ['A iniciar', 'Iniciada', 'Finalizada']
+  
+  return await status
 }
