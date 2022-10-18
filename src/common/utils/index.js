@@ -42,7 +42,7 @@ export const headers = {
 }
 
 // Create
-export const enviaForm = (e, materiais, campo) => {
+export const enviaForm = (e, materiais, /* profissionais, */ campo) => {
   e.preventDefault();
 
   const formData = new FormData(e.target);
@@ -62,11 +62,21 @@ export const enviaForm = (e, materiais, campo) => {
       });
     });
   }
-  
+
+  // if (profissionais) {
+  //   profissionais.forEach((profissional, index) => {
+  //     const entries = Object.entries(profissional);
+  //     entries.forEach(keyValue => {
+  //       formData.append(`${campo}[${index}][${keyValue[0]}]`, keyValue[1]);
+  //     });
+  //   });
+  // }
+
   return formData;
 }
 
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
+export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais, /* profissionais, */ campo) => {
+  enviaForm(e, materiais, /* profissionais ,*/ campo)
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
@@ -350,4 +360,11 @@ export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionad
   };
   const res = await fetch(url, options);
   return await res.json();
+}
+
+export const getProfissionais = async (base, depto) => {
+  console.log(`${process.env.REACT_APP_API_URL}/${base}/${depto}`)
+  const profissionais = ['Scarpinha', 'Navagol', 'WesleyShow', 'Rony Rustico', 'Endrick(Bagre)', 'Veiga(Brabo)']
+
+  return await profissionais
 }

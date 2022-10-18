@@ -9,6 +9,7 @@ import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
 import CampoLocais from '../CampoLocais';
 import BoxMateriais from '../BoxMateriais';
+import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 
@@ -36,6 +37,11 @@ const FormOrdemServico = (props) => {
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
     const statusEnum = ['A iniciar', 'Iniciada', 'Finalizada']
     const [status, setStatus] = useState('')
+    const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
+        nome: '',
+        dataInicio: '',
+        horasEmpregadas: '',
+    }])
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
@@ -71,6 +77,7 @@ const FormOrdemServico = (props) => {
                         'Ordem de serviço',
                         setErrors,
                         materiaisInterno,
+                        // profissionaisEmpregados,
                         'ordem_servico_items'
                     )
             }}
@@ -233,13 +240,23 @@ const FormOrdemServico = (props) => {
         ?
             ""
         :
-            <BoxMateriais 
-                label="Material utilizado"
-                materiais={materiaisInterno}
-                setMateriais={setMateriaisInterno}
-                baseSelecionada={baseSelecionada}
-                deptoSelecionado={deptoSelecionado}
-            />
+            <>
+                <BoxProfissionais
+                    label= "Profissionais empregados"
+                    baseSelecionada={baseSelecionada}
+                    deptoSelecionado={deptoSelecionado}
+                    profissionaisEmpregados={profissionaisEmpregados}
+                    setProfissionaisEmpregados={setProfissionaisEmpregados}
+                />
+
+                <BoxMateriais
+                    label="Material utilizado"
+                    materiais={materiaisInterno}
+                    setMateriais={setMateriaisInterno}
+                    baseSelecionada={baseSelecionada}
+                    deptoSelecionado={deptoSelecionado}
+                />
+            </>
         }
         </>
     );
