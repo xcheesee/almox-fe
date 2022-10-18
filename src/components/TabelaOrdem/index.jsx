@@ -3,13 +3,15 @@ import {
     TableRow,
     TableCell,
     IconButton,
-    Tooltip
+    Tooltip,
+    Box
 } from '@mui/material';
 import Tabela from '../Tabela';
 import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
 
@@ -39,45 +41,52 @@ const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrde
                         <TableCell align="center">{ordem.origem}</TableCell>
                         <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
-                            <Tooltip title="Visualizar" placement="left">
-                                <IconButton 
-                                    disabled={cursor === 'progress'}
-                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais) }
-                                >
-                                    <ManageSearchIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Editar" placement="top">
-                                <IconButton 
-                                    disabled={cursor === 'progress'} 
-                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            </Tooltip>
-                            {
-                                ordem.flg_baixa === 0
-                                ?
-                                    <Tooltip title="Baixa" placement="right" >
-                                        <Link to={`/ordemservico/baixa/${ordem.id}`}>
+                            <Box className="grid grid-cols-2">
+                                <Tooltip title="Visualizar ordem" placement="left">
+                                    <IconButton 
+                                        disabled={cursor === 'progress'}
+                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais) }
+                                    >
+                                        <ManageSearchIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Editar" placement="right">
+                                    <IconButton 
+                                        disabled={cursor === 'progress'} 
+                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
+                                    >
+                                        <EditIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+                                {
+                                    ordem.flg_baixa === 0
+                                    ?
+                                        <Tooltip title="Baixa" placement="left" >
+                                            <Link to={`/ordemservico/baixa/${ordem.id}`}>
+                                                <IconButton disabled={cursor === 'progress'}>
+                                                    <GradingIcon fontSize="small" />
+                                                </IconButton>
+                                            </Link>
+                                        </Tooltip>
+                                    :
+                                        <Tooltip title="Visualizar baixa" placement="left" >
                                             <IconButton disabled={cursor === 'progress'}>
-                                                <GradingIcon />
+                                                <ContentPasteSearchIcon fontSize="small" />
                                             </IconButton>
-                                        </Link>
-                                    </Tooltip>
-                                :
-                                    <Tooltip title="Imprimir baixa" placement="right" >
-                                        <a 
-                                            href={`${process.env.REACT_APP_API_URL}/ordem_servico/${ordem.id}/baixa_pdf`}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            <IconButton disabled={cursor === 'progress'}>
-                                                <PrintIcon />
-                                            </IconButton>
-                                        </a>
-                                    </Tooltip>
-                            }
+                                        </Tooltip>
+                                }
+                                <Tooltip title="Imprimir" placement="right" >
+                                    <a 
+                                        href={`${process.env.REACT_APP_API_URL}/ordem_servico/${ordem.id}/baixa_pdf`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        <IconButton disabled={cursor === 'progress'}>
+                                            <PrintIcon fontSize="small" />
+                                        </IconButton>
+                                    </a>
+                                </Tooltip>
+                            </Box>
                         </TableCell>
                     </TableRow>
                 )
