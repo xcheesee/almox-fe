@@ -7,7 +7,7 @@ const Paginacao = ({ page, setPage, count }) => {
     }
 
     return (
-        <Box className="flex justify-center my-4">
+        <Box className="flex justify-center my-4 pt-8">
             <Pagination 
                 shape="rounded" 
                 color="primary"

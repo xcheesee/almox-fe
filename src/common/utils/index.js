@@ -373,3 +373,41 @@ export const getStatusEnum = async () => {
   
   return await status
 }
+
+// autorizações
+// create
+export const authCreateEntrada = (perfil) => {
+  switch (perfil) {
+    case 'admin':
+      return 'flex';
+    case 'almoxarife':
+      return 'flex';
+    case 'encarregado':
+      return 'none';
+    case 'gestao_mpe':
+      return 'none';
+    case 'gestao_dgpu':
+      return 'none';
+    default:
+      return 'none';
+  }
+}
+
+export const authCreateOrdem = (perfil) => {
+  switch (perfil) {
+    case 'admin':
+      return 'flex';
+    case 'almoxarife':
+      return 'none';
+    case 'encarregado':
+      return 'none';
+    case 'gestao_mpe':
+      return 'none';
+    case 'gestao_dgpu':
+      return 'flex';
+    default:
+      return 'none';
+  }
+}
+
+// read

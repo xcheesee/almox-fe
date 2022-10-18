@@ -5,6 +5,7 @@ import FiltrosOrdem from '../FiltrosOrdem';
 import TabelaOrdem from '../TabelaOrdem';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
+import { authCreateOrdem } from '../../common/utils';
 
 const OrdemServico = (props) => {
     const {
@@ -52,7 +53,10 @@ const OrdemServico = (props) => {
                 setSort={setSort}
             />
 
-            <BotaoNovo caminho="/ordemservico/nova-ordem">
+            <BotaoNovo 
+                caminho="/ordemservico/nova-ordem"
+                display={authCreateOrdem(localStorage.getItem('perfil'))}    
+            >
                 Nova ordem
             </BotaoNovo>
 

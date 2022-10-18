@@ -36,7 +36,11 @@ const Login = () => {
                             localStorage.setItem('username', data.username);
                             localStorage.setItem('departamentos', JSON.stringify(data.departamentos));
                             localStorage.setItem('user_id', data.id);
-                            navigate('/principal', { replace: true });
+                            localStorage.setItem('perfil', data.perfil);
+                            if (data.perfil === 'encarregado')
+                                navigate('/ordemservico', { replace: true });
+                            else
+                                navigate('/principal', { replace: true });
                         });
                 } else if (res.status === 401) {
                     setCarregando(false);
