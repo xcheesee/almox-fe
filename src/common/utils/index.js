@@ -410,4 +410,37 @@ export const authCreateOrdem = (perfil) => {
   }
 }
 
-// read
+// update
+export const authEditEntrada = (perfil) => {
+  switch (perfil) {
+    case 'admin':
+      return '';
+    case 'almoxarife':
+      return '';
+    case 'encarregado':
+      return 'none';
+    case 'gestao_mpe':
+      return 'none';
+    case 'gestao_dgpu':
+      return 'none';
+    default:
+      return 'none';
+  }
+}
+
+export const authEditOrdem = (perfil) => {
+  switch (perfil) {
+    case 'admin':
+      return '';
+    case 'almoxarife':
+      return 'none';
+    case 'encarregado':
+      return 'none';
+    case 'gestao_mpe':
+      return 'none';
+    case 'gestao_dgpu':
+      return '';
+    default:
+      return 'none';
+  }
+}
