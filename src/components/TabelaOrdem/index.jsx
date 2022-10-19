@@ -12,6 +12,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
+import { matsAtom, sortAtom } from '../../atomStore';
+import { useAtom } from 'jotai';
 
 const cabecalhos = {
     "ID": "id",
@@ -23,7 +25,9 @@ const cabecalhos = {
     "Ação": null
 };
 
-const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrdemServico, setMateriais, setCursor, cursor, setOpenDetalhes, sort, setSort }) => {
+const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrdemServico, setCursor, cursor, setOpenDetalhes, }) => {
+    const [sort, setSort] = useAtom(sortAtom)
+    const [materiais, setMateriais] = useAtom(matsAtom)
     return (
         <Tabela cabecalhos={cabecalhos} carregando={carregando} setCarregando={setCarregando} sort={sort} setSort={setSort}>
             {ordens.map(ordem => (

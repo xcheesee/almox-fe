@@ -4,7 +4,7 @@ import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 
-const NovaOrdem = ({ setSnackbar, locais, carregandoLocais }) => {
+const NovaOrdem = ({ locais, carregandoLocais }) => {
     const [materiais, setMateriais] = useState([{ 
         id: '',
         tipo: '', 
@@ -33,7 +33,6 @@ const NovaOrdem = ({ setSnackbar, locais, carregandoLocais }) => {
                 carregando={carregando}
                 setCarregando={setCarregando}
                 navigate={navigate}
-                setSnackbar={setSnackbar}
                 locais={locais}
                 carregandoLocais={carregandoLocais}
                 baseSelecionada={baseSelecionada}

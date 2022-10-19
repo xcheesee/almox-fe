@@ -4,8 +4,12 @@ import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
 import { primeiraLetraMaiuscula, getMatTipos } from '../../common/utils';
+import { pageAtom } from '../../atomStore';
+import { useAtom } from 'jotai';
 
-const FiltrosEntrada = ({ filtros, setFiltros, setPage, setHouveMudanca }) => {
+const FiltrosEntrada = ({ setHouveMudanca }) => {
+
+    
     const [datas, setDatas] = useState(['']);
     const [tiposMats, setTiposMats] = useState({});
     const [carregando, setCarregando] = useState(true);
@@ -23,9 +27,6 @@ const FiltrosEntrada = ({ filtros, setFiltros, setPage, setHouveMudanca }) => {
             //valor da data de entrada e funcao para limpar tal data
             entrada={datas}
             limpaData={setDatas}
-            filtros={filtros}
-            setFiltros={setFiltros}
-            setPage={setPage}
             setHouveMudanca={setHouveMudanca}
         >
             <CampoDataRange

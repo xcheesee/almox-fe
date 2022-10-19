@@ -10,16 +10,13 @@ import FormEntradaMaterial from '../FormEntradaMaterial';
 
 const NovaEntradaMaterial = (props) => {
     const {
-        materiais,
-        setMateriais,
         setOpenCancelar,
         setOpenConfirmar,
         carregando,
         setCarregando,
         navigate,
-        setSnackbar,
         locais,
-        carregandoLocais
+        carregandoLocais,
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -35,9 +32,6 @@ const NovaEntradaMaterial = (props) => {
                 navigate={navigate}
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando}
-                materiais={materiais}
-                setMateriais={setMateriais}
-                setSnackbar={setSnackbar}
                 errors={errors}
                 setErrors={setErrors}
                 locais={locais}

@@ -13,6 +13,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { filtrosAtom, pageAtom } from '../../atomStore';
+import { useAtom } from 'jotai';
 
 const Filtros = (props) => {
     //O DatePicker do RSuite nao passa values para form a nao ser que seja a implementacao de form do proprio RSuite
@@ -22,15 +24,15 @@ const Filtros = (props) => {
         entrada,
         ordem,
         limpaData,
-        filtros,
-        setFiltros,
-        setPage,
         setHouveMudanca,
         ...other
     } = props;
 
     const [visibilidade, setVisibilidade] = useState(false);
     const [filtrosAtivos, setFiltrosAtivos] = useState(['']);
+    
+    const [_, setPage] = useAtom(pageAtom)
+    const [filtros, setFiltros] = useAtom(filtrosAtom)
 
     //limpaData apaga o dataRange no callback limpar
     const limpar = () => {

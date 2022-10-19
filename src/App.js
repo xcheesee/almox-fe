@@ -17,13 +17,11 @@ import Pagina404 from './Pages/Pagina404';
 import { Routes, Route, useLocation } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
 import { getLocais, getItemsAcabando } from './common/utils';
+import { useAtom } from 'jotai';
+import { snackbarAtom } from './atomStore';
 
 function App() {
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    severity: 'success',
-    message: 'Sucesso!'
-  });
+  const [snackbar, setSnackbar] = useAtom(snackbarAtom);
   const [locais, setLocais] = useState();
   const [carregandoLocais, setCarregandoLocais] = useState(true);
   const [itemsAcabando, setItemsAcabando] = useState([]);
@@ -55,7 +53,6 @@ function App() {
         <Route path="/entrada" element={
           <Auth itemsAcabando={itemsAcabando}>
             <Entrada
-              setSnackbar={setSnackbar}
               locais={locais}
               carregandoLocais={carregandoLocais}
             />
@@ -65,7 +62,6 @@ function App() {
         <Route path="/entrada/nova-entrada" element={
           <Auth itemsAcabando={itemsAcabando}>
             <NovaEntrada 
-              setSnackbar={setSnackbar}
               locais={locais}
               carregandoLocais={carregandoLocais}
             />
@@ -75,7 +71,6 @@ function App() {
         <Route path="/ordemservico" element={
           <Auth itemsAcabando={itemsAcabando}>
             <Ordem 
-              setSnackbar={setSnackbar}
               locais={locais}
               carregandoLocais={carregandoLocais}
             />
@@ -85,7 +80,6 @@ function App() {
         <Route path="/ordemservico/nova-ordem" element={
           <Auth itemsAcabando={itemsAcabando}>
             <NovaOrdem 
-              setSnackbar={setSnackbar}
               locais={locais}
               carregandoLocais={carregandoLocais}
             />
@@ -100,7 +94,7 @@ function App() {
 
         <Route path="/inventario" element={
           <Auth itemsAcabando={itemsAcabando}>
-            <PaginaInventario setSnackbar={setSnackbar} />
+            <PaginaInventario />
           </Auth>
         } />
 

@@ -10,6 +10,8 @@ import Tabela from '../Tabela';
 import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
+import { useAtom } from 'jotai';
+import { matsAtom } from '../../atomStore';
 
 const cabecalhos = {
     "ID": null,
@@ -22,18 +24,16 @@ const cabecalhos = {
 }
 
 const TabelaEntrada = (props) => {
+    const [materiais, setMateriais] = useAtom(matsAtom)
     const { 
         entradas, 
         carregando, 
         setCarregando,
         setOpenEditar, 
         setEntradaMaterial, 
-        setMateriais, 
         setCursor, 
         cursor, 
         setOpenDetalhes,
-        sort,
-        setSort
     } = props;
 
     return (
@@ -41,8 +41,6 @@ const TabelaEntrada = (props) => {
             cabecalhos={cabecalhos} 
             carregando={carregando} 
             setCarregando={setCarregando}
-            sort={sort} 
-            setSort={setSort}
         >
             {entradas.map(entrada => (
                     <TableRow key={entrada.id}>

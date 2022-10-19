@@ -7,8 +7,12 @@ import {
     Button 
 } from '@mui/material';
 import { excluiRegistro, primeiraLetraMaiuscula } from '../../common/utils';
+import { useAtom } from 'jotai';
+import { excluirAtom, snackbarAtom } from '../../atomStore';
 
-const DialogExcluir = ({ rota, texto, id, openExcluir, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, setHouveMudanca }) => {
+const DialogExcluir = ({ rota, texto, id, /* openExcluir, setOpenExcluir, */ setOpenEditar, setCarregando, setHouveMudanca }) => {
+    const [snackbar, setSnackbar] = useAtom(snackbarAtom)
+    const [openExcluir, setOpenExcluir] = useAtom(excluirAtom)
     return (
         <Dialog open={openExcluir}>
             <DialogContent>

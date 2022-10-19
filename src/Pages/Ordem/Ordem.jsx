@@ -7,24 +7,27 @@ import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
+import { useAtom } from 'jotai';
+import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
 
-const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
+const Ordem = ({ locais, carregandoLocais }) => {
     const [ordens, setOrdens] = useState([]);
-    const [materiais, setMateriais] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
-    const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [openExcluir, setOpenExcluir] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
     const [cursor, setCursor] = useState('auto');
-    const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
-    const [sort, setSort] = useState('');
+    
+    const [sort, setSort] = useAtom(sortAtom);
+    const [filtros, setFiltros] = useAtom(filtrosAtom);
+    const [page, setPage] = useAtom(pageAtom);
+    const [materiais, setMateriais] = useAtom(matsAtom)
+    const [openExcluir, setOpenExcluir] = useAtom(excluirAtom);
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros, sort);
@@ -37,21 +40,14 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
             <OrdemServico 
                 ordens={ordens}
                 metaOrdens={metaOrdens}
-                page={page}
-                setPage={setPage}
                 carregando={carregando}
                 setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
-                setMateriais={setMateriais}
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}
                 setHouveMudanca={setHouveMudanca}
                 cursor={cursor}
-                filtros={filtros}
-                setFiltros={setFiltros}
                 setOpenDetalhes={setOpenDetalhes}
-                sort={sort}
-                setSort={setSort}
             />
             <DialogEditar
                 titulo="Editar ordem de serviço"
@@ -68,7 +64,6 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
-                    setSnackbar={setSnackbar}
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
@@ -87,11 +82,8 @@ const Ordem = ({ setSnackbar, locais, carregandoLocais }) => {
                 rota="ordem_servico"
                 texto="ordem de serviço"
                 id={ordemServico.id}
-                openExcluir={openExcluir}
-                setOpenExcluir={setOpenExcluir}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                setSnackbar={setSnackbar}
                 setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesOrdem 
