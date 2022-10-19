@@ -4,7 +4,7 @@ import Inventario from '../components/Inventario';
 import DialogDefinirAlerta from '../components/DialogDefinirAlerta';
 import { getTabela } from '../common/utils';
 
-const PaginaInventario = ({ setSnackbar }) => {
+const PaginaInventario = () => {
     const [itens, setItens] = useState([]);
     const [registro, setRegistro] = useState({});
     const [metaItens, setMetaItens] = useState({});
@@ -47,7 +47,6 @@ const PaginaInventario = ({ setSnackbar }) => {
                 idAlerta={idAlerta}
                 setIdAlerta={setIdAlerta}
                 registro={registro}
-                setSnackbar={setSnackbar}
             />
         </Box>
     );

@@ -3,16 +3,13 @@ import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
 import CampoDataRange from '../CampoDataRange';
 
-const FiltrosOrdem = ({filtros, setFiltros, setPage, setHouveMudanca}) => {
+const FiltrosOrdem = ({setHouveMudanca}) => {
     const [datas, setDatas] = useState([''])
     return (
         <Filtros
             //valor da data de servico e funcao para limpar tal data
             ordem={datas}
             limpaData={setDatas}
-            filtros={filtros}
-            setFiltros={setFiltros}
-            setPage={setPage}
             setHouveMudanca={setHouveMudanca}
         >
             <CampoDataRange

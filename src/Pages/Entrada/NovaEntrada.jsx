@@ -3,23 +3,10 @@ import NovaEntradaMaterial from '../../components/NovaEntradaMaterial';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
-import { token } from '../../common/utils';
 
-
-
-
-const NovaEntrada = ({ setSnackbar, locais, carregandoLocais }) => {
+const NovaEntrada = ({ locais, carregandoLocais }) => {
     //propriedades criadas para armazenar dados e comportamentos de cada select individual
-    const [materiais, setMateriais] = useState([{ 
-        id: '',
-        tipo: '', 
-        matDesabilitado: true,
-        mats:[],
-        currMat: '',
-        qtdDesabilitado: true,
-        quantidade: '',
-        medida: '',
-    }]);
+
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
@@ -29,14 +16,11 @@ const NovaEntrada = ({ setSnackbar, locais, carregandoLocais }) => {
     return (
         <>
             <NovaEntradaMaterial 
-                materiais={materiais}
-                setMateriais={setMateriais}
                 setOpenCancelar={setOpenCancelar}
                 setOpenConfirmar={setOpenConfirmar}
                 carregando={carregando}
                 setCarregando={setCarregando}
                 navigate={navigate}
-                setSnackbar={setSnackbar}
                 locais={locais}
                 carregandoLocais={carregandoLocais}
             />

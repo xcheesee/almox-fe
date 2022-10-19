@@ -124,7 +124,7 @@ const Baixa = ({ setSnackbar }) => {
         carregando={carregando} 
         id={params.id} 
         materiais={materiais} 
-        setSnackbar={setSnackbar}
+        // setSnackbar={setSnackbar}
         checaErros={checaErros}
         errors={errors}
         setErrors={setErrors}

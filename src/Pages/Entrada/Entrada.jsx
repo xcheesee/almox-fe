@@ -7,25 +7,29 @@ import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
+import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useAtom } from 'jotai';
 
-const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
+const Entrada = ({ locais, carregandoLocais }) => {
     const [entradas, setEntradas] = useState([]);
-    const [materiais, setMateriais] = useState([]);
     const [metaEntradas, setMetaEntradas] = useState({});
-    const [page, setPage] = useState(1);
     const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [openExcluir, setOpenExcluir] = useState(false);
+    
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('auto');
-    const [filtros, setFiltros] = useState('');
     const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
-    const [sort, setSort] = useState('');
-
+    
+    const [materiais, setMateriais] = useAtom(matsAtom);
+    const [sort, setSort] = useAtom(sortAtom);
+    const [page, setPage] = useAtom(pageAtom);
+    const [filtros, setFiltros] = useAtom(filtrosAtom);
+    const [openExcluir, setOpenExcluir] = useAtom(excluirAtom);
+    
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros, sort);
         setMateriais([]);
@@ -37,21 +41,14 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
             <EntradaMaterial 
                 entradas={entradas} 
                 metaEntradas={metaEntradas} 
-                page={page}
-                setPage={setPage}
                 carregando={carregando}
                 setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
-                setMateriais={setMateriais}
                 setCursor={setCursor}
                 setHouveMudanca={setHouveMudanca}
                 cursor={cursor}
-                filtros={filtros}
-                setFiltros={setFiltros}
                 setOpenDetalhes={setOpenDetalhes}
-                sort={sort}
-                setSort={setSort}
             />
             <DialogEditar
                 titulo="Editar entrada de material"
@@ -63,14 +60,11 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
                 setOpenExcluir={setOpenExcluir}
             >
                 <FormEntradaMaterial 
-                    defaultValue={entradaMaterial} 
+                    defaultValue={entradaMaterial}
                     setCarregando={setCarregandoEdicao}
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
-                    materiais={materiais}
-                    setMateriais={setMateriais}
-                    setSnackbar={setSnackbar}
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
@@ -89,14 +83,11 @@ const Entrada = ({ setSnackbar, locais, carregandoLocais }) => {
                 rota="entrada"
                 texto="entrada de material"
                 id={entradaMaterial.id}
-                openExcluir={openExcluir}
-                setOpenExcluir={setOpenExcluir}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                setSnackbar={setSnackbar}
                 setHouveMudanca={setHouveMudanca}
             />
-            <DialogDetalhesEntrada 
+            <DialogDetalhesEntrada
                 openDetalhes={openDetalhes} 
                 setOpenDetalhes={setOpenDetalhes}
                 entrada={entradaMaterial}

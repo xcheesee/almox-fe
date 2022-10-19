@@ -17,7 +17,7 @@ const NovaOrdemServico = (props) => {
         carregando,
         setCarregando,
         navigate,
-        setSnackbar,
+        // setSnackbar,
         locais,
         carregandoLocais,
         baseSelecionada,
@@ -41,7 +41,7 @@ const NovaOrdemServico = (props) => {
                 setCarregando={setCarregando} 
                 materiais={materiais}
                 setMateriais={setMateriais}
-                setSnackbar={setSnackbar}
+                // setSnackbar={setSnackbar}
                 errors={errors}
                 setErrors={setErrors}
                 locais={locais}

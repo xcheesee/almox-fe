@@ -1,7 +1,10 @@
 import React from 'react';
 import { Pagination, Box } from '@mui/material';
+import { pageAtom } from '../../atomStore';
+import { useAtom } from 'jotai';
 
-const Paginacao = ({ page, setPage, count }) => {
+const Paginacao = ({ count }) => {
+    const [page, setPage] = useAtom(pageAtom)
     const handleChange = (e, value) => {
         setPage(value);
     }

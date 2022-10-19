@@ -13,9 +13,13 @@ import {
 } from '@mui/material';
 import IconeSort from '../IconeSort';
 import style from './style';
+import { useAtom } from 'jotai';
+import { sortAtom } from '../../atomStore';
 
 const Tabela = (props) => {
-    const { cabecalhos, carregando, setCarregando, sort, setSort, ...other } = props;
+    const { cabecalhos, carregando, setCarregando, ...other } = props;
+    
+    const [sort, setSort] = useAtom(sortAtom)
 
     const handleClickSort = (valor) => {
         setCarregando(true);

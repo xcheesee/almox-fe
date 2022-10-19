@@ -10,8 +10,11 @@ import CampoLocais from '../CampoLocais';
 import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
+import { useAtom } from 'jotai';
+import { snackbarAtom } from '../../atomStore';
 
 const FormEntradaMaterial = (props) => {
+    const [_, setSnackbar] = useAtom(snackbarAtom)
     const { 
         defaultValue, 
         setCarregando, 
@@ -19,7 +22,6 @@ const FormEntradaMaterial = (props) => {
         setOpenConfirmar, 
         navigate, 
         acao, 
-        setSnackbar, 
         setHouveMudanca, 
         errors,
         setErrors,
@@ -149,12 +151,6 @@ const FormEntradaMaterial = (props) => {
             ?
                 ""
             :
-                // <BoxMateriais 
-                //     label="Materiais entregues"
-                //     materiais={materiaisInterno}
-                //     setMateriais={setMateriaisInterno}
-                // />
-
                 <BoxMateriaisEntrada 
                     materiais={materiaisInterno}
                     setMateriais={setMateriaisInterno}

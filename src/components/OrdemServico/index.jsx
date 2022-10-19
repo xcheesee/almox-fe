@@ -11,21 +11,14 @@ const OrdemServico = (props) => {
     const {
         ordens,
         metaOrdens,
-        page,
-        setPage,
         carregando,
         setCarregando,
         setOpenEditar,
         setOrdemServico,
-        setMateriais,
         setCursor,
         setHouveMudanca,
         cursor,
-        filtros,
-        setFiltros,
         setOpenDetalhes,
-        sort,
-        setSort
     } = props;
 
     return (
@@ -33,9 +26,6 @@ const OrdemServico = (props) => {
             <Titulo carregando={carregando}>Ordem de serviço</Titulo>
 
             <FiltrosOrdem
-                filtros={filtros}
-                setFiltros={setFiltros}
-                setPage={setPage}
                 setHouveMudanca={setHouveMudanca}
             />
 
@@ -45,12 +35,9 @@ const OrdemServico = (props) => {
                 setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setOrdemServico={setOrdemServico}
-                setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
                 setOpenDetalhes={setOpenDetalhes}
-                sort={sort}
-                setSort={setSort}
             />
 
             <BotaoNovo 
@@ -61,8 +48,6 @@ const OrdemServico = (props) => {
             </BotaoNovo>
 
             <Paginacao 
-                page={page}
-                setPage={setPage}
                 count={metaOrdens.last_page}
             />
         </ContainerPrincipal>

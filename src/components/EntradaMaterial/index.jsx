@@ -11,21 +11,14 @@ const EntradaMaterial = (props) => {
     const {
         entradas,
         metaEntradas,
-        page,
-        setPage,
         carregando,
         setCarregando,
         setOpenEditar,
         setEntradaMaterial,
-        setMateriais,
         setCursor,
         setHouveMudanca,
         cursor,
-        filtros,
-        setFiltros,
         setOpenDetalhes,
-        sort,
-        setSort
     } = props;
 
     return (
@@ -38,9 +31,6 @@ const EntradaMaterial = (props) => {
             </Titulo>
 
             <FiltrosEntrada
-                filtros={filtros}
-                setFiltros={setFiltros}
-                setPage={setPage}
                 setHouveMudanca={setHouveMudanca}
             />
             
@@ -51,12 +41,9 @@ const EntradaMaterial = (props) => {
                 setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
-                setMateriais={setMateriais}
                 setCursor={setCursor}
                 cursor={cursor}
                 setOpenDetalhes={setOpenDetalhes}
-                sort={sort}
-                setSort={setSort}
             />
 
             <BotaoNovo 
@@ -67,8 +54,6 @@ const EntradaMaterial = (props) => {
             </BotaoNovo>
 
             <Paginacao
-                page={page}
-                setPage={setPage}
                 count={metaEntradas.last_page}
             />
         </ContainerPrincipal>
