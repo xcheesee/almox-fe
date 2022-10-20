@@ -10,11 +10,11 @@ import CampoLocais from '../CampoLocais';
 import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { snackbarAtom } from '../../atomStore';
 
 const FormEntradaMaterial = (props) => {
-    const [_, setSnackbar] = useAtom(snackbarAtom)
+    const setSnackbar = useSetAtom(snackbarAtom)
     const { 
         defaultValue, 
         setCarregando, 

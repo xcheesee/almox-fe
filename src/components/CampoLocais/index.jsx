@@ -1,13 +1,13 @@
 import React from 'react';
 import { MenuItem, Box } from '@mui/material';
 import Selecao from '../Selecao';
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { carregandoLocaisAtom, locaisAtom } from '../../atomStore';
 
 const CampoLocais = ({ name, label, defaultValue, ...props }) => {
     
-    const [locais, _0] = useAtom(locaisAtom)
-    const [carregandoLocais, _1] = useAtom(carregandoLocaisAtom)
+    const locais = useAtomValue(locaisAtom)
+    const carregandoLocais = useAtomValue(carregandoLocaisAtom)
     
     return (
     <Box>

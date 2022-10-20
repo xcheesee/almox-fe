@@ -15,7 +15,7 @@ import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
 import { matsAtom, sortAtom } from '../../atomStore';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 
 const cabecalhos = {
     "ID": "id",
@@ -29,7 +29,7 @@ const cabecalhos = {
 
 const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrdemServico, setCursor, cursor, setOpenDetalhes, }) => {
     const [sort, setSort] = useAtom(sortAtom)
-    const [materiais, setMateriais] = useAtom(matsAtom)
+    const setMateriais = useSetAtom(matsAtom)
 
     const perfil =  localStorage.getItem('perfil');
 

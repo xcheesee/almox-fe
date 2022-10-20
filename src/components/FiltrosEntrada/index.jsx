@@ -4,11 +4,8 @@ import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
 import { primeiraLetraMaiuscula, getMatTipos } from '../../common/utils';
-import { pageAtom } from '../../atomStore';
-import { useAtom } from 'jotai';
 
 const FiltrosEntrada = () => {
-
     
     const [datas, setDatas] = useState(['']);
     const [tiposMats, setTiposMats] = useState({});

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -33,7 +33,7 @@ function App() {
       getLocais(setCarregandoLocais, setLocais);
       getItemsAcabando(setItemsAcabando);
     }
-  }, [location.pathname])
+  }, [location.pathname, setCarregandoLocais, setItemsAcabando, setLocais])
 
   return (
     <>

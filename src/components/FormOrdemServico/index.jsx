@@ -13,7 +13,7 @@ import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm, getStatusEnum } from '../../common/utils';
 import { snackbarAtom } from '../../atomStore';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 
 const FormOrdemServico = (props) => {
     const { 
@@ -41,7 +41,7 @@ const FormOrdemServico = (props) => {
         dataInicio: '',
         horasEmpregadas: '',
     }])
-    const [snackbar, setSnackbar] = useAtom(snackbarAtom)
+    const setSnackbar = useSetAtom(snackbarAtom)
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);

@@ -7,7 +7,7 @@ import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
 
 const Ordem = () => {
@@ -23,17 +23,17 @@ const Ordem = () => {
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
-    const [sort, setSort] = useAtom(sortAtom);
-    const [filtros, setFiltros] = useAtom(filtrosAtom);
-    const [page, setPage] = useAtom(pageAtom);
+    const sort = useAtomValue(sortAtom);
+    const filtros = useAtomValue(filtrosAtom);
+    const page = useAtomValue(pageAtom);
+    const setOpenExcluir = useSetAtom(excluirAtom);
     const [materiais, setMateriais] = useAtom(matsAtom)
-    const [openExcluir, setOpenExcluir] = useAtom(excluirAtom);
 
     useEffect(() => {
         getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros, sort);
         setMateriais([]);
         setErrors({});
-    }, [page, houveMudanca, filtros, sort])
+    }, [page, houveMudanca, filtros, sort, setMateriais])
 
     return (
         <Box sx={{ cursor: cursor }}>

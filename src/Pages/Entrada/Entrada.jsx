@@ -34,7 +34,7 @@ const Entrada = () => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros, sort);
         setMateriais([]);
         setErrors({});
-    }, [page, houveMudanca, filtros, sort]);
+    }, [page, houveMudanca, filtros, sort, setMateriais]);
 
     return (
         <Box sx={{ cursor: cursor }}>

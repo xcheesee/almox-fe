@@ -10,7 +10,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { snackbarAtom } from '../../atomStore';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 
 const DialogDefinirAlerta = (props) => {
   const {
@@ -22,7 +22,7 @@ const DialogDefinirAlerta = (props) => {
   } = props;
 
   const [carregando, setCarregando] = useState(false);
-  const [snackbar, setSnackbar] = useAtom(snackbarAtom)
+  const setSnackbar = useSetAtom(snackbarAtom)
   const cancelar = () => {
     setOpenDefinir(false);
     setIdAlerta('');

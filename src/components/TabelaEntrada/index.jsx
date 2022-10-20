@@ -10,7 +10,7 @@ import Tabela from '../Tabela';
 import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { matsAtom } from '../../atomStore';
 
 const cabecalhos = {
@@ -24,7 +24,7 @@ const cabecalhos = {
 }
 
 const TabelaEntrada = (props) => {
-    const [materiais, setMateriais] = useAtom(matsAtom)
+    const setMateriais = useSetAtom(matsAtom)
     const { 
         entradas, 
         carregando, 
