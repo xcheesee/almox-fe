@@ -1,14 +1,21 @@
 import React from 'react';
 import { MenuItem, Box } from '@mui/material';
 import Selecao from '../Selecao';
+import { useAtom } from 'jotai';
+import { carregandoLocaisAtom, locaisAtom } from '../../atomStore';
 
-const CampoLocais = ({ name, label, defaultValue, locais, carregando, ...props }) => (
+const CampoLocais = ({ name, label, defaultValue, ...props }) => {
+    
+    const [locais, _0] = useAtom(locaisAtom)
+    const [carregandoLocais, _1] = useAtom(carregandoLocaisAtom)
+    
+    return (
     <Box>
         <Selecao
             name={name}
             label={label}
             defaultValue={defaultValue}
-            disabled={carregando}
+            disabled={carregandoLocais}
             fullWidth
             {...props}
         >
@@ -19,6 +26,6 @@ const CampoLocais = ({ name, label, defaultValue, locais, carregando, ...props }
             ))}
         </Selecao>
     </Box>
-);
+)};
 
 export default CampoLocais;

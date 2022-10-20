@@ -13,7 +13,7 @@ import DialogLogout from '../DialogLogout';
 import DialogAltSenh  from '../DialogAltSenh';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const Header = ({ itemsAcabando }) => {
+const Header = () => {
     const [openLogout, setOpenLogout] = useState(false);
 
     const username = localStorage.getItem('username');
@@ -72,7 +72,6 @@ const Header = ({ itemsAcabando }) => {
                             <MenuItemsAcabando 
                                 username={username}
                                 style={style}
-                                itemsAcabando={itemsAcabando}
                             />
 
                             <Tooltip title="Alterar Senha">

@@ -27,8 +27,6 @@ const FormOrdemServico = (props) => {
         setHouveMudanca, 
         errors,
         setErrors,
-        locais,
-        carregandoLocais,
         baseSelecionada,
         setBaseSelecionada,
         deptoSelecionado,
@@ -154,8 +152,6 @@ const FormOrdemServico = (props) => {
                 defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors.origem_id || ""}
-                locais={locais}
-                carregando={carregandoLocais}
                 required
             />
 
@@ -165,8 +161,6 @@ const FormOrdemServico = (props) => {
                 defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
-                locais={locais}
-                carregando={carregandoLocais}
                 required
             />
         

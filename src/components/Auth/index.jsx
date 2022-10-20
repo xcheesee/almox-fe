@@ -15,9 +15,9 @@ const Auth = (props) => {
     })
     
     return (
-        <Margens itemsAcabando={props.itemsAcabando}>
+        <Margens >
             {props.children}
-        </Margens>
+        </Margens >
     );
 }
 

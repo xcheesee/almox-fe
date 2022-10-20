@@ -4,7 +4,7 @@ import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 
-const NovaEntrada = ({ locais, carregandoLocais }) => {
+const NovaEntrada = () => {
     //propriedades criadas para armazenar dados e comportamentos de cada select individual
 
     const [carregando, setCarregando] = useState(false);
@@ -21,8 +21,6 @@ const NovaEntrada = ({ locais, carregandoLocais }) => {
                 carregando={carregando}
                 setCarregando={setCarregando}
                 navigate={navigate}
-                locais={locais}
-                carregandoLocais={carregandoLocais}
             />
             <DialogCancelar 
                 paginaAnterior="entrada de material" 

@@ -17,14 +17,14 @@ import Pagina404 from './Pages/Pagina404';
 import { Routes, Route, useLocation } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
 import { getLocais, getItemsAcabando } from './common/utils';
-import { useAtom } from 'jotai';
-import { snackbarAtom } from './atomStore';
+import { useAtom, useSetAtom } from 'jotai';
+import { carregandoLocaisAtom, itemsAcabandoAtom, locaisAtom, snackbarAtom } from './atomStore';
 
 function App() {
+  const setItemsAcabando = useSetAtom(itemsAcabandoAtom);
   const [snackbar, setSnackbar] = useAtom(snackbarAtom);
-  const [locais, setLocais] = useState();
-  const [carregandoLocais, setCarregandoLocais] = useState(true);
-  const [itemsAcabando, setItemsAcabando] = useState([]);
+  const setLocais = useSetAtom(locaisAtom);
+  const setCarregandoLocais = useSetAtom(carregandoLocaisAtom);
 
   const location = useLocation();
 
@@ -39,69 +39,57 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={
-          <Auth itemsAcabando={itemsAcabando}>
+          <Auth >
             <Login />
-          </Auth>
+          </Auth >
         } />
 
         <Route path="/principal" element={
-          <Auth itemsAcabando={itemsAcabando}>
+          <Auth >
             <Principal />
-          </Auth>
+          </Auth >
         } />
 
         <Route path="/entrada" element={
-          <Auth itemsAcabando={itemsAcabando}>
-            <Entrada
-              locais={locais}
-              carregandoLocais={carregandoLocais}
-            />
-          </Auth>
+          <Auth >
+            <Entrada />
+          </Auth >
         } />
 
         <Route path="/entrada/nova-entrada" element={
-          <Auth itemsAcabando={itemsAcabando}>
-            <NovaEntrada 
-              locais={locais}
-              carregandoLocais={carregandoLocais}
-            />
-          </Auth>
+          <Auth >
+            <NovaEntrada />
+          </Auth >
         } />
 
         <Route path="/ordemservico" element={
-          <Auth itemsAcabando={itemsAcabando}>
-            <Ordem 
-              locais={locais}
-              carregandoLocais={carregandoLocais}
-            />
-          </Auth>
+          <Auth >
+            <Ordem />
+          </Auth >
         } />
 
         <Route path="/ordemservico/nova-ordem" element={
-          <Auth itemsAcabando={itemsAcabando}>
-            <NovaOrdem 
-              locais={locais}
-              carregandoLocais={carregandoLocais}
-            />
-          </Auth>
+          <Auth >
+            <NovaOrdem />
+          </Auth >
         } />
 
         <Route path="/ordemservico/baixa/:id" element={
-          <Auth itemsAcabando={itemsAcabando}>
+          <Auth >
             <Baixa setSnackbar={setSnackbar} />
-          </Auth>
+          </Auth >
         } />
 
         <Route path="/inventario" element={
-          <Auth itemsAcabando={itemsAcabando}>
+          <Auth >
             <PaginaInventario />
-          </Auth>
+          </Auth >
         } />
 
         <Route path="*" element={
-          <Auth itemsAcabando={itemsAcabando}>
+          <Auth >
             <Pagina404 />
-          </Auth>
+          </Auth >
         } />
       </Routes>
 

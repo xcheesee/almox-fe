@@ -15,7 +15,6 @@ const EntradaMaterial = (props) => {
         setOpenEditar,
         setEntradaMaterial,
         setCursor,
-        setHouveMudanca,
         cursor,
         setOpenDetalhes,
     } = props;
@@ -29,9 +28,7 @@ const EntradaMaterial = (props) => {
                 Entrada de material
             </Titulo>
 
-            <FiltrosEntrada
-                setHouveMudanca={setHouveMudanca}
-            />
+            <FiltrosEntrada />
             
             <TabelaEntrada 
                 entradas={entradas} 

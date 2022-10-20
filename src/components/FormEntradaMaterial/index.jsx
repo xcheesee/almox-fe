@@ -25,8 +25,6 @@ const FormEntradaMaterial = (props) => {
         setHouveMudanca, 
         errors,
         setErrors,
-        locais,
-        carregandoLocais
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
@@ -97,8 +95,6 @@ const FormEntradaMaterial = (props) => {
                 <CampoLocais 
                     name="local_id"
                     label="Local de destino dos materiais"
-                    locais={locais}
-                    carregando={carregandoLocais}
                     defaultValue={defaultValue?.local_id}
                     error={errors.hasOwnProperty('local_id')}
                     helperText={errors.local_id || ""}

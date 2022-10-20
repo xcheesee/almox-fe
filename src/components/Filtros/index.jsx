@@ -13,7 +13,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { filtrosAtom, pageAtom } from '../../atomStore';
+import { filtrosAtom, mudancaAtom, pageAtom } from '../../atomStore';
 import { useAtom } from 'jotai';
 
 const Filtros = (props) => {
@@ -24,7 +24,6 @@ const Filtros = (props) => {
         entrada,
         ordem,
         limpaData,
-        setHouveMudanca,
         ...other
     } = props;
 
@@ -33,6 +32,7 @@ const Filtros = (props) => {
     
     const [_, setPage] = useAtom(pageAtom)
     const [filtros, setFiltros] = useAtom(filtrosAtom)
+    const [_0, setHouveMudanca] = useAtom(mudancaAtom)
 
     //limpaData apaga o dataRange no callback limpar
     const limpar = () => {

@@ -10,7 +10,7 @@ import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom } from 'jotai';
 import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
 
-const Ordem = ({ locais, carregandoLocais }) => {
+const Ordem = () => {
     const [ordens, setOrdens] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [carregando, setCarregando] = useState(true);
@@ -67,8 +67,6 @@ const Ordem = ({ locais, carregandoLocais }) => {
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
-                    locais={locais}
-                    carregandoLocais={carregandoLocais}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao

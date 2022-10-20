@@ -7,7 +7,7 @@ import { primeiraLetraMaiuscula, getMatTipos } from '../../common/utils';
 import { pageAtom } from '../../atomStore';
 import { useAtom } from 'jotai';
 
-const FiltrosEntrada = ({ setHouveMudanca }) => {
+const FiltrosEntrada = () => {
 
     
     const [datas, setDatas] = useState(['']);
@@ -27,7 +27,6 @@ const FiltrosEntrada = ({ setHouveMudanca }) => {
             //valor da data de entrada e funcao para limpar tal data
             entrada={datas}
             limpaData={setDatas}
-            setHouveMudanca={setHouveMudanca}
         >
             <CampoDataRange
                 label={'Data de entrada - faixa de pesquisa'}

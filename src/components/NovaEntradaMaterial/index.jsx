@@ -15,8 +15,6 @@ const NovaEntradaMaterial = (props) => {
         carregando,
         setCarregando,
         navigate,
-        locais,
-        carregandoLocais,
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -34,8 +32,6 @@ const NovaEntradaMaterial = (props) => {
                 setCarregando={setCarregando}
                 errors={errors}
                 setErrors={setErrors}
-                locais={locais}
-                carregandoLocais={carregandoLocais}
             />
             
             <Box className="flex justify-end gap-4">

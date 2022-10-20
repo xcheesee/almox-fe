@@ -12,10 +12,14 @@ import {
     TableBody
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { itemsAcabandoAtom } from '../../atomStore';
+import { useAtomValue } from 'jotai';
 
-const MenuItemsAcabando = ({ username, style, itemsAcabando }) => {
+const MenuItemsAcabando = ({ username, style }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
+    const itemsAcabando = useAtomValue(itemsAcabandoAtom)
 
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);

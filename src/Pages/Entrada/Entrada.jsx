@@ -7,10 +7,10 @@ import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
-import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useAtom } from 'jotai';
+import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 
-const Entrada = ({ locais, carregandoLocais }) => {
+const Entrada = () => {
     const [entradas, setEntradas] = useState([]);
     const [metaEntradas, setMetaEntradas] = useState({});
     const [carregando, setCarregando] = useState(true);
@@ -20,15 +20,15 @@ const Entrada = ({ locais, carregandoLocais }) => {
     
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('auto');
-    const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
+    const setOpenExcluir = useSetAtom(excluirAtom);
+    const sort = useAtomValue(sortAtom);
+    const page = useAtomValue(pageAtom);
+    const filtros = useAtomValue(filtrosAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
-    const [sort, setSort] = useAtom(sortAtom);
-    const [page, setPage] = useAtom(pageAtom);
-    const [filtros, setFiltros] = useAtom(filtrosAtom);
-    const [openExcluir, setOpenExcluir] = useAtom(excluirAtom);
+    const [houveMudanca, setHouveMudanca] = useAtom(mudancaAtom)
     
     useEffect(() => {
         getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros, sort);
@@ -46,7 +46,6 @@ const Entrada = ({ locais, carregandoLocais }) => {
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
                 setCursor={setCursor}
-                setHouveMudanca={setHouveMudanca}
                 cursor={cursor}
                 setOpenDetalhes={setOpenDetalhes}
             />
@@ -68,8 +67,6 @@ const Entrada = ({ locais, carregandoLocais }) => {
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
-                    locais={locais}
-                    carregandoLocais={carregandoLocais}
                 />
             </DialogEditar>
             <DialogConfirmaEdicao 
