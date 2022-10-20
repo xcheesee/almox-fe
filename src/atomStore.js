@@ -4,8 +4,6 @@ import { atom } from 'jotai'
 // state manager utilizado: jotai
 // https://jotai.org/
 
-export const tempAtom = atom('10')
-
 export const locaisAtom = atom()
 
 export const carregandoLocaisAtom = atom(true)
@@ -25,6 +23,8 @@ export const excluirAtom = atom(false)
 export const mudancaAtom = atom(false)
 
 export const itemsAcabandoAtom = atom([])
+
+// export const carregandoEntradasAtom = 
 
 export const snackbarAtom = atom({
     open: false,
