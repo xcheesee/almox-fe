@@ -1,13 +1,15 @@
 import React from 'react';
 import { MenuItem, Box } from '@mui/material';
 import Selecao from '../Selecao';
-import { useAtomValue } from 'jotai';
-import { carregandoLocaisAtom, locaisAtom } from '../../atomStore';
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { getLocais } from '../../common/utils';
 
 const CampoLocais = ({ name, label, defaultValue, ...props }) => {
-    
-    const locais = useAtomValue(locaisAtom)
-    const carregandoLocais = useAtomValue(carregandoLocaisAtom)
+    const queryClient = useQueryClient()
+    const locais = useQuery(['locais'], getLocais, {
+        staleTime: 120000,
+        cacheTime: 120000,
+    })
     
     return (
     <Box>
@@ -15,11 +17,11 @@ const CampoLocais = ({ name, label, defaultValue, ...props }) => {
             name={name}
             label={label}
             defaultValue={defaultValue}
-            disabled={carregandoLocais}
+            carregando={locais.isLoading}
             fullWidth
             {...props}
         >
-            {locais?.map(local => (
+            {locais?.data?.map(local => (
                 <MenuItem key={local.id} value={local.id}>
                     {local.nome}
                 </MenuItem>

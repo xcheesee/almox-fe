@@ -16,27 +16,27 @@ import PaginaInventario from './Pages/PaginaInventario';
 import Pagina404 from './Pages/Pagina404';
 import { Routes, Route, useLocation } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
-import { getLocais, getItemsAcabando } from './common/utils';
+import { getItemsAcabando } from './common/utils';
 import { useAtom, useSetAtom } from 'jotai';
-import { carregandoLocaisAtom, itemsAcabandoAtom, locaisAtom, snackbarAtom } from './atomStore';
+import { itemsAcabandoAtom, snackbarAtom } from './atomStore';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 function App() {
   const setItemsAcabando = useSetAtom(itemsAcabandoAtom);
   const [snackbar, setSnackbar] = useAtom(snackbarAtom);
-  const setLocais = useSetAtom(locaisAtom);
-  const setCarregandoLocais = useSetAtom(carregandoLocaisAtom);
+
+  const queryClient = new QueryClient()
 
   const location = useLocation();
 
   useEffect(() => {
     if (location.pathname !== '/') {
-      getLocais(setCarregandoLocais, setLocais);
       getItemsAcabando(setItemsAcabando);
     }
-  }, [location.pathname, setCarregandoLocais, setItemsAcabando, setLocais])
+  }, [location.pathname, setItemsAcabando])
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="/" element={
           <Auth >
@@ -97,7 +97,7 @@ function App() {
         snackbar={snackbar}
         setSnackbar={setSnackbar}
       />
-    </>
+    </QueryClientProvider>
   );
 }
 

@@ -7,7 +7,7 @@ const Selecao = (props) => {
         label,
         defaultValue,
         helperText,
-        carregando,
+        carregando = false,
         value,
         ...other
     } = props;
@@ -21,7 +21,7 @@ const Selecao = (props) => {
                 name={name}
                 defaultValue={defaultValue || ""}
                 value={value}
-                disabled={carregando || false}
+                disabled={carregando}
                 onChange={other.onChange}
             >
                 {other.children}

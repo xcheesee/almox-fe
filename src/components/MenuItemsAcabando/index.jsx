@@ -12,17 +12,24 @@ import {
     TableBody
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import { itemsAcabandoAtom } from '../../atomStore';
-import { useAtomValue } from 'jotai';
+// import { itemsAcabandoAtom } from '../../atomStore';
+// import { useAtomValue } from 'jotai';
+import { getItemsAcabando } from '../../common/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const MenuItemsAcabando = ({ username, style }) => {
+    const queryClient = useQueryClient()
+    const itemsAcabando = useQuery(['itemsAcabando'], getItemsAcabando,{
+        staleTime: 120000,
+        cacheTime: 120000,
+    })
+
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const itemsAcabando = useAtomValue(itemsAcabandoAtom)
-
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);
+        console.log(itemsAcabando)
     }
 
     const handleClose = () => {
@@ -32,7 +39,7 @@ const MenuItemsAcabando = ({ username, style }) => {
     return (
         <>
             <Badge
-                badgeContent={itemsAcabando.length}
+                badgeContent={itemsAcabando?.data?.length}
                 variant="dot"
                 color="error"
                 anchorOrigin={{
@@ -44,7 +51,7 @@ const MenuItemsAcabando = ({ username, style }) => {
                     className="flex items-center gap-1" 
                     sx={style.iconButton}
                     onClick={handleClick}
-                    disabled={itemsAcabando.length === 0}
+                    disabled={itemsAcabando?.data?.length === 0}
                 >
                     <PersonIcon fontSize="small" sx={{ color: (theme) => theme.palette.color.bg }} />
                     <Typography>Olá, {username}</Typography>
@@ -79,7 +86,7 @@ const MenuItemsAcabando = ({ username, style }) => {
                             </TableRow>
                         </TableHead>
                             <TableBody>
-                                {itemsAcabando.map(item => (
+                                {itemsAcabando?.data?.map(item => (
                                     <TableRow key={item.id}>
                                         <TableCell>{item.item}</TableCell>
                                         <TableCell align='right'>{item.quantidade} {item.medida}</TableCell>

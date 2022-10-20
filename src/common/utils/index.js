@@ -126,7 +126,7 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
 }
 
 // Read
-export const getLocais = (setCarregando, setLocais) => {
+export const getLocais = () => {
   const url = `${process.env.REACT_APP_API_URL}/locais`;
   const options = {
       method: 'GET',
@@ -136,14 +136,11 @@ export const getLocais = (setCarregando, setLocais) => {
       }
   };
 
-  setCarregando(true);
-
-  fetch(url, options)
+  return fetch(url, options)
       .then(res => {
-          setCarregando(false);
-          return res.json()
+        return res.json()
       })
-      .then(data => setLocais([...data.data]))
+      .then(data => data.data)
       .catch(err => console.log(err));
 }
 
@@ -222,7 +219,7 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   })
 }
 
-export const getItemsAcabando = (setItemsAcabando) => {
+export const getItemsAcabando = () => {
   const url = `${process.env.REACT_APP_API_URL}/items_acabando`;
   const options = {
     method: 'GET',
@@ -232,12 +229,12 @@ export const getItemsAcabando = (setItemsAcabando) => {
     }
   };
 
-  fetch(url, options)
+  return fetch(url, options)
     .then(res => {
       if (res.ok)
         return res.json();
     })
-    .then(data => setItemsAcabando(data.data))
+    .then(data => data.data)
     .catch(err => console.log(err))
 }
 
@@ -341,8 +338,11 @@ export const getMatTipos = async () => {
           'Authorization': localStorage.getItem('access_token'),
       },
   };
+  await new Promise((res) => {
+    setTimeout(() => res('pog'), 4000)
+  })
   const res = await fetch(url, options);
-  return await res.json();
+  return res.json();
 }
 
 export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {

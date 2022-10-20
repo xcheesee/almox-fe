@@ -11,8 +11,8 @@ import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } f
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 const Entrada = () => {
-    const [entradas, setEntradas] = useState([]);
-    const [metaEntradas, setMetaEntradas] = useState({});
+    const [entradas, setEntradas] = useState([]); //*
+    const [metaEntradas, setMetaEntradas] = useState({}); //*
     const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
