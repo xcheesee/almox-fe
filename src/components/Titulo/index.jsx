@@ -5,10 +5,13 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Link, useLocation } from 'react-router-dom';
 
 const BotaoVoltar = (props) => {
+    const perfil = localStorage.getItem('perfil');
+    const display = perfil === 'encarregado' ? 'none' : ''
+
     return (
         <Tooltip title="Voltar">
             <Link to={props.voltaPara}>
-                <IconButton>
+                <IconButton sx={{ display: display }}>
                     <ArrowBackIosNewIcon fontSize="small" />
                 </IconButton>
             </Link>

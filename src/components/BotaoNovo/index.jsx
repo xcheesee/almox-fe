@@ -3,9 +3,9 @@ import { Box, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
 
-const BotaoNovo = ({ caminho, ...props }) => {
+const BotaoNovo = ({ caminho, display, ...props }) => {
     return (
-        <Box className="flex justify-end py-8">
+        <Box sx={{ display: display }} className="justify-end pt-8">
             <Link to={caminho}>
                 <Button variant="contained">
                     <AddIcon className="mr-1" size="small" />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { mascaraProcessoSei, mascaraContrato } from '../../common/utils';
+import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../common/utils';
 import {
     TableRow,
     TableCell,
@@ -61,7 +61,7 @@ const TabelaEntrada = (props) => {
                                     <ManageSearchIcon />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Editar" placement="right">
+                            <Tooltip title="Editar" placement="right" sx={{ display: authEditEntrada(localStorage.getItem('perfil')) }}>
                                 <IconButton 
                                     disabled={cursor === 'progress'}
                                     onClick={ () => { 

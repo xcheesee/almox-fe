@@ -3,13 +3,15 @@ import {
     TableRow,
     TableCell,
     IconButton,
-    Tooltip
+    Tooltip,
+    Box
 } from '@mui/material';
 import Tabela from '../Tabela';
-import { getRegistro } from '../../common/utils';
+import { authEditOrdem, getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
 import { matsAtom, sortAtom } from '../../atomStore';
@@ -28,6 +30,9 @@ const cabecalhos = {
 const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrdemServico, setCursor, cursor, setOpenDetalhes, }) => {
     const [sort, setSort] = useAtom(sortAtom)
     const [materiais, setMateriais] = useAtom(matsAtom)
+
+    const perfil =  localStorage.getItem('perfil');
+
     return (
         <Tabela cabecalhos={cabecalhos} carregando={carregando} setCarregando={setCarregando} sort={sort} setSort={setSort}>
             {ordens.map(ordem => (
@@ -43,45 +48,56 @@ const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrde
                         <TableCell align="center">{ordem.origem}</TableCell>
                         <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
-                            <Tooltip title="Visualizar" placement="left">
-                                <IconButton 
-                                    disabled={cursor === 'progress'}
-                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais) }
-                                >
-                                    <ManageSearchIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Editar" placement="top">
-                                <IconButton 
-                                    disabled={cursor === 'progress'} 
-                                    onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            </Tooltip>
-                            {
-                                ordem.flg_baixa === 0
-                                ?
-                                    <Tooltip title="Baixa" placement="right" >
-                                        <Link to={`/ordemservico/baixa/${ordem.id}`}>
+                            <Box className="grid grid-cols-2">
+                                <Tooltip title="Visualizar ordem" placement="left">
+                                    <IconButton 
+                                        disabled={cursor === 'progress'}
+                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais) }
+                                    >
+                                        <ManageSearchIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Editar" placement="right" sx={{ display: authEditOrdem(perfil) }}>
+                                    <IconButton 
+                                        disabled={cursor === 'progress'} 
+                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
+                                    >
+                                        <EditIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+                                {
+                                    ordem.flg_baixa === 0
+                                    ?
+                                        <Tooltip title="Baixa" placement="left" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                            <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                                <Link to={`/ordemservico/baixa/${ordem.id}`} >
+                                                    <IconButton disabled={cursor === 'progress'}>
+                                                        <GradingIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Link>
+                                            </Box>
+                                        </Tooltip>
+                                    :
+                                        <Tooltip title="Visualizar baixa" placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'} >
                                             <IconButton disabled={cursor === 'progress'}>
-                                                <GradingIcon />
+                                                <ContentPasteSearchIcon fontSize="small" />
                                             </IconButton>
-                                        </Link>
-                                    </Tooltip>
-                                :
-                                    <Tooltip title="Imprimir baixa" placement="right" >
+                                        </Tooltip>
+                                }
+                                <Tooltip title="Imprimir" placement="right" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                    <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
                                         <a 
                                             href={`${process.env.REACT_APP_API_URL}/ordem_servico/${ordem.id}/baixa_pdf`}
                                             target="_blank"
                                             rel="noreferrer"
                                         >
                                             <IconButton disabled={cursor === 'progress'}>
-                                                <PrintIcon />
+                                                <PrintIcon fontSize="small" />
                                             </IconButton>
                                         </a>
-                                    </Tooltip>
-                            }
+                                    </Box>
+                                </Tooltip>
+                            </Box>
                         </TableCell>
                     </TableRow>
                 )
