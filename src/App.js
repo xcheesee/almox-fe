@@ -22,81 +22,56 @@ import { itemsAcabandoAtom, snackbarAtom } from './atomStore';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 function App() {
-  const setItemsAcabando = useSetAtom(itemsAcabandoAtom);
   const [snackbar, setSnackbar] = useAtom(snackbarAtom);
 
   const queryClient = new QueryClient()
 
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname !== '/') {
-      getItemsAcabando(setItemsAcabando);
-    }
-  }, [location.pathname, setItemsAcabando])
-
   return (
     <QueryClientProvider client={queryClient}>
-      <Routes>
-        <Route path="/" element={
-          <Auth >
-            <Login />
-          </Auth >
-        } />
+        <Auth >
+          <Routes>
+            <Route path="/" element={
+                <Login />
+            } />
 
-        <Route path="/principal" element={
-          <Auth >
-            <Principal />
-          </Auth >
-        } />
+            <Route path="/principal" element={
+                <Principal />
+            } />
 
-        <Route path="/entrada" element={
-          <Auth >
-            <Entrada />
-          </Auth >
-        } />
+            <Route path="/entrada" element={
+                <Entrada />
+            } />
 
-        <Route path="/entrada/nova-entrada" element={
-          <Auth >
-            <NovaEntrada />
-          </Auth >
-        } />
+            <Route path="/entrada/nova-entrada" element={
+                <NovaEntrada />
+            } />
 
-        <Route path="/ordemservico" element={
-          <Auth >
-            <Ordem />
-          </Auth >
-        } />
+            <Route path="/ordemservico" element={
+                <Ordem />
+            } />
 
-        <Route path="/ordemservico/nova-ordem" element={
-          <Auth >
-            <NovaOrdem />
-          </Auth >
-        } />
+            <Route path="/ordemservico/nova-ordem" element={
+                <NovaOrdem />
+            } />
 
-        <Route path="/ordemservico/baixa/:id" element={
-          <Auth >
-            <Baixa setSnackbar={setSnackbar} />
-          </Auth >
-        } />
+            <Route path="/ordemservico/baixa/:id" element={
+                <Baixa setSnackbar={setSnackbar} />
+            } />
 
-        <Route path="/inventario" element={
-          <Auth >
-            <PaginaInventario />
-          </Auth >
-        } />
+            <Route path="/inventario" element={
+                <PaginaInventario />
+            } />
 
-        <Route path="*" element={
-          <Auth >
-            <Pagina404 />
-          </Auth >
-        } />
-      </Routes>
+            <Route path="*" element={
+                <Pagina404 />
+            } />
+          </Routes>
 
-      <SnackbarAlert
-        snackbar={snackbar}
-        setSnackbar={setSnackbar}
-      />
+          <SnackbarAlert
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+          />
+      </Auth >
     </QueryClientProvider>
   );
 }
