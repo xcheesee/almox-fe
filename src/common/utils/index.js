@@ -338,11 +338,10 @@ export const getMatTipos = async () => {
           'Authorization': localStorage.getItem('access_token'),
       },
   };
-  await new Promise((res) => {
-    setTimeout(() => res('pog'), 4000)
-  })
+  
   const res = await fetch(url, options);
-  return res.json();
+  const temp = await res.json();
+  return temp.data
 }
 
 export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {

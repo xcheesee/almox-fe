@@ -16,8 +16,15 @@ import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const BoxMateriais = (props) => {
+    const queryClient = useQueryClient()
+    const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
+        staleTime: 120000,
+        cacheTime: 120000,
+    });
+
     const {
         label,
         materiais,
@@ -25,15 +32,12 @@ const BoxMateriais = (props) => {
         baseSelecionada,
         deptoSelecionado,
     } = props;
-    const [tiposMats, setTiposMats] = useState({});
-    const [carregando, setCarregando] = useState(true);
 
     const getMateriaisFromTipos = async (element, children, formIndex) => {
         const tipoRota = children.props.value;
         const tipoAlvoId = element.target.value;
         setMateriais(prev => modMaterial(prev, formIndex, {matDesabilitado: true}));
         
-        //const val = await getMatItens(tipoRota);
         const val = await getMatItens(tipoRota, true, baseSelecionada, deptoSelecionado);
         const mod = {
             mats: val.data,
@@ -92,15 +96,6 @@ const BoxMateriais = (props) => {
     const handleQtdChange = (element, formIndex) => {
         setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
     };
-    
-
-    useEffect(() => {
-        (async () => {
-            const data = await getMatTipos();
-            setTiposMats(data);
-            setCarregando(false);
-        })();
-    }, [])
 
     return (
         <Box className="mx-8 mb-12">
@@ -118,13 +113,13 @@ const BoxMateriais = (props) => {
                                     name="tipo_material"
                                     size="small"
                                     onChange={(e, c) => getMateriaisFromTipos(e, c, index)}
-                                    disabled={carregando}
+                                    carregando={tiposMats?.isLoading}
                                     value={material.tipo}
                                     className="col-span-2"
                                     fullWidth
                                 >
                                     {
-                                        tiposMats.data
+                                        tiposMats?.data
                                             ?.map((val, i) => 
                                                 <MenuItem value={val.id} key={i} >
                                                     {primeiraLetraMaiuscula(val.nome)}

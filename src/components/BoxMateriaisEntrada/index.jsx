@@ -20,7 +20,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
     const queryClient = useQueryClient()
-    const tipos = useQuery(['tiposMateriais'], getMatTipos)
+    const tipos = useQuery(['tiposMateriais'], getMatTipos, {
+        staleTime: 120000,
+        cacheTime: 120000,
+    })
 
     const [listaMateriais, setListaMateriais] = useState([]);
 
@@ -90,17 +93,17 @@ const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
             </Typography>
 
             <Selecao
-                label= {tipos.isLoading? "Carregando..." : "Tipo de material"}
+                label= {tipos?.isLoading? "Carregando..." : "Tipo de material"}
                 name="tipo_material"
                 size="small"
                 onChange={(e) => { getMateriaisFromTipos(e); }}
-                carregando={tipos.isLoading}
+                carregando={tipos?.isLoading}
                 className="col-span-2"
                 margin="dense"
                 fullWidth
             >
                 {
-                    tipos?.data?.data?.map(val => 
+                    tipos?.data?.map(val => 
                         <MenuItem value={val.id} key={val.id} >
                             {primeiraLetraMaiuscula(val.nome)}
                         </MenuItem>)

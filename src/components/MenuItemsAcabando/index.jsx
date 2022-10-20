@@ -12,8 +12,6 @@ import {
     TableBody
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-// import { itemsAcabandoAtom } from '../../atomStore';
-// import { useAtomValue } from 'jotai';
 import { getItemsAcabando } from '../../common/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 

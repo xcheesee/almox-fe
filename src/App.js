@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -14,11 +13,10 @@ import NovaOrdem from './Pages/Ordem/NovaOrdem';
 import Baixa from './Pages/Ordem/Baixa';
 import PaginaInventario from './Pages/PaginaInventario';
 import Pagina404 from './Pages/Pagina404';
-import { Routes, Route, useLocation } from 'react-router';
+import { Routes, Route } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
-import { getItemsAcabando } from './common/utils';
-import { useAtom, useSetAtom } from 'jotai';
-import { itemsAcabandoAtom, snackbarAtom } from './atomStore';
+import { useAtom } from 'jotai';
+import { snackbarAtom } from './atomStore';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 function App() {

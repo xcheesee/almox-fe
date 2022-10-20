@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextField, MenuItem } from '@mui/material';
 import Filtros from '../Filtros';
 import Selecao from '../Selecao';
@@ -8,7 +8,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const FiltrosEntrada = () => {
     const queryClient = useQueryClient();
-    const tipos = useQuery(['tiposMateriais'], getMatTipos);
+    const tipos = useQuery(['tiposMateriais'], getMatTipos, {
+        staleTime: 120000,
+        cacheTime: 120000,
+    });
     
     const [datas, setDatas] = useState(['']);
 
@@ -59,7 +62,7 @@ const FiltrosEntrada = () => {
                 className="col-span-2"
             >
                 {                                    
-                    tipos?.data?.data
+                    tipos?.data
                         ?.map((val, i) => 
                             <MenuItem value={val.nome} key={i} >
                                 {primeiraLetraMaiuscula(val.nome)}
