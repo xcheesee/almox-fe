@@ -29,19 +29,15 @@ const TabelaInventario = (props) => {
         setRegistro,
         cursor,
         setCursor,
-        sort,
-        setSort
     } = props;
 
     return (
         <Tabela 
             cabecalhos={cabecalhos} 
             carregando={carregando}
-            setCarregando={setCarregando}
-            sort={sort}
-            setSort={setSort}    
+            setCarregando={setCarregando}  
         >
-            {itens.map(item => (
+            {itens?.map(item => (
                     <TableRow key={item.id}>
                         <TableCell align="center">{item.id}</TableCell>
                         <TableCell align="center">{item.item}</TableCell>

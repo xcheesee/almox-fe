@@ -144,7 +144,7 @@ export const getLocais = () => {
       .catch(err => console.log(err));
 }
 
-export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros, sort) => {
+export const getTabela = (rota, page, /* setCarregando, setData, setMeta, */ filtros, sort) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}&sort=${sort || ''}`
   const options = {
       method: 'GET',
@@ -154,17 +154,18 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros, 
       }
   };
 
-  setCarregando(true);
+  // setCarregando(true);
 
-  fetch(url, options)
+  return fetch(url, options)
       .then(res => res.json())
-      .then(data => {
-          setTimeout(() => {
-            setCarregando(false);
-            setData(data.data);
-            setMeta(data.meta);
-          }, 250);
-      });
+      .then(data => new Promise((res) =>  setTimeout(() => {
+          res(data)
+          // setCarregando(false);
+          // setData(data.data);
+          // setMeta(data.meta);
+        }, 250))
+
+      )
 }
 
 export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {

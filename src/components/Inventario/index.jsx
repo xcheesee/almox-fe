@@ -10,20 +10,13 @@ const Inventario = (props) => {
     const { 
         itens,
         metaItens,
-        page,
-        setPage,
         carregando,
         setCarregando,
         setIdAlerta, 
         setOpenDefinir,
-        filtros,
-        setFiltros,
         setRegistro,
-        setHouveMudanca,
         cursor,
         setCursor,
-        sort,
-        setSort
     } = props;
     
     return (
@@ -32,16 +25,10 @@ const Inventario = (props) => {
                 Inventário
             </Titulo>
 
-            <FiltrosInventario
-                filtros={filtros}
-                setFiltros={setFiltros}
-                setPage={setPage}
-                setHouveMudanca={setHouveMudanca}     
-            />
+            <FiltrosInventario />
 
             <TabelaInventario
                 itens={itens}
-                metaItens={metaItens}
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
                 carregando={carregando}
@@ -49,15 +36,11 @@ const Inventario = (props) => {
                 setRegistro={setRegistro}
                 cursor={cursor}
                 setCursor={setCursor}
-                sort={sort}
-                setSort={setSort}
             />
 
             <Box className="mt-10">
                 <Paginacao 
-                    page={page}
-                    setPage={setPage}
-                    count={metaItens.last_page}
+                    count={metaItens?.last_page}
                 />
             </Box>
         </ContainerPrincipal>

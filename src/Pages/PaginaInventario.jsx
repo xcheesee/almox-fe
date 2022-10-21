@@ -3,43 +3,45 @@ import { Box } from '@mui/material';
 import Inventario from '../components/Inventario';
 import DialogDefinirAlerta from '../components/DialogDefinirAlerta';
 import { getTabela } from '../common/utils';
+import { filtrosAtom, mudancaAtom, pageAtom, sortAtom } from '../atomStore';
+import { useAtomValue } from 'jotai';
+import { useQuery, useQueryClient} from '@tanstack/react-query'
 
 const PaginaInventario = () => {
-    const [itens, setItens] = useState([]);
-    const [registro, setRegistro] = useState({});
+
+
+    // const [itens, setItens] = useState([]);
     const [metaItens, setMetaItens] = useState({});
-    const [page, setPage] = useState(1);
+    const [registro, setRegistro] = useState({});
     const [carregando, setCarregando] = useState(true);
     const [openDefinir, setOpenDefinir] = useState(false);
     const [idAlerta, setIdAlerta] = useState('');
-    const [filtros, setFiltros] = useState('');
     const [cursor, setCursor] = useState('auto');
-    const [sort, setSort] = useState('');
-    const [houveMudanca, setHouveMudanca] = useState(true);
+    
+    const page = useAtomValue(pageAtom);
+    const sort = useAtomValue(sortAtom);
+    const filtros = useAtomValue(filtrosAtom);
+    const houveMudanca = useAtomValue(mudancaAtom);
+    
+    const queryClient = useQueryClient()
+    const itens = useQuery(['inventarioItens', page, filtros, sort], () => getTabela('inventarios', page, filtros, sort))
 
-    useEffect(() => {
-        getTabela('inventarios', page, setCarregando, setItens, setMetaItens, filtros, sort);
-    }, [page, filtros, sort, houveMudanca])
+    // useEffect(() => {
+    //     getTabela('inventarios', page, setCarregando, setItens, setMetaItens, filtros, sort);
+    // }, [page, filtros, sort, houveMudanca])
 
     return (
         <Box sx={{ cursor: cursor }}>
             <Inventario
-                itens={itens}
-                metaItens={metaItens}
-                page={page}
-                setPage={setPage}
-                carregando={carregando}
-                setCarregando={setCarregando}
+                itens={itens.data.data}
+                metaItens={itens.data.meta}
+                carregando={itens.isLoading}
+                // setCarregando={setCarregando}
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
-                filtros={filtros}
-                setFiltros={setFiltros}
                 setRegistro={setRegistro}
-                setHouveMudanca={setHouveMudanca}
                 cursor={cursor}
                 setCursor={setCursor}
-                sort={sort}
-                setSort={setSort}
             />
             <DialogDefinirAlerta
                 openDefinir={openDefinir}
