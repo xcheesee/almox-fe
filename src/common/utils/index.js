@@ -158,12 +158,14 @@ export const getTabela = (rota, page, /* setCarregando, setData, setMeta, */ fil
 
   return fetch(url, options)
       .then(res => res.json())
-      .then(data => new Promise((res) =>  setTimeout(() => {
+      .then(data => {
+        console.log(data)
+        return new Promise((res) =>  setTimeout(() => {
           res(data)
           // setCarregando(false);
           // setData(data.data);
           // setMeta(data.meta);
-        }, 250))
+        }, 250))}
 
       )
 }

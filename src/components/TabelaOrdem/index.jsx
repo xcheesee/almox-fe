@@ -35,7 +35,7 @@ const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrde
 
     return (
         <Tabela cabecalhos={cabecalhos} carregando={carregando} setCarregando={setCarregando} sort={sort} setSort={setSort}>
-            {ordens.map(ordem => (
+            {ordens?.map(ordem => (
                     <TableRow key={ordem.id}>
                         <TableCell align="center">{ordem.id}</TableCell>
                         <TableCell align="center">{ordem.status}</TableCell>

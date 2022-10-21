@@ -9,9 +9,10 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useQuery, useQueryClient} from '@tanstack/react-query'
 
 const Ordem = () => {
-    const [ordens, setOrdens] = useState([]);
+    // const [ordens, setOrdens] = useState([]);
     const [metaOrdens, setMetaOrdens] = useState({});
     const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -29,19 +30,22 @@ const Ordem = () => {
     const setOpenExcluir = useSetAtom(excluirAtom);
     const [materiais, setMateriais] = useAtom(matsAtom)
 
-    useEffect(() => {
-        getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros, sort);
-        setMateriais([]);
-        setErrors({});
-    }, [page, houveMudanca, filtros, sort, setMateriais])
+    const queryClient = useQueryClient()
+    const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort))
+
+    // useEffect(() => {
+    //     getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros, sort);
+    //     setMateriais([]);
+    //     setErrors({});
+    // }, [page, houveMudanca, filtros, sort, setMateriais])
 
     return (
         <Box sx={{ cursor: cursor }}>
             <OrdemServico 
-                ordens={ordens}
-                metaOrdens={metaOrdens}
-                carregando={carregando}
-                setCarregando={setCarregando}
+                ordens={ordens?.data?.data}
+                metaOrdens={ordens?.data?.meta}
+                carregando={ordens?.isLoading}
+                // setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}

@@ -10,8 +10,18 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link } from 'react-router-dom';
+import { useSetAtom } from 'jotai';
+import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
 
 const MenuPrincipal = () => {
+    const setSort = useSetAtom(sortAtom)
+    const setFiltros = useSetAtom(filtrosAtom)
+    const setPage = useSetAtom(pageAtom)
+
+    setSort('')
+    setPage(1)
+    setFiltros('')
+    
     return (
         <ContainerPrincipal>
             <Titulo>
