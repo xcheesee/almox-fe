@@ -62,7 +62,6 @@ const DialogDefinirAlerta = (props) => {
           });
           setOpenDefinir(false);
           setCarregando(false);
-          queryClient.refetchQueries(['itemsAcabando'])
           return(res.json());
         } else {
           setSnackbar({
@@ -85,7 +84,10 @@ const DialogDefinirAlerta = (props) => {
         <Box
           component="form"
           id="quantidade-alerta"
-          onSubmit={enviar}
+          onSubmit={(e) => {
+            enviar(e)
+            queryClient.refetchQueries(['itemsAcabando'], {stale: 'true'})
+          }}
         >
           <TextField
             label="Quantidade"
