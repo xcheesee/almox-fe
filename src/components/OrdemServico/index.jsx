@@ -12,7 +12,6 @@ const OrdemServico = (props) => {
         ordens,
         metaOrdens,
         carregando,
-        setCarregando,
         setOpenEditar,
         setOrdemServico,
         setCursor,
@@ -29,7 +28,6 @@ const OrdemServico = (props) => {
             <TabelaOrdem 
                 ordens={ordens} 
                 carregando={carregando} 
-                setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setOrdemServico={setOrdemServico}
                 setCursor={setCursor}
@@ -45,7 +43,7 @@ const OrdemServico = (props) => {
             </BotaoNovo>
 
             <Paginacao 
-                count={metaOrdens.last_page}
+                count={metaOrdens?.last_page}
             />
         </ContainerPrincipal>
     );

@@ -33,7 +33,6 @@ const EntradaMaterial = (props) => {
             <TabelaEntrada 
                 entradas={entradas} 
                 carregando={carregando}
-                // setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
                 setCursor={setCursor}

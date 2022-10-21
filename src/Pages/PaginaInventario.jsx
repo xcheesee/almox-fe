@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import Inventario from '../components/Inventario';
 import DialogDefinirAlerta from '../components/DialogDefinirAlerta';
 import { getTabela } from '../common/utils';
-import { filtrosAtom, mudancaAtom, pageAtom, sortAtom } from '../atomStore';
+import { filtrosAtom, pageAtom, sortAtom } from '../atomStore';
 import { useAtomValue } from 'jotai';
 import { useQuery, useQueryClient} from '@tanstack/react-query'
 

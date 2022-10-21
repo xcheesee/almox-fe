@@ -14,8 +14,8 @@ import GradingIcon from '@mui/icons-material/Grading';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
-import { matsAtom, sortAtom } from '../../atomStore';
-import { useAtom, useSetAtom } from 'jotai';
+import { matsAtom } from '../../atomStore';
+import { useSetAtom } from 'jotai';
 
 const cabecalhos = {
     "ID": "id",
@@ -27,14 +27,16 @@ const cabecalhos = {
     "Ação": null
 };
 
-const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrdemServico, setCursor, cursor, setOpenDetalhes, }) => {
-    const [sort, setSort] = useAtom(sortAtom)
+const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setCursor, cursor, setOpenDetalhes, }) => {
     const setMateriais = useSetAtom(matsAtom)
 
     const perfil =  localStorage.getItem('perfil');
 
     return (
-        <Tabela cabecalhos={cabecalhos} carregando={carregando} setCarregando={setCarregando} sort={sort} setSort={setSort}>
+        <Tabela 
+            cabecalhos={cabecalhos} 
+            carregando={carregando}
+        >
             {ordens?.map(ordem => (
                     <TableRow key={ordem.id}>
                         <TableCell align="center">{ordem.id}</TableCell>

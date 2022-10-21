@@ -28,7 +28,6 @@ const TabelaEntrada = (props) => {
     const { 
         entradas, 
         carregando, 
-        setCarregando,
         setOpenEditar, 
         setEntradaMaterial, 
         setCursor, 
@@ -40,7 +39,6 @@ const TabelaEntrada = (props) => {
         <Tabela 
             cabecalhos={cabecalhos} 
             carregando={carregando} 
-            setCarregando={setCarregando}
         >
             {entradas?.map(entrada => (
                     <TableRow key={entrada.id}>

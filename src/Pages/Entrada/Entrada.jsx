@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { getTabela } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
@@ -8,13 +8,10 @@ import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useQuery, useQueryClient} from '@tanstack/react-query'
 
 const Entrada = () => {
-    // const [entradas, setEntradas] = useState([]); //*
-    // const [metaEntradas, setMetaEntradas] = useState({}); //*
-    // const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
