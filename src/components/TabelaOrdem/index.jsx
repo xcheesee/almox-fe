@@ -27,9 +27,7 @@ const cabecalhos = {
     "Ação": null
 };
 
-const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setCursor, cursor, setOpenDetalhes, }) => {
-    const setMateriais = useSetAtom(matsAtom)
-
+const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
     const perfil =  localStorage.getItem('perfil');
 
     return (
@@ -54,7 +52,7 @@ const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setCu
                                 <Tooltip title="Visualizar ordem" placement="left">
                                     <IconButton 
                                         disabled={cursor === 'progress'}
-                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais) }
+                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'visualizar') }
                                     >
                                         <ManageSearchIcon fontSize="small" />
                                     </IconButton>
@@ -62,7 +60,7 @@ const TabelaOrdem = ({ ordens, carregando, setOpenEditar, setOrdemServico, setCu
                                 <Tooltip title="Editar" placement="right" sx={{ display: authEditOrdem(perfil) }}>
                                     <IconButton 
                                         disabled={cursor === 'progress'} 
-                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
+                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
                                     >
                                         <EditIcon fontSize="small" />
                                     </IconButton>

@@ -12,11 +12,8 @@ const OrdemServico = (props) => {
         ordens,
         metaOrdens,
         carregando,
-        setOpenEditar,
-        setOrdemServico,
-        setCursor,
         cursor,
-        setOpenDetalhes,
+        getSelectedOrdemInfo,
     } = props;
 
     return (
@@ -28,11 +25,8 @@ const OrdemServico = (props) => {
             <TabelaOrdem 
                 ordens={ordens} 
                 carregando={carregando} 
-                setOpenEditar={setOpenEditar}
-                setOrdemServico={setOrdemServico}
-                setCursor={setCursor}
+                getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
 
             <BotaoNovo 

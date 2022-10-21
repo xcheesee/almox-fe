@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getTabela } from '../../common/utils';
+import { getRegistro, getTabela } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
 import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
@@ -8,7 +8,7 @@ import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useQuery, useQueryClient} from '@tanstack/react-query'
 
 const Entrada = () => {
@@ -25,11 +25,26 @@ const Entrada = () => {
     const sort = useAtomValue(sortAtom);
     const page = useAtomValue(pageAtom);
     const filtros = useAtomValue(filtrosAtom);
-    const materiais = useAtomValue(matsAtom);
+    const [materiais, setMateriais] = useAtom(matsAtom);
     const setHouveMudanca = useSetAtom(mudancaAtom);
 
     const queryClient = useQueryClient();
     const entradas = useQuery(['entradaItens', page, filtros, sort], () => getTabela('entradas', page, filtros, sort));
+
+    const getSelectedEntradaInfo = (id, command) => {
+        switch(command) {
+            case 'visualizar':
+                getRegistro('entrada', id, setOpenDetalhes, setEntradaMaterial, setCursor, setMateriais);
+                break;
+            case 'editar':
+                getRegistro('entrada', id, setOpenEditar, setEntradaMaterial, setCursor, setMateriais);
+                break;
+            default:
+                console.log('pog')
+                break;
+        }
+        
+    }
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -37,11 +52,8 @@ const Entrada = () => {
                 entradas={entradas?.data?.data} 
                 metaEntradas={entradas?.data?.meta} 
                 carregando={entradas?.isLoading}
-                setOpenEditar={setOpenEditar}
-                setEntradaMaterial={setEntradaMaterial}
-                setCursor={setCursor}
+                getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
             <DialogEditar
                 titulo="Editar entrada de material"

@@ -22,12 +22,9 @@ const cabecalhos = {
 const TabelaInventario = (props) => {
     const { 
         itens,
-        setIdAlerta, 
-        setOpenDefinir,
         carregando,
-        setRegistro,
         cursor,
-        setCursor,
+        inventarioItemDefinirAlerta,
     } = props;
 
     return (
@@ -46,10 +43,7 @@ const TabelaInventario = (props) => {
                         <TableCell align="center">
                             <Tooltip title="Definir alerta" placement="right">
                                 <IconButton 
-                                    onClick={() => {
-                                        getRegistro('inventario', item.id, setOpenDefinir, setRegistro, setCursor);
-                                        setIdAlerta(item.id);
-                                    }}
+                                    onClick={() => { inventarioItemDefinirAlerta(item.id)} }
                                     disabled={cursor === 'progress'}
                                 >
                                     <NotificationAddIcon />

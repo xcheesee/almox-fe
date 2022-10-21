@@ -11,11 +11,8 @@ const Inventario = (props) => {
         itens,
         metaItens,
         carregando,
-        setIdAlerta, 
-        setOpenDefinir,
-        setRegistro,
         cursor,
-        setCursor,
+        inventarioItemDefinirAlerta,
     } = props;
     
     return (
@@ -28,12 +25,9 @@ const Inventario = (props) => {
 
             <TabelaInventario
                 itens={itens}
-                setIdAlerta={setIdAlerta}
-                setOpenDefinir={setOpenDefinir}
+                inventarioItemDefinirAlerta={inventarioItemDefinirAlerta}
                 carregando={carregando}
-                setRegistro={setRegistro}
                 cursor={cursor}
-                setCursor={setCursor}
             />
 
             <Box className="mt-10">

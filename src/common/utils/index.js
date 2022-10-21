@@ -182,14 +182,6 @@ export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
 
   fetch(url, options)
     .then(res => res.json())
-    // .then(data => {
-    //   let arr = [];
-    //   let items = data.data;
-
-    //   items.forEach(item => arr.push({ id: item.item_id, quantidade: item.quantidade }));
-
-    //   setMateriais([...arr]);
-    // })
     .then(data => {
       setMateriais(data.data);
       setOpen(true);

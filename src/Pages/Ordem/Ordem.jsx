@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getTabela } from '../../common/utils';
+import { getRegistro, getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
 import { useQuery, useQueryClient} from '@tanstack/react-query'
 
@@ -24,11 +24,25 @@ const Ordem = () => {
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
     const setOpenExcluir = useSetAtom(excluirAtom);
-    const materiais = useAtomValue(matsAtom);
+    const [materiais, setMateriais] = useAtom(matsAtom);
     const setHouveMudanca = useSetAtom(mudancaAtom);
 
     const queryClient = useQueryClient();
     const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
+
+    const getSelectedOrdemInfo = (id, command) => {
+        switch(command) {
+            case 'visualizar':
+                getRegistro('ordem_servico', id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais);
+                break;
+            case 'editar':
+                getRegistro('ordem_servico', id, setOpenEditar, setOrdemServico, setCursor, setMateriais);
+                break;
+            default:
+                console.log('pog')
+                break;
+        }
+    }
 
     return (
         <Box sx={{ cursor: cursor }}>
@@ -36,11 +50,8 @@ const Ordem = () => {
                 ordens={ordens?.data?.data}
                 metaOrdens={ordens?.data?.meta}
                 carregando={ordens?.isLoading}
-                setOpenEditar={setOpenEditar}
-                setOrdemServico={setOrdemServico}
-                setCursor={setCursor}
+                getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
             <DialogEditar
                 titulo="Editar ordem de serviço"

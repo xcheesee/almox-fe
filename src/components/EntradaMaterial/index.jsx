@@ -12,11 +12,8 @@ const EntradaMaterial = (props) => {
         entradas,
         metaEntradas,
         carregando,
-        setOpenEditar,
-        setEntradaMaterial,
-        setCursor,
+        getSelectedEntradaInfo,
         cursor,
-        setOpenDetalhes,
     } = props;
 
     return (
@@ -33,11 +30,8 @@ const EntradaMaterial = (props) => {
             <TabelaEntrada 
                 entradas={entradas} 
                 carregando={carregando}
-                setOpenEditar={setOpenEditar}
-                setEntradaMaterial={setEntradaMaterial}
-                setCursor={setCursor}
+                getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
 
             <BotaoNovo 
