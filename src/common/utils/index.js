@@ -229,7 +229,7 @@ export const getItemsAcabando = () => {
       if (res.ok)
         return res.json();
     })
-    .then(data => data.data)
+    .then( data => data.data )
     .catch(err => console.log(err))
 }
 

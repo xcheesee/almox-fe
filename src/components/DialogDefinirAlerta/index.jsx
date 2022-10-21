@@ -7,12 +7,15 @@ import {
   TextField,
   Box,
   Button,
-  CircularProgress
+  CircularProgress,
+  alertClasses
 } from '@mui/material';
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
+import { useQueryClient } from '@tanstack/react-query';
 
 const DialogDefinirAlerta = (props) => {
+  const queryClient = useQueryClient()
   const {
     openDefinir,
     setOpenDefinir,
@@ -59,6 +62,7 @@ const DialogDefinirAlerta = (props) => {
           });
           setOpenDefinir(false);
           setCarregando(false);
+          queryClient.refetchQueries(['itemsAcabando'])
           return(res.json());
         } else {
           setSnackbar({
