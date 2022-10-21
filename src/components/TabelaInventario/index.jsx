@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import Tabela from '../Tabela';
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
-import { getRegistro, primeiraLetraMaiuscula } from '../../common/utils';
+import { primeiraLetraMaiuscula } from '../../common/utils';
 
 const cabecalhos = {
     "ID": "id",
