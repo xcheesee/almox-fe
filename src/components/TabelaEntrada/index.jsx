@@ -42,7 +42,7 @@ const TabelaEntrada = (props) => {
             carregando={carregando} 
             setCarregando={setCarregando}
         >
-            {entradas.map(entrada => (
+            {entradas?.map(entrada => (
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
                         <TableCell align="center">{entrada.data_entrada || "---"}</TableCell>

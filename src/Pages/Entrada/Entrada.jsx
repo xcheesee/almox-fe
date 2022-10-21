@@ -9,11 +9,12 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useQuery, useQueryClient} from '@tanstack/react-query'
 
 const Entrada = () => {
-    const [entradas, setEntradas] = useState([]); //*
-    const [metaEntradas, setMetaEntradas] = useState({}); //*
-    const [carregando, setCarregando] = useState(true);
+    // const [entradas, setEntradas] = useState([]); //*
+    // const [metaEntradas, setMetaEntradas] = useState({}); //*
+    // const [carregando, setCarregando] = useState(true);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
@@ -27,22 +28,18 @@ const Entrada = () => {
     const sort = useAtomValue(sortAtom);
     const page = useAtomValue(pageAtom);
     const filtros = useAtomValue(filtrosAtom);
-    const [materiais, setMateriais] = useAtom(matsAtom);
-    const [houveMudanca, setHouveMudanca] = useAtom(mudancaAtom)
-    
-    useEffect(() => {
-        getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros, sort);
-        setMateriais([]);
-        setErrors({});
-    }, [page, houveMudanca, filtros, sort, setMateriais]);
+    const materiais = useAtomValue(matsAtom);
+    const setHouveMudanca = useSetAtom(mudancaAtom);
+
+    const queryClient = useQueryClient();
+    const entradas = useQuery(['entradaItens', page, filtros, sort], () => getTabela('entradas', page, filtros, sort));
 
     return (
         <Box sx={{ cursor: cursor }}>
             <EntradaMaterial 
-                entradas={entradas} 
-                metaEntradas={metaEntradas} 
-                carregando={carregando}
-                setCarregando={setCarregando}
+                entradas={entradas?.data?.data} 
+                metaEntradas={entradas?.data?.meta} 
+                carregando={entradas?.isLoading}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
                 setCursor={setCursor}

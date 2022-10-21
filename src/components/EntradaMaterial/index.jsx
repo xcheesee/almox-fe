@@ -12,7 +12,6 @@ const EntradaMaterial = (props) => {
         entradas,
         metaEntradas,
         carregando,
-        setCarregando,
         setOpenEditar,
         setEntradaMaterial,
         setCursor,
@@ -34,7 +33,7 @@ const EntradaMaterial = (props) => {
             <TabelaEntrada 
                 entradas={entradas} 
                 carregando={carregando}
-                setCarregando={setCarregando}
+                // setCarregando={setCarregando}
                 setOpenEditar={setOpenEditar}
                 setEntradaMaterial={setEntradaMaterial}
                 setCursor={setCursor}
@@ -50,7 +49,7 @@ const EntradaMaterial = (props) => {
             </BotaoNovo>
 
             <Paginacao
-                count={metaEntradas.last_page}
+                count={metaEntradas?.last_page}
             />
         </ContainerPrincipal>
     );

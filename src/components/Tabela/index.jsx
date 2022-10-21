@@ -17,12 +17,11 @@ import { useAtom } from 'jotai';
 import { sortAtom } from '../../atomStore';
 
 const Tabela = (props) => {
-    const { cabecalhos, carregando, setCarregando, ...other } = props;
+    const { cabecalhos, carregando, ...other } = props;
     
     const [sort, setSort] = useAtom(sortAtom)
 
     const handleClickSort = (valor) => {
-        setCarregando(true);
 
         if (valor !== null) {
             sort === valor && valor !== null

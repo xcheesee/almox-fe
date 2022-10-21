@@ -25,7 +25,6 @@ const TabelaInventario = (props) => {
         setIdAlerta, 
         setOpenDefinir,
         carregando,
-        setCarregando,
         setRegistro,
         cursor,
         setCursor,
@@ -35,7 +34,6 @@ const TabelaInventario = (props) => {
         <Tabela 
             cabecalhos={cabecalhos} 
             carregando={carregando}
-            setCarregando={setCarregando}  
         >
             {itens?.map(item => (
                     <TableRow key={item.id}>

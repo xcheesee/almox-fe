@@ -31,7 +31,6 @@ const Inventario = (props) => {
                 setIdAlerta={setIdAlerta}
                 setOpenDefinir={setOpenDefinir}
                 carregando={carregando}
-                // setCarregando={setCarregando}
                 setRegistro={setRegistro}
                 cursor={cursor}
                 setCursor={setCursor}
