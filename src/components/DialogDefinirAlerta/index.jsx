@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const DialogDefinirAlerta = (props) => {
   const queryClient = useQueryClient()
@@ -23,6 +23,48 @@ const DialogDefinirAlerta = (props) => {
     setIdAlerta,
     registro,
   } = props;
+
+  const mutation = useMutation(alertaData => {
+    const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('access_token')
+      },
+      body: JSON.stringify({
+        ...alertaData
+      })
+    };
+    return fetch(url, options)
+    .then(res => {
+      if (res.ok) {
+        setSnackbar({
+          open: true, 
+          severity: 'success', 
+          message: `Alerta definido com sucesso!`
+        });
+        setOpenDefinir(false);
+        // setCarregando(false);
+        return(res.json());
+      } else {
+        setSnackbar({
+          open: true, 
+          severity: 'error', 
+          message: `Não foi possível definir o alerta (Erro ${res.status})`
+        });
+        // setCarregando(false);
+      }
+    })
+    .catch(err => console.log(err));
+  }, { onSuccess: async (dataRes) => {
+    return await queryClient.invalidateQueries(['itemsAcabando'], {
+      refetchType: 'all'
+    })
+    // return await queryClient.refetchQueries(['itemsAcabando'])
+    // return queryClient.setQueryData(['itemsAcabando'], oldData => [...oldData, dataRes?.data])
+  } })
 
   const [carregando, setCarregando] = useState(false);
   const setSnackbar = useSetAtom(snackbarAtom)
@@ -35,44 +77,47 @@ const DialogDefinirAlerta = (props) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
+
     
-    const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
-    const options = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token')
-      },
-      body: JSON.stringify({
-        ...registro, 
-        ...inputObject
-      })
-    };
+    // const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
+    // const options = {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Accept': 'application/json',
+    //     'Authorization': localStorage.getItem('access_token')
+    //   },
+    //   body: JSON.stringify({
+    //     ...registro, 
+    //     ...inputObject
+    //   })
+    // };
 
-    setCarregando(true);
+    // setCarregando(true);
 
-    fetch(url, options)
-      .then(res => {
-        if (res.ok) {
-          setSnackbar({
-            open: true, 
-            severity: 'success', 
-            message: `Alerta definido com sucesso!`
-          });
-          setOpenDefinir(false);
-          setCarregando(false);
-          return(res.json());
-        } else {
-          setSnackbar({
-            open: true, 
-            severity: 'error', 
-            message: `Não foi possível definir o alerta (Erro ${res.status})`
-          });
-          setCarregando(false);
-        }
-      })
-      .catch(err => console.log(err));
+    // fetch(url, options)
+    //   .then(res => {
+    //     if (res.ok) {
+    //       setSnackbar({
+    //         open: true, 
+    //         severity: 'success', 
+    //         message: `Alerta definido com sucesso!`
+    //       });
+    //       setOpenDefinir(false);
+    //       setCarregando(false);
+    //       return(res.json());
+    //     } else {
+    //       setSnackbar({
+    //         open: true, 
+    //         severity: 'error', 
+    //         message: `Não foi possível definir o alerta (Erro ${res.status})`
+    //       });
+    //       setCarregando(false);
+    //     }
+    //   })
+    //   .catch(err => console.log(err));
+
+    mutation.mutate({...registro, ...inputObject})
   }
 
   return (
@@ -86,6 +131,7 @@ const DialogDefinirAlerta = (props) => {
           id="quantidade-alerta"
           onSubmit={(e) => {
             enviar(e)
+            queryClient.invalidateQueries(['itemsAcabando'])
             queryClient.refetchQueries(['itemsAcabando'], {stale: 'true'})
           }}
         >

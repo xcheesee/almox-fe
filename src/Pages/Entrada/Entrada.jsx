@@ -9,7 +9,7 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useQuery, useQueryClient} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 const Entrada = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -22,13 +22,12 @@ const Entrada = () => {
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
+    const setHouveMudanca = useSetAtom(mudancaAtom);
     const sort = useAtomValue(sortAtom);
     const page = useAtomValue(pageAtom);
     const filtros = useAtomValue(filtrosAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
-    const setHouveMudanca = useSetAtom(mudancaAtom);
 
-    const queryClient = useQueryClient();
     const entradas = useQuery(['entradaItens', page, filtros, sort], () => getTabela('entradas', page, filtros, sort));
 
     const getSelectedEntradaInfo = (id, command) => {
@@ -42,8 +41,7 @@ const Entrada = () => {
             default:
                 console.log('pog')
                 break;
-        }
-        
+        }  
     }
 
     return (
@@ -55,6 +53,7 @@ const Entrada = () => {
                 getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}
             />
+
             <DialogEditar
                 titulo="Editar entrada de material"
                 openEditar={openEditar}

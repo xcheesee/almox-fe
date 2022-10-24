@@ -17,60 +17,56 @@ import { Routes, Route } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
 import { useAtom } from 'jotai';
 import { snackbarAtom } from './atomStore';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 
 function App() {
   const [snackbar, setSnackbar] = useAtom(snackbarAtom);
 
-  const queryClient = new QueryClient()
-
   return (
-    <QueryClientProvider client={queryClient}>
-        <Auth >
-          <Routes>
-            <Route path="/" element={
-                <Login />
-            } />
+    <Auth >
+      <Routes>
+        <Route path="/" element={
+            <Login />
+        } />
 
-            <Route path="/principal" element={
-                <Principal />
-            } />
+        <Route path="/principal" element={
+            <Principal />
+        } />
 
-            <Route path="/entrada" element={
-                <Entrada />
-            } />
+        <Route path="/entrada" element={
+            <Entrada />
+        } />
 
-            <Route path="/entrada/nova-entrada" element={
-                <NovaEntrada />
-            } />
+        <Route path="/entrada/nova-entrada" element={
+            <NovaEntrada />
+        } />
 
-            <Route path="/ordemservico" element={
-                <Ordem />
-            } />
+        <Route path="/ordemservico" element={
+            <Ordem />
+        } />
 
-            <Route path="/ordemservico/nova-ordem" element={
-                <NovaOrdem />
-            } />
+        <Route path="/ordemservico/nova-ordem" element={
+            <NovaOrdem />
+        } />
 
-            <Route path="/ordemservico/baixa/:id" element={
-                <Baixa setSnackbar={setSnackbar} />
-            } />
+        <Route path="/ordemservico/baixa/:id" element={
+            <Baixa setSnackbar={setSnackbar} />
+        } />
 
-            <Route path="/inventario" element={
-                <PaginaInventario />
-            } />
+        <Route path="/inventario" element={
+            <PaginaInventario />
+        } />
 
-            <Route path="*" element={
-                <Pagina404 />
-            } />
-          </Routes>
+        <Route path="*" element={
+            <Pagina404 />
+        } />
+      </Routes>
 
-          <SnackbarAlert
-            snackbar={snackbar}
-            setSnackbar={setSnackbar}
-          />
-      </Auth >
-    </QueryClientProvider>
+      <SnackbarAlert
+        snackbar={snackbar}
+        setSnackbar={setSnackbar}
+      />
+    </Auth >
   );
 }
 

@@ -13,21 +13,16 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { getItemsAcabando } from '../../common/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 const MenuItemsAcabando = ({ username, style }) => {
-    const queryClient = useQueryClient()
-    const itemsAcabando = useQuery(['itemsAcabando'], getItemsAcabando/* ,{
-        staleTime: 120000,
-        cacheTime: 120000,
-    } */)
+    const itemsAcabando = useQuery(['itemsAcabando'], getItemsAcabando)
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);
-        console.log(itemsAcabando)
     }
 
     const handleClose = () => {

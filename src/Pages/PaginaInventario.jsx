@@ -5,7 +5,7 @@ import DialogDefinirAlerta from '../components/DialogDefinirAlerta';
 import { getRegistro, getTabela } from '../common/utils';
 import { filtrosAtom, pageAtom, sortAtom } from '../atomStore';
 import { useAtomValue } from 'jotai';
-import { useQuery, useQueryClient} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 const PaginaInventario = () => {
 
@@ -18,7 +18,6 @@ const PaginaInventario = () => {
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
     
-    const queryClient = useQueryClient()
     const itens = useQuery(['inventarioItens', page, filtros, sort], () => getTabela('inventarios', page, filtros, sort))
 
     const inventarioItemDefinirAlerta = (id) => {

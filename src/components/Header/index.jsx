@@ -33,9 +33,7 @@ const Header = () => {
     const showSenhaForm = () => setOpenAltSenha(true)
 
     const newPwRequest = async (formData) => {
-        const url = new URL(
-            `${process.env.REACT_APP_API_URL}/alterar_senha`
-        );
+        const url = new URL( `${process.env.REACT_APP_API_URL}/alterar_senha` );
         
         const headers = {
             "Content-Type": "application/json",

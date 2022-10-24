@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ptBR } from '@mui/material/locale';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const theme = createTheme(
   {
@@ -38,15 +39,21 @@ const theme = createTheme(
   },
   ptBR,
 );
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const queryClient = new QueryClient()
+
 root.render(
+
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

@@ -9,7 +9,7 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useQuery, useQueryClient} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 const Ordem = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -20,14 +20,13 @@ const Ordem = () => {
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
+    const setHouveMudanca = useSetAtom(mudancaAtom);
+    const setOpenExcluir = useSetAtom(excluirAtom);
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
-    const setOpenExcluir = useSetAtom(excluirAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
-    const setHouveMudanca = useSetAtom(mudancaAtom);
 
-    const queryClient = useQueryClient();
     const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
 
     const getSelectedOrdemInfo = (id, command) => {
