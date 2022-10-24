@@ -32,7 +32,7 @@ const Filtros = (props) => {
     
     const setPage = useSetAtom(pageAtom)
     const [filtros, setFiltros] = useAtom(filtrosAtom)
-    const setHouveMudanca = useSetAtom(mudancaAtom)
+    // const setHouveMudanca = useSetAtom(mudancaAtom)
 
     //limpaData apaga o dataRange no callback limpar
     const limpar = () => {
@@ -75,7 +75,6 @@ const Filtros = (props) => {
     }
 
     const repetirPesquisa = () => {
-        setHouveMudanca(prev => !prev);
         setVisibilidade(false);
     }
 

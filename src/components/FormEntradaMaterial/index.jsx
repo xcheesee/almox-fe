@@ -12,7 +12,7 @@ import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 import { useSetAtom } from 'jotai';
 import { snackbarAtom } from '../../atomStore';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const FormEntradaMaterial = (props) => {
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -22,29 +22,45 @@ const FormEntradaMaterial = (props) => {
         setOpenEditar, 
         setOpenConfirmar, 
         navigate, 
-        acao, 
+        acao,
         setHouveMudanca, 
         errors,
         setErrors,
     } = props;
 
+    const queryClient = useQueryClient()
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
     const editMutation = useMutation(data => {
+        setCarregando(true)
+        setOpenConfirmar(false)
         enviaEdicao(
             data, 
-            setHouveMudanca,
+            // setHouveMudanca,
             'entrada', 
             defaultValue.id, 
-            setCarregando, 
-            setOpenEditar, 
-            setOpenConfirmar,
-            setSnackbar,
-            'Entrada de material',
             setErrors,
             materiaisInterno,
             'entrada_items'
         )
-    })
+    }, {
+        onSuccess: async (res) => {
+            setCarregando(false)
+            setOpenEditar(false)
+            queryClient.invalidateQueries(['entradaItens'])
+            setSnackbar({
+                open: true,
+                severity: 'success',
+                message: `Entrada de material editada com sucesso!`
+            });
+        }, 
+        onError: async (res) => {
+            console.log(res)
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `Não foi possível editar (Erro ${res.status})`
+            });
+    }})
 
     const addMutation = useMutation(data => {
         enviaNovoForm(
@@ -70,7 +86,6 @@ const FormEntradaMaterial = (props) => {
                 id="nova-entrada"
                 onSubmit={(e) => {
                     acao === 'editar'
-                    
                         ? editMutation.mutate(e)
                         : addMutation.mutate(e)
                 }}

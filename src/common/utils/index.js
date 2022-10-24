@@ -234,7 +234,7 @@ export const getItemsAcabando = () => {
 }
 
 // Update
-export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
+export const enviaEdicao = (e, url, id, setErrors, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -245,36 +245,14 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
     body: enviaForm(e, materiais, campo)
   };
 
-  setCarregando(true);
-  setOpenConfirmar(false);
-
   fetch(urlCompleta, options)
     .then(res => {
       if (res.ok) {
-        setHouveMudanca(prev => !prev);
-        setOpenEditar(false);
-        setCarregando(false);
-        setSnackbar({
-          open: true,
-          severity: 'success',
-          message: `${tipoRegistro} editada com sucesso!`
-        });
         return res.json();
       } else if (res.status === 422) {
-        setCarregando(false);
-        setSnackbar({
-            open: true,
-            severity: 'error',
-            message: `Não foi possível editar (Erro ${res.status})`
-        });
-        return res.json();
+        return res.status;
       } else {
-        setCarregando(false);
-        setSnackbar({
-          open: true,
-          severity: 'error',
-          message: `Não foi possível editar (Erro ${res.status})`
-        });
+        return res.status;
       }
     })
     .then(data => {
