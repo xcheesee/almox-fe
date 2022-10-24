@@ -10,7 +10,6 @@ import { authCreateOrdem } from '../../common/utils';
 const OrdemServico = (props) => {
     const {
         ordens,
-        metaOrdens,
         carregando,
         cursor,
         getSelectedOrdemInfo,
@@ -23,7 +22,7 @@ const OrdemServico = (props) => {
             <FiltrosOrdem />
 
             <TabelaOrdem 
-                ordens={ordens} 
+                ordens={ordens?.data} 
                 carregando={carregando} 
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
@@ -37,7 +36,7 @@ const OrdemServico = (props) => {
             </BotaoNovo>
 
             <Paginacao 
-                count={metaOrdens?.last_page}
+                count={ordens?.meta?.last_page}
             />
         </ContainerPrincipal>
     );

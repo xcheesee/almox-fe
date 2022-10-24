@@ -28,8 +28,7 @@ const PaginaInventario = () => {
     return (
         <Box sx={{ cursor: cursor }}>
             <Inventario
-                itens={itens?.data?.data}
-                metaItens={itens?.data?.meta}
+                itens={itens?.data}
                 carregando={itens?.isLoading}
                 cursor={cursor}
                 inventarioItemDefinirAlerta={inventarioItemDefinirAlerta}

@@ -47,8 +47,7 @@ const Entrada = () => {
     return (
         <Box sx={{ cursor: cursor }}>
             <EntradaMaterial 
-                entradas={entradas?.data?.data} 
-                metaEntradas={entradas?.data?.meta} 
+                entradas={entradas?.data} 
                 carregando={entradas?.isLoading}
                 getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}

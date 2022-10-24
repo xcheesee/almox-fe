@@ -62,11 +62,9 @@ const DialogDefinirAlerta = (props) => {
     return await queryClient.invalidateQueries(['itemsAcabando'], {
       refetchType: 'all'
     })
-    // return await queryClient.refetchQueries(['itemsAcabando'])
-    // return queryClient.setQueryData(['itemsAcabando'], oldData => [...oldData, dataRes?.data])
   } })
 
-  const [carregando, setCarregando] = useState(false);
+  // const [carregando, setCarregando] = useState(false);
   const setSnackbar = useSetAtom(snackbarAtom)
   const cancelar = () => {
     setOpenDefinir(false);
@@ -78,7 +76,6 @@ const DialogDefinirAlerta = (props) => {
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
 
-    
     // const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
     // const options = {
     //   method: 'PUT',
@@ -148,8 +145,8 @@ const DialogDefinirAlerta = (props) => {
         <Button onClick={cancelar}>
           Cancelar
         </Button>
-        <Button type="submit" form="quantidade-alerta" disabled={carregando}>
-          {carregando
+        <Button type="submit" form="quantidade-alerta" disabled={mutation.isLoading}>
+          {mutation.isLoading
             ? <CircularProgress size="1rem" className="mr-2" />
             : ""
           }

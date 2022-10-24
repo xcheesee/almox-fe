@@ -46,8 +46,7 @@ const Ordem = () => {
     return (
         <Box sx={{ cursor: cursor }}>
             <OrdemServico 
-                ordens={ordens?.data?.data}
-                metaOrdens={ordens?.data?.meta}
+                ordens={ordens?.data}
                 carregando={ordens?.isLoading}
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}

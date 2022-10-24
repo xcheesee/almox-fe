@@ -9,7 +9,6 @@ import Paginacao from '../Paginacao';
 const Inventario = (props) => {
     const { 
         itens,
-        metaItens,
         carregando,
         cursor,
         inventarioItemDefinirAlerta,
@@ -24,7 +23,7 @@ const Inventario = (props) => {
             <FiltrosInventario />
 
             <TabelaInventario
-                itens={itens}
+                itens={itens?.data}
                 inventarioItemDefinirAlerta={inventarioItemDefinirAlerta}
                 carregando={carregando}
                 cursor={cursor}
@@ -32,7 +31,7 @@ const Inventario = (props) => {
 
             <Box className="mt-10">
                 <Paginacao 
-                    count={metaItens?.last_page}
+                    count={itens?.meta?.last_page}
                 />
             </Box>
         </ContainerPrincipal>

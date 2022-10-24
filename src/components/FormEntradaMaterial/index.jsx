@@ -12,6 +12,7 @@ import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 import { useSetAtom } from 'jotai';
 import { snackbarAtom } from '../../atomStore';
+import { useMutation } from '@tanstack/react-query';
 
 const FormEntradaMaterial = (props) => {
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -28,6 +29,38 @@ const FormEntradaMaterial = (props) => {
     } = props;
 
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
+    const editMutation = useMutation(data => {
+        enviaEdicao(
+            data, 
+            setHouveMudanca,
+            'entrada', 
+            defaultValue.id, 
+            setCarregando, 
+            setOpenEditar, 
+            setOpenConfirmar,
+            setSnackbar,
+            'Entrada de material',
+            setErrors,
+            materiaisInterno,
+            'entrada_items'
+        )
+    })
+
+    const addMutation = useMutation(data => {
+        enviaNovoForm(
+            data, 
+            'entrada', 
+            'entrada', 
+            setCarregando, 
+            setOpenConfirmar, 
+            navigate,
+            setSnackbar,
+            'Entrada de material',
+            setErrors,
+            materiaisInterno,
+            'entrada_items'
+        )
+    })
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
@@ -37,33 +70,9 @@ const FormEntradaMaterial = (props) => {
                 id="nova-entrada"
                 onSubmit={(e) => {
                     acao === 'editar'
-                        ? enviaEdicao(
-                            e, 
-                            setHouveMudanca,
-                            'entrada', 
-                            defaultValue.id, 
-                            setCarregando, 
-                            setOpenEditar, 
-                            setOpenConfirmar,
-                            setSnackbar,
-                            'Entrada de material',
-                            setErrors,
-                            materiaisInterno,
-                            'entrada_items'
-                        )
-                        : enviaNovoForm(
-                            e, 
-                            'entrada', 
-                            'entrada', 
-                            setCarregando, 
-                            setOpenConfirmar, 
-                            navigate,
-                            setSnackbar,
-                            'Entrada de material',
-                            setErrors,
-                            materiaisInterno,
-                            'entrada_items'
-                        )
+                    
+                        ? editMutation.mutate(e)
+                        : addMutation.mutate(e)
                 }}
             >
                 <Selecao
