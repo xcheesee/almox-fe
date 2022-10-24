@@ -25,41 +25,23 @@ function App() {
   return (
     <Auth >
       <Routes>
-        <Route path="/" element={
-            <Login />
-        } />
+        <Route path="/" element={ <Login /> } />
 
-        <Route path="/principal" element={
-            <Principal />
-        } />
+        <Route path="/principal" element={ <Principal /> } />
 
-        <Route path="/entrada" element={
-            <Entrada />
-        } />
+        <Route path="/entrada" element={ <Entrada /> } />
 
-        <Route path="/entrada/nova-entrada" element={
-            <NovaEntrada />
-        } />
+        <Route path="/entrada/nova-entrada" element={ <NovaEntrada /> } />
 
-        <Route path="/ordemservico" element={
-            <Ordem />
-        } />
+        <Route path="/ordemservico" element={ <Ordem /> } />
 
-        <Route path="/ordemservico/nova-ordem" element={
-            <NovaOrdem />
-        } />
+        <Route path="/ordemservico/nova-ordem" element={ <NovaOrdem /> } />
 
-        <Route path="/ordemservico/baixa/:id" element={
-            <Baixa setSnackbar={setSnackbar} />
-        } />
+        <Route path="/ordemservico/baixa/:id" element={ <Baixa setSnackbar={setSnackbar} /> } />
 
-        <Route path="/inventario" element={
-            <PaginaInventario />
-        } />
+        <Route path="/inventario" element={ <PaginaInventario /> } />
 
-        <Route path="*" element={
-            <Pagina404 />
-        } />
+        <Route path="*" element={ <Pagina404 /> } />
       </Routes>
 
       <SnackbarAlert

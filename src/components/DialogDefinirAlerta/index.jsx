@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -58,44 +58,6 @@ const DialogDefinirAlerta = (props) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
-
-    // const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
-    // const options = {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json',
-    //     'Authorization': localStorage.getItem('access_token')
-    //   },
-    //   body: JSON.stringify({
-    //     ...registro, 
-    //     ...inputObject
-    //   })
-    // };
-
-    // setCarregando(true);
-
-    // fetch(url, options)
-    //   .then(res => {
-    //     if (res.ok) {
-    //       setSnackbar({
-    //         open: true, 
-    //         severity: 'success', 
-    //         message: `Alerta definido com sucesso!`
-    //       });
-    //       setOpenDefinir(false);
-    //       setCarregando(false);
-    //       return(res.json());
-    //     } else {
-    //       setSnackbar({
-    //         open: true, 
-    //         severity: 'error', 
-    //         message: `Não foi possível definir o alerta (Erro ${res.status})`
-    //       });
-    //       setCarregando(false);
-    //     }
-    //   })
-    //   .catch(err => console.log(err));
 
     mutation.mutate({...registro, ...inputObject})
   }
