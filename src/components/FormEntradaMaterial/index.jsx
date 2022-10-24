@@ -18,7 +18,6 @@ const FormEntradaMaterial = (props) => {
     const setSnackbar = useSetAtom(snackbarAtom)
     const { 
         defaultValue, 
-        setCarregando, 
         setOpenEditar, 
         setOpenConfirmar, 
         navigate, 
@@ -31,7 +30,6 @@ const FormEntradaMaterial = (props) => {
     const queryClient = useQueryClient()
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
     const editMutation = useMutation(data => {
-        setCarregando(true)
         setOpenConfirmar(false)
         enviaEdicao(
             data, 
@@ -44,7 +42,6 @@ const FormEntradaMaterial = (props) => {
         )
     }, {
         onSuccess: async (res) => {
-            setCarregando(false)
             setOpenEditar(false)
             queryClient.invalidateQueries(['entradaItens'])
             setSnackbar({
@@ -54,7 +51,6 @@ const FormEntradaMaterial = (props) => {
             });
         }, 
         onError: async (res) => {
-            console.log(res)
             setSnackbar({
                 open: true,
                 severity: 'error',
@@ -67,7 +63,6 @@ const FormEntradaMaterial = (props) => {
             data, 
             'entrada', 
             'entrada', 
-            setCarregando, 
             setOpenConfirmar, 
             navigate,
             setSnackbar,

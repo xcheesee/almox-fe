@@ -10,8 +10,11 @@ import {
     Tooltip
 } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useIsFetching } from '@tanstack/react-query';
 
-const DialogEditar = ({ titulo, openEditar, setOpenEditar, carregando, defaultValue, setOpenConfirmar, setOpenExcluir, ...other }) => {
+const DialogEditar = ({ titulo, openEditar, setOpenEditar, defaultValue, setOpenConfirmar, setOpenExcluir, ...other }) => {
+    const numDeEntradaFetch = useIsFetching(['entradaItens'])
+
     return (
         <Dialog open={openEditar} fullWidth maxWidth="md">
             <DialogTitle>{titulo} #{defaultValue.id}</DialogTitle>
@@ -38,7 +41,7 @@ const DialogEditar = ({ titulo, openEditar, setOpenEditar, carregando, defaultVa
                         variant="contained" sx={{ gap: '0.5rem' }}
                         onClick={() => setOpenConfirmar(true)}
                     >
-                        {carregando
+                        {numDeEntradaFetch != 0
                             ? <CircularProgress color="color" size="1rem" />
                             : ''
                         }

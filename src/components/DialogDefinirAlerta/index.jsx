@@ -13,6 +13,7 @@ import {
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AddAlerta } from '../../common/utils';
 
 const DialogDefinirAlerta = (props) => {
   const queryClient = useQueryClient()
@@ -24,47 +25,29 @@ const DialogDefinirAlerta = (props) => {
     registro,
   } = props;
 
-  const mutation = useMutation(alertaData => {
-    const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
-    const options = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token')
-      },
-      body: JSON.stringify({
-        ...alertaData
-      })
-    };
-    return fetch(url, options)
-    .then(res => {
-      if (res.ok) {
+  const mutation = useMutation(alertaData => AddAlerta(alertaData, idAlerta),
+    { 
+      onSuccess: async (dataRes) => {
         setSnackbar({
           open: true, 
           severity: 'success', 
           message: `Alerta definido com sucesso!`
         });
+
         setOpenDefinir(false);
-        // setCarregando(false);
-        return(res.json());
-      } else {
+        return await queryClient.invalidateQueries(['itemsAcabando'], {
+          refetchType: 'all'
+        })
+      }, 
+      onError: async (res) => {
         setSnackbar({
           open: true, 
           severity: 'error', 
-          message: `Não foi possível definir o alerta (Erro ${res.status})`
+          message: `Não foi possível definir o alerta ${res}`
         });
-        // setCarregando(false);
       }
     })
-    .catch(err => console.log(err));
-  }, { onSuccess: async (dataRes) => {
-    return await queryClient.invalidateQueries(['itemsAcabando'], {
-      refetchType: 'all'
-    })
-  } })
 
-  // const [carregando, setCarregando] = useState(false);
   const setSnackbar = useSetAtom(snackbarAtom)
   const cancelar = () => {
     setOpenDefinir(false);

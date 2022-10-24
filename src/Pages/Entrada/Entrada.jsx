@@ -12,7 +12,6 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useQuery } from '@tanstack/react-query'
 
 const Entrada = () => {
-    const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     
@@ -58,13 +57,11 @@ const Entrada = () => {
                 openEditar={openEditar}
                 setOpenEditar={setOpenEditar}
                 defaultValue={entradaMaterial}
-                carregando={carregandoEdicao}
                 setOpenConfirmar={setOpenConfirmar}
                 setOpenExcluir={setOpenExcluir}
             >
                 <FormEntradaMaterial 
                     defaultValue={entradaMaterial}
-                    setCarregando={setCarregandoEdicao}
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
@@ -85,7 +82,6 @@ const Entrada = () => {
                 texto="entrada de material"
                 id={entradaMaterial.id}
                 setOpenEditar={setOpenEditar}
-                setCarregando={setCarregandoEdicao}
                 setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesEntrada

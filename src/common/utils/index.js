@@ -144,7 +144,7 @@ export const getLocais = () => {
       .catch(err => console.log(err));
 }
 
-export const getTabela = (rota, page, /* setCarregando, setData, setMeta, */ filtros, sort) => {
+export const getTabela = (rota, page, filtros, sort) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}&sort=${sort || ''}`
   const options = {
       method: 'GET',
@@ -154,17 +154,11 @@ export const getTabela = (rota, page, /* setCarregando, setData, setMeta, */ fil
       }
   };
 
-  // setCarregando(true);
-
   return fetch(url, options)
       .then(res => res.json())
       .then(data => {
-        console.log(data)
         return new Promise((res) =>  setTimeout(() => {
           res(data)
-          // setCarregando(false);
-          // setData(data.data);
-          // setMeta(data.meta);
         }, 250))}
 
       )
@@ -415,4 +409,25 @@ export const authEditOrdem = (perfil) => {
     default:
       return 'none';
   }
+}
+
+export const AddAlerta = async (alertaData, idAlerta) => {
+  const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    },
+    body: JSON.stringify({
+      ...alertaData
+    })
+  };
+
+  const res = await fetch(url, options)
+  if (!res.ok) 
+    throw new Error(`(Erro ${res.status})`)
+  
+  return await res.json()
 }
