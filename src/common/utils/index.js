@@ -228,7 +228,7 @@ export const getItemsAcabando = () => {
 }
 
 // Update
-export const enviaEdicao = (e, url, id, setErrors, materiais, campo) => {
+export const enviaEdicao = async (e, url, id, setErrors, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -239,21 +239,23 @@ export const enviaEdicao = (e, url, id, setErrors, materiais, campo) => {
     body: enviaForm(e, materiais, campo)
   };
 
-  fetch(urlCompleta, options)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      } else if (res.status === 422) {
-        return res.status;
-      } else {
-        return res.status;
-      }
-    })
-    .then(data => {
-      if (data.errors)
-        setErrors(data.errors)
-    })
-    .catch(err => console.log(err));
+  const res = await fetch(urlCompleta, options)
+  if (res.ok) {
+    return await res.json();
+  } else if (res.status === 422) {
+    const errData = await res.json()
+    console.log(errData)
+    throw new Error(errData);
+  } else {
+    // const errData = await res.json()
+    console.log(res)
+    throw new Error(res);
+  }
+    // .then(data => {
+    //   if (data.errors)
+    //     // setErrors(data.errors)
+    // })
+    // .catch(err => console.log(err));
 }
 
 // Delete

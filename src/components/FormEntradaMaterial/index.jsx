@@ -29,12 +29,12 @@ const FormEntradaMaterial = (props) => {
 
     const queryClient = useQueryClient()
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
-    const editMutation = useMutation(data => {
+    const editMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
-        enviaEdicao(
+        return await enviaEdicao(
             data, 
             // setHouveMudanca,
-            'entrada', 
+            'entrad', 
             defaultValue.id, 
             setErrors,
             materiaisInterno,
@@ -51,10 +51,13 @@ const FormEntradaMaterial = (props) => {
             });
         }, 
         onError: async (res) => {
+            console.log(res)
+            console.log(res?.message)
+            // setErrors(res?.errors)
             setSnackbar({
                 open: true,
                 severity: 'error',
-                message: `Não foi possível editar (Erro ${res.status})`
+                message: `Não foi possível editar (Erro ${res?.message})`
             });
     }})
 
