@@ -209,24 +209,6 @@ const FormOrdemServico = (props) => {
             />
         
             <TextField 
-                defaultValue={defaultValue?.profissional}
-                name="profissional"
-                label="Profissional"
-                error={errors.hasOwnProperty('profissional')}
-                helperText={errors.profissional || ""}
-                fullWidth
-            />
-        
-            <TextField 
-                defaultValue={defaultValue?.horas_execucao}
-                name="horas_execucao"
-                label="Horas de serviço"
-                error={errors.hasOwnProperty('horas_execucao')}
-                helperText={errors.horas_execucao || ""}
-                fullWidth
-            />
-        
-            <TextField 
                 defaultValue={defaultValue?.observacoes}
                 name="observacoes"
                 label="Serviços extras/obervações"
