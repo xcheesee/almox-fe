@@ -34,9 +34,9 @@ const FormEntradaMaterial = (props) => {
         return await enviaEdicao(
             data, 
             // setHouveMudanca,
-            'entrad', 
+            'entrada', 
             defaultValue.id, 
-            setErrors,
+            // setErrors,
             materiaisInterno,
             'entrada_items'
         )
@@ -51,13 +51,11 @@ const FormEntradaMaterial = (props) => {
             });
         }, 
         onError: async (res) => {
-            console.log(res)
-            console.log(res?.message)
-            // setErrors(res?.errors)
+            if(res.status === 422) { /* setErrors(res?.errors) */ }
             setSnackbar({
                 open: true,
                 severity: 'error',
-                message: `Não foi possível editar (Erro ${res?.message})`
+                message: `Não foi possível editar (Erro ${res?.status})`
             });
     }})
 
