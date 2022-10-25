@@ -9,17 +9,22 @@ import {
     CircularProgress,
 } from '@mui/material';
 import style from './style';
+import { newPwRequest } from '../../common/utils';
+import { useMutation } from '@tanstack/react-query';
 
-const SenhaForm = (props) => {
-    const {setOpenAltSenha, carregando, setCarregando, pwRequest, setReqResponse} = props
+const SenhaForm = ({setOpenAltSenha, setReqResponse}) => {
+
+    const senhaMutation = useMutation(data => newPwRequest(data), 
+    {onSuccess: (res) => {
+        setReqResponse(res)
+    },onError: (res) => {
+        console.log(res)
+    }})
     
     const sendData = async (e) => {
         e.preventDefault()
         const formData = Object.fromEntries(new FormData(e.target))
-        setCarregando(true)
-        const res = await pwRequest(formData)
-        setReqResponse(res)
-        setCarregando(false)         
+        senhaMutation.mutate(formData)
     }
 
     return (
@@ -75,7 +80,7 @@ const SenhaForm = (props) => {
                         form="senha"
                         variant="contained" sx={{ gap: '0.5rem' }}
                     >
-                        {carregando
+                        {senhaMutation.isLoading
                             ? <CircularProgress color="color" size="1rem" />
                             : ''
                         }

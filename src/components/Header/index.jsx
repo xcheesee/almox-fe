@@ -20,7 +20,6 @@ const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [openAltSenha, setOpenAltSenha] = useState(false);
-    const [carregando, setCarregando] = useState(false);
 
     const logout = () => {
         localStorage.removeItem('access_token');
@@ -31,25 +30,6 @@ const Header = () => {
     }
 
     const showSenhaForm = () => setOpenAltSenha(true)
-
-    const newPwRequest = async (formData) => {
-        const url = new URL( `${process.env.REACT_APP_API_URL}/alterar_senha` );
-        
-        const headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": localStorage.getItem('access_token'),
-        };
-        const data = {...formData, email: localStorage.getItem('usermail')}
-
-        const res = await fetch(url, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(data),
-        })
-        
-        return await res.json()
-    }
 
     return (
         <Box 
@@ -97,9 +77,6 @@ const Header = () => {
             <DialogAltSenh
                 openAltSenha={openAltSenha}
                 setOpenAltSenha={setOpenAltSenha}
-                carregando={carregando}
-                setCarregando={setCarregando}
-                pwRequest={newPwRequest}
             />  
         </Box>
     );
