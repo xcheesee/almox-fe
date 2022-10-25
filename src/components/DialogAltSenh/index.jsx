@@ -5,19 +5,18 @@ import {
 import FeedbackDialog from './FeedbackDialog';
 import SenhaForm from './SenhaForm';
 
-const DialogAltSenh = (props) => {
+const DialogAltSenh = ({ openAltSenha, setOpenAltSenha, }) => {
     const [reqResponse, setReqResponse] = useState('')
 
     return(
-        <Dialog open={props.openAltSenha} fullWidth={reqResponse === ''} maxWidth="md">
+        <Dialog open={openAltSenha} fullWidth={reqResponse === ''} maxWidth="md">
            {reqResponse === ''
                 ? <SenhaForm 
-                    {...props}
-                    reqResponse={reqResponse}
                     setReqResponse={setReqResponse}
+                    setOpenAltSenha={setOpenAltSenha}
                 />
                 : <FeedbackDialog
-                    setOpenAltSenha={props.setOpenAltSenha}
+                    setOpenAltSenha={setOpenAltSenha}
                     setReqResponse={setReqResponse}
                     reqResponse={reqResponse}
                 />

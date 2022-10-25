@@ -2,14 +2,9 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
 
-const FiltrosInventario = ({ filtros, setFiltros, setPage, setHouveMudanca }) => {
+const FiltrosInventario = () => {
     return (
-        <Filtros
-            filtros={filtros}
-            setFiltros={setFiltros}
-            setPage={setPage}
-            setHouveMudanca={setHouveMudanca}
-        >
+        <Filtros>
             <TextField
                 label="Base"
                 name="base"

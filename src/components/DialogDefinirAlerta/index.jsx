@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -7,12 +7,16 @@ import {
   TextField,
   Box,
   Button,
-  CircularProgress
+  CircularProgress,
+  alertClasses
 } from '@mui/material';
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AddAlerta } from '../../common/utils';
 
 const DialogDefinirAlerta = (props) => {
+  const queryClient = useQueryClient()
   const {
     openDefinir,
     setOpenDefinir,
@@ -21,7 +25,29 @@ const DialogDefinirAlerta = (props) => {
     registro,
   } = props;
 
-  const [carregando, setCarregando] = useState(false);
+  const mutation = useMutation(alertaData => AddAlerta(alertaData, idAlerta),
+    { 
+      onSuccess: async (dataRes) => {
+        setSnackbar({
+          open: true, 
+          severity: 'success', 
+          message: `Alerta definido com sucesso!`
+        });
+
+        setOpenDefinir(false);
+        return await queryClient.invalidateQueries(['itemsAcabando'], {
+          refetchType: 'all'
+        })
+      }, 
+      onError: async (res) => {
+        setSnackbar({
+          open: true, 
+          severity: 'error', 
+          message: `Não foi possível definir o alerta ${res}`
+        });
+      }
+    })
+
   const setSnackbar = useSetAtom(snackbarAtom)
   const cancelar = () => {
     setOpenDefinir(false);
@@ -32,44 +58,8 @@ const DialogDefinirAlerta = (props) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
-    
-    const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
-    const options = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token')
-      },
-      body: JSON.stringify({
-        ...registro, 
-        ...inputObject
-      })
-    };
 
-    setCarregando(true);
-
-    fetch(url, options)
-      .then(res => {
-        if (res.ok) {
-          setSnackbar({
-            open: true, 
-            severity: 'success', 
-            message: `Alerta definido com sucesso!`
-          });
-          setOpenDefinir(false);
-          setCarregando(false);
-          return(res.json());
-        } else {
-          setSnackbar({
-            open: true, 
-            severity: 'error', 
-            message: `Não foi possível definir o alerta (Erro ${res.status})`
-          });
-          setCarregando(false);
-        }
-      })
-      .catch(err => console.log(err));
+    mutation.mutate({...registro, ...inputObject})
   }
 
   return (
@@ -81,7 +71,11 @@ const DialogDefinirAlerta = (props) => {
         <Box
           component="form"
           id="quantidade-alerta"
-          onSubmit={enviar}
+          onSubmit={(e) => {
+            enviar(e)
+            queryClient.invalidateQueries(['itemsAcabando'])
+            queryClient.refetchQueries(['itemsAcabando'], {stale: 'true'})
+          }}
         >
           <TextField
             label="Quantidade"
@@ -96,8 +90,8 @@ const DialogDefinirAlerta = (props) => {
         <Button onClick={cancelar}>
           Cancelar
         </Button>
-        <Button type="submit" form="quantidade-alerta" disabled={carregando}>
-          {carregando
+        <Button type="submit" form="quantidade-alerta" disabled={mutation.isLoading}>
+          {mutation.isLoading
             ? <CircularProgress size="1rem" className="mr-2" />
             : ""
           }

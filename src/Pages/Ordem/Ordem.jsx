@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getTabela } from '../../common/utils';
+import { getRegistro, getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
@@ -8,46 +8,52 @@ import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
+import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useIsFetching, useQuery } from '@tanstack/react-query'
 
 const Ordem = () => {
-    const [ordens, setOrdens] = useState([]);
-    const [metaOrdens, setMetaOrdens] = useState({});
-    const [carregando, setCarregando] = useState(true);
+
+    
+
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
     const [cursor, setCursor] = useState('auto');
-    const [houveMudanca, setHouveMudanca] = useState(false);
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
+    const setHouveMudanca = useSetAtom(mudancaAtom);
+    const setOpenExcluir = useSetAtom(excluirAtom);
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
-    const setOpenExcluir = useSetAtom(excluirAtom);
-    const [materiais, setMateriais] = useAtom(matsAtom)
+    const [materiais, setMateriais] = useAtom(matsAtom);
 
-    useEffect(() => {
-        getTabela('ordem_servicos', page, setCarregando, setOrdens, setMetaOrdens, filtros, sort);
-        setMateriais([]);
-        setErrors({});
-    }, [page, houveMudanca, filtros, sort, setMateriais])
+    const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
+    // const carregandoEdicao = useIsFetching(['ordemItens'])
+
+    const getSelectedOrdemInfo = (id, command) => {
+        switch(command) {
+            case 'visualizar':
+                getRegistro('ordem_servico', id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais);
+                break;
+            case 'editar':
+                getRegistro('ordem_servico', id, setOpenEditar, setOrdemServico, setCursor, setMateriais);
+                break;
+            default:
+                console.log('pog')
+                break;
+        }
+    }
 
     return (
         <Box sx={{ cursor: cursor }}>
             <OrdemServico 
-                ordens={ordens}
-                metaOrdens={metaOrdens}
-                carregando={carregando}
-                setCarregando={setCarregando}
-                setOpenEditar={setOpenEditar}
-                setOrdemServico={setOrdemServico}
-                setCursor={setCursor}
-                setHouveMudanca={setHouveMudanca}
+                ordens={ordens?.data}
+                carregando={ordens?.isLoading}
+                getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
             <DialogEditar
                 titulo="Editar ordem de serviço"

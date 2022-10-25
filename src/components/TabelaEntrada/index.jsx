@@ -7,11 +7,8 @@ import {
     Tooltip,
 } from '@mui/material';
 import Tabela from '../Tabela';
-import { getRegistro } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
-import { useSetAtom } from 'jotai';
-import { matsAtom } from '../../atomStore';
 
 const cabecalhos = {
     "ID": null,
@@ -24,25 +21,19 @@ const cabecalhos = {
 }
 
 const TabelaEntrada = (props) => {
-    const setMateriais = useSetAtom(matsAtom)
     const { 
         entradas, 
         carregando, 
-        setCarregando,
-        setOpenEditar, 
-        setEntradaMaterial, 
-        setCursor, 
+        getSelectedEntradaInfo,
         cursor, 
-        setOpenDetalhes,
     } = props;
 
     return (
         <Tabela 
             cabecalhos={cabecalhos} 
             carregando={carregando} 
-            setCarregando={setCarregando}
         >
-            {entradas.map(entrada => (
+            {entradas?.map(entrada => (
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
                         <TableCell align="center">{entrada.data_entrada || "---"}</TableCell>
@@ -54,9 +45,7 @@ const TabelaEntrada = (props) => {
                             <Tooltip title="Visualizar" placement="left">
                                 <IconButton 
                                     disabled={cursor === 'progress'}
-                                    onClick={() => {
-                                        getRegistro('entrada', entrada.id, setOpenDetalhes, setEntradaMaterial, setCursor, setMateriais);
-                                    }}
+                                    onClick={ () => getSelectedEntradaInfo(entrada.id, 'visualizar') }
                                 >
                                     <ManageSearchIcon />
                                 </IconButton>
@@ -64,9 +53,7 @@ const TabelaEntrada = (props) => {
                             <Tooltip title="Editar" placement="right" sx={{ display: authEditEntrada(localStorage.getItem('perfil')) }}>
                                 <IconButton 
                                     disabled={cursor === 'progress'}
-                                    onClick={ () => { 
-                                        getRegistro('entrada', entrada.id, setOpenEditar, setEntradaMaterial, setCursor, setMateriais);
-                                    }}
+                                    onClick={ () => getSelectedEntradaInfo(entrada.id, 'editar') }
                                 >
                                     <EditIcon />
                                 </IconButton>

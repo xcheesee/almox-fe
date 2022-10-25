@@ -24,8 +24,6 @@ export const mudancaAtom = atom(false)
 
 export const itemsAcabandoAtom = atom([])
 
-// export const carregandoEntradasAtom = 
-
 export const snackbarAtom = atom({
     open: false,
     severity: 'success',

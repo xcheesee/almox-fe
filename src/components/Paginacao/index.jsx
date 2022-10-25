@@ -15,7 +15,7 @@ const Paginacao = ({ count }) => {
                 shape="rounded" 
                 color="primary"
                 onChange={handleChange}
-                count={count} 
+                count={count ?? 1} 
                 page={page}
             />
         </Box>

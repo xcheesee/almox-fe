@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getTabela } from '../../common/utils';
+import { getRegistro, getTabela } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
 import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
@@ -9,14 +9,12 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useQuery } from '@tanstack/react-query'
 
 const Entrada = () => {
-    const [entradas, setEntradas] = useState([]);
-    const [metaEntradas, setMetaEntradas] = useState({});
-    const [carregando, setCarregando] = useState(true);
-    const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
+    const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('auto');
@@ -24,45 +22,51 @@ const Entrada = () => {
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
+    const setHouveMudanca = useSetAtom(mudancaAtom);
     const sort = useAtomValue(sortAtom);
     const page = useAtomValue(pageAtom);
     const filtros = useAtomValue(filtrosAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
-    const [houveMudanca, setHouveMudanca] = useAtom(mudancaAtom)
-    
-    useEffect(() => {
-        getTabela('entradas', page, setCarregando, setEntradas, setMetaEntradas, filtros, sort);
-        setMateriais([]);
-        setErrors({});
-    }, [page, houveMudanca, filtros, sort, setMateriais]);
+
+    const entradas = useQuery(['entradaItens', page, filtros, sort], () => getTabela('entradas', page, filtros, sort));
+
+    const getSelectedEntradaInfo = (id, command) => {
+        switch(command) {
+            case 'visualizar':
+                getRegistro('entrada', id, setOpenDetalhes, setEntradaMaterial, setCursor, setMateriais);
+                break;
+            case 'editar':
+                getRegistro('entrada', id, setOpenEditar, setEntradaMaterial, setCursor, setMateriais);
+                break;
+            default:
+                console.log('pog')
+                break;
+        }  
+    }
 
     return (
         <Box sx={{ cursor: cursor }}>
             <EntradaMaterial 
-                entradas={entradas} 
-                metaEntradas={metaEntradas} 
-                carregando={carregando}
-                setCarregando={setCarregando}
-                setOpenEditar={setOpenEditar}
-                setEntradaMaterial={setEntradaMaterial}
-                setCursor={setCursor}
+                entradas={entradas?.data} 
+                carregando={entradas?.isLoading}
+                getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
+
             <DialogEditar
                 titulo="Editar entrada de material"
                 openEditar={openEditar}
                 setOpenEditar={setOpenEditar}
-                defaultValue={entradaMaterial}
                 carregando={carregandoEdicao}
+                defaultValue={entradaMaterial}
                 setOpenConfirmar={setOpenConfirmar}
                 setOpenExcluir={setOpenExcluir}
             >
                 <FormEntradaMaterial 
                     defaultValue={entradaMaterial}
-                    setCarregando={setCarregandoEdicao}
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
+                    setCarregando={setCarregandoEdicao}
                     acao="editar"
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}
@@ -81,7 +85,6 @@ const Entrada = () => {
                 texto="entrada de material"
                 id={entradaMaterial.id}
                 setOpenEditar={setOpenEditar}
-                setCarregando={setCarregandoEdicao}
                 setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesEntrada

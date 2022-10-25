@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextField, MenuItem } from '@mui/material';
 import Filtros from '../Filtros';
 import Selecao from '../Selecao';
 import CampoDataRange from '../CampoDataRange';
 import { primeiraLetraMaiuscula, getMatTipos } from '../../common/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const FiltrosEntrada = () => {
+    const queryClient = useQueryClient();
+    const tipos = useQuery(['tiposMateriais'], getMatTipos, {
+        staleTime: 120000,
+        cacheTime: 120000,
+    });
     
     const [datas, setDatas] = useState(['']);
-    const [tiposMats, setTiposMats] = useState({});
-    const [carregando, setCarregando] = useState(true);
-
-    useEffect(() => {
-        (async () => {
-            const data = await getMatTipos();
-            setTiposMats(data);
-            setCarregando(false);
-        })();
-    }, [])
 
     return (
         <Filtros
@@ -60,13 +56,13 @@ const FiltrosEntrada = () => {
             />
             
             <Selecao
-                label="Tipo"
+                label={tipos.isLoading? "Carregando..." : "Tipo"}
                 name="tipo"
-                carregando={carregando}
+                carregando={tipos.isLoading}
                 className="col-span-2"
             >
                 {                                    
-                    tiposMats.data
+                    tipos?.data
                         ?.map((val, i) => 
                             <MenuItem value={val.nome} key={i} >
                                 {primeiraLetraMaiuscula(val.nome)}

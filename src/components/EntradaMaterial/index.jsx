@@ -10,14 +10,9 @@ import { authCreateEntrada } from '../../common/utils';
 const EntradaMaterial = (props) => {
     const {
         entradas,
-        metaEntradas,
         carregando,
-        setCarregando,
-        setOpenEditar,
-        setEntradaMaterial,
-        setCursor,
+        getSelectedEntradaInfo,
         cursor,
-        setOpenDetalhes,
     } = props;
 
     return (
@@ -32,14 +27,10 @@ const EntradaMaterial = (props) => {
             <FiltrosEntrada />
             
             <TabelaEntrada 
-                entradas={entradas} 
+                entradas={entradas?.data} 
                 carregando={carregando}
-                setCarregando={setCarregando}
-                setOpenEditar={setOpenEditar}
-                setEntradaMaterial={setEntradaMaterial}
-                setCursor={setCursor}
+                getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
 
             <BotaoNovo 
@@ -50,7 +41,7 @@ const EntradaMaterial = (props) => {
             </BotaoNovo>
 
             <Paginacao
-                count={metaEntradas.last_page}
+                count={entradas?.meta?.last_page}
             />
         </ContainerPrincipal>
     );

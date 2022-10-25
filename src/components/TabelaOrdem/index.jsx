@@ -14,8 +14,8 @@ import GradingIcon from '@mui/icons-material/Grading';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
-import { matsAtom, sortAtom } from '../../atomStore';
-import { useAtom, useSetAtom } from 'jotai';
+import { matsAtom } from '../../atomStore';
+import { useSetAtom } from 'jotai';
 
 const cabecalhos = {
     "ID": "id",
@@ -27,15 +27,15 @@ const cabecalhos = {
     "Ação": null
 };
 
-const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrdemServico, setCursor, cursor, setOpenDetalhes, }) => {
-    const [sort, setSort] = useAtom(sortAtom)
-    const setMateriais = useSetAtom(matsAtom)
-
+const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
     const perfil =  localStorage.getItem('perfil');
 
     return (
-        <Tabela cabecalhos={cabecalhos} carregando={carregando} setCarregando={setCarregando} sort={sort} setSort={setSort}>
-            {ordens.map(ordem => (
+        <Tabela 
+            cabecalhos={cabecalhos} 
+            carregando={carregando}
+        >
+            {ordens?.map(ordem => (
                     <TableRow key={ordem.id}>
                         <TableCell align="center">{ordem.id}</TableCell>
                         <TableCell align="center">{ordem.status}</TableCell>
@@ -52,7 +52,7 @@ const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrde
                                 <Tooltip title="Visualizar ordem" placement="left">
                                     <IconButton 
                                         disabled={cursor === 'progress'}
-                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais) }
+                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'visualizar') }
                                     >
                                         <ManageSearchIcon fontSize="small" />
                                     </IconButton>
@@ -60,7 +60,7 @@ const TabelaOrdem = ({ ordens, carregando, setCarregando, setOpenEditar, setOrde
                                 <Tooltip title="Editar" placement="right" sx={{ display: authEditOrdem(perfil) }}>
                                     <IconButton 
                                         disabled={cursor === 'progress'} 
-                                        onClick={ () => getRegistro('ordem_servico', ordem.id, setOpenEditar, setOrdemServico, setCursor, setMateriais) }
+                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
                                     >
                                         <EditIcon fontSize="small" />
                                     </IconButton>

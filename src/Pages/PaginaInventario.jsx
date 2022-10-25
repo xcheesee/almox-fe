@@ -1,45 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import Inventario from '../components/Inventario';
 import DialogDefinirAlerta from '../components/DialogDefinirAlerta';
-import { getTabela } from '../common/utils';
+import { getRegistro, getTabela } from '../common/utils';
+import { filtrosAtom, pageAtom, sortAtom } from '../atomStore';
+import { useAtomValue } from 'jotai';
+import { useQuery } from '@tanstack/react-query'
 
 const PaginaInventario = () => {
-    const [itens, setItens] = useState([]);
+
     const [registro, setRegistro] = useState({});
-    const [metaItens, setMetaItens] = useState({});
-    const [page, setPage] = useState(1);
-    const [carregando, setCarregando] = useState(true);
     const [openDefinir, setOpenDefinir] = useState(false);
     const [idAlerta, setIdAlerta] = useState('');
-    const [filtros, setFiltros] = useState('');
     const [cursor, setCursor] = useState('auto');
-    const [sort, setSort] = useState('');
-    const [houveMudanca, setHouveMudanca] = useState(true);
+    
+    const page = useAtomValue(pageAtom);
+    const sort = useAtomValue(sortAtom);
+    const filtros = useAtomValue(filtrosAtom);
+    
+    const itens = useQuery(['inventarioItens', page, filtros, sort], () => getTabela('inventarios', page, filtros, sort))
 
-    useEffect(() => {
-        getTabela('inventarios', page, setCarregando, setItens, setMetaItens, filtros, sort);
-    }, [page, filtros, sort, houveMudanca])
+    const inventarioItemDefinirAlerta = (id) => {
+        getRegistro('inventario', id, setOpenDefinir, setRegistro, setCursor);
+        setIdAlerta(id)
+    }
 
     return (
         <Box sx={{ cursor: cursor }}>
             <Inventario
-                itens={itens}
-                metaItens={metaItens}
-                page={page}
-                setPage={setPage}
-                carregando={carregando}
-                setCarregando={setCarregando}
-                setIdAlerta={setIdAlerta}
-                setOpenDefinir={setOpenDefinir}
-                filtros={filtros}
-                setFiltros={setFiltros}
-                setRegistro={setRegistro}
-                setHouveMudanca={setHouveMudanca}
+                itens={itens?.data}
+                carregando={itens?.isLoading}
                 cursor={cursor}
-                setCursor={setCursor}
-                sort={sort}
-                setSort={setSort}
+                inventarioItemDefinirAlerta={inventarioItemDefinirAlerta}
             />
             <DialogDefinirAlerta
                 openDefinir={openDefinir}

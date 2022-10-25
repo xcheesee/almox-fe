@@ -11,17 +11,21 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
-import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
+import { filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
 
 const MenuPrincipal = () => {
     const setSort = useSetAtom(sortAtom)
     const setFiltros = useSetAtom(filtrosAtom)
     const setPage = useSetAtom(pageAtom)
+    const setMats = useSetAtom(matsAtom)
 
+
+    //reseta valores comuns relacionados ao request de tabela
     setSort('')
     setPage(1)
     setFiltros('')
-
+    setMats([])
+    
     return (
         <ContainerPrincipal>
             <Titulo>

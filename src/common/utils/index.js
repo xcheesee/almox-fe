@@ -126,7 +126,7 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
 }
 
 // Read
-export const getLocais = (setCarregando, setLocais) => {
+export const getLocais = () => {
   const url = `${process.env.REACT_APP_API_URL}/locais`;
   const options = {
       method: 'GET',
@@ -136,18 +136,15 @@ export const getLocais = (setCarregando, setLocais) => {
       }
   };
 
-  setCarregando(true);
-
-  fetch(url, options)
+  return fetch(url, options)
       .then(res => {
-          setCarregando(false);
-          return res.json()
+        return res.json()
       })
-      .then(data => setLocais([...data.data]))
+      .then(data => data.data)
       .catch(err => console.log(err));
 }
 
-export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros, sort) => {
+export const getTabela = (rota, page, filtros, sort) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}&sort=${sort || ''}`
   const options = {
       method: 'GET',
@@ -157,17 +154,14 @@ export const getTabela = (rota, page, setCarregando, setData, setMeta, filtros, 
       }
   };
 
-  setCarregando(true);
-
-  fetch(url, options)
+  return fetch(url, options)
       .then(res => res.json())
       .then(data => {
-          setTimeout(() => {
-            setCarregando(false);
-            setData(data.data);
-            setMeta(data.meta);
-          }, 250);
-      });
+        return new Promise((res) =>  setTimeout(() => {
+          res(data)
+        }, 250))}
+
+      )
 }
 
 export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
@@ -182,14 +176,6 @@ export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
 
   fetch(url, options)
     .then(res => res.json())
-    // .then(data => {
-    //   let arr = [];
-    //   let items = data.data;
-
-    //   items.forEach(item => arr.push({ id: item.item_id, quantidade: item.quantidade }));
-
-    //   setMateriais([...arr]);
-    // })
     .then(data => {
       setMateriais(data.data);
       setOpen(true);
@@ -222,7 +208,7 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   })
 }
 
-export const getItemsAcabando = (setItemsAcabando) => {
+export const getItemsAcabando = () => {
   const url = `${process.env.REACT_APP_API_URL}/items_acabando`;
   const options = {
     method: 'GET',
@@ -232,17 +218,17 @@ export const getItemsAcabando = (setItemsAcabando) => {
     }
   };
 
-  fetch(url, options)
+  return fetch(url, options)
     .then(res => {
       if (res.ok)
         return res.json();
     })
-    .then(data => setItemsAcabando(data.data))
+    .then( data => data.data )
     .catch(err => console.log(err))
 }
 
 // Update
-export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenEditar, setOpenConfirmar, setSnackbar, tipoRegistro, setErrors, materiais, campo) => {
+export const enviaEdicao = async (e, url, id, /* setErrors, */ materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -252,44 +238,23 @@ export const enviaEdicao = (e, setHouveMudanca, url, id, setCarregando, setOpenE
     },
     body: enviaForm(e, materiais, campo)
   };
+  
+  const res = await fetch(urlCompleta, options)
 
-  setCarregando(true);
-  setOpenConfirmar(false);
-
-  fetch(urlCompleta, options)
-    .then(res => {
-      if (res.ok) {
-        setHouveMudanca(prev => !prev);
-        setOpenEditar(false);
-        setCarregando(false);
-        setSnackbar({
-          open: true,
-          severity: 'success',
-          message: `${tipoRegistro} editada com sucesso!`
-        });
-        return res.json();
-      } else if (res.status === 422) {
-        setCarregando(false);
-        setSnackbar({
-            open: true,
-            severity: 'error',
-            message: `Não foi possível editar (Erro ${res.status})`
-        });
-        return res.json();
-      } else {
-        setCarregando(false);
-        setSnackbar({
-          open: true,
-          severity: 'error',
-          message: `Não foi possível editar (Erro ${res.status})`
-        });
-      }
-    })
-    .then(data => {
-      if (data.errors)
-        setErrors(data.errors)
-    })
-    .catch(err => console.log(err));
+  if (res.ok) {
+    return await res.json();
+  } else if (res.status === 422) {
+    const errData = await res.json()
+    throw {data: errData, status: res.status}
+  } else {
+    const errData = await res.json()
+    throw res
+  }
+    // .then(data => {
+    //   if (data.errors)
+    //     // setErrors(data.errors)
+    // })
+    // .catch(err => console.log(err));
 }
 
 // Delete
@@ -341,8 +306,10 @@ export const getMatTipos = async () => {
           'Authorization': localStorage.getItem('access_token'),
       },
   };
+  
   const res = await fetch(url, options);
-  return await res.json();
+  const temp = await res.json();
+  return temp.data
 }
 
 export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
@@ -442,5 +409,71 @@ export const authEditOrdem = (perfil) => {
       return '';
     default:
       return 'none';
+  }
+}
+
+export const AddAlerta = async (alertaData, idAlerta) => {
+  const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    },
+    body: JSON.stringify({
+      ...alertaData
+    })
+  };
+
+  const res = await fetch(url, options)
+  if (!res.ok) 
+    throw new Error(`(Erro ${res.status})`)
+  
+  return await res.json()
+}
+
+export const newPwRequest = async (formData) => {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/alterar_senha` );
+  
+  const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": localStorage.getItem('access_token'),
+  };
+  const data = {...formData, email: localStorage.getItem('usermail')}
+
+  const res = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(data),
+  })
+  
+  return await res.json()
+}
+
+export const loginRequest = async (inputObject) => {
+  const url = `${process.env.REACT_APP_API_URL}/login`;
+  const options = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+      },
+      body: JSON.stringify(inputObject)
+  };
+
+  const res = await fetch(url, options)
+
+  if(res.status === 401) {
+    const errData = await res.json()
+    throw new Error(errData.message)
+  } else if (res.ok) {
+    const data = await res.json()
+    data.email = inputObject.email
+    return data
+  } else {
+    const errData = await res.json()
+    throw new Error(errData.message)
   }
 }

@@ -14,8 +14,11 @@ import style from './style';
 import { enviaEdicao, enviaNovoForm, getStatusEnum } from '../../common/utils';
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const FormOrdemServico = (props) => {
+    const queryClient = useQueryClient()
+
     const { 
         defaultValue, 
         setCarregando, 
@@ -33,8 +36,9 @@ const FormOrdemServico = (props) => {
         setDeptoSelecionado
     } = props;
 
+    const statusEnum = useQuery(['statusEnum'], getStatusEnum)
+
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
-    const [statusEnum, setStatusEnum] = useState()
     const [status, setStatus] = useState('')
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
         nome: '',
@@ -45,13 +49,55 @@ const FormOrdemServico = (props) => {
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
-    useEffect(() => {
-        (async () => {
-            const data = await getStatusEnum()
-            console.log(data)
-            setStatusEnum(data)
-        })();
-    },[])
+
+    const editMutation = useMutation( async (data) => {
+        setOpenConfirmar(false)
+        setCarregando(true)
+        return await enviaEdicao(
+            data, 
+            // setHouveMudanca,
+            'ordem_servico', 
+            defaultValue.id, 
+            // setErrors,
+            materiaisInterno,
+            'ordem_servico_items'
+        )
+    }, {
+        onSuccess: async (res) => {
+            setOpenEditar(false)
+            setCarregando(false)
+            queryClient.invalidateQueries(['ordemItens'])
+            setSnackbar({
+                open: true,
+                severity: 'success',
+                message: `Ordem de serviço editada com sucesso!`
+            });
+        }, 
+        onError: async (res) => {
+            setCarregando(false)
+            if(res.status === 422) { /* setErrors(res?.errors) */ }
+
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `Não foi possível editar (Erro ${res?.status})`
+            });
+    }})
+
+    const addMutation = useMutation(data => {
+        enviaNovoForm(
+            data, 
+            'entrada', 
+            'entrada', 
+            setOpenConfirmar, 
+            navigate,
+            setSnackbar,
+            'Entrada de material',
+            setErrors,
+            materiaisInterno,
+            'entrada_items'
+        )
+    })
 
     return (
         <>
@@ -59,20 +105,7 @@ const FormOrdemServico = (props) => {
             id="nova-ordem"
             onSubmit={(e) => {
                 acao === 'editar'
-                    ? enviaEdicao(
-                        e, 
-                        setHouveMudanca,
-                        'ordem_servico', 
-                        defaultValue.id, 
-                        setCarregando, 
-                        setOpenEditar, 
-                        setOpenConfirmar,
-                        setSnackbar,
-                        'Ordem de serviço',
-                        setErrors,
-                        materiaisInterno,
-                        'ordem_servico_items'
-                    )
+                    ? editMutation.mutate(e)
                     : enviaNovoForm(
                         e, 
                         'ordem_servico', 
@@ -115,7 +148,7 @@ const FormOrdemServico = (props) => {
                 helperText={errors.status || ""}
                 required
             >
-                {statusEnum?.map((status, index) => (
+                {statusEnum?.data?.map((status, index) => (
                     <MenuItem key={`status${index}`} value={status}>
                         {status}
                     </MenuItem>

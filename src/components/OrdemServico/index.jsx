@@ -10,34 +10,22 @@ import { authCreateOrdem } from '../../common/utils';
 const OrdemServico = (props) => {
     const {
         ordens,
-        metaOrdens,
         carregando,
-        setCarregando,
-        setOpenEditar,
-        setOrdemServico,
-        setCursor,
-        setHouveMudanca,
         cursor,
-        setOpenDetalhes,
+        getSelectedOrdemInfo,
     } = props;
 
     return (
         <ContainerPrincipal carregando={carregando}>
             <Titulo carregando={carregando}>Ordem de serviço</Titulo>
 
-            <FiltrosOrdem
-                setHouveMudanca={setHouveMudanca}
-            />
+            <FiltrosOrdem />
 
             <TabelaOrdem 
-                ordens={ordens} 
+                ordens={ordens?.data} 
                 carregando={carregando} 
-                setCarregando={setCarregando}
-                setOpenEditar={setOpenEditar}
-                setOrdemServico={setOrdemServico}
-                setCursor={setCursor}
+                getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
-                setOpenDetalhes={setOpenDetalhes}
             />
 
             <BotaoNovo 
@@ -48,7 +36,7 @@ const OrdemServico = (props) => {
             </BotaoNovo>
 
             <Paginacao 
-                count={metaOrdens.last_page}
+                count={ordens?.meta?.last_page}
             />
         </ContainerPrincipal>
     );

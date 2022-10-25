@@ -12,22 +12,71 @@ import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm } from '../../common/utils';
 import { useSetAtom } from 'jotai';
 import { snackbarAtom } from '../../atomStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const FormEntradaMaterial = (props) => {
     const setSnackbar = useSetAtom(snackbarAtom)
     const { 
         defaultValue, 
-        setCarregando, 
         setOpenEditar, 
         setOpenConfirmar, 
         navigate, 
-        acao, 
-        setHouveMudanca, 
+        acao,
+        setHouveMudanca,
+        setCarregando,
         errors,
         setErrors,
     } = props;
 
+    const queryClient = useQueryClient()
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
+    const editMutation = useMutation(async (data) => {
+        setOpenConfirmar(false)
+        setCarregando(true)
+        return await enviaEdicao(
+            data, 
+            // setHouveMudanca,
+            'entrada', 
+            defaultValue.id, 
+            // setErrors,
+            materiaisInterno,
+            'entrada_items'
+        )
+    }, {
+        onSuccess: async (res) => {
+            setOpenEditar(false)
+            setCarregando(false)
+            queryClient.invalidateQueries(['entradaItens'])
+            setSnackbar({
+                open: true,
+                severity: 'success',
+                message: `Entrada de material editada com sucesso!`
+            });
+        }, 
+        onError: async (res) => {
+            setCarregando(false)
+            if(res.status === 422) { /* setErrors(res?.errors) */ }
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `Não foi possível editar (Erro ${res?.status})`
+            });
+    }})
+
+    const addMutation = useMutation(data => {
+        enviaNovoForm(
+            data, 
+            'entrada', 
+            'entrada', 
+            setOpenConfirmar, 
+            navigate,
+            setSnackbar,
+            'Entrada de material',
+            setErrors,
+            materiaisInterno,
+            'entrada_items'
+        )
+    })
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
@@ -37,33 +86,8 @@ const FormEntradaMaterial = (props) => {
                 id="nova-entrada"
                 onSubmit={(e) => {
                     acao === 'editar'
-                        ? enviaEdicao(
-                            e, 
-                            setHouveMudanca,
-                            'entrada', 
-                            defaultValue.id, 
-                            setCarregando, 
-                            setOpenEditar, 
-                            setOpenConfirmar,
-                            setSnackbar,
-                            'Entrada de material',
-                            setErrors,
-                            materiaisInterno,
-                            'entrada_items'
-                        )
-                        : enviaNovoForm(
-                            e, 
-                            'entrada', 
-                            'entrada', 
-                            setCarregando, 
-                            setOpenConfirmar, 
-                            navigate,
-                            setSnackbar,
-                            'Entrada de material',
-                            setErrors,
-                            materiaisInterno,
-                            'entrada_items'
-                        )
+                        ? editMutation.mutate(e)
+                        : addMutation.mutate(e)
                 }}
             >
                 <Selecao

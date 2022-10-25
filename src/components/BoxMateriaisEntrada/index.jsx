@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
     Box,
     Typography,
@@ -16,10 +16,15 @@ import AddIcon from '@mui/icons-material/Add';
 import style from '../BoxMateriais/style';
 import Selecao from '../Selecao';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
-    const [tiposMats, setTiposMats] = useState({});
-    const [carregando, setCarregando] = useState(true);
+    const queryClient = useQueryClient()
+    const tipos = useQuery(['tiposMateriais'], getMatTipos, {
+        staleTime: 120000,
+        cacheTime: 120000,
+    })
+
     const [listaMateriais, setListaMateriais] = useState([]);
 
     const getMateriaisFromTipos = async (e) => {
@@ -80,14 +85,6 @@ const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
     const handleQtdChange = (element, formIndex) => {
         setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
     };
-    
-    useEffect(() => {
-        (async () => {
-            const data = await getMatTipos();
-            setTiposMats(data);
-            setCarregando(false);
-        })();
-    }, [])
 
     return (
         <Box className="mx-8 mb-12">
@@ -96,17 +93,17 @@ const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
             </Typography>
 
             <Selecao
-                label="Tipo de material"
+                label= {tipos?.isLoading? "Carregando..." : "Tipo de material"}
                 name="tipo_material"
                 size="small"
                 onChange={(e) => { getMateriaisFromTipos(e); }}
-                disabled={carregando}
+                carregando={tipos?.isLoading}
                 className="col-span-2"
                 margin="dense"
                 fullWidth
             >
                 {
-                    tiposMats.data?.map(val => 
+                    tipos?.data?.map(val => 
                         <MenuItem value={val.id} key={val.id} >
                             {primeiraLetraMaiuscula(val.nome)}
                         </MenuItem>)
@@ -125,7 +122,6 @@ const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
                                                 label="Material"
                                                 name="id"
                                                 size="small"
-                                                disabled={material.matDesabilitado}
                                                 value={material.currMat}
                                                 onChange={(e, c) => handleChange(e, c, index)}
                                             >
