@@ -450,3 +450,29 @@ export const newPwRequest = async (formData) => {
   
   return await res.json()
 }
+
+export const loginRequest = async (inputObject) => {
+  const url = `${process.env.REACT_APP_API_URL}/login`;
+  const options = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+      },
+      body: JSON.stringify(inputObject)
+  };
+
+  const res = await fetch(url, options)
+
+  if(res.status === 401) {
+    const errData = await res.json()
+    throw new Error(errData.message)
+  } else if (res.ok) {
+    const data = await res.json()
+    data.email = inputObject.email
+    return data
+  } else {
+    const errData = await res.json()
+    throw new Error(errData.message)
+  }
+}
