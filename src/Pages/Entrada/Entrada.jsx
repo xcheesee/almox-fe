@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query'
 const Entrada = () => {
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
+    const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('auto');
@@ -56,6 +57,7 @@ const Entrada = () => {
                 titulo="Editar entrada de material"
                 openEditar={openEditar}
                 setOpenEditar={setOpenEditar}
+                carregando={carregandoEdicao}
                 defaultValue={entradaMaterial}
                 setOpenConfirmar={setOpenConfirmar}
                 setOpenExcluir={setOpenExcluir}
@@ -64,6 +66,7 @@ const Entrada = () => {
                     defaultValue={entradaMaterial}
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
+                    setCarregando={setCarregandoEdicao}
                     acao="editar"
                     setHouveMudanca={setHouveMudanca}
                     errors={errors}

@@ -22,7 +22,8 @@ const FormEntradaMaterial = (props) => {
         setOpenConfirmar, 
         navigate, 
         acao,
-        setHouveMudanca, 
+        setHouveMudanca,
+        setCarregando,
         errors,
         setErrors,
     } = props;
@@ -31,6 +32,7 @@ const FormEntradaMaterial = (props) => {
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
     const editMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
+        setCarregando(true)
         return await enviaEdicao(
             data, 
             // setHouveMudanca,
@@ -43,6 +45,7 @@ const FormEntradaMaterial = (props) => {
     }, {
         onSuccess: async (res) => {
             setOpenEditar(false)
+            setCarregando(false)
             queryClient.invalidateQueries(['entradaItens'])
             setSnackbar({
                 open: true,
@@ -51,6 +54,7 @@ const FormEntradaMaterial = (props) => {
             });
         }, 
         onError: async (res) => {
+            setCarregando(false)
             if(res.status === 422) { /* setErrors(res?.errors) */ }
             setSnackbar({
                 open: true,

@@ -50,20 +50,22 @@ const FormOrdemServico = (props) => {
     
     useEffect(() => setMateriaisInterno(materiais), [materiais]);
 
-    const editMutation = useMutation(data => {
+    const editMutation = useMutation( async (data) => {
         setOpenConfirmar(false)
-        enviaEdicao(
+        setCarregando(true)
+        return await enviaEdicao(
             data, 
             // setHouveMudanca,
             'ordem_servico', 
             defaultValue.id, 
-            setErrors,
+            // setErrors,
             materiaisInterno,
             'ordem_servico_items'
         )
     }, {
         onSuccess: async (res) => {
             setOpenEditar(false)
+            setCarregando(false)
             queryClient.invalidateQueries(['ordemItens'])
             setSnackbar({
                 open: true,
@@ -72,10 +74,13 @@ const FormOrdemServico = (props) => {
             });
         }, 
         onError: async (res) => {
+            setCarregando(false)
+            if(res.status === 422) { /* setErrors(res?.errors) */ }
+
             setSnackbar({
                 open: true,
                 severity: 'error',
-                message: `Não foi possível editar (Erro ${res.status})`
+                message: `Não foi possível editar (Erro ${res?.status})`
             });
     }})
 

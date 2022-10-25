@@ -9,9 +9,12 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useQuery } from '@tanstack/react-query'
+import { useIsFetching, useQuery } from '@tanstack/react-query'
 
 const Ordem = () => {
+
+    
+
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
@@ -28,6 +31,7 @@ const Ordem = () => {
     const [materiais, setMateriais] = useAtom(matsAtom);
 
     const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
+    // const carregandoEdicao = useIsFetching(['ordemItens'])
 
     const getSelectedOrdemInfo = (id, command) => {
         switch(command) {

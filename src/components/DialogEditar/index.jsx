@@ -12,8 +12,7 @@ import {
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useIsFetching } from '@tanstack/react-query';
 
-const DialogEditar = ({ titulo, openEditar, setOpenEditar, defaultValue, setOpenConfirmar, setOpenExcluir, ...other }) => {
-    const numDeEntradaFetch = useIsFetching(['entradaItens'])
+const DialogEditar = ({ titulo, openEditar, setOpenEditar, defaultValue, setOpenConfirmar, setOpenExcluir, carregando, ...other }) => {
 
     return (
         <Dialog open={openEditar} fullWidth maxWidth="md">
@@ -41,7 +40,7 @@ const DialogEditar = ({ titulo, openEditar, setOpenEditar, defaultValue, setOpen
                         variant="contained" sx={{ gap: '0.5rem' }}
                         onClick={() => setOpenConfirmar(true)}
                     >
-                        {numDeEntradaFetch != 0
+                        {carregando
                             ? <CircularProgress color="color" size="1rem" />
                             : ''
                         }
