@@ -121,24 +121,24 @@ export const enviaNovoForm = async (e, url, materiais, /* profissionais, */ camp
 // Read
 export const getBaixa = async (baixaId) => {
   const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}`;
-    const urlItems = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}/items`;
-    const options = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': localStorage.getItem('access_token'),
-        },
-    };
+  const urlItems = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}/items`;
+  const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('access_token'),
+      },
+  };
 
-    const res = await fetch(url, options)
-    if(res.status === 404) throw res
-    else {
-      const itensRes = await fetch(urlItems, options)
-      const ordem = await res.json()
-      const itens = await itensRes.json()
-      return {ordem, itens}
-    }
+  const res = await fetch(url, options)
+  if(res.status === 404) throw res
+  else {
+    const itensRes = await fetch(urlItems, options)
+    const ordem = await res.json()
+    const itens = await itensRes.json()
+    return {ordem, itens}
+  }
 
     // .then(async res => {
     //   if (res.status === 404) {
@@ -412,7 +412,7 @@ export const getMatTipos = async () => {
 export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
   const url = 
     ordemServico
-    ? `${process.env.REACT_APP_API_URL}/base/items?base=&depto=&tipo=${tipoRota}`
+    ? `${process.env.REACT_APP_API_URL}/base/items?base=${baseSelecionada}&depto=${deptoSelecionado}&tipo=${tipoRota}`
     : `${process.env.REACT_APP_API_URL}/items/tipo/${tipoRota}`
   const options = {
       method: 'GET',
