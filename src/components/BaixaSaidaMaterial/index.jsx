@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   Box,
@@ -16,6 +16,25 @@ import { formataDateTime } from '../../common/utils';
 import { Link } from 'react-router-dom';
 
 const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErros, errors, setErrors, carregandoBaixa }) => {
+  const [enviado, setEnviado] = useState([]);
+  const [usado, setUsado] = useState([]);
+  const [retorno, setRetorno] = useState([]);
+
+  const handleBlur = (e, index, valor) => {
+    let arr = valor;
+    arr[index] = e.target.value;
+
+    if (valor === enviado)
+      setEnviado([...arr]);
+    else
+      setUsado([...arr]);
+
+    let arrRetorno = retorno;
+    arrRetorno[index] = enviado[index] - usado[index];
+
+    setRetorno([...arrRetorno]);
+  }
+
   return (
     <ContainerPrincipal>
       <Titulo voltaPara="/ordemservico" carregando={carregando}>
@@ -115,6 +134,7 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
                       <TextField
                         label="Enviado"
                         defaultValue={material.enviado}
+                        onBlur={(e) => handleBlur(e, index, enviado)}
                         name={`ordem_servico_items[${index}].enviado`}
                         size="small"
                       />
@@ -122,18 +142,20 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
                       <TextField
                         label="Usado"
                         defaultValue={material.usado}
+                        onBlur={(e) => handleBlur(e, index, usado)}
                         name={`ordem_servico_items[${index}].usado`}
                         size="small"
                       />
 
                       <TextField
                         label="Retorno"
-                        defaultValue={material.retorno}
+                        value={retorno[index] || 0}
                         name={`ordem_servico_items[${index}].retorno`}
                         size="small"
                         onBlur={() => setErrors({})}
                         error={errors.hasOwnProperty(`retorno[${index}]`)}
                         helperText={errors[`retorno[${index}]`] || ''}
+                        disabled
                       />
                     </Box>
                   </Paper>
