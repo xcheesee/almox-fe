@@ -20,10 +20,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
     const queryClient = useQueryClient()
-    const tipos = useQuery(['tiposMateriais'], getMatTipos, {
-        staleTime: 120000,
-        cacheTime: 120000,
-    })
+    const tipos = useQuery(['tiposMateriais'], getMatTipos)
 
     const [listaMateriais, setListaMateriais] = useState([]);
 

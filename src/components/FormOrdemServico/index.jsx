@@ -11,7 +11,7 @@ import CampoLocais from '../CampoLocais';
 import BoxMateriais from '../BoxMateriais';
 import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
-import { enviaEdicao, enviaNovoForm, getStatusEnum } from '../../common/utils';
+import { enviaEdicao, enviaNovoForm, getStatusEnum, setFormSnackbar } from '../../common/utils';
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -60,25 +60,15 @@ const FormOrdemServico = (props) => {
             materiaisInterno,
             'ordem_servico_items'
         )
-    }, {
-        onSuccess: async (res) => {
+    }, { onSuccess: async (res) => {
             setOpenEditar(false)
             setCarregando(false)
             queryClient.invalidateQueries(['ordemItens'])
-            setSnackbar({
-                open: true,
-                severity: 'success',
-                message: `Ordem de serviço editada com sucesso!`
-            });
+            setFormSnackbar(setSnackbar, "Ordem de serviço", { edit: true })
         }, onError: async (res) => {
             setCarregando(false)
             if(res.status === 422) { /* setErrors(res?.errors) */ }
-
-            setSnackbar({
-                open: true,
-                severity: 'error',
-                message: `Não foi possível editar (Erro ${res?.status})`
-            });
+            setFormSnackbar(setSnackbar, "", { error: true , status: res.status, edit: true })
     }})
 
     const addMutation = useMutation( async (data) => {
@@ -90,23 +80,15 @@ const FormOrdemServico = (props) => {
             materiaisInterno,
             'ordem_servico_items'
         )
-    }, {
-        onSuccess: async (res) => {
+    }, { onSuccess: async (res) => {
             setCarregando(false)
-            setSnackbar({
-                open: true,
-                severity: 'success',
-                message: `Ordem de serviço enviada com sucesso!`
-            });
+            queryClient.invalidateQueries(['ordemItens'])
+            setFormSnackbar(setSnackbar, "Ordem de serviço")
             navigate(`/ordemservico`, { replace: true });
         }, onError: async (res) => {
             setCarregando(false)
             if(res.status === 422) { setErrors(res?.errors) }
-            setSnackbar({
-                open: true,
-                severity: 'error',
-                message: `Não foi possível enviar (Erro ${res.status})`
-            });
+            setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
         }
     })
 
@@ -118,20 +100,6 @@ const FormOrdemServico = (props) => {
                 acao === 'editar'
                     ? editMutation.mutate(e)
                     : addMutation.mutate(e)
-                    /* enviaNovoForm(
-                        e, 
-                        'ordem_servico', 
-                        'ordemservico', 
-                        setCarregando, 
-                        setOpenConfirmar, 
-                        navigate,
-                        setSnackbar,
-                        'Ordem de serviço',
-                        setErrors,
-                        materiaisInterno,
-                        // profissionaisEmpregados,
-                        'ordem_servico_items'
-                    ) */
             }}
         >
             <Selecao

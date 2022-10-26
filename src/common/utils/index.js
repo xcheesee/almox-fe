@@ -1,3 +1,5 @@
+import { notifyManager } from "@tanstack/react-query";
+
 // formatações
 export const mascaraProcessoSei = (processoSei) => {
     if (processoSei !== null && processoSei !== "" && processoSei !== undefined)
@@ -31,6 +33,25 @@ export const formataDateTime = (dateTime) => {
 
 export const primeiraLetraMaiuscula = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export const setFormSnackbar = (setSnackbar, tipoEnvio, options = {
+  error: false,
+  edit: false,
+  status: null,
+}) => {
+  if(options.error) {
+    return setSnackbar({
+      open: true,
+      severity: 'error',
+      message: `Não foi possível ${ options.edit? 'editar' : 'enviar' } (Erro ${options?.status})`
+  })
+  }
+  return setSnackbar({
+    open: true,
+    severity: 'success',
+    message: `${tipoEnvio} ${options.edit? "editada": "enviada"} com sucesso!`
+})
 }
 
 // variáveis
@@ -200,6 +221,29 @@ export const getItemsAcabando = () => {
 }
 
 // Update
+export const AddAlerta = async (alertaData, idAlerta) => {
+  const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    },
+    body: JSON.stringify({
+      ...alertaData
+    })
+  };
+
+  const res = await fetch(url, options)
+  if (!res.ok) 
+    throw new Error(`(Erro ${res.status})`)
+  
+  return await res.json()
+}
+
+
+
 export const enviaEdicao = async (e, url, id, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
@@ -382,27 +426,6 @@ export const authEditOrdem = (perfil) => {
     default:
       return 'none';
   }
-}
-
-export const AddAlerta = async (alertaData, idAlerta) => {
-  const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
-  const options = {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
-    },
-    body: JSON.stringify({
-      ...alertaData
-    })
-  };
-
-  const res = await fetch(url, options)
-  if (!res.ok) 
-    throw new Error(`(Erro ${res.status})`)
-  
-  return await res.json()
 }
 
 export const newPwRequest = async (formData) => {

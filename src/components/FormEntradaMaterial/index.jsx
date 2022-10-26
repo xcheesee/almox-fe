@@ -9,7 +9,7 @@ import BoxMateriaisEntrada from '../BoxMateriaisEntrada';
 import CampoLocais from '../CampoLocais';
 import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
-import { enviaEdicao, enviaNovoForm } from '../../common/utils';
+import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../common/utils';
 import { useSetAtom } from 'jotai';
 import { snackbarAtom } from '../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -22,7 +22,6 @@ const FormEntradaMaterial = (props) => {
         setOpenConfirmar, 
         navigate, 
         acao,
-        setHouveMudanca,
         setCarregando,
         errors,
         setErrors,
@@ -35,10 +34,8 @@ const FormEntradaMaterial = (props) => {
         setCarregando(true)
         return await enviaEdicao(
             data, 
-            // setHouveMudanca,
             'entrada', 
             defaultValue.id, 
-            // setErrors,
             materiaisInterno,
             'entrada_items'
         )
@@ -47,35 +44,34 @@ const FormEntradaMaterial = (props) => {
             setOpenEditar(false)
             setCarregando(false)
             queryClient.invalidateQueries(['entradaItens'])
-            setSnackbar({
-                open: true,
-                severity: 'success',
-                message: `Entrada de material editada com sucesso!`
-            });
+            setFormSnackbar(setSnackbar, "Entrada de material", { edit: true })
         }, 
         onError: async (res) => {
             setCarregando(false)
             if(res.status === 422) { /* setErrors(res?.errors) */ }
-            setSnackbar({
-                open: true,
-                severity: 'error',
-                message: `Não foi possível editar (Erro ${res?.status})`
-            });
+            setFormSnackbar(setSnackbar, "", { error: true, status: res.status, edit: true })
     }})
 
-    const addMutation = useMutation(data => {
-        enviaNovoForm(
+    const addMutation = useMutation(async (data) => {
+        setOpenConfirmar(false)
+        setCarregando(true)
+        return await enviaNovoForm(
             data, 
             'entrada', 
-            'entrada', 
-            setOpenConfirmar, 
-            navigate,
-            setSnackbar,
-            'Entrada de material',
-            setErrors,
             materiaisInterno,
             'entrada_items'
         )
+    }, {
+        onSuccess: async (res) => {
+            setCarregando(false)
+            queryClient.invalidateQueries(['entradaItens'])
+            setFormSnackbar(setSnackbar, "Entrada de material")
+            navigate(`/entrada`, { replace: true });
+        }, onError: async (res) => {
+            setCarregando(false)
+            if(res.status === 422) { setErrors(res?.errors) }
+            setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
+        }
     })
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
