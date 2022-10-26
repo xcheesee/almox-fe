@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
     Button,
     Box 
@@ -12,6 +12,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
 import { filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useState } from 'react';
 
 const MenuPrincipal = () => {
     const setSort = useSetAtom(sortAtom)
@@ -21,10 +22,12 @@ const MenuPrincipal = () => {
 
 
     //reseta valores comuns relacionados ao request de tabela
-    setSort('')
-    setPage(1)
-    setFiltros('')
-    setMats([])
+    useEffect(() => {
+        setSort('')
+        setPage(1)
+        setFiltros('')
+        setMats([])
+    }, [])
     
     return (
         <ContainerPrincipal>
