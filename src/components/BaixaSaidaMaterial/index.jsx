@@ -83,7 +83,7 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
         </Typography>
 
         <Collapse 
-          in={!carregando} 
+          in={materiais.length > 0} 
           component="form" 
           id="baixa-items"
           onSubmit={checaErros}
