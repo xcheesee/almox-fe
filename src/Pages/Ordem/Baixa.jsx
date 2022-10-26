@@ -1,92 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import BaixaSaidaMaterial from '../../components/BaixaSaidaMaterial';
 import DialogConfirmaBaixa from '../../components/DialogConfirmaBaixa';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { enviaBaixa, getBaixa } from '../../common/utils';
 
 const Baixa = ({ setSnackbar }) => {
   let params = useParams();
   const navigate = useNavigate();
   const [ordemServico, setOrdemServico] = useState({});
   const [materiais, setMateriais] = useState([]);
-  const [carregando, setCarregando] = useState(true);
   const [openBaixa, setOpenBaixa] = useState(false);
-  const [carregandoBaixa, setCarregandoBaixa] = useState(false);
   const [errors, setErrors] = useState({});
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
+  let items = []
 
-  useEffect(() => {
-    const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}`;
-    const urlItems = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/items`;
-    const options = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': localStorage.getItem('access_token'),
-        },
-    };
-  
-    setCarregando(true);
-  
-    fetch(url, options)
-      .then(async res => {
-        if (res.status === 404) {
-          navigate('/404', { replace: true });
-          return res.json();
-        } else {
-          const data = await res.json();
-          setOrdemServico(data.data || {});
-          fetch(urlItems, options)
-            .then(resItems => resItems.json())
-            .then(dataItems => {
-              setMateriais(dataItems.data);
-              setCarregando(false);
-            });
-        }
-      })
-      .catch(err => console.log(err));
-  }, [params.id, navigate]);
+  const baixa = useQuery(['baixaItem', params.id], () => getBaixa(params.id), {
+    onSuccess: async (res) => {
+      setOrdemServico(res.ordem.data || {})
+      setMateriais(res.itens.data)
+    }, onError: async (res) => {
+      if (res.status === 404) navigate('/404', { replace: true });
+    }
+  })
 
-  const enviaBaixa = () => {
-    setOpenBaixa(false);
+  const enviarBaixa = useMutation(async () => {
+    setOpenBaixa(false)
+    return await enviaBaixa(items, params.id)
+  }, {
+    onSuccess: async (res) => {
+      setSnackbar({
+        open: true,
+        severity: 'success',
+        message: 'Baixa da ordem de serviço efetuada com sucesso!',
+      });
+      navigate('/ordemservico', { replace: true });
+    }, onError: async (res) => {
+      console.log(res)
+      setSnackbar({
+        open: true,
+        severity: 'error',
+        message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
+      });
+    } 
+  })
 
-    const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/baixa`;
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token'),
-      },
-      body: JSON.stringify(items)
-    };
+  // const enviaBaixa = () => {
+  //   setOpenBaixa(false);
+
+    // const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/baixa`;
+    // const options = {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Accept': 'application/json',
+    //     'Authorization': localStorage.getItem('access_token'),
+    //   },
+    //   body: JSON.stringify(items)
+    // };
   
-    setCarregandoBaixa(true);
+    // setCarregandoBaixa(true);
   
-    fetch(url, options)
-      .then(res => {
-        if (res.ok) {
-          setCarregandoBaixa(false);
-          setSnackbar({
-            open: true,
-            severity: 'success',
-            message: 'Baixa da ordem de serviço efetuada com sucesso!'
-          });
-          navigate('/ordemservico', { replace: true });
-          return res.json();
-        } else {
-          setCarregandoBaixa(false);
-          setSnackbar({
-            open: true,
-            severity: 'error',
-            message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
-          });
-          return res.json();
-        }
-      })
-      .then(data => data)
-      .catch(err => console.log(err));
-  }
+    // fetch(url, options)
+    //   .then(res => {
+    //     if (res.ok) {
+    //       setCarregandoBaixa(false);
+    //       setSnackbar({
+    //         open: true,
+    //         severity: 'success',
+    //         message: 'Baixa da ordem de serviço efetuada com sucesso!'
+    //       });
+    //       navigate('/ordemservico', { replace: true });
+    //       return res.json();
+    //     } else {
+    //       setCarregandoBaixa(false);
+          // setSnackbar({
+          //   open: true,
+          //   severity: 'error',
+          //   message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
+          // });
+    //       return res.json();
+    //     }
+    //   })
+    //   .then(data => data)
+    //   .catch(err => console.log(err));
+  // }
 
   const checaErros = (e) => {
     e.preventDefault();
@@ -109,7 +107,8 @@ const Baixa = ({ setSnackbar }) => {
       }
     });
     
-    setItems({ ordem_servico_items: [...arr] });
+    items = {ordem_servico_items: [...arr]}
+    // setItems({ ordem_servico_items: [...arr] });
     setErrors(objErros);
 
     if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 ) {
@@ -121,21 +120,21 @@ const Baixa = ({ setSnackbar }) => {
     <>
       <BaixaSaidaMaterial 
         ordemServico={ordemServico}
-        carregando={carregando} 
+        carregando={baixa?.isFetching} 
         id={params.id} 
         materiais={materiais} 
         checaErros={checaErros}
         errors={errors}
         setErrors={setErrors}
         setOpenBaixa={setOpenBaixa}
-        carregandoBaixa={carregandoBaixa}
+        carregandoBaixa={enviarBaixa.isLoading}
       />
 
       <DialogConfirmaBaixa 
         openBaixa={openBaixa}
         setOpenBaixa={setOpenBaixa}
         id={params.id}
-        enviaBaixa={enviaBaixa}
+        enviaBaixa={() => enviarBaixa.mutate()}
       />
     </>
   );

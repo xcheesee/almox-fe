@@ -119,6 +119,45 @@ export const enviaNovoForm = async (e, url, materiais, /* profissionais, */ camp
 }
 
 // Read
+export const getBaixa = async (baixaId) => {
+  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}`;
+    const urlItems = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}/items`;
+    const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': localStorage.getItem('access_token'),
+        },
+    };
+
+    const res = await fetch(url, options)
+    if(res.status === 404) throw res
+    else {
+      const itensRes = await fetch(urlItems, options)
+      const ordem = await res.json()
+      const itens = await itensRes.json()
+      return {ordem, itens}
+    }
+
+    // .then(async res => {
+    //   if (res.status === 404) {
+    //     navigate('/404', { replace: true });
+    //     return res.json();
+    //   } else {
+    //     const data = await res.json();
+    //     setOrdemServico(data.data || {});
+    //     fetch(urlItems, options)
+    //       .then(resItems => resItems.json())
+    //       .then(dataItems => {
+    //         setMateriais(dataItems.data);
+    //         setCarregando(false);
+    //       });
+    //   }
+    // })
+    // .catch(err => console.log(err));
+}
+
 export const getLocais = () => {
   const url = `${process.env.REACT_APP_API_URL}/locais`;
   const options = {
@@ -221,6 +260,48 @@ export const getItemsAcabando = () => {
 }
 
 // Update
+export const enviaBaixa = async (items, baixaId) => {
+  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}/baixa`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token'),
+    },
+    body: JSON.stringify(items)
+  };
+
+  const res = await fetch(url, options)
+  if(res.ok) {
+    return await res.json()
+  } else {
+    throw res
+  }
+      // .then(res => {
+      //   if (res.ok) {
+      //     setCarregandoBaixa(false);
+      //     setSnackbar({
+      //       open: true,
+      //       severity: 'success',
+      //       message: 'Baixa da ordem de serviço efetuada com sucesso!'
+      //     });
+      //     navigate('/ordemservico', { replace: true });
+      //     return res.json();
+      //   } else {
+      //     setCarregandoBaixa(false);
+      //     setSnackbar({
+      //       open: true,
+      //       severity: 'error',
+      //       message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
+      //     });
+      //     return res.json();
+      //   }
+      // })
+      // .then(data => data)
+      // .catch(err => console.log(err));
+}
+
 export const AddAlerta = async (alertaData, idAlerta) => {
   const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
   const options = {
