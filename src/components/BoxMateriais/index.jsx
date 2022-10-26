@@ -19,11 +19,7 @@ import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/u
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const BoxMateriais = (props) => {
-    const queryClient = useQueryClient()
-    const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
-        staleTime: 120000,
-        cacheTime: 120000,
-    });
+    const tiposMats = useQuery(['tiposMateriais'], getMatTipos);
 
     const {
         label,
@@ -135,7 +131,7 @@ const BoxMateriais = (props) => {
                                                 label="Material"
                                                 name="id"
                                                 size="small"
-                                                disabled={material.matDesabilitado}
+                                                carregando={material.matDesabilitado}
                                                 value={material.currMat}
                                                 onChange={(e, c) => handleChange(e, c, index)}
                                                 className="col-span-2"

@@ -55,7 +55,7 @@ export const enviaForm = (e, materiais, /* profissionais, */ campo) => {
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
   if (materiais) {
-    materiais.forEach((material, index) => {
+    materiais?.forEach((material, index) => {
       const entries = Object.entries(material);
       entries.forEach(keyValue => {
         formData.append(`${campo}[${index}][${keyValue[0]}]`, keyValue[1]);
@@ -75,7 +75,7 @@ export const enviaForm = (e, materiais, /* profissionais, */ campo) => {
   return formData;
 }
 
-export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConfirmar, navigate, setSnackbar, tipoRegistro, setErrors, materiais, /* profissionais, */ campo) => {
+export const enviaNovoForm = async (e, url, materiais, /* profissionais, */ campo) => {
   enviaForm(e, materiais, /* profissionais ,*/ campo)
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
@@ -87,42 +87,14 @@ export const enviaNovoForm = (e, url, paginaAnterior, setCarregando, setOpenConf
       body: enviaForm(e, materiais, campo)
   };
 
-  setCarregando(true);
-  setOpenConfirmar(false);
+  const res = await fetch(urlCompleta, options)
 
-  fetch(urlCompleta, options)
-      .then(res => { 
-        if (res.ok) {
-            setCarregando(false);
-            navigate(`/${paginaAnterior}`, { replace: true });
-            setSnackbar({
-                open: true,
-                severity: 'success',
-                message: `${tipoRegistro} enviada com sucesso!`
-            });
-            return res.json();
-        } else if (res.status === 422) {
-            setCarregando(false);
-            setSnackbar({
-                open: true,
-                severity: 'error',
-                message: `Não foi possível enviar (Erro ${res.status})`
-            });
-            return res.json();
-        } else {
-            setCarregando(false);
-            setSnackbar({
-                open: true,
-                severity: 'error',
-                message: `Não foi possível enviar (Erro ${res.status})`
-            });
-        }
-      })
-      .then(data => {
-        if (data.errors)
-          setErrors(data.errors)
-      })
-      .catch(err => console.log(err));
+  if (res.status === 422) {
+    throw await res.json()
+  } else if(!res.ok) {
+    throw res
+  }
+  return await res.json()
 }
 
 // Read
@@ -228,7 +200,7 @@ export const getItemsAcabando = () => {
 }
 
 // Update
-export const enviaEdicao = async (e, url, id, /* setErrors, */ materiais, campo) => {
+export const enviaEdicao = async (e, url, id, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
@@ -315,7 +287,7 @@ export const getMatTipos = async () => {
 export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
   const url = 
     ordemServico
-    ? `${process.env.REACT_APP_API_URL}/base/items?base=${baseSelecionada}&depto=${deptoSelecionado}&tipo=${tipoRota}`
+    ? `${process.env.REACT_APP_API_URL}/base/items?base=&depto=&tipo=${tipoRota}`
     : `${process.env.REACT_APP_API_URL}/items/tipo/${tipoRota}`
   const options = {
       method: 'GET',

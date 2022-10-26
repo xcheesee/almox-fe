@@ -31,7 +31,6 @@ const Ordem = () => {
     const [materiais, setMateriais] = useAtom(matsAtom);
 
     const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
-    // const carregandoEdicao = useIsFetching(['ordemItens'])
 
     const getSelectedOrdemInfo = (id, command) => {
         switch(command) {

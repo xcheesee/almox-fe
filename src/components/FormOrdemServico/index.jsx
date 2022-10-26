@@ -54,11 +54,9 @@ const FormOrdemServico = (props) => {
         setOpenConfirmar(false)
         setCarregando(true)
         return await enviaEdicao(
-            data, 
-            // setHouveMudanca,
+            data,
             'ordem_servico', 
             defaultValue.id, 
-            // setErrors,
             materiaisInterno,
             'ordem_servico_items'
         )
@@ -72,8 +70,7 @@ const FormOrdemServico = (props) => {
                 severity: 'success',
                 message: `Ordem de serviço editada com sucesso!`
             });
-        }, 
-        onError: async (res) => {
+        }, onError: async (res) => {
             setCarregando(false)
             if(res.status === 422) { /* setErrors(res?.errors) */ }
 
@@ -84,19 +81,33 @@ const FormOrdemServico = (props) => {
             });
     }})
 
-    const addMutation = useMutation(data => {
-        enviaNovoForm(
+    const addMutation = useMutation( async (data) => {
+        setOpenConfirmar(false)
+        setCarregando(true)
+        return await enviaNovoForm(
             data, 
-            'entrada', 
-            'entrada', 
-            setOpenConfirmar, 
-            navigate,
-            setSnackbar,
-            'Entrada de material',
-            setErrors,
+            'ordem_servico', 
             materiaisInterno,
-            'entrada_items'
+            'ordem_servico_items'
         )
+    }, {
+        onSuccess: async (res) => {
+            setCarregando(false)
+            setSnackbar({
+                open: true,
+                severity: 'success',
+                message: `Ordem de serviço enviada com sucesso!`
+            });
+            navigate(`/ordemservico`, { replace: true });
+        }, onError: async (res) => {
+            setCarregando(false)
+            if(res.status === 422) { setErrors(res?.errors) }
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `Não foi possível enviar (Erro ${res.status})`
+            });
+        }
     })
 
     return (
@@ -106,7 +117,8 @@ const FormOrdemServico = (props) => {
             onSubmit={(e) => {
                 acao === 'editar'
                     ? editMutation.mutate(e)
-                    : enviaNovoForm(
+                    : addMutation.mutate(e)
+                    /* enviaNovoForm(
                         e, 
                         'ordem_servico', 
                         'ordemservico', 
@@ -119,7 +131,7 @@ const FormOrdemServico = (props) => {
                         materiaisInterno,
                         // profissionaisEmpregados,
                         'ordem_servico_items'
-                    )
+                    ) */
             }}
         >
             <Selecao
