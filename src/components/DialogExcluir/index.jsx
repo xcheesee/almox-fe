@@ -10,7 +10,7 @@ import { excluiRegistro, primeiraLetraMaiuscula } from '../../common/utils';
 import { useAtom, useSetAtom } from 'jotai';
 import { excluirAtom, snackbarAtom } from '../../atomStore';
 
-const DialogExcluir = ({ rota, texto, id, setOpenEditar, setCarregando, setHouveMudanca }) => {
+const DialogExcluir = ({ rota, texto, id, setOpenEditar, setCarregando, /* setHouveMudanca */ }) => {
     const setSnackbar = useSetAtom(snackbarAtom)
     const [openExcluir, setOpenExcluir] = useAtom(excluirAtom)
     return (
@@ -24,7 +24,7 @@ const DialogExcluir = ({ rota, texto, id, setOpenEditar, setCarregando, setHouve
                 <Button onClick={() => setOpenExcluir(false)}>
                     Não
                 </Button>
-                <Button onClick={() => excluiRegistro(rota, id, setHouveMudanca, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, primeiraLetraMaiuscula(texto))}>
+                <Button onClick={() => excluiRegistro(rota, id, /* setHouveMudanca, */ setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, primeiraLetraMaiuscula(texto))}>
                     Sim
                 </Button>
             </DialogActions>

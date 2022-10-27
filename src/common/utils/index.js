@@ -1,5 +1,3 @@
-import { notifyManager } from "@tanstack/react-query";
-
 // formatações
 export const mascaraProcessoSei = (processoSei) => {
     if (processoSei !== null && processoSei !== "" && processoSei !== undefined)
@@ -344,7 +342,7 @@ export const enviaEdicao = async (e, url, id, materiais, campo) => {
     const errData = await res.json()
     throw {data: errData, status: res.status}
   } else {
-    const errData = await res.json()
+    // const errData = await res.json()
     throw res
   }
     // .then(data => {
@@ -355,7 +353,7 @@ export const enviaEdicao = async (e, url, id, materiais, campo) => {
 }
 
 // Delete
-export const excluiRegistro = (rota, id, setHouveMudanca, setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
+export const excluiRegistro = (rota, id, /* setHouveMudanca ,*/ setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'DELETE',
@@ -371,7 +369,7 @@ export const excluiRegistro = (rota, id, setHouveMudanca, setOpenExcluir, setOpe
   fetch(urlCompleta, options)
     .then(res => {
       if (res.ok) {
-        setHouveMudanca(prev => !prev);
+        // setHouveMudanca(prev => !prev);
         setOpenEditar(false);
         setCarregando(false);
         setSnackbar({

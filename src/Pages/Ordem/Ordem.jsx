@@ -8,13 +8,10 @@ import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useIsFetching, useQuery } from '@tanstack/react-query'
+import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, sortAtom } from '../../atomStore';
+import { useQuery } from '@tanstack/react-query'
 
 const Ordem = () => {
-
-    
-
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
@@ -23,7 +20,7 @@ const Ordem = () => {
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
-    const setHouveMudanca = useSetAtom(mudancaAtom);
+    // const setHouveMudanca = useSetAtom(mudancaAtom);
     const setOpenExcluir = useSetAtom(excluirAtom);
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
@@ -69,7 +66,7 @@ const Ordem = () => {
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     acao="editar"
-                    setHouveMudanca={setHouveMudanca}
+                    // setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
                 />
@@ -87,7 +84,7 @@ const Ordem = () => {
                 id={ordemServico.id}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                setHouveMudanca={setHouveMudanca}
+                // setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesOrdem 
                 openDetalhes={openDetalhes}

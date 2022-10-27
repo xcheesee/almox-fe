@@ -50,6 +50,8 @@ const queryClient = new QueryClient({
   }
 })
 
+//Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
+
 root.render(
 
   <React.StrictMode>

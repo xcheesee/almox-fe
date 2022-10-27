@@ -7,7 +7,7 @@ import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
-import { excluirAtom, filtrosAtom, matsAtom, mudancaAtom, pageAtom, sortAtom } from '../../atomStore';
+import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, sortAtom } from '../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useQuery } from '@tanstack/react-query'
 
@@ -22,7 +22,7 @@ const Entrada = () => {
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
-    const setHouveMudanca = useSetAtom(mudancaAtom);
+    // const setHouveMudanca = useSetAtom(mudancaAtom);
     const sort = useAtomValue(sortAtom);
     const page = useAtomValue(pageAtom);
     const filtros = useAtomValue(filtrosAtom);
@@ -68,7 +68,7 @@ const Entrada = () => {
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregandoEdicao}
                     acao="editar"
-                    setHouveMudanca={setHouveMudanca}
+                    // setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
                 />
@@ -85,7 +85,7 @@ const Entrada = () => {
                 texto="entrada de material"
                 id={entradaMaterial.id}
                 setOpenEditar={setOpenEditar}
-                setHouveMudanca={setHouveMudanca}
+                // setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesEntrada
                 openDetalhes={openDetalhes} 
