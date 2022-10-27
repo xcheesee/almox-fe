@@ -19,8 +19,9 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
   const [enviado, setEnviado] = useState([]);
   const [usado, setUsado] = useState([]);
   const [retorno, setRetorno] = useState([]);
+  const [error, setError] = useState(false);
 
-  const handleBlur = (e, index, valor) => {
+  const handleBlur = (e, index, valor, quantidade) => {
     let arr = valor;
     arr[index] = e.target.value;
 
@@ -134,16 +135,26 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
                       <TextField
                         label="Enviado"
                         defaultValue={material.enviado}
-                        onBlur={(e) => handleBlur(e, index, enviado)}
+                        onBlur={(e) => { 
+                          handleBlur(e, index, enviado);
+                          setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade))); 
+                        }}
                         name={`ordem_servico_items[${index}].enviado`}
+                        error={parseInt(enviado[index]) > parseInt(material.quantidade)}
+                        helperText={parseInt(enviado[index]) > parseInt(material.quantidade) ? "O valor de enviado não pode ser maior que o valor solicitado" : ""}
                         size="small"
                       />
 
                       <TextField
                         label="Usado"
                         defaultValue={material.usado}
-                        onBlur={(e) => handleBlur(e, index, usado)}
+                        onBlur={(e) => { 
+                          handleBlur(e, index, usado); 
+                          setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade))); 
+                        }}
                         name={`ordem_servico_items[${index}].usado`}
+                        error={parseInt(enviado[index]) < parseInt(usado[index])}
+                        helperText={parseInt(enviado[index]) < parseInt(usado[index]) ? "O valor de usado não pode ser maior que o valor enviado" : ""}
                         size="small"
                       />
 
@@ -155,7 +166,6 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
                         onBlur={() => setErrors({})}
                         error={errors.hasOwnProperty(`retorno[${index}]`)}
                         helperText={errors[`retorno[${index}]`] || ''}
-                        disabled
                       />
                     </Box>
                   </Paper>
@@ -177,6 +187,7 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
           variant="contained"
           type="submit"
           form="baixa-items"
+          disabled={error}
         >
           {carregandoBaixa
             ? <CircularProgress color="color" size="1rem" className='mr-2' />

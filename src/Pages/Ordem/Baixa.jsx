@@ -12,8 +12,8 @@ const Baixa = ({ setSnackbar }) => {
   const [materiais, setMateriais] = useState([]);
   const [openBaixa, setOpenBaixa] = useState(false);
   const [errors, setErrors] = useState({});
-  // const [items, setItems] = useState([]);
-  let items = []
+  const [items, setItems] = useState([]);
+  // let items = []
 
   const baixa = useQuery(['baixaItem', params.id], () => getBaixa(params.id), {
     onSuccess: async (res) => {
@@ -107,8 +107,8 @@ const Baixa = ({ setSnackbar }) => {
       }
     });
     
-    items = {ordem_servico_items: [...arr]}
-    // setItems({ ordem_servico_items: [...arr] });
+    // items = {ordem_servico_items: [...arr]} <--- por algum motivo, a requisição vai em branco dessa forma
+    setItems({ ordem_servico_items: [...arr] });
     setErrors(objErros);
 
     if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 ) {
