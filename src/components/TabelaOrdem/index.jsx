@@ -19,7 +19,7 @@ import { useSetAtom } from 'jotai';
 
 const cabecalhos = {
     "ID": "id",
-    "Status": "status",
+    "Status": null,
     "Início do serviço": "data_inicio_servico",
     "Fim do serviço": "data_fim_servico",
     "Base origem": "origem.nome",
