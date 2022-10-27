@@ -18,6 +18,7 @@ import SnackbarAlert from './components/SnackbarAlert';
 import { useAtom } from 'jotai';
 import { snackbarAtom } from './atomStore';
 
+//Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
 
 function App() {
   const [snackbar, setSnackbar] = useAtom(snackbarAtom);
