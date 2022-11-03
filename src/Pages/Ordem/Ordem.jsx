@@ -65,6 +65,7 @@ const Ordem = () => {
                     setCarregando={setCarregandoEdicao}
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
+                    materiais={materiais}
                     acao="editar"
                     // setHouveMudanca={setHouveMudanca}
                     errors={errors}

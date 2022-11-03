@@ -10,7 +10,6 @@ import {
     Tooltip
 } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useIsFetching } from '@tanstack/react-query';
 
 const DialogEditar = ({ titulo, openEditar, setOpenEditar, defaultValue, setOpenConfirmar, setOpenExcluir, carregando, ...other }) => {
 

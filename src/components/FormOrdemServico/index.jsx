@@ -3,7 +3,8 @@ import {
     MenuItem,
     TextField,
     Box,
-    Typography 
+    Typography, 
+    Paper
 } from '@mui/material';
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
@@ -15,6 +16,7 @@ import { enviaEdicao, enviaNovoForm, getStatusEnum, setFormSnackbar } from '../.
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import TituloTexto from '../TituloTexto';
 
 const FormOrdemServico = (props) => {
     const queryClient = useQueryClient()
@@ -230,6 +232,35 @@ const FormOrdemServico = (props) => {
                         fullWidth
                     />
                 </Box>
+                {materiais && materiais.length > 0
+                ?
+                    <>
+                        <Typography sx={{
+                            color: (theme) => theme.palette.color.bg,
+                            fontSize: '1.3rem',
+                            fontWeight: 'light',
+                            mb: '0.5rem'
+                        }}>
+                            Materiais
+                        </Typography>
+                        <Paper 
+                            className="flex flex-col gap-4 px-4 py-5" 
+                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
+                            elevation={3}
+                        >
+                            {materiais.map(material => (
+                                <Paper className="p-3" key={material.id}>
+                                    <TituloTexto 
+                                        titulo={material.item}
+                                        texto={`${material.quantidade} ${material.medida}`}
+                                    />
+                                </Paper>
+                            ))}
+                        </Paper>
+                    </>
+                :
+                    ""
+            }
 
             </Box>
         </FormContainer>

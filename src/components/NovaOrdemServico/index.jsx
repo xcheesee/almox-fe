@@ -38,7 +38,6 @@ const NovaOrdemServico = (props) => {
                 setCarregando={setCarregando} 
                 materiais={materiais}
                 setMateriais={setMateriais}
-                // setSnackbar={setSnackbar}
                 errors={errors}
                 setErrors={setErrors}
                 baseSelecionada={baseSelecionada}

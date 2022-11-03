@@ -207,6 +207,7 @@ export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
   fetch(url, options)
     .then(res => res.json())
     .then(data => {
+      console.log(data)
       setMateriais(data.data);
       setOpen(true);
       setCursor('auto');
@@ -227,7 +228,10 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   
   fetch(url, options)
   .then(res => res.json())
-  .then(data => setter(data.data))
+  .then(data => {
+    console.log(data)
+    return setter(data.data)
+  })
   .then(() => { 
     if (setMateriais) {
       getMateriais(rota, id, setOpen, setCursor, setMateriais);
