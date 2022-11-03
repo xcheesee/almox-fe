@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getRegistro, getTabela } from '../../common/utils';
+import { getMateriais, getRegistro, getTabela } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
 import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
@@ -30,18 +30,24 @@ const Entrada = () => {
 
     const entradas = useQuery(['entradaItens', page, filtros, sort], () => getTabela('entradas', page, filtros, sort));
 
-    const getSelectedEntradaInfo = (id, command) => {
+    const getSelectedEntradaInfo = async (id, command) => {
+        setCursor('progress')
         switch(command) {
             case 'visualizar':
-                getRegistro('entrada', id, setOpenDetalhes, setEntradaMaterial, setCursor, setMateriais);
+                setEntradaMaterial(await getRegistro('entrada', id,))
+                setMateriais(await getMateriais('entrada', id,))
+                setOpenDetalhes(true)
                 break;
             case 'editar':
-                getRegistro('entrada', id, setOpenEditar, setEntradaMaterial, setCursor, setMateriais);
+                setEntradaMaterial(await getRegistro('entrada', id, ))
+                setMateriais(await getMateriais('entrada', id, ))
+                setOpenEditar(true)
                 break;
             default:
                 console.log('pog')
                 break;
-        }  
+        }
+        setCursor('auto')  
     }
 
     return (

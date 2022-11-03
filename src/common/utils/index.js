@@ -194,7 +194,7 @@ export const getTabela = (rota, page, filtros, sort) => {
       )
 }
 
-export const getMateriais = async (rota, id, /* setOpen, setCursor, */ setMateriais) => {
+export const getMateriais = async (rota, id, ) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
@@ -205,18 +205,10 @@ export const getMateriais = async (rota, id, /* setOpen, setCursor, */ setMateri
   };
 
   const data = await (await fetch(url, options)).json()
-  return setMateriais(data.data)
-
-  // fetch(url, options)
-  //   .then(res => res.json())
-  //   .then(data => {
-  //     setMateriais(data.data);
-      // setOpen(true);
-      // setCursor('auto');
-    // })
+  return data.data
 }
 
-export const getRegistro = async (rota, id, /* setOpen, */ setter, /* setCursor, */ setMateriais, /* setProfissionais, */) => {
+export const getRegistro = async (rota, id, ) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
@@ -226,26 +218,8 @@ export const getRegistro = async (rota, id, /* setOpen, */ setter, /* setCursor,
     }
   };
   
-  // setCursor('progress');
   const data = await (await fetch(url, options)).json()
-  console.log(data)
-  setter(data.data)
-  if(setMateriais) {
-    return await getMateriais(rota, id, /* setOpen, setCursor, */ setMateriais);
-  }
-  return
-  // fetch(url, options)
-  // .then(res => res.json())
-  // .then( data => setter(data.data) )
-  // .then(() => { 
-  //   if (setMateriais) {
-  //     getMateriais(rota, id, setOpen, setCursor, setMateriais);
-  //     // getOrdemProfissionais(rota, id, setOpen, setCursor, setProfissionais)
-  //   }
-  // })
-  // .then(() => {
-
-  // })
+  return data.data
 }
 
 export const getItemsAcabando = () => {
@@ -430,8 +404,7 @@ export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionad
           'Authorization': localStorage.getItem('access_token'),
       },
   };
-  const res = await fetch(url, options);
-  return await res.json();
+  return await (await fetch(url, options)).json()
 }
 
 export const getProfissionais = async (base, depto) => {

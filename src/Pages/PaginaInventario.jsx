@@ -20,9 +20,14 @@ const PaginaInventario = () => {
     
     const itens = useQuery(['inventarioItens', page, filtros, sort], () => getTabela('inventarios', page, filtros, sort))
 
-    const inventarioItemDefinirAlerta = (id) => {
-        getRegistro('inventario', id, setOpenDefinir, setRegistro, setCursor);
+    const inventarioItemDefinirAlerta = async (id) => {
+        setCursor('progress')
+
+        setRegistro(await getRegistro('inventario', id, ))
         setIdAlerta(id)
+        setOpenDefinir(true)
+
+        setCursor('auto')
     }
 
     return (

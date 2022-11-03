@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getRegistro, getTabela } from '../../common/utils';
+import { getMateriais, getRegistro, getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
@@ -8,7 +8,7 @@ import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, profissionaisAtom, sortAtom } from '../../atomStore';
+import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, /* profissionaisAtom, */ sortAtom } from '../../atomStore';
 import { useQuery } from '@tanstack/react-query'
 
 const Ordem = () => {
@@ -34,19 +34,22 @@ const Ordem = () => {
         setCursor('progress')
         switch(command) {
             case 'visualizar':
-                await getRegistro('ordem_servico', id, /* setOpenDetalhes, */ setOrdemServico, /* setCursor, */ setMateriais, /* setProfissionais, */);
-                setCursor('auto')
+                setOrdemServico(await getRegistro('ordem_servico', id, /* setOpenDetalhes, */ /* setOrdemServico, */ /* setCursor, */ /* setMateriais, */ /* setProfissionais, */))
+                setMateriais(await getMateriais('ordem_servico', id))
+                // setProfissionais(await getOrdemProfissionais('ordem_servico', id, ))
                 setOpenDetalhes(true)
                 break;
             case 'editar':
-                await getRegistro('ordem_servico', id, /* setOpenEditar, */ setOrdemServico, /* setCursor, */ setMateriais, /* setProfissionais, */);
-                setCursor('auto')
+                setOrdemServico(await getRegistro('ordem_servico', id, /* setOpenEditar, */ /* setOrdemServico, */ /* setCursor, */ /* setMateriais, */ /* setProfissionais, */));
+                setMateriais(await getMateriais('ordem_servico', id))
+                // setProfissionais(await getOrdemProfissionais('ordem_servico', id, ))
                 setOpenEditar(true)
                 break;
             default:
                 console.log('pog')
                 break;
         }
+        setCursor('auto')
     }
 
     return (
