@@ -8,7 +8,7 @@ import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, sortAtom } from '../../atomStore';
+import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, profissionaisAtom, sortAtom } from '../../atomStore';
 import { useQuery } from '@tanstack/react-query'
 
 const Ordem = () => {
@@ -26,16 +26,17 @@ const Ordem = () => {
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
+    // const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
 
     const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
 
     const getSelectedOrdemInfo = (id, command) => {
         switch(command) {
             case 'visualizar':
-                getRegistro('ordem_servico', id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais);
+                getRegistro('ordem_servico', id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais, /* setProfissionais, */);
                 break;
             case 'editar':
-                getRegistro('ordem_servico', id, setOpenEditar, setOrdemServico, setCursor, setMateriais);
+                getRegistro('ordem_servico', id, setOpenEditar, setOrdemServico, setCursor, setMateriais, /* setProfissionais, */);
                 break;
             default:
                 console.log('pog')
@@ -66,6 +67,7 @@ const Ordem = () => {
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     materiais={materiais}
+                    // profissionais={profissionais}
                     acao="editar"
                     // setHouveMudanca={setHouveMudanca}
                     errors={errors}
@@ -89,6 +91,7 @@ const Ordem = () => {
             />
             <DialogDetalhesOrdem 
                 openDetalhes={openDetalhes}
+                // profissionais={profissionais}
                 setOpenDetalhes={setOpenDetalhes}
                 ordem={ordemServico}
                 materiais={materiais}

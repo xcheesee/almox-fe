@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import TituloTexto from '../TituloTexto';
 
-const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais }) => (
+const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, /* profissionais, */}) => (
     <Dialog open={openDetalhes} fullWidth>
         <DialogTitle>
             Ordem de serviço #{ordem.id}
@@ -104,7 +104,35 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais }
                     }
                 />
             </Box>
-
+            {/* {profissionais && profissionais.length > 0
+                ?
+                    <>
+                        <Typography sx={{
+                            color: (theme) => theme.palette.color.bg,
+                            fontSize: '1.3rem',
+                            fontWeight: 'light',
+                            mb: '0.5rem'
+                        }}>
+                            Profissionais
+                        </Typography>
+                        <Paper 
+                            className="flex flex-col gap-4 px-4 py-5" 
+                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
+                            elevation={3}
+                        >
+                            {profissionais.map(profissional => (
+                                <Paper className="p-3" key={profissional.id}>
+                                    <TituloTexto 
+                                        titulo={profissional.nome}
+                                        texto={`${profissional.data} -  ${profissional.horas} Horas trabalhadas`}
+                                    />
+                                </Paper>
+                            ))}
+                        </Paper>
+                    </>
+                :
+                    ""
+            } */}
             {materiais && materiais.length > 0
                 ?
                     <>

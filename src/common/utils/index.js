@@ -194,7 +194,7 @@ export const getTabela = (rota, page, filtros, sort) => {
       )
 }
 
-export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
+export const getMateriais = (rota, id, /* setOpen, setCursor, */ setMateriais) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
@@ -207,14 +207,13 @@ export const getMateriais = (rota, id, setOpen, setCursor, setMateriais) => {
   fetch(url, options)
     .then(res => res.json())
     .then(data => {
-      console.log(data)
       setMateriais(data.data);
-      setOpen(true);
-      setCursor('auto');
+/*       setOpen(true);
+      setCursor('auto'); */
     })
 }
 
-export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) => {
+export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais, /* setProfissionais, */) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
@@ -228,17 +227,12 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais) 
   
   fetch(url, options)
   .then(res => res.json())
-  .then(data => {
-    console.log(data)
-    return setter(data.data)
-  })
+  .then( data => setter(data.data) )
   .then(() => { 
-    if (setMateriais) {
-      getMateriais(rota, id, setOpen, setCursor, setMateriais);
-    } else {
-      setOpen(true);
-      setCursor('auto');
-    }
+    if (setMateriais) getMateriais(rota, id, setOpen, setCursor, setMateriais);
+    // if (setProfissionais) getOrdemProfissionais(rota, id, setOpen, setCursor, setProfissionais)
+    setOpen(true);
+    setCursor('auto');
   })
 }
 
