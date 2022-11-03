@@ -30,13 +30,18 @@ const Ordem = () => {
 
     const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
 
-    const getSelectedOrdemInfo = (id, command) => {
+    const getSelectedOrdemInfo = async (id, command) => {
+        setCursor('progress')
         switch(command) {
             case 'visualizar':
-                getRegistro('ordem_servico', id, setOpenDetalhes, setOrdemServico, setCursor, setMateriais, /* setProfissionais, */);
+                await getRegistro('ordem_servico', id, /* setOpenDetalhes, */ setOrdemServico, /* setCursor, */ setMateriais, /* setProfissionais, */);
+                setCursor('auto')
+                setOpenDetalhes(true)
                 break;
             case 'editar':
-                getRegistro('ordem_servico', id, setOpenEditar, setOrdemServico, setCursor, setMateriais, /* setProfissionais, */);
+                await getRegistro('ordem_servico', id, /* setOpenEditar, */ setOrdemServico, /* setCursor, */ setMateriais, /* setProfissionais, */);
+                setCursor('auto')
+                setOpenEditar(true)
                 break;
             default:
                 console.log('pog')

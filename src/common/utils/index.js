@@ -194,7 +194,7 @@ export const getTabela = (rota, page, filtros, sort) => {
       )
 }
 
-export const getMateriais = (rota, id, /* setOpen, setCursor, */ setMateriais) => {
+export const getMateriais = async (rota, id, /* setOpen, setCursor, */ setMateriais) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
@@ -204,16 +204,19 @@ export const getMateriais = (rota, id, /* setOpen, setCursor, */ setMateriais) =
     }
   };
 
-  fetch(url, options)
-    .then(res => res.json())
-    .then(data => {
-      setMateriais(data.data);
-/*       setOpen(true);
-      setCursor('auto'); */
-    })
+  const data = await (await fetch(url, options)).json()
+  return setMateriais(data.data)
+
+  // fetch(url, options)
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     setMateriais(data.data);
+      // setOpen(true);
+      // setCursor('auto');
+    // })
 }
 
-export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais, /* setProfissionais, */) => {
+export const getRegistro = async (rota, id, /* setOpen, */ setter, /* setCursor, */ setMateriais, /* setProfissionais, */) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
@@ -223,17 +226,26 @@ export const getRegistro = (rota, id, setOpen, setter, setCursor, setMateriais, 
     }
   };
   
-  setCursor('progress');
-  
-  fetch(url, options)
-  .then(res => res.json())
-  .then( data => setter(data.data) )
-  .then(() => { 
-    if (setMateriais) getMateriais(rota, id, setOpen, setCursor, setMateriais);
-    // if (setProfissionais) getOrdemProfissionais(rota, id, setOpen, setCursor, setProfissionais)
-    setOpen(true);
-    setCursor('auto');
-  })
+  // setCursor('progress');
+  const data = await (await fetch(url, options)).json()
+  console.log(data)
+  setter(data.data)
+  if(setMateriais) {
+    return await getMateriais(rota, id, /* setOpen, setCursor, */ setMateriais);
+  }
+  return
+  // fetch(url, options)
+  // .then(res => res.json())
+  // .then( data => setter(data.data) )
+  // .then(() => { 
+  //   if (setMateriais) {
+  //     getMateriais(rota, id, setOpen, setCursor, setMateriais);
+  //     // getOrdemProfissionais(rota, id, setOpen, setCursor, setProfissionais)
+  //   }
+  // })
+  // .then(() => {
+
+  // })
 }
 
 export const getItemsAcabando = () => {
