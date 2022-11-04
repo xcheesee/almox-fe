@@ -87,7 +87,10 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
                                         <Box>
                                             <Tooltip title="Visualizar baixa" placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'} >
                                                 <Box>
-                                                    <IconButton disabled={cursor === 'progress'}>
+                                                    <IconButton 
+                                                        disabled={cursor === 'progress'}
+                                                        onClick={() => getSelectedOrdemInfo(ordem.id, 'baixa')}
+                                                    >
                                                         <ContentPasteSearchIcon fontSize="small" />
                                                     </IconButton>
                                                 </Box>

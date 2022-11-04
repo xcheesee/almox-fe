@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getMateriais, getRegistro, getTabela } from '../../common/utils';
+import { getDetalhesBaixa, getMateriais, getRegistro, getTabela } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
+import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, /* profissionaisAtom, */ sortAtom } from '../../atomStore';
 import { useQuery } from '@tanstack/react-query'
@@ -16,9 +17,11 @@ const Ordem = () => {
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
+    const [baixa, setBaixa] = useState({});
     const [cursor, setCursor] = useState('auto');
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
+    const [openBaixa, setOpenBaixa] = useState(false);
     
     // const setHouveMudanca = useSetAtom(mudancaAtom);
     const setOpenExcluir = useSetAtom(excluirAtom);
@@ -44,6 +47,10 @@ const Ordem = () => {
                 setMateriais(await getMateriais('ordem_servico', id))
                 // setProfissionais(await getOrdemProfissionais('ordem_servico', id, ))
                 setOpenEditar(true)
+                break;
+            case 'baixa':
+                setBaixa(await getDetalhesBaixa(id));
+                setOpenBaixa(true);
                 break;
             default:
                 console.log('pog')
@@ -103,6 +110,11 @@ const Ordem = () => {
                 setOpenDetalhes={setOpenDetalhes}
                 ordem={ordemServico}
                 materiais={materiais}
+            />
+            <DialogDetalhesBaixa 
+                openBaixa={openBaixa}
+                setOpenBaixa={setOpenBaixa}
+                baixa={baixa}
             />
         </Box>
     );

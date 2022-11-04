@@ -222,6 +222,20 @@ export const getRegistro = async (rota, id, ) => {
   return data.data
 }
 
+export const getDetalhesBaixa = async (id) => {
+  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/baixa_json`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    }
+  };
+
+  const data = await (await fetch(url, options)).json();
+  return data;
+}
+
 export const getItemsAcabando = () => {
   const url = `${process.env.REACT_APP_API_URL}/items_acabando`;
   const options = {
