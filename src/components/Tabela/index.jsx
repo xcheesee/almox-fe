@@ -30,7 +30,7 @@ const Tabela = (props) => {
                 ? setSort(`-${valor}`)
                 : setSort(valor)
 
-                setLoading(false);
+                setTimeout(() => setLoading(false), 100)
             }, 300);
         }   
     }

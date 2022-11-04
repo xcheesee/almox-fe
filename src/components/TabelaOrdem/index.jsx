@@ -49,43 +49,51 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
                         <TableCell align="center">{ordem.local_servico}</TableCell>
                         <TableCell align="center">
                             <Box className="grid grid-cols-2">
-                                <Tooltip title="Visualizar ordem" placement="left">
-                                    <IconButton 
-                                        disabled={cursor === 'progress'}
-                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'visualizar') }
-                                    >
-                                        <ManageSearchIcon fontSize="small" />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Editar" placement="right" sx={{ display: authEditOrdem(perfil) }}>
-                                    <IconButton 
-                                        disabled={cursor === 'progress'} 
-                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
-                                    >
-                                        <EditIcon fontSize="small" />
-                                    </IconButton>
-                                </Tooltip>
+                                <Box>
+                                    <Tooltip title="Visualizar ordem" placement="left">
+                                        <IconButton 
+                                            disabled={cursor === 'progress'}
+                                            onClick={ () => getSelectedOrdemInfo(ordem.id, 'visualizar') }
+                                        >
+                                            <ManageSearchIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
+                                <Box>
+                                    <Tooltip title="Editar" placement="right" sx={{ display: authEditOrdem(perfil) }}>
+                                        <IconButton 
+                                            disabled={cursor === 'progress'} 
+                                            onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
+                                        >
+                                            <EditIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
                                 {
                                     ordem.flg_baixa === 0
                                     ?
-                                        <Tooltip title="Baixa" placement="left" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
-                                            <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                        <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                            <Tooltip title="Baixa" placement="left" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
                                                 <Link to={`/ordemservico/baixa/${ordem.id}`} >
-                                                    <IconButton disabled={cursor === 'progress'}>
-                                                        <GradingIcon fontSize="small" />
-                                                    </IconButton>
+                                                    <Box>
+                                                        <IconButton disabled={cursor === 'progress'}>
+                                                            <GradingIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </Box>
                                                 </Link>
-                                            </Box>
-                                        </Tooltip>
+                                            </Tooltip>
+                                        </Box>
                                     :
-                                        <Tooltip title="Visualizar baixa" placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'} >
-                                            <IconButton disabled={cursor === 'progress'}>
-                                                <ContentPasteSearchIcon fontSize="small" />
-                                            </IconButton>
-                                        </Tooltip>
+                                        <Box>
+                                            <Tooltip title="Visualizar baixa" placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'} >
+                                                <IconButton disabled={cursor === 'progress'}>
+                                                    <ContentPasteSearchIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </Box>
                                 }
-                                <Tooltip title="Imprimir" placement="right" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
-                                    <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                    <Tooltip title="Imprimir" placement="right" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
                                         <a 
                                             href={`${process.env.REACT_APP_API_URL}/ordem_servico/${ordem.id}/baixa_pdf`}
                                             target="_blank"
@@ -95,8 +103,8 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
                                                 <PrintIcon fontSize="small" />
                                             </IconButton>
                                         </a>
-                                    </Box>
-                                </Tooltip>
+                                    </Tooltip>
+                                </Box>
                             </Box>
                         </TableCell>
                     </TableRow>
