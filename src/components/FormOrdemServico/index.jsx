@@ -17,9 +17,11 @@ import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../TituloTexto';
+import { useLocation } from 'react-router-dom';
 
 const FormOrdemServico = (props) => {
     const queryClient = useQueryClient()
+    const location = useLocation();
 
     const { 
         defaultValue, 
@@ -232,7 +234,7 @@ const FormOrdemServico = (props) => {
                         fullWidth
                     />
                 </Box>
-                {materiais && materiais.length > 0
+                {materiais && materiais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
                 ?
                     <>
                         <Typography sx={{
