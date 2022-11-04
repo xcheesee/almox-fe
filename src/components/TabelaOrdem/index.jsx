@@ -59,8 +59,8 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
                                         </IconButton>
                                     </Tooltip>
                                 </Box>
-                                <Box>
-                                    <Tooltip title="Editar" placement="right" sx={{ display: authEditOrdem(perfil) }}>
+                                <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                    <Tooltip title="Editar" placement="right">
                                         <IconButton 
                                             disabled={cursor === 'progress'} 
                                             onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
@@ -73,7 +73,7 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
                                     ordem.flg_baixa === 0
                                     ?
                                         <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
-                                            <Tooltip title="Baixa" placement="left" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                            <Tooltip title="Baixa" placement="left">
                                                 <Link to={`/ordemservico/baixa/${ordem.id}`} >
                                                     <Box>
                                                         <IconButton disabled={cursor === 'progress'}>
@@ -86,14 +86,16 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo, }) => {
                                     :
                                         <Box>
                                             <Tooltip title="Visualizar baixa" placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'} >
-                                                <IconButton disabled={cursor === 'progress'}>
-                                                    <ContentPasteSearchIcon fontSize="small" />
-                                                </IconButton>
+                                                <Box>
+                                                    <IconButton disabled={cursor === 'progress'}>
+                                                        <ContentPasteSearchIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Box>
                                             </Tooltip>
                                         </Box>
                                 }
                                 <Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
-                                    <Tooltip title="Imprimir" placement="right" sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
+                                    <Tooltip title="Imprimir" placement="right">
                                         <a 
                                             href={`${process.env.REACT_APP_API_URL}/ordem_servico/${ordem.id}/baixa_pdf`}
                                             target="_blank"

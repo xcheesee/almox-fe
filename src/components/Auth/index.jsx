@@ -20,7 +20,7 @@ const Auth = (props) => {
             navigate("/entrada", { replace: true })
         else if (access_token && location.pathname === '/ordemservico/nova-ordem' && authCreateOrdem(perfil) === 'none')
             navigate("/ordemservico", { replace: true })
-    })
+    }, [access_token, location.pathname, navigate, perfil]);
     
     return (
         <Margens >
