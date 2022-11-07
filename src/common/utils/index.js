@@ -207,6 +207,21 @@ export const getMateriais = async (rota, id, ) => {
   return data.data
 }
 
+export const getOrdemProfissionais = async (id, ) => {
+  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/profissionais`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    }
+  };
+
+  const data = await (await fetch(url, options)).json()
+  console.log(data)
+  return data.data
+}
+
 export const getRegistro = async (rota, id, ) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
@@ -218,6 +233,7 @@ export const getRegistro = async (rota, id, ) => {
   };
   
   const data = await (await fetch(url, options)).json()
+  console.log(data)
   return data.data
 }
 

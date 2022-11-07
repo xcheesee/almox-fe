@@ -31,6 +31,7 @@ const FormOrdemServico = (props) => {
         navigate, 
         acao, 
         materiais,
+        profissionais,
         // setHouveMudanca, 
         errors,
         setErrors,
@@ -245,6 +246,35 @@ const FormOrdemServico = (props) => {
                         fullWidth
                     />
                 </Box>
+                {profissionais && profissionais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
+                ?
+                    <Box className='my-10'>
+                        <Typography sx={{
+                            color: (theme) => theme.palette.color.bg,
+                            fontSize: '1.3rem',
+                            fontWeight: 'light',
+                            mb: '0.5rem'
+                        }}>
+                            Profissionais
+                        </Typography>
+                        <Paper 
+                            className="flex flex-col gap-4 px-4 py-5" 
+                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
+                            elevation={3}
+                        >
+                            {profissionais?.map(profissional => (
+                                <Paper className="p-3" key={profissional.profissional_id}>
+                                    <TituloTexto 
+                                        titulo={profissional.profissional}
+                                        texto={`${profissional.data_inicio_formatada} -  ${profissional.horas_empregadas}h`}
+                                    />
+                                </Paper>
+                            ))}
+                        </Paper>
+                    </Box>
+                :
+                    ""
+            }
                 {materiais && materiais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
                 ?
                     <>

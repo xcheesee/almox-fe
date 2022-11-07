@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import TituloTexto from '../TituloTexto';
 
-const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, /* profissionais, */}) => (
+const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, profissionais,}) => (
     <Dialog open={openDetalhes} fullWidth>
         <DialogTitle>
             Ordem de serviço #{ordem.id}
@@ -88,12 +88,12 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, 
                     childStyle={{ whiteSpace: 'pre-wrap' }}
                 />
 
-                <TituloTexto 
+                {/* <TituloTexto 
                     titulo="Profissional"
                     texto={ordem.profissional || "---"}
-                />
+                /> */}
 
-                <TituloTexto 
+                {/* <TituloTexto 
                     titulo="Horas de execução"
                     texto={`
                         ${ordem.horas_execucao || "---"} 
@@ -102,11 +102,11 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, 
                             : ""
                         }`
                     }
-                />
+                /> */}
             </Box>
-            {/* {profissionais && profissionais.length > 0
+            {profissionais && profissionais.length > 0
                 ?
-                    <>
+                    <Box className='my-10'>
                         <Typography sx={{
                             color: (theme) => theme.palette.color.bg,
                             fontSize: '1.3rem',
@@ -120,19 +120,19 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, 
                             sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
                             elevation={3}
                         >
-                            {profissionais.map(profissional => (
-                                <Paper className="p-3" key={profissional.id}>
+                            {profissionais?.map(profissional => (
+                                <Paper className="p-3" key={profissional.profissional_id}>
                                     <TituloTexto 
-                                        titulo={profissional.nome}
-                                        texto={`${profissional.data} -  ${profissional.horas} Horas trabalhadas`}
+                                        titulo={profissional.profissional}
+                                        texto={`${profissional.data_inicio_formatada} -  ${profissional.horas_empregadas}h`}
                                     />
                                 </Paper>
                             ))}
                         </Paper>
-                    </>
+                    </Box>
                 :
                     ""
-            } */}
+            }
             {materiais && materiais.length > 0
                 ?
                     <>
