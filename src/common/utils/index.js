@@ -442,8 +442,8 @@ export const getProfissionais = async (base, depto) => {
   );
 
   const params = {
-      "local": base,
-      "depto": depto,
+      "local": /* base */"",
+      "depto": /* depto */"",
   };
   Object.keys(params)
       .forEach(key => url.searchParams.append(key, params[key]));
