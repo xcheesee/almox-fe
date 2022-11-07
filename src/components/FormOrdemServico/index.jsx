@@ -12,7 +12,7 @@ import CampoLocais from '../CampoLocais';
 import BoxMateriais from '../BoxMateriais';
 import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
-import { enviaEdicao, enviaNovoForm, getStatusEnum, setFormSnackbar } from '../../common/utils';
+import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../common/utils';
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -41,13 +41,15 @@ const FormOrdemServico = (props) => {
     } = props;
 
     const statusEnum = useQuery(['statusEnum'], getStatusEnum)
-
+    const [localServico, setLocalServico] = useState()
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
     const [status, setStatus] = useState('')
+    const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
         nome: '',
-        dataInicio: '',
-        horasEmpregadas: '',
+        id: '',
+        ["data_inicio"]: '',
+        ["horas_empregadas"]: '',
     }])
     const setSnackbar = useSetAtom(snackbarAtom)
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
@@ -82,7 +84,9 @@ const FormOrdemServico = (props) => {
             data, 
             'ordem_servico', 
             materiaisInterno,
-            'ordem_servico_items'
+            'ordem_servico_items',
+            profissionaisEmpregados,
+            "ordem_servico_profissionais"
         )
     }, { onSuccess: async (res) => {
             setCarregando(false)
@@ -109,7 +113,10 @@ const FormOrdemServico = (props) => {
             <Selecao
                 label="Departamento"
                 name="departamento_id"
-                onChange={(e) => setDeptoSelecionado(e.target.value)}
+                onChange={async (e) => {
+                    setDeptoSelecionado(e.target.value)
+                    if(localServico) setProfissionaisDisponiveis(await getProfissionais(localServico, e.target.value)) 
+                }}
                 defaultValue={defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
                 helperText={errors.departamento_id || ""}
@@ -175,6 +182,10 @@ const FormOrdemServico = (props) => {
             <CampoLocais 
                 label="Local de serviço"
                 name="local_servico_id"
+                onChange={ async e => {
+                    setLocalServico(e.target.value)
+                    if(deptoSelecionado) setProfissionaisDisponiveis(await getProfissionais(e.target.value, deptoSelecionado)) 
+                }}
                 defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
@@ -274,8 +285,9 @@ const FormOrdemServico = (props) => {
             <>
                 <BoxProfissionais
                     label= "Profissionais empregados"
-                    baseSelecionada={baseSelecionada}
-                    deptoSelecionado={deptoSelecionado}
+                    // baseSelecionada={baseSelecionada}
+                    // deptoSelecionado={deptoSelecionado}
+                    profissionaisDisponiveis={profissionaisDisponiveis}
                     profissionaisEmpregados={profissionaisEmpregados}
                     setProfissionaisEmpregados={setProfissionaisEmpregados}
                 />

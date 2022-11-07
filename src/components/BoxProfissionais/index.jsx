@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
     Typography,
     Paper,
@@ -15,22 +15,23 @@ import style from './style';
 import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { getProfissionais } from '../../common/utils';
 
 const BoxProfissionais = (props) => {
     const {
         label,
         profissionaisEmpregados,
         setProfissionaisEmpregados,
-        baseSelecionada,
-        deptoSelecionado,
+        profissionaisDisponiveis,
+        // baseSelecionada,
+        // deptoSelecionado,
     } = props;
-    // const [carregando, setCarregando] = useState(true);
-   
-    const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState()
 
-    const setProfissionais = async (base, depto) => {
-        return await getProfissionais (base, depto)
+    const handleProfChange = (element, children, formIndex) => {
+        const mod = {
+            nome: element.target.value,
+            id: children.props["prof-index"],
+        }
+        return setProfissionaisEmpregados(prev => modProfissional(prev, formIndex, mod))
     }
 
     const handleChange = (element, formIndex) => {
@@ -42,9 +43,10 @@ const BoxProfissionais = (props) => {
 
     const adicionaProfissional = () => {
         setProfissionaisEmpregados(prev => [...prev, {
+            id: '',
             nome: '',
-            dataInicio: '',
-            horasEmpregadas: '',
+            ["data_inicio"]: '',
+            ["horas_empregadas"]: '',
         }])
     }
 
@@ -64,13 +66,6 @@ const BoxProfissionais = (props) => {
         setProfissionaisEmpregados([...tempArr])
     } 
 
-    useEffect(() => {
-        (async () => {
-            const data = await setProfissionais(baseSelecionada, deptoSelecionado)
-            setProfissionaisDisponiveis(data);
-        })();
-    }, [])
-
     return (
         <Box className="mx-8 mb-12">
             <Typography sx={style.label} >
@@ -86,17 +81,17 @@ const BoxProfissionais = (props) => {
                                     label="Nome"
                                     name="nome"
                                     size="small"
-                                    onChange={(e) => handleChange(e, index)}
-                                    // disabled={carregando}
+                                    onChange={(e, c) => handleProfChange(e, c, index)}
+                                    carregando={profissionaisDisponiveis === ''}
                                     value={profissional.nome}
                                     className="col-span-2"
                                     fullWidth
                                 >
                                     {
-                                        profissionaisDisponiveis
+                                        profissionaisDisponiveis?.data
                                             ?.map((val, i) => 
-                                                <MenuItem value={val} key={i} >
-                                                    {val}
+                                                <MenuItem value={val.nome} prof-index={val.id} key={i} >
+                                                    {val.nome}
                                                 </MenuItem>)
                                     }
                                 </Selecao>
@@ -106,7 +101,7 @@ const BoxProfissionais = (props) => {
                                             <Box className='grid grid-cols-[max-content_max-content] gap-4'>
                                                 <TextField
                                                     type='datetime-local'
-                                                    name="dataInicio"
+                                                    name="data_inicio"
                                                     label="Data de Inicio"
                                                     InputLabelProps={{ shrink: true }}
                                                     value={profissional.dataInicio}
@@ -116,8 +111,7 @@ const BoxProfissionais = (props) => {
                                                 />
 
                                                 <TextField
-                                                className=''
-                                                    name="horasEmpregadas"
+                                                    name="horas_empregadas"
                                                     label="Horas Empregadas"
                                                     value={profissional.horasEmpregadas}
                                                     onChange={e => handleChange(e, index)}
