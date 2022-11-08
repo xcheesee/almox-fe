@@ -51,6 +51,12 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, 
                 />
 
                 <TituloTexto 
+                    titulo="Status do serviço"
+                    className="col-span-2"
+                    texto={ordem.status|| "---"}
+                />
+
+                <TituloTexto 
                     titulo="Data de início do serviço"
                     texto={ordem.data_inicio_servico || "---"}
                 />
