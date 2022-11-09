@@ -86,6 +86,7 @@ const BoxMateriais = (props) => {
             id: materiais[formIndex]['mats'][materialIndex]['id'],
             currMat: materialAlvo,
         };
+        
         return setMateriais(prev => modMaterial(prev, formIndex, mod))
     };
 
@@ -103,7 +104,7 @@ const BoxMateriais = (props) => {
                 {materiais.map((material, index) => {
                     return (
                         <Fade in={true} key={index} >
-                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
+                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`} >
                                 <Selecao
                                     label="Tipo de material"
                                     name="tipo_material"
@@ -140,7 +141,7 @@ const BoxMateriais = (props) => {
                                                 {
                                                 material.mats
                                                     ?.map((val, matLoc) =>
-                                                        <MenuItem value={matLoc} key={matLoc}>
+                                                        <MenuItem value={matLoc} key={matLoc} className="flex justify-between">
                                                             {val.nome}
                                                         </MenuItem>
                                                         )
@@ -156,8 +157,21 @@ const BoxMateriais = (props) => {
                                                     fullWidth
                                                     size="small"
                                                     InputProps={{
-                                                        endAdornment: <InputAdornment position="end">{material.medida}</InputAdornment>,
+                                                        endAdornment: 
+                                                            <InputAdornment position="end">
+                                                                {
+                                                                    material.currMat !== ""
+                                                                    ? `/ ${material.mats[material.currMat].quantidade} ${material.medida}`
+                                                                    : ""
+                                                                }
+                                                            </InputAdornment>,
                                                     }}
+                                                    error={material.quantidade > material.mats[material.currMat]?.quantidade}
+                                                    helperText={
+                                                        material.quantidade > material.mats[material.currMat]?.quantidade
+                                                        ? 'Quantidade usada não pode exceder a quantidade em estoque.'
+                                                        : ''
+                                                    }
                                                 />
                                             </Box>
                                         </Fade>
