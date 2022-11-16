@@ -173,6 +173,8 @@ const FormOrdemServico = (props) => {
             <CampoLocais
                 label="Base de origem dos materiais"
                 name="origem_id"
+                tipo="base"
+                depto={deptoSelecionado}
                 onChange={(e) => setBaseSelecionada(e.target.value)}
                 defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
@@ -183,6 +185,8 @@ const FormOrdemServico = (props) => {
             <CampoLocais 
                 label="Local de serviço"
                 name="local_servico_id"
+                tipo="parque"
+                depto={deptoSelecionado}
                 onChange={ async e => {
                     setLocalServico(e.target.value)
                     if(deptoSelecionado) setProfissionaisDisponiveis(await getProfissionais(e.target.value, deptoSelecionado)) 

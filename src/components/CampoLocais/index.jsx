@@ -4,11 +4,8 @@ import Selecao from '../Selecao';
 import { useQuery } from "@tanstack/react-query"
 import { getLocais } from '../../common/utils';
 
-const CampoLocais = ({ name, label, defaultValue, ...props }) => {
-    const locais = useQuery(['locais'], getLocais/* , {
-        staleTime: 120000,
-        cacheTime: 120000,
-    } */)
+const CampoLocais = ({ name, label, defaultValue, depto, tipo, ...props }) => {
+    const locais = useQuery(['locais', depto, tipo], () => getLocais(depto, tipo))
     
     return (
     <Box>
@@ -16,15 +13,18 @@ const CampoLocais = ({ name, label, defaultValue, ...props }) => {
             name={name}
             label={label}
             defaultValue={defaultValue}
-            carregando={locais.isLoading}
+            carregando={locais.isLoading || depto === ''}
             fullWidth
             {...props}
         >
-            {locais?.data?.map(local => (
-                <MenuItem key={local.id} value={local.id}>
-                    {local.nome}
-                </MenuItem>
-            ))}
+            {locais?.data
+                ?.filter( local => local.tipo === tipo )
+                ?.map(local => (
+                    <MenuItem key={local.id} value={local.id}>
+                        {local.nome}
+                    </MenuItem>
+                ))
+            }
         </Selecao>
     </Box>
 )};

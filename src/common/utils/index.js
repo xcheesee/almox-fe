@@ -155,8 +155,8 @@ export const getBaixa = async (baixaId) => {
     // .catch(err => console.log(err));
 }
 
-export const getLocais = () => {
-  const url = `${process.env.REACT_APP_API_URL}/locais`;
+export const getLocais = (depto, tipo) => {
+  const url = `${process.env.REACT_APP_API_URL}/locais?filter[tipo]=${tipo}&filter[departamento_id]=${depto}`;
   const options = {
       method: 'GET',
       headers: {
@@ -169,7 +169,7 @@ export const getLocais = () => {
       .then(res => {
         return res.json()
       })
-      .then(data => data.data)
+      .then( data => data.data )
       .catch(err => console.log(err));
 }
 

@@ -28,6 +28,7 @@ const FormEntradaMaterial = (props) => {
     } = props;
 
     const queryClient = useQueryClient()
+    const [deptoSelecionado, setDeptoSelecionado] = useState('')
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
     const editMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
@@ -89,9 +90,10 @@ const FormEntradaMaterial = (props) => {
                 <Selecao
                     label="Departamento"
                     name="departamento_id"
-                    defaultValue={defaultValue?.departamento_id}
-                    error={errors.hasOwnProperty('departamento_id')}
-                    helperText={errors.departamento_id || ""}
+                    defaultValue={ defaultValue?.departamento_id }
+                    onChange={ e => setDeptoSelecionado(e.target.value) }
+                    error={ errors.hasOwnProperty('departamento_id') }
+                    helperText={ errors.departamento_id || "" }
                     required
                 >
                     {Object.entries(departamentos).map(departamento => (
@@ -115,6 +117,8 @@ const FormEntradaMaterial = (props) => {
                 <CampoLocais 
                     name="local_id"
                     label="Local de destino dos materiais"
+                    tipo="base"
+                    depto={deptoSelecionado}
                     defaultValue={defaultValue?.local_id}
                     error={errors.hasOwnProperty('local_id')}
                     helperText={errors.local_id || ""}
