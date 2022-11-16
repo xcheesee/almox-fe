@@ -10,8 +10,8 @@ import CampoLocais from '../CampoLocais';
 import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
 import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../common/utils';
-import { useSetAtom } from 'jotai';
-import { snackbarAtom } from '../../atomStore';
+import { useAtom, useSetAtom } from 'jotai';
+import { deptoAtom, snackbarAtom } from '../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const FormEntradaMaterial = (props) => {
@@ -25,13 +25,14 @@ const FormEntradaMaterial = (props) => {
         setCarregando,
         errors,
         setErrors,
-        deptoSelecionado,
-        setDeptoSelecionado
     } = props;
 
     const queryClient = useQueryClient()
-    // const [deptoSelecionado, setDeptoSelecionado] = useState('')
+
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
+
+    const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
+
     const editMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
         setCarregando(true)
@@ -78,6 +79,7 @@ const FormEntradaMaterial = (props) => {
     })
 
     useEffect(() => {
+        setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if(acao === 'editar') {
             setDeptoSelecionado(defaultValue?.departamento_id)
         }
