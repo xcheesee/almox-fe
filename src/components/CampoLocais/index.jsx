@@ -5,7 +5,11 @@ import { useQuery } from "@tanstack/react-query"
 import { getLocais } from '../../common/utils';
 
 const CampoLocais = ({ name, label, defaultValue, depto, tipo, ...props }) => {
-    const locais = useQuery(['locais', depto, tipo], () => getLocais(depto, tipo))
+    const locais = useQuery({
+        queryKey: ['locais', depto, tipo], 
+        queryFn: () => getLocais(depto, tipo), 
+        enabled: !(depto === '')
+    })
     
     return (
     <Box>
