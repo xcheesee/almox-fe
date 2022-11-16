@@ -15,6 +15,7 @@ const Entrada = () => {
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
+    const [deptoSelecionado, setDeptoSelecionado] = useState('');
     
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('auto');
@@ -74,6 +75,8 @@ const Entrada = () => {
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregandoEdicao}
                     acao="editar"
+                    deptoSelecionado={deptoSelecionado}
+                    setDeptoSelecionado={setDeptoSelecionado}
                     // setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}

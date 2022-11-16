@@ -22,6 +22,7 @@ const Ordem = () => {
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     const [openBaixa, setOpenBaixa] = useState(false);
+    const [deptoSelecionado, setDeptoSelecionado] = useState('');
     
     // const setHouveMudanca = useSetAtom(mudancaAtom);
     const setOpenExcluir = useSetAtom(excluirAtom);
@@ -84,6 +85,8 @@ const Ordem = () => {
                     materiais={materiais}
                     profissionais={profissionais}
                     acao="editar"
+                    deptoSelecionado={deptoSelecionado}
+                    setDeptoSelecionado={setDeptoSelecionado}
                     // setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}

@@ -15,6 +15,8 @@ const NovaEntradaMaterial = (props) => {
         carregando,
         setCarregando,
         navigate,
+        deptoSelecionado,
+        setDeptoSelecionado
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -30,6 +32,8 @@ const NovaEntradaMaterial = (props) => {
                 navigate={navigate}
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando}
+                deptoSelecionado={deptoSelecionado}
+                setDeptoSelecionado={setDeptoSelecionado}
                 errors={errors}
                 setErrors={setErrors}
             />

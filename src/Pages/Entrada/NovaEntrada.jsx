@@ -10,6 +10,7 @@ const NovaEntrada = () => {
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
+    const [deptoSelecionado, setDeptoSelecionado] = useState('');
 
     const navigate = useNavigate();
 
@@ -21,6 +22,8 @@ const NovaEntrada = () => {
                 carregando={carregando}
                 setCarregando={setCarregando}
                 navigate={navigate}
+                deptoSelecionado={deptoSelecionado}
+                setDeptoSelecionado={setDeptoSelecionado}
             />
             <DialogCancelar 
                 paginaAnterior="entrada de material" 

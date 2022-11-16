@@ -55,7 +55,14 @@ const FormOrdemServico = (props) => {
     const setSnackbar = useSetAtom(snackbarAtom)
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
-    useEffect(() => setMateriaisInterno(materiais), [materiais]);
+    useEffect(() => {
+        setMateriaisInterno(materiais)
+    }, [materiais]);
+
+    useEffect(() => {        
+        if(acao === 'editar') {
+            setDeptoSelecionado(defaultValue?.departamento_id)
+    }}, [])
 
     const editMutation = useMutation( async (data) => {
         setOpenConfirmar(false)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     MenuItem,
     TextField,
@@ -25,10 +25,12 @@ const FormEntradaMaterial = (props) => {
         setCarregando,
         errors,
         setErrors,
+        deptoSelecionado,
+        setDeptoSelecionado
     } = props;
 
     const queryClient = useQueryClient()
-    const [deptoSelecionado, setDeptoSelecionado] = useState('')
+    // const [deptoSelecionado, setDeptoSelecionado] = useState('')
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
     const editMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
@@ -74,6 +76,12 @@ const FormEntradaMaterial = (props) => {
             setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
         }
     })
+
+    useEffect(() => {
+        if(acao === 'editar') {
+            setDeptoSelecionado(defaultValue?.departamento_id)
+        }
+    }, [])
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
 
