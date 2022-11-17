@@ -16,7 +16,8 @@ export const detalhesAtom = atom(false)
 export const excluirAtom = atom(false)
 
 export const profissionaisAtom = atom([])
-// export const mudancaAtom = atom(false)
+
+export const deptoAtom = atom('')
 
 export const snackbarAtom = atom({
     open: false,

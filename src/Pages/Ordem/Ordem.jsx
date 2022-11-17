@@ -9,7 +9,7 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { excluirAtom, filtrosAtom, matsAtom, /* mudancaAtom, */ pageAtom, profissionaisAtom, sortAtom } from '../../atomStore';
+import { excluirAtom, filtrosAtom, matsAtom, pageAtom, profissionaisAtom, sortAtom } from '../../atomStore';
 import { useQuery } from '@tanstack/react-query'
 
 const Ordem = () => {
@@ -22,9 +22,7 @@ const Ordem = () => {
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     const [openBaixa, setOpenBaixa] = useState(false);
-    const [deptoSelecionado, setDeptoSelecionado] = useState('');
     
-    // const setHouveMudanca = useSetAtom(mudancaAtom);
     const setOpenExcluir = useSetAtom(excluirAtom);
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
@@ -38,14 +36,14 @@ const Ordem = () => {
         setCursor('progress')
         switch(command) {
             case 'visualizar':
-                setOrdemServico(await getRegistro('ordem_servico', id, /* setOpenDetalhes, */ /* setOrdemServico, */ /* setCursor, */ /* setMateriais, */ /* setProfissionais, */))
+                setOrdemServico(await getRegistro('ordem_servico', id,))
                 setMateriais(await getMateriais('ordem_servico', id))
                 setProfissionais(await getOrdemProfissionais(id, ))
                 setOpenDetalhes(true)
                 break;
             case 'editar':
-                setOrdemServico(await getRegistro('ordem_servico', id, /* setOpenEditar, */ /* setOrdemServico, */ /* setCursor, */ /* setMateriais, */ /* setProfissionais, */));
-                setMateriais(await getMateriais('ordem_servico', id))
+                setOrdemServico(await getRegistro('ordem_servico', id, ));
+                setMateriais(await getMateriais('ordem_servico', id, ))
                 setProfissionais(await getOrdemProfissionais(id, ))
                 setOpenEditar(true)
                 break;
@@ -85,9 +83,6 @@ const Ordem = () => {
                     materiais={materiais}
                     profissionais={profissionais}
                     acao="editar"
-                    deptoSelecionado={deptoSelecionado}
-                    setDeptoSelecionado={setDeptoSelecionado}
-                    // setHouveMudanca={setHouveMudanca}
                     errors={errors}
                     setErrors={setErrors}
                 />
@@ -105,7 +100,6 @@ const Ordem = () => {
                 id={ordemServico.id}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
-                // setHouveMudanca={setHouveMudanca}
             />
             <DialogDetalhesOrdem 
                 openDetalhes={openDetalhes}

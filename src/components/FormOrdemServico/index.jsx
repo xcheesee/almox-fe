@@ -13,8 +13,8 @@ import BoxMateriais from '../BoxMateriais';
 import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../common/utils';
-import { snackbarAtom } from '../../atomStore';
-import { useSetAtom } from 'jotai';
+import { deptoAtom, snackbarAtom } from '../../atomStore';
+import { useAtom, useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../TituloTexto';
 import { useLocation } from 'react-router-dom';
@@ -32,13 +32,10 @@ const FormOrdemServico = (props) => {
         acao, 
         materiais,
         profissionais,
-        // setHouveMudanca, 
         errors,
         setErrors,
         baseSelecionada,
         setBaseSelecionada,
-        deptoSelecionado,
-        setDeptoSelecionado
     } = props;
 
     const statusEnum = useQuery(['statusEnum'], getStatusEnum)
@@ -52,14 +49,18 @@ const FormOrdemServico = (props) => {
         ["data_inicio"]: '',
         ["horas_empregadas"]: '',
     }])
+    
+    const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
+
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     
     useEffect(() => {
         setMateriaisInterno(materiais)
     }, [materiais]);
 
-    useEffect(() => {        
+    useEffect(() => {
+        setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if(acao === 'editar') {
             setDeptoSelecionado(defaultValue?.departamento_id)
     }}, [])

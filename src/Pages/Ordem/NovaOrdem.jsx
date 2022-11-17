@@ -19,7 +19,6 @@ const NovaOrdem = () => {
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [baseSelecionada, setBaseSelecionada] = useState('');
-    const [deptoSelecionado, setDeptoSelecionado] = useState('');
 
     const navigate = useNavigate();
 
@@ -35,8 +34,6 @@ const NovaOrdem = () => {
                 navigate={navigate}
                 baseSelecionada={baseSelecionada}
                 setBaseSelecionada={setBaseSelecionada}
-                deptoSelecionado={deptoSelecionado}
-                setDeptoSelecionado={setDeptoSelecionado}
             />
             <DialogCancelar
                 paginaAnterior="ordem de serviço"

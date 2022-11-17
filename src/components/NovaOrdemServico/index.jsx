@@ -19,8 +19,6 @@ const NovaOrdemServico = (props) => {
         navigate,
         baseSelecionada,
         setBaseSelecionada,
-        deptoSelecionado,
-        setDeptoSelecionado
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -42,8 +40,6 @@ const NovaOrdemServico = (props) => {
                 setErrors={setErrors}
                 baseSelecionada={baseSelecionada}
                 setBaseSelecionada={setBaseSelecionada}
-                deptoSelecionado={deptoSelecionado}
-                setDeptoSelecionado={setDeptoSelecionado}
             />
 
             <Box className="flex justify-end gap-4">
