@@ -2,7 +2,7 @@ const style = {
     iconButton: { 
         borderRadius: 1, 
         boxSizing: 'border-box', 
-        margin: '1rem 0',
+        margin: '0.25rem 0',
         padding: '0.5rem'
     },
     badge: {
