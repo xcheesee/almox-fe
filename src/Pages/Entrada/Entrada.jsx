@@ -31,15 +31,16 @@ const Entrada = () => {
 
     const getSelectedEntradaInfo = async (id, command) => {
         setCursor('progress')
+        const [registroData, matsData] = await Promise.all([getRegistro('entrada', id,), getMateriais('entrada', id,)])
         switch(command) {
             case 'visualizar':
-                setEntradaMaterial(await getRegistro('entrada', id,))
-                setMateriais(await getMateriais('entrada', id,))
+                setEntradaMaterial(/* await getRegistro('entrada', id,) */ registroData)
+                setMateriais(/* await getMateriais('entrada', id,) */ matsData)
                 setOpenDetalhes(true)
                 break;
             case 'editar':
-                setEntradaMaterial(await getRegistro('entrada', id, ))
-                setMateriais(await getMateriais('entrada', id, ))
+                setEntradaMaterial(/* await getRegistro('entrada', id, ) */registroData)
+                setMateriais(/* await getMateriais('entrada', id, ) */matsData)
                 setOpenEditar(true)
                 break;
             default:

@@ -36,15 +36,25 @@ const Ordem = () => {
         setCursor('progress')
         switch(command) {
             case 'visualizar':
-                setOrdemServico(await getRegistro('ordem_servico', id,))
-                setMateriais(await getMateriais('ordem_servico', id))
-                setProfissionais(await getOrdemProfissionais(id, ))
+                const [registroData, matsData, profsData] = await Promise.all([
+                    getRegistro('ordem_servico', id,),
+                    getMateriais('ordem_servico', id),
+                    getOrdemProfissionais(id, )
+                ])
+                setOrdemServico(/* await getRegistro('ordem_servico', id,) */ registroData)
+                setMateriais(/* await getMateriais('ordem_servico', id) */ matsData)
+                setProfissionais(/* await getOrdemProfissionais(id, ) */ profsData)
                 setOpenDetalhes(true)
                 break;
             case 'editar':
-                setOrdemServico(await getRegistro('ordem_servico', id, ));
-                setMateriais(await getMateriais('ordem_servico', id, ))
-                setProfissionais(await getOrdemProfissionais(id, ))
+                const [registroEditData, matsEditData, profsEditData] = await Promise.all([
+                    getRegistro('ordem_servico', id,),
+                    getMateriais('ordem_servico', id),
+                    getOrdemProfissionais(id, )
+                ])
+                setOrdemServico(/* await getRegistro('ordem_servico', id, ) */registroEditData);
+                setMateriais(/* await getMateriais('ordem_servico', id, ) */matsEditData)
+                setProfissionais(/* await getOrdemProfissionais(id, ) */profsEditData)
                 setOpenEditar(true)
                 break;
             case 'baixa':
