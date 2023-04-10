@@ -21,19 +21,19 @@ const OrdemServico = (props) => {
 
             <FiltrosOrdem />
 
-            <TabelaOrdem 
-                ordens={ordens?.data} 
-                carregando={carregando} 
-                getSelectedOrdemInfo={getSelectedOrdemInfo}
-                cursor={cursor}
-            />
-
             <BotaoNovo 
                 caminho="/ordemservico/nova-ordem"
                 display={authCreateOrdem(localStorage.getItem('perfil'))}    
             >
                 Nova ordem
             </BotaoNovo>
+
+            <TabelaOrdem 
+                ordens={ordens?.data} 
+                carregando={carregando} 
+                getSelectedOrdemInfo={getSelectedOrdemInfo}
+                cursor={cursor}
+            />
 
             <Paginacao 
                 count={ordens?.meta?.last_page}

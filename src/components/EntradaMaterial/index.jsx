@@ -25,13 +25,6 @@ const EntradaMaterial = (props) => {
             </Titulo>
 
             <FiltrosEntrada />
-            
-            <TabelaEntrada 
-                entradas={entradas?.data} 
-                carregando={carregando}
-                getSelectedEntradaInfo={getSelectedEntradaInfo}
-                cursor={cursor}
-            />
 
             <BotaoNovo 
                 caminho="/entrada/nova-entrada" 
@@ -39,6 +32,13 @@ const EntradaMaterial = (props) => {
             >
                 Nova entrada
             </BotaoNovo>
+            
+            <TabelaEntrada 
+                entradas={entradas?.data} 
+                carregando={carregando}
+                getSelectedEntradaInfo={getSelectedEntradaInfo}
+                cursor={cursor}
+            />
 
             <Paginacao
                 count={entradas?.meta?.last_page}
