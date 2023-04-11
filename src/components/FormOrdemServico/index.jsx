@@ -54,6 +54,7 @@ const FormOrdemServico = (props) => {
     const setSnackbar = useSetAtom(snackbarAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
+    const departamentoKeys = Object.keys(departamentos)
     
     useEffect(() => {
         setMateriaisInterno(materiais)
@@ -126,7 +127,7 @@ const FormOrdemServico = (props) => {
                     setDeptoSelecionado(e.target.value)
                     if(localServico) setProfissionaisDisponiveis(await getProfissionais(localServico, e.target.value)) 
                 }}
-                defaultValue={defaultValue?.departamento_id}
+                defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
                 helperText={errors.departamento_id || ""}
                 required
