@@ -41,7 +41,7 @@ const FormOrdemServico = (props) => {
     const statusEnum = useQuery(['statusEnum'], getStatusEnum)
     const [localServico, setLocalServico] = useState()
     const [materiaisInterno, setMateriaisInterno] = useState(materiais);
-    const [status, setStatus] = useState('')
+    const [status, setStatus] = useState(defaultValue?.status ?? "A iniciar")
     const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
         nome: '',
@@ -143,7 +143,7 @@ const FormOrdemServico = (props) => {
                 label="Status"
                 name="status"
                 onChange={(e) => setStatus(e.target.value)}
-                value={status !== '' ? status : defaultValue?.status || statusEnum?.data[0]}
+                value={ status }
                 // defaultValue={defaultValue?.status}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors.status || ""}
