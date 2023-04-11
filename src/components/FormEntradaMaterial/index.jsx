@@ -78,12 +78,12 @@ const FormEntradaMaterial = (props) => {
         }
     })
 
-    useEffect([], () => {
+    useEffect(() => {
         setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if(acao === 'editar') {
             setDeptoSelecionado(defaultValue?.departamento_id)
         }
-    })
+    }, [])
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
