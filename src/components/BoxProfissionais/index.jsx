@@ -76,7 +76,7 @@ const BoxProfissionais = (props) => {
                 {profissionaisEmpregados.map((profissional, index) => {
                     return (
                         <Fade in={true} key={index} >
-                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[max-content_1fr_1fr_max-content]" key={`${index}paper`}>
+                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
                                 <Selecao
                                     label="Nome"
                                     name="nome"

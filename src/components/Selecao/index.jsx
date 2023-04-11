@@ -27,7 +27,6 @@ const Selecao = React.forwardRef(function Selecao(props, ref) {
                 disabled={carregando || disabled}
                 onChange={other.onChange}
                 className={className}
-                sx={{cursor: `${disabled? "not-allowed" : "auto"}`}}
             >
                 {other.children}
             </Select>

@@ -9,7 +9,8 @@ import {
     Tooltip,
     IconButton,
     Box,
-    Button
+    Button,
+    FormGroup
 } from '@mui/material';
 import style from './style';
 import Selecao from '../Selecao';
@@ -106,6 +107,7 @@ const BoxMateriais = (props) => {
                         <Fade in={true} key={index} >
                             <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`} >
                                 <Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de adicionar materiais!" : ""}`} >
+                                    <FormGroup>
                                     <Selecao
                                         label="Tipo de material"
                                         name="tipo_material"
@@ -125,6 +127,7 @@ const BoxMateriais = (props) => {
                                                     </MenuItem>)
                                         }
                                     </Selecao>
+                                    </FormGroup>
                                 </Tooltip>
                                 {
                                     material.tipo !== ""
