@@ -105,24 +105,27 @@ const BoxMateriais = (props) => {
                     return (
                         <Fade in={true} key={index} >
                             <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`} >
-                                <Selecao
-                                    label="Tipo de material"
-                                    name="tipo_material"
-                                    size="small"
-                                    onChange={(e, c) => getMateriaisFromTipos(e, c, index)}
-                                    carregando={tiposMats?.isLoading}
-                                    value={material.tipo}
-                                    className="col-span-2"
-                                    fullWidth
-                                >
-                                    {
-                                        tiposMats?.data
-                                            ?.map((val, i) => 
-                                                <MenuItem value={val.id} key={i} >
-                                                    {primeiraLetraMaiuscula(val.nome)}
-                                                </MenuItem>)
-                                    }
-                                </Selecao>
+                                <Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de adicionar materiais!" : ""}`} >
+                                    <Selecao
+                                        label="Tipo de material"
+                                        name="tipo_material"
+                                        size="small"
+                                        onChange={(e, c) => getMateriaisFromTipos(e, c, index)}
+                                        carregando={tiposMats?.isLoading}
+                                        disabled={deptoSelecionado === ""}
+                                        value={material.tipo}
+                                        className="col-span-2"
+                                        fullWidth
+                                    >
+                                        {
+                                            tiposMats?.data
+                                                ?.map((val, i) => 
+                                                    <MenuItem value={val.id} key={i} >
+                                                        {primeiraLetraMaiuscula(val.nome)}
+                                                    </MenuItem>)
+                                        }
+                                    </Selecao>
+                                </Tooltip>
                                 {
                                     material.tipo !== ""
                                         ?<Fade in={true} key={`${index}a`} >
