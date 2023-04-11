@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { 
     MenuItem,
     TextField,
+    Tooltip,
 } from '@mui/material';
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
@@ -30,7 +31,6 @@ const FormEntradaMaterial = (props) => {
     const queryClient = useQueryClient()
 
     const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
-
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
 
     const editMutation = useMutation(async (data) => {
@@ -101,7 +101,9 @@ const FormEntradaMaterial = (props) => {
                     label="Departamento"
                     name="departamento_id"
                     defaultValue={ defaultValue?.departamento_id }
-                    onChange={ e => setDeptoSelecionado(e.target.value) }
+                    onChange={ e => {
+                        setDeptoSelecionado(e.target.value)
+                    }}
                     error={ errors.hasOwnProperty('departamento_id') }
                     helperText={ errors.departamento_id || "" }
                     required
@@ -181,10 +183,13 @@ const FormEntradaMaterial = (props) => {
             ?
                 ""
             :
+                <Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de incluir itens!" : ""}`}>
                 <BoxMateriaisEntrada 
                     materiais={materiaisInterno}
                     setMateriais={setMateriaisInterno}
+                    deptoSelecionado={deptoSelecionado !== ""}
                 />
+                </Tooltip>
             }
         </>
     );

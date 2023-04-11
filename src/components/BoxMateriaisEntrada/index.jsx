@@ -18,7 +18,7 @@ import Selecao from '../Selecao';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
+const BoxMateriaisEntrada = ({ materiais, setMateriais, deptoSelecionado }) => {
     const queryClient = useQueryClient()
     const tipos = useQuery(['tiposMateriais'], getMatTipos)
 
@@ -88,24 +88,26 @@ const BoxMateriaisEntrada = ({ materiais, setMateriais }) => {
             <Typography sx={style.label} >
                 Materiais entregues
             </Typography>
-
-            <Selecao
-                label= {tipos?.isLoading? "Carregando..." : "Tipo de material"}
-                name="tipo_material"
-                size="small"
-                onChange={(e) => { getMateriaisFromTipos(e); }}
-                carregando={tipos?.isLoading}
-                className="col-span-2"
-                margin="dense"
-                fullWidth
-            >
-                {
-                    tipos?.data?.map(val => 
-                        <MenuItem value={val.id} key={val.id} >
-                            {primeiraLetraMaiuscula(val.nome)}
-                        </MenuItem>)
-                }
-            </Selecao>
+            <Tooltip title={`${!deptoSelecionado ? "Selecione um departamento antes de adicionar materiais!" : ""}`}>
+                <Selecao
+                    label= {tipos?.isLoading? "Carregando..." : "Tipo de material"}
+                    name="tipo_material"
+                    size="small"
+                    onChange={(e) => { getMateriaisFromTipos(e); }}
+                    carregando={tipos?.isLoading}
+                    disabled={!deptoSelecionado}
+                    className="col-span-2"
+                    margin="dense"
+                    fullWidth
+                >
+                    {
+                        tipos?.data?.map(val => 
+                            <MenuItem className='capitalize' value={val.id} key={val.id} >
+                                {val.nome}
+                            </MenuItem>)
+                    }
+                </Selecao>
+            </Tooltip>
 
             {materiais.length > 0 
                 ?

@@ -13,7 +13,6 @@ const Baixa = ({ setSnackbar }) => {
   const [openBaixa, setOpenBaixa] = useState(false);
   const [errors, setErrors] = useState({});
   const [items, setItems] = useState([]);
-  // let items = []
 
   const baixa = useQuery(['baixaItem', params.id], () => getBaixa(params.id), {
     onSuccess: async (res) => {
@@ -28,7 +27,7 @@ const Baixa = ({ setSnackbar }) => {
     setOpenBaixa(false)
     return await enviaBaixa(items, params.id)
   }, {
-    onSuccess: async (res) => {
+    onSuccess: async () => {
       setSnackbar({
         open: true,
         severity: 'success',
@@ -45,47 +44,6 @@ const Baixa = ({ setSnackbar }) => {
     } 
   })
 
-  // const enviaBaixa = () => {
-  //   setOpenBaixa(false);
-
-    // const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${params.id}/baixa`;
-    // const options = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json',
-    //     'Authorization': localStorage.getItem('access_token'),
-    //   },
-    //   body: JSON.stringify(items)
-    // };
-  
-    // setCarregandoBaixa(true);
-  
-    // fetch(url, options)
-    //   .then(res => {
-    //     if (res.ok) {
-    //       setCarregandoBaixa(false);
-    //       setSnackbar({
-    //         open: true,
-    //         severity: 'success',
-    //         message: 'Baixa da ordem de serviço efetuada com sucesso!'
-    //       });
-    //       navigate('/ordemservico', { replace: true });
-    //       return res.json();
-    //     } else {
-    //       setCarregandoBaixa(false);
-          // setSnackbar({
-          //   open: true,
-          //   severity: 'error',
-          //   message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
-          // });
-    //       return res.json();
-    //     }
-    //   })
-    //   .then(data => data)
-    //   .catch(err => console.log(err));
-  // }
-
   const checaErros = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -93,11 +51,11 @@ const Baixa = ({ setSnackbar }) => {
     const inputObject = Object.fromEntries(formData);
     let arr = [];
     let objErros = {};
-    
+
     Object.entries(inputObject).forEach(item => {
       let index = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$1');
       let key = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$2');
-      
+
       arr[index] = { ...arr[index], [`${key}`]: item[1]};
     });
 
@@ -106,8 +64,7 @@ const Baixa = ({ setSnackbar }) => {
         objErros = { ...objErros, [`retorno[${index}]`]: 'O valor de retorno não pode ser maior do que o valor de enviado' };
       }
     });
-    
-    // items = {ordem_servico_items: [...arr]} <--- por algum motivo, a requisição vai em branco dessa forma
+
     setItems({ ordem_servico_items: [...arr] });
     setErrors(objErros);
 
@@ -118,24 +75,24 @@ const Baixa = ({ setSnackbar }) => {
 
   return (
     <>
-      <BaixaSaidaMaterial 
-        ordemServico={ordemServico}
-        carregando={baixa?.isFetching} 
-        id={params.id} 
-        materiais={materiais} 
-        checaErros={checaErros}
-        errors={errors}
-        setErrors={setErrors}
-        setOpenBaixa={setOpenBaixa}
-        carregandoBaixa={enviarBaixa.isLoading}
-      />
+    <BaixaSaidaMaterial 
+    ordemServico={ordemServico}
+    carregando={baixa?.isFetching} 
+    id={params.id} 
+    materiais={materiais} 
+    checaErros={checaErros}
+    errors={errors}
+    setErrors={setErrors}
+    setOpenBaixa={setOpenBaixa}
+    carregandoBaixa={enviarBaixa.isLoading}
+    />
 
-      <DialogConfirmaBaixa 
-        openBaixa={openBaixa}
-        setOpenBaixa={setOpenBaixa}
-        id={params.id}
-        enviaBaixa={() => enviarBaixa.mutate()}
-      />
+    <DialogConfirmaBaixa 
+    openBaixa={openBaixa}
+    setOpenBaixa={setOpenBaixa}
+    id={params.id}
+    enviaBaixa={() => enviarBaixa.mutate()}
+    />
     </>
   );
 }

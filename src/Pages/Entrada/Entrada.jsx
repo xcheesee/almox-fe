@@ -34,17 +34,16 @@ const Entrada = () => {
         const [registroData, matsData] = await Promise.all([getRegistro('entrada', id,), getMateriais('entrada', id,)])
         switch(command) {
             case 'visualizar':
-                setEntradaMaterial(/* await getRegistro('entrada', id,) */ registroData)
-                setMateriais(/* await getMateriais('entrada', id,) */ matsData)
+                setEntradaMaterial(registroData)
+                setMateriais(matsData)
                 setOpenDetalhes(true)
                 break;
             case 'editar':
-                setEntradaMaterial(/* await getRegistro('entrada', id, ) */registroData)
-                setMateriais(/* await getMateriais('entrada', id, ) */matsData)
+                setEntradaMaterial(registroData)
+                setMateriais(matsData)
                 setOpenEditar(true)
                 break;
             default:
-                console.log('pog')
                 break;
         }
         setCursor('auto')  
