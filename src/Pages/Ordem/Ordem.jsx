@@ -41,9 +41,9 @@ const Ordem = () => {
                     getMateriais('ordem_servico', id),
                     getOrdemProfissionais(id, )
                 ])
-                setOrdemServico(/* await getRegistro('ordem_servico', id,) */ registroData)
-                setMateriais(/* await getMateriais('ordem_servico', id) */ matsData)
-                setProfissionais(/* await getOrdemProfissionais(id, ) */ profsData)
+                setOrdemServico( registroData)
+                setMateriais( matsData)
+                setProfissionais( profsData)
                 setOpenDetalhes(true)
                 break;
             case 'editar':
@@ -52,9 +52,9 @@ const Ordem = () => {
                     getMateriais('ordem_servico', id),
                     getOrdemProfissionais(id, )
                 ])
-                setOrdemServico(/* await getRegistro('ordem_servico', id, ) */registroEditData);
-                setMateriais(/* await getMateriais('ordem_servico', id, ) */matsEditData)
-                setProfissionais(/* await getOrdemProfissionais(id, ) */profsEditData)
+                setOrdemServico(registroEditData);
+                setMateriais(matsEditData)
+                setProfissionais(profsEditData)
                 setOpenEditar(true)
                 break;
             case 'baixa':
@@ -62,7 +62,6 @@ const Ordem = () => {
                 setOpenBaixa(true);
                 break;
             default:
-                console.log('pog')
                 break;
         }
         setCursor('auto')

@@ -26,6 +26,7 @@ const Selecao = React.forwardRef(function Selecao(props, ref) {
                 value={value}
                 disabled={carregando || disabled}
                 onChange={other.onChange}
+                size={other.size || null }
                 className={className}
             >
                 {other.children}
