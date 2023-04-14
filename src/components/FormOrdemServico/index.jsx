@@ -13,7 +13,7 @@ import BoxMateriais from '../BoxMateriais';
 import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../common/utils';
-import { deptoAtom, snackbarAtom } from '../../atomStore';
+import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../atomStore';
 import { useAtom, useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../TituloTexto';
@@ -40,7 +40,7 @@ const FormOrdemServico = (props) => {
 
     const statusEnum = useQuery(['statusEnum'], getStatusEnum)
     const [localServico, setLocalServico] = useState()
-    const [materiaisInterno, setMateriaisInterno] = useState(materiais);
+    const [materiaisInterno, setMateriaisInterno] = useAtom(matTipoListAtom)
     const [status, setStatus] = useState(defaultValue?.status ?? "A iniciar")
     const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
@@ -337,8 +337,6 @@ const FormOrdemServico = (props) => {
 
                 <BoxMateriais
                     label="Material utilizado"
-                    materiais={materiaisInterno}
-                    setMateriais={setMateriaisInterno}
                     baseSelecionada={baseSelecionada}
                     deptoSelecionado={deptoSelecionado}
                 />

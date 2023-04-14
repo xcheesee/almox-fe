@@ -74,6 +74,7 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
   if (materiais) {
+
     materiais?.forEach((material, index) => {
       const entries = Object.entries(material);
       entries.forEach(keyValue => {

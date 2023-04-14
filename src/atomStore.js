@@ -24,3 +24,5 @@ export const snackbarAtom = atom({
     severity: 'success',
     message: 'Sucesso!',
 })
+
+export const matTipoListAtom = atom({})

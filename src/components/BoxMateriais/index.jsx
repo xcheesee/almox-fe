@@ -19,19 +19,23 @@ import CloseIcon from '@mui/icons-material/Close';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import MatListCard from '../MatListCard';
+import { useAtom } from 'jotai';
+import { matTipoListAtom } from '../../atomStore'
 
 const BoxMateriais = (props) => {
     const {
         label,
-        materiais,
-        setMateriais,
         baseSelecionada,
         deptoSelecionado,
     } = props;
 
-    const [newMats, setNewMats] = useState({})
+    const [newMats, setNewMats] = useAtom(matTipoListAtom)
+
     const [currMat, setCurrMat] = useState("")
     const [allMats, setAllMats] = useState([])
+    const [isQtdError, setIsQtdError] = useState(false)
+
+    useEffect(() => { setNewMats({})}, [])
 
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
         onSuccess: res => {
@@ -45,75 +49,21 @@ const BoxMateriais = (props) => {
         setNewMats( prev => ({...prev, [tipoId]: mats}) )
     }
 
+    function modSelectedMat (matObj, tipoId, matIndex) {
+        let matArray = newMats[tipoId]
+        matArray[matIndex] = matObj
+        setNewMats( prev => ({...prev, [tipoId]: matArray}) )
+    }
+
     const getMateriaisFromTipos = async (element, children, formIndex = 0) => {
         const tipoRota = children.props.value;
-        const tipoAlvoId = element.target.value;
-        setMateriais(prev => modMaterial(prev, formIndex, {matDesabilitado: true}));
-
         const val = await getMatItens(tipoRota, true, baseSelecionada, deptoSelecionado);
-        setAllMats(val.data)
-        const mod = {
-            mats: val.data,
-            tipo: tipoAlvoId,
-            currMat: '',
-            quantidade: '',
-            medida: '',
-            matDesabilitado: false
-        };
-
-        return setMateriais(prev => modMaterial(prev, formIndex, mod))
+        return setAllMats(val.data)
     };
 
     async function getMats (tipoId) {
         return await getMatItens(tipoId, true, baseSelecionada, deptoSelecionado)
     }
-
-    const adicionaMaterial = () => {
-        setMateriais(prev => [...prev, { 
-            id: '',
-            tipo: '',
-            matDesabilitado: true,
-            mats: [],
-            currMat: '',
-            qtdDesabilitado: true,
-            quantidade: '',
-            medida: '',
-        }]);
-    };
-
-    //recebe o array material, o indice do form a ser modificado e um objeto com as modificacoes a serem feitas
-    const modMaterial = (materiais, formIndex, values) => {
-        let mats = [...materiais];
-        let mat = {
-            ...materiais[formIndex],
-            ...values
-        };
-        mats[formIndex] = mat;
-        return mats
-    };
-
-    const removeMaterial = (index) => {
-        let tempArr = materiais;
-        tempArr.splice(index, 1);
-        setMateriais([...tempArr]);
-    };
-
-    const handleChange = (element, children, formIndex) => {
-        const materialIndex = children.props.value;
-        const materialAlvo = element.target.value;
-        const mod = {
-            qtdDesabilitado: false,
-            medida: materiais[formIndex]['mats'][materialIndex]['medida'],
-            id: materiais[formIndex]['mats'][materialIndex]['id'],
-            currMat: materialAlvo,
-        };
-
-        return setMateriais(prev => modMaterial(prev, formIndex, mod))
-    };
-
-    const handleQtdChange = (element, formIndex) => {
-        setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
-    };
 
     return (
         <Box className="mx-8 mb-12">
@@ -124,11 +74,11 @@ const BoxMateriais = (props) => {
             <Box component="form"
                 onSubmit={e => {
                     e.preventDefault()
+                    if (isQtdError) return
                     const formData = new FormData(e.target)
                     const qtd = formData.get('quantidade')
                     const mats = newMats[currMat.tipo_item_id]
                     mats.push({...currMat, qtd: qtd})
-                    console.log(mats)
                     setNewMats(prev => ({...prev, [currMat.tipo_item_id]: mats}))
                 }}
             >
@@ -147,7 +97,6 @@ const BoxMateriais = (props) => {
                                         }}
                                         carregando={tiposMats?.isLoading}
                                         disabled={deptoSelecionado === ""}
-                                        //value={material.tipo}
                                         className="col-span-2"
                                         fullWidth
                                     >
@@ -191,13 +140,12 @@ const BoxMateriais = (props) => {
                                             name="quantidade"
                                             label="Quantidade"
                                             //disabled={material.qtdDesabilitado}
-                                            //value={material.quantidade}
-                                            //onChange={(e) => { setCurrMat( prev => ({...prev, quantidadeSelect: e.target.value}) ) }}
                                             fullWidth
                                             size="small"
                                             InputProps={{ endAdornment: <InputAdornment position="end"> { currMat !== "" ? `/ ${currMat.quantidade} ${currMat.medida}` : "" } </InputAdornment>, }}
-                                            //error={material.quantidade > material.mats[material.currMat]?.quantidade}
-                                            //helperText={ material.quantidade > material.mats[material.currMat]?.quantidade ? 'Quantidade usada não pode exceder a quantidade em estoque.' : '' }
+                                            onChange={(e) => e.target.value > currMat.quantidade ? setIsQtdError(true) : setIsQtdError(false) } 
+                                            error={ isQtdError }
+                                            helperText={ isQtdError ? 'Quantidade usada não pode exceder a quantidade em estoque.' : '' }
                                         />
                                     </Box>
                                 </Fade>
@@ -220,6 +168,7 @@ const BoxMateriais = (props) => {
                                 getMats={getMats} 
                                 tipo={tiposMats?.data?.find(ele => ele.id == `${keyVal[0]}`)} 
                                 mats={keyVal[1]}
+                                modSelectedMat={modSelectedMat}
                                 delSelectedMat={delSelectedMat}
                             />
                         })
