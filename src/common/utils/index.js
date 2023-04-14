@@ -75,11 +75,13 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
   
   if (materiais) {
 
-    materiais?.forEach((material, index) => {
-      const entries = Object.entries(material);
-      entries.forEach(keyValue => {
-        formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
-      });
+    Object.values(materiais)?.forEach((material, index) => {
+      material.forEach( item => {
+        const entries = Object.entries(item);
+        entries.forEach(keyValue => {
+          formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
+        });
+      })
     });
   }
 

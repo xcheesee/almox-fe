@@ -56,9 +56,9 @@ const FormOrdemServico = (props) => {
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
     
-    useEffect(() => {
+    /*useEffect(() => {
         setMateriaisInterno(materiais)
-    }, [materiais]);
+    }, [materiais]);*/
 
     useEffect(() => {
         setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez

@@ -17,7 +17,7 @@ import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import MatListCard from '../MatListCard';
 import { useAtom } from 'jotai';
 import { matTipoListAtom } from '../../atomStore'
@@ -34,8 +34,15 @@ const BoxMateriais = (props) => {
     const [currMat, setCurrMat] = useState("")
     const [allMats, setAllMats] = useState([])
     const [isQtdError, setIsQtdError] = useState(false)
+    const firstLoad = useRef(true)
 
-    useEffect(() => { setNewMats({})}, [])
+    useEffect(() => { 
+        if(firstLoad) {
+            setNewMats({})
+            firstLoad.current = false
+        }
+    }, [])
+
 
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
         onSuccess: res => {
@@ -78,8 +85,9 @@ const BoxMateriais = (props) => {
                     const formData = new FormData(e.target)
                     const qtd = formData.get('quantidade')
                     const mats = newMats[currMat.tipo_item_id]
-                    mats.push({...currMat, qtd: qtd})
+                    mats.push({...currMat, quantidade: qtd})
                     setNewMats(prev => ({...prev, [currMat.tipo_item_id]: mats}))
+                    console.log(newMats)
                 }}
             >
                 <Paper sx={style.container} >

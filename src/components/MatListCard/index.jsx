@@ -3,19 +3,21 @@ import { Box } from "@mui/system";
 import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQuery } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSelectedMat }) {
+  const [allMats, setAllMats] = useState([])
   const matsQuery = useQuery({ 
     queryKey: ['mats', tipo], 
     queryFn: () => getMats(tipo.id), 
     onSuccess: res => setAllMats(res.data) 
   }) 
+  console.log(mats)
 
-  const [allMats, setAllMats] = useState([])
   const itemRef = useRef([])
   const qtdRef = useRef([])
 
+  if (matsQuery.isLoading) return <></>
   return(
     <Paper className="p-4 grid grid-rows-[min-content_1fr] my-4">
       <Typography className="pb-4 capitalize" variant="h6">{tipo?.nome}</Typography>
@@ -43,8 +45,8 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
               endAdornment: <InputAdornment position="end">{ele.medida}</InputAdornment> 
             }}
             inputRef={ ref => qtdRef["current"][index] = ref }
-            defaultValue={ele.qtd}
-            onBlur={ () => modSelectedMat({...ele, qtd: qtdRef["current"][index].value }, tipo.id, index)}
+            defaultValue={ele.quantidade}
+            onBlur={ () => modSelectedMat({...ele, quantidade: qtdRef["current"][index].value }, tipo.id, index)}
             size="small"
           />
 
