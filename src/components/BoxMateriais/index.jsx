@@ -34,6 +34,7 @@ const BoxMateriais = (props) => {
     const [currMat, setCurrMat] = useState("")
     const [allMats, setAllMats] = useState([])
     const [isQtdError, setIsQtdError] = useState(false)
+    const [isInListError, setIsInListError] = useState(false)
     const firstLoad = useRef(true)
 
     useEffect(() => { 
@@ -58,8 +59,11 @@ const BoxMateriais = (props) => {
 
     function modSelectedMat (matObj, tipoId, matIndex) {
         let matArray = newMats[tipoId]
+        if (matArray.find(ele => ele.id === matObj.id)) {
+            return 1
+        }
         matArray[matIndex] = matObj
-        setNewMats( prev => ({...prev, [tipoId]: matArray}) )
+        return setNewMats( prev => ({...prev, [tipoId]: matArray}) )
     }
 
     const getMateriaisFromTipos = async (element, children, formIndex = 0) => {
@@ -80,11 +84,13 @@ const BoxMateriais = (props) => {
 
             <Box component="form"
                 onSubmit={e => {
+                    setIsInListError(false)
                     e.preventDefault()
                     if (isQtdError) return
                     const formData = new FormData(e.target)
                     const qtd = formData.get('quantidade')
                     const mats = newMats[currMat.tipo_item_id]
+                    if(mats.find(ele => ele.id === currMat.id)) return setIsInListError(true)
                     mats.push({...currMat, qtd: qtd})
                     setNewMats(prev => ({...prev, [currMat.tipo_item_id]: mats}))
                 }}
@@ -127,9 +133,14 @@ const BoxMateriais = (props) => {
                                             label="Material"
                                             defaultValue=""
                                             value={currMat}
-                                            onChange={e => {setCurrMat(e.target.value)}}
+                                            onChange={e => {
+                                                setIsInListError(false)
+                                                setCurrMat(e.target.value)
+                                            }}
                                             //disabled={material.matDesabilitado}
                                             size="small"
+                                            error={isInListError}
+                                            helperText={isInListError ? "Material ja se encontra na lista" : ""}
                                             fullWidth
                                         >
                                             {

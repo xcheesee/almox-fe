@@ -30,7 +30,10 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             inputRef={ref => itemRef["current"][index] = ref}
             label="Material"
             //sobrescreve o valor de quantidade total pois nao eh utilizado em card de modificacao
-            onBlur={ () => modSelectedMat(allMats.find( ele => ele.id === itemRef["current"][index].value), tipo.id, index)}
+            onBlur={ () => {
+              if (mats.find(ele => ele.id === itemRef["current"][index].value)) return
+              modSelectedMat(allMats.find( ele => ele.id === itemRef["current"][index].value), tipo.id, index)
+            }}
 
           >
             {matsQuery.isLoading 
@@ -46,7 +49,9 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             }}
             inputRef={ ref => qtdRef["current"][index] = ref }
             defaultValue={ele.qtd}
-            onBlur={ () => modSelectedMat({...ele, qtd: qtdRef["current"][index].value }, tipo.id, index)}
+            onBlur={ () => {
+              modSelectedMat({...ele, qtd: qtdRef["current"][index].value }, tipo.id, index)
+            }}
             size="small"
           />
 
