@@ -85,9 +85,8 @@ const BoxMateriais = (props) => {
                     const formData = new FormData(e.target)
                     const qtd = formData.get('quantidade')
                     const mats = newMats[currMat.tipo_item_id]
-                    mats.push({...currMat, quantidade: qtd})
+                    mats.push({...currMat, qtd: qtd})
                     setNewMats(prev => ({...prev, [currMat.tipo_item_id]: mats}))
-                    console.log(newMats)
                 }}
             >
                 <Paper sx={style.container} >

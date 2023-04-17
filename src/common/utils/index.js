@@ -74,11 +74,16 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
   if (materiais) {
-
     Object.values(materiais)?.forEach((material, index) => {
       material.forEach( item => {
         const entries = Object.entries(item);
         entries.forEach(keyValue => {
+          if(keyValue[0] === "quantidade") {
+            return
+          }
+          if(keyValue[0] === "qtd") {
+            formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
+          }
           formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
         });
       })
@@ -221,7 +226,6 @@ export const getOrdemProfissionais = async (id, ) => {
   };
 
   const data = await (await fetch(url, options)).json()
-  console.log(data)
   return data.data
 }
 
@@ -236,7 +240,6 @@ export const getRegistro = async (rota, id, ) => {
   };
   
   const data = await (await fetch(url, options)).json()
-  console.log(data)
   return data.data
 }
 
@@ -459,8 +462,6 @@ export const getProfissionais = async (base, depto) => {
       method: "GET",
       headers,
   })).json()
-  // console.log(data)
-  // const profissionais = ['Scarpinha', 'Navagol', 'WesleyShow', 'Rony Rustico', 'Endrick(Bagre)', 'Veiga(Brabo)']
 
   return await data
 }

@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSelectedMat }) {
   const [allMats, setAllMats] = useState([])
@@ -12,7 +12,6 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
     queryFn: () => getMats(tipo.id), 
     onSuccess: res => setAllMats(res.data) 
   }) 
-  console.log(mats)
 
   const itemRef = useRef([])
   const qtdRef = useRef([])
@@ -30,6 +29,7 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             defaultValue={ele.id}
             inputRef={ref => itemRef["current"][index] = ref}
             label="Material"
+            //sobrescreve o valor de quantidade total pois nao eh utilizado em card de modificacao
             onBlur={ () => modSelectedMat(allMats.find( ele => ele.id === itemRef["current"][index].value), tipo.id, index)}
 
           >
@@ -42,11 +42,11 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             label="Quantidade"
             id="qtd"
             InputProps={{
-              endAdornment: <InputAdornment position="end">{ele.medida}</InputAdornment> 
+              endAdornment: <InputAdornment position="end">/ {ele.quantidade} {ele.medida}</InputAdornment> 
             }}
             inputRef={ ref => qtdRef["current"][index] = ref }
-            defaultValue={ele.quantidade}
-            onBlur={ () => modSelectedMat({...ele, quantidade: qtdRef["current"][index].value }, tipo.id, index)}
+            defaultValue={ele.qtd}
+            onBlur={ () => modSelectedMat({...ele, qtd: qtdRef["current"][index].value }, tipo.id, index)}
             size="small"
           />
 
