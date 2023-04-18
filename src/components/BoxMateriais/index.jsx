@@ -7,7 +7,6 @@ import {
     TextField,
     InputAdornment,
     Tooltip,
-    IconButton,
     Box,
     Button,
     FormGroup
@@ -15,7 +14,6 @@ import {
 import style from './style';
 import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
 import { useQuery } from '@tanstack/react-query'
 import MatListCard from '../MatListCard';
@@ -35,10 +33,11 @@ const BoxMateriais = (props) => {
     const [allMats, setAllMats] = useState([])
     const [isQtdError, setIsQtdError] = useState(false)
     const [isInListError, setIsInListError] = useState(false)
+
     const firstLoad = useRef(true)
 
     useEffect(() => { 
-        if(firstLoad) {
+        if(firstLoad.current) {
             setNewMats({})
             firstLoad.current = false
         }
@@ -66,7 +65,7 @@ const BoxMateriais = (props) => {
         return setNewMats( prev => ({...prev, [tipoId]: matArray}) )
     }
 
-    const getMateriaisFromTipos = async (element, children, formIndex = 0) => {
+    const getMateriaisFromTipos = async (children) => {
         const tipoRota = children.props.value;
         const val = await getMatItens(tipoRota, true, baseSelecionada, deptoSelecionado);
         return setAllMats(val.data)
@@ -84,12 +83,13 @@ const BoxMateriais = (props) => {
 
             <Box component="form"
                 onSubmit={e => {
-                    setIsInListError(false)
                     e.preventDefault()
+                    setIsInListError(false)
                     if (isQtdError) return
                     const formData = new FormData(e.target)
                     const qtd = formData.get('quantidade')
                     const mats = newMats[currMat.tipo_item_id]
+                    if(qtd > currMat.quantidade) return setIsQtdError(true)
                     if(mats.find(ele => ele.id === currMat.id)) return setIsInListError(true)
                     mats.push({...currMat, qtd: qtd})
                     setNewMats(prev => ({...prev, [currMat.tipo_item_id]: mats}))
@@ -105,7 +105,7 @@ const BoxMateriais = (props) => {
                                         name="tipo_material"
                                         size="small"
                                         onChange={(e, c) => {
-                                            getMateriaisFromTipos(e, c)
+                                            getMateriaisFromTipos(c)
                                             setCurrMat("")
                                         }}
                                         carregando={tiposMats?.isLoading}
@@ -140,7 +140,7 @@ const BoxMateriais = (props) => {
                                             //disabled={material.matDesabilitado}
                                             size="small"
                                             error={isInListError}
-                                            helperText={isInListError ? "Material ja se encontra na lista" : ""}
+                                            helperText={isInListError ? "Material ja se encontra na lista!" : ""}
                                             fullWidth
                                         >
                                             {
@@ -183,9 +183,9 @@ const BoxMateriais = (props) => {
                             if (keyVal[1].length === 0) return 
                             return <MatListCard 
                                 key={`tipo${keyVal[0]}-item${i}`} 
-                                getMats={getMats} 
                                 tipo={tiposMats?.data?.find(ele => ele.id == `${keyVal[0]}`)} 
                                 mats={keyVal[1]}
+                                getMats={getMats} 
                                 modSelectedMat={modSelectedMat}
                                 delSelectedMat={delSelectedMat}
                             />

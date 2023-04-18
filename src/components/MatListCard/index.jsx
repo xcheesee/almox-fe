@@ -3,23 +3,20 @@ import { Box } from "@mui/system";
 import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSelectedMat }) {
-  const [allMats, setAllMats] = useState([])
   const [currMats, setCurrMats] = useState(mats)
   const [qtdError, setQtdError] = useState({})
 
   const matsQuery = useQuery({ 
     queryKey: ['mats', tipo], 
     queryFn: () => getMats(tipo.id), 
-    onSuccess: res => setAllMats(res.data) 
+    onSuccess: res => {allMatsRef.current = res.data }
   }) 
 
-  useEffect(() => setCurrMats(mats),[])
-
-  const itemRef = useRef([])
   const qtdRef = useRef([])
+  const allMatsRef = useRef([])
 
   if (matsQuery.isLoading) return <></>
   return(
@@ -32,34 +29,29 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             size="small"
             id="mat"
             onChange={(e) => {
-              let mat = allMats.find(ele => ele.id === e.target.value)
+              let mat = allMatsRef.current.find(ele => ele.id === e.target.value)
               if (currMats.find(ele => ele.id === mat.id)) return
               let mats = [...currMats]
               mats[index] = mat
-              setCurrMats(mats)
-             //console.log(obj)
+              return setCurrMats(mats)
             }}  
             value={ele.id}
-            //inputRef={ref => itemRef["current"][index] = ref}
             label="Material"
-            //sobrescreve o valor de quantidade total pois nao eh utilizado em card de modificacao
             onBlur={ () => {
               if (mats.find(ele => ele.id === currMats[index].id)) return
               if (qtdError[index]) return
-              modSelectedMat(allMats.find( ele => ele.id === currMats[index].id), tipo.id, index)
+              return modSelectedMat(allMatsRef.current.find( ele => ele.id === currMats[index].id), tipo.id, index)
             }}
-
           >
             {matsQuery.isLoading 
               ? <MenuItem></MenuItem>
-              : allMats?.map((val, index) => <MenuItem value={val.id} key={index} className="flex justify-between"> {val.nome} </MenuItem>)
+              : matsQuery.data.data?.map((val, index) => <MenuItem value={val.id} key={index} className="flex justify-between"> {val.nome} </MenuItem>)
             }
           </TextField>
           <TextField 
             label="Quantidade"
             id="qtd"
-            InputProps={{ endAdornment: <InputAdornment position="end">/ {ele.quantidade} {ele.medida}</InputAdornment> 
-            }}
+            InputProps={{ endAdornment: <InputAdornment position="end">/ {ele.quantidade} {ele.medida}</InputAdornment> }}
             inputRef={ ref => qtdRef["current"][index] = ref }
             defaultValue={ele.qtd}
             error={qtdError[index]}
@@ -77,13 +69,12 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
 
 
           <Box className="flex">
-            <IconButton onClick={() => delSelectedMat(tipo.id, index)} >
-              <DeleteIcon   />
+            <IconButton onClick={() => delSelectedMat(tipo.id, index)}>
+              <DeleteIcon />
             </IconButton>
           </Box>
         </Box>
       ))}
     </Paper>
-
   )
 }
