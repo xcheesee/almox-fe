@@ -43,7 +43,6 @@ const BoxMateriais = (props) => {
         }
     }, [])
 
-
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
         onSuccess: res => {
             res.forEach( tipo => setNewMats(prev => ({...prev, [tipo.id]: []})) )
@@ -58,9 +57,6 @@ const BoxMateriais = (props) => {
 
     function modSelectedMat (matObj, tipoId, matIndex) {
         let matArray = newMats[tipoId]
-        if (matArray.find(ele => ele.id === matObj.id)) {
-            return 1
-        }
         matArray[matIndex] = matObj
         return setNewMats( prev => ({...prev, [tipoId]: matArray}) )
     }
@@ -100,16 +96,17 @@ const BoxMateriais = (props) => {
                         <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" >
                             <Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de adicionar materiais!" : ""}`} >
                                 <FormGroup>
-                                    <Selecao
+                                    <TextField
+                                        select
                                         label="Tipo de material"
                                         name="tipo_material"
                                         size="small"
+                                        defaultValue=""
                                         onChange={(e, c) => {
                                             getMateriaisFromTipos(c)
                                             setCurrMat("")
                                         }}
-                                        carregando={tiposMats?.isLoading}
-                                        disabled={deptoSelecionado === ""}
+                                        disabled={deptoSelecionado === "" || tiposMats?.isLoading}
                                         className="col-span-2"
                                         fullWidth
                                     >
@@ -120,7 +117,7 @@ const BoxMateriais = (props) => {
                                                     {primeiraLetraMaiuscula(val.nome)}
                                                 </MenuItem>)
                                         }
-                                    </Selecao>
+                                    </TextField>
                                 </FormGroup>
                             </Tooltip>
                             {!tiposMats.isFetching ?

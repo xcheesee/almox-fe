@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQuery } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSelectedMat }) {
   const [currMats, setCurrMats] = useState(mats)
@@ -31,17 +31,18 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             onChange={(e) => {
               let mat = allMatsRef.current.find(ele => ele.id === e.target.value)
               if (currMats.find(ele => ele.id === mat.id)) return
-              let mats = [...currMats]
-              mats[index] = mat
-              return setCurrMats(mats)
+              let materials = [...currMats]
+              materials[index] = mat
+              modSelectedMat(allMatsRef.current.find( ele => ele.id === materials[index].id), tipo.id, index)
+              return setCurrMats(materials)
             }}  
             value={ele.id}
             label="Material"
-            onBlur={ () => {
-              if (mats.find(ele => ele.id === currMats[index].id)) return
-              if (qtdError[index]) return
-              return modSelectedMat(allMatsRef.current.find( ele => ele.id === currMats[index].id), tipo.id, index)
-            }}
+            //onBlur={ () => {
+            //  if (mats.find(ele => ele.id === currMats[index].id)) return
+            //  if (qtdError[index]) return
+            //  return modSelectedMat(allMatsRef.current.find( ele => ele.id === currMats[index].id), tipo.id, index)
+            //}}
           >
             {matsQuery.isLoading 
               ? <MenuItem></MenuItem>
