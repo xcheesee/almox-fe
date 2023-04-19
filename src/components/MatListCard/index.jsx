@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
 export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSelectedMat }) {
-  const [currMats, setCurrMats] = useState(mats)
   const [qtdError, setQtdError] = useState({})
 
   const matsQuery = useQuery({ 
@@ -22,7 +21,7 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
   return(
     <Paper className="p-4 grid grid-rows-[min-content_1fr] my-4">
       <Typography className="pb-4 capitalize" variant="h6">{tipo?.nome}</Typography>
-      { currMats?.map( (ele, index) => (
+      { mats?.map( (ele, index) => (
         <Box key={`tipo-${tipo.id}ele-${ele.id}i-${index}`} className="grid grid-cols-[1fr_1fr_min-content] gap-4 mb-4">
           <TextField
             select
@@ -30,19 +29,14 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             id="mat"
             onChange={(e) => {
               let mat = allMatsRef.current.find(ele => ele.id === e.target.value)
-              if (currMats.find(ele => ele.id === mat.id)) return
-              let materials = [...currMats]
+              if (mats.find(ele => ele.id === mat.id)) return
+              let materials = [...mats]
               materials[index] = mat
-              modSelectedMat(allMatsRef.current.find( ele => ele.id === materials[index].id), tipo.id, index)
-              return setCurrMats(materials)
+              
+              return modSelectedMat(allMatsRef.current.find( ele => ele.id === materials[index].id), tipo.id, index) 
             }}  
             value={ele.id}
             label="Material"
-            //onBlur={ () => {
-            //  if (mats.find(ele => ele.id === currMats[index].id)) return
-            //  if (qtdError[index]) return
-            //  return modSelectedMat(allMatsRef.current.find( ele => ele.id === currMats[index].id), tipo.id, index)
-            //}}
           >
             {matsQuery.isLoading 
               ? <MenuItem></MenuItem>

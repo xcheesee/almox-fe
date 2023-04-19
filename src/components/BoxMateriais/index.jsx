@@ -84,11 +84,12 @@ const BoxMateriais = (props) => {
                     if (isQtdError) return
                     const formData = new FormData(e.target)
                     const qtd = formData.get('quantidade')
-                    const mats = newMats[currMat.tipo_item_id]
+                    let mats = [...newMats[currMat.tipo_item_id]]
                     if(qtd > currMat.quantidade) return setIsQtdError(true)
                     if(mats.find(ele => ele.id === currMat.id)) return setIsInListError(true)
                     mats.push({...currMat, qtd: qtd})
-                    setNewMats(prev => ({...prev, [currMat.tipo_item_id]: mats}))
+                    let bruh = {...newMats, [currMat.tipo_item_id]: [...mats]}
+                    setNewMats(bruh)
                 }}
             >
                 <Paper sx={style.container} >
