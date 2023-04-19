@@ -81,15 +81,20 @@ const BoxMateriais = (props) => {
                 onSubmit={e => {
                     e.preventDefault()
                     setIsInListError(false)
+
                     if (isQtdError) return
+
                     const formData = new FormData(e.target)
                     const qtd = formData.get('quantidade')
-                    let mats = [...newMats[currMat.tipo_item_id]]
+
                     if(qtd > currMat.quantidade) return setIsQtdError(true)
+
+                    let mats = [...newMats[currMat.tipo_item_id]]
+
                     if(mats.find(ele => ele.id === currMat.id)) return setIsInListError(true)
+
                     mats.push({...currMat, qtd: qtd})
-                    let bruh = {...newMats, [currMat.tipo_item_id]: [...mats]}
-                    setNewMats(bruh)
+                    setNewMats({...newMats, [currMat.tipo_item_id]: [...mats]})
                 }}
             >
                 <Paper sx={style.container} >
@@ -103,7 +108,7 @@ const BoxMateriais = (props) => {
                                         name="tipo_material"
                                         size="small"
                                         defaultValue=""
-                                        onChange={(e, c) => {
+                                        onChange={(_, c) => {
                                             getMateriaisFromTipos(c)
                                             setCurrMat("")
                                         }}
@@ -135,7 +140,7 @@ const BoxMateriais = (props) => {
                                                 setIsInListError(false)
                                                 setCurrMat(e.target.value)
                                             }}
-                                            //disabled={material.matDesabilitado}
+                                            disabled={allMats.length === 0 }
                                             size="small"
                                             error={isInListError}
                                             helperText={isInListError ? "Material ja se encontra na lista!" : ""}
@@ -155,7 +160,7 @@ const BoxMateriais = (props) => {
                                             /* desabilitado se valor anterior nao selecionado */
                                             name="quantidade"
                                             label="Quantidade"
-                                            //disabled={material.qtdDesabilitado}
+                                            disabled={currMat === ""}
                                             fullWidth
                                             size="small"
                                             InputProps={{ endAdornment: <InputAdornment position="end"> { currMat !== "" ? `/ ${currMat.quantidade} ${currMat.medida}` : "" } </InputAdornment>, }}
@@ -171,7 +176,6 @@ const BoxMateriais = (props) => {
                     </Fade>
                     <Box className="self-end">
                         <Button type="submit" 
-                            //onClick={adicionaMaterial}
                             startIcon={ <AddIcon fontSize="small" /> } >
                             Adicionar material
                         </Button>
@@ -188,7 +192,7 @@ const BoxMateriais = (props) => {
                                 delSelectedMat={delSelectedMat}
                             />
                         })
-                        : ""
+                        : <></> 
                     }
                 </Paper>
             </Box>
