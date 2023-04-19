@@ -14,7 +14,7 @@ import BoxProfissionais from '../BoxProfissionais';
 import style from './style';
 import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../common/utils';
 import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../atomStore';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../TituloTexto';
 import { useLocation } from 'react-router-dom';
@@ -39,8 +39,8 @@ const FormOrdemServico = (props) => {
     } = props;
 
     const statusEnum = useQuery(['statusEnum'], getStatusEnum)
+
     const [localServico, setLocalServico] = useState()
-    const [materiaisInterno, setMateriaisInterno] = useAtom(matTipoListAtom)
     const [status, setStatus] = useState(defaultValue?.status ?? "A iniciar")
     const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
@@ -52,14 +52,11 @@ const FormOrdemServico = (props) => {
     
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
+    const materiaisInterno = useAtomValue(matTipoListAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
     
-    /*useEffect(() => {
-        setMateriaisInterno(materiais)
-    }, [materiais]);*/
-
     useEffect(() => {
         setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if(acao === 'editar') {
@@ -158,7 +155,7 @@ const FormOrdemServico = (props) => {
     
             <TextField 
                 defaultValue={defaultValue?.data_inicio_servico}
-                type="datetime-local"
+                type="date"
                 name="data_inicio_servico"
                 label="Data de início do serviço"
                 InputLabelProps={{ shrink: true }}
@@ -170,7 +167,7 @@ const FormOrdemServico = (props) => {
         
             <TextField 
                 defaultValue={defaultValue?.data_fim_servico}
-                type="datetime-local"
+                type="date"
                 name="data_fim_servico"
                 label="Data de fim do serviço"
                 InputLabelProps={{ shrink: true }}

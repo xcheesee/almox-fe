@@ -19,7 +19,7 @@ import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/u
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const BoxMateriaisEntrada = ({ materiais, setMateriais, deptoSelecionado }) => {
-    const queryClient = useQueryClient()
+    //const queryClient = useQueryClient()
     const tipos = useQuery(['tiposMateriais'], getMatTipos)
 
     const [listaMateriais, setListaMateriais] = useState([]);

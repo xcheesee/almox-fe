@@ -2,22 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { 
     MenuItem,
     TextField,
-    Tooltip,
 } from '@mui/material';
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
-import BoxMateriaisEntrada from '../BoxMateriaisEntrada';
 import CampoLocais from '../CampoLocais';
 import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
 import BoxMateriais from '../BoxMateriais';
 import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../common/utils';
-import { useAtom, useSetAtom } from 'jotai';
-import { deptoAtom, snackbarAtom } from '../../atomStore';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { deptoAtom, snackbarAtom, matTipoListAtom } from '../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const FormEntradaMaterial = (props) => {
-    const setSnackbar = useSetAtom(snackbarAtom)
     const { 
         defaultValue, 
         setOpenEditar, 
@@ -31,8 +28,9 @@ const FormEntradaMaterial = (props) => {
 
     const queryClient = useQueryClient()
 
-    const [materiaisInterno, setMateriaisInterno] = useState([]); // evita renderizações desnecessárias
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
+    const setSnackbar = useSetAtom(snackbarAtom)
+    const materiaisInterno = useAtomValue(matTipoListAtom)
 
     const editMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
@@ -45,17 +43,17 @@ const FormEntradaMaterial = (props) => {
             'entrada_items'
         )
     }, {
-        onSuccess: async (res) => {
-            setOpenEditar(false)
-            setCarregando(false)
-            queryClient.invalidateQueries(['entradaItens'])
-            setFormSnackbar(setSnackbar, "Entrada de material", { edit: true })
-        }, 
-        onError: async (res) => {
-            setCarregando(false)
-            if(res.status === 422) { /* setErrors(res?.errors) */ }
-            setFormSnackbar(setSnackbar, "", { error: true, status: res.status, edit: true })
-    }})
+            onSuccess: async (res) => {
+                setOpenEditar(false)
+                setCarregando(false)
+                queryClient.invalidateQueries(['entradaItens'])
+                setFormSnackbar(setSnackbar, "Entrada de material", { edit: true })
+            }, 
+            onError: async (res) => {
+                setCarregando(false)
+                if(res.status === 422) { /* setErrors(res?.errors) */ }
+                setFormSnackbar(setSnackbar, "", { error: true, status: res.status, edit: true })
+            }})
 
     const addMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
@@ -67,17 +65,17 @@ const FormEntradaMaterial = (props) => {
             'entrada_items'
         )
     }, {
-        onSuccess: async (res) => {
-            setCarregando(false)
-            queryClient.invalidateQueries(['entradaItens'])
-            setFormSnackbar(setSnackbar, "Entrada de material")
-            navigate(`/entrada`, { replace: true });
-        }, onError: async (res) => {
-            setCarregando(false)
-            if(res.status === 422) { setErrors(res?.errors) }
-            setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
-        }
-    })
+            onSuccess: async (res) => {
+                setCarregando(false)
+                queryClient.invalidateQueries(['entradaItens'])
+                setFormSnackbar(setSnackbar, "Entrada de material")
+                navigate(`/entrada`, { replace: true });
+            }, onError: async (res) => {
+                setCarregando(false)
+                if(res.status === 422) { setErrors(res?.errors) }
+                setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
+            }
+        })
 
     useEffect(() => {
         setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
@@ -181,19 +179,15 @@ const FormEntradaMaterial = (props) => {
                     fullWidth
                 />
             </FormContainer>
-            
+
             {acao === 'editar'
-            ?
+                ?
                 ""
-            :
-                //<Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de incluir itens!" : ""}`}>
+                :
                 <BoxMateriais 
-                    //materiais={materiaisInterno}
-                    //setMateriais={setMateriaisInterno}
                     label="Materiais"
                     deptoSelecionado={deptoSelecionado}
                 />
-                //</Tooltip>
             }
         </>
     );
