@@ -12,7 +12,6 @@ import {
     FormGroup
 } from '@mui/material';
 import style from './style';
-import Selecao from '../Selecao';
 import AddIcon from '@mui/icons-material/Add';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
 import { useQuery } from '@tanstack/react-query'
@@ -23,8 +22,8 @@ import { matTipoListAtom } from '../../atomStore'
 const BoxMateriais = (props) => {
     const {
         label,
-        baseSelecionada,
-        deptoSelecionado,
+        baseSelecionada = "",
+        deptoSelecionado = "",
     } = props;
 
     const [newMats, setNewMats] = useAtom(matTipoListAtom)

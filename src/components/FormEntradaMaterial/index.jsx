@@ -10,6 +10,7 @@ import BoxMateriaisEntrada from '../BoxMateriaisEntrada';
 import CampoLocais from '../CampoLocais';
 import CampoProcessoSei from '../CampoProcessoSei';
 import CampoNumContrato from '../CampoNumContrato';
+import BoxMateriais from '../BoxMateriais';
 import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../common/utils';
 import { useAtom, useSetAtom } from 'jotai';
 import { deptoAtom, snackbarAtom } from '../../atomStore';
@@ -185,13 +186,14 @@ const FormEntradaMaterial = (props) => {
             ?
                 ""
             :
-                <Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de incluir itens!" : ""}`}>
-                <BoxMateriaisEntrada 
-                    materiais={materiaisInterno}
-                    setMateriais={setMateriaisInterno}
-                    deptoSelecionado={deptoSelecionado !== ""}
+                //<Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de incluir itens!" : ""}`}>
+                <BoxMateriais 
+                    //materiais={materiaisInterno}
+                    //setMateriais={setMateriaisInterno}
+                    label="Materiais"
+                    deptoSelecionado={deptoSelecionado}
                 />
-                </Tooltip>
+                //</Tooltip>
             }
         </>
     );
