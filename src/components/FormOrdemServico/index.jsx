@@ -61,7 +61,10 @@ const FormOrdemServico = (props) => {
         setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if(acao === 'editar') {
             setDeptoSelecionado(defaultValue?.departamento_id)
-    }}, [])
+        } else if (departamentoKeys.length === 1) {
+            setDeptoSelecionado(departamentoKeys[0])
+        }
+    }, [])
 
     const editMutation = useMutation( async (data) => {
         setOpenConfirmar(false)
