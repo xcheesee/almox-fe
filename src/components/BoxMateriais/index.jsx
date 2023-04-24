@@ -33,6 +33,7 @@ const BoxMateriais = (props) => {
     const [isQtdError, setIsQtdError] = useState(false)
     const [isInListError, setIsInListError] = useState(false)
     const [tipoSelected, setTipoSelected] = useState(false)
+    const [tipo, setTipo] = useState("")
 
     const firstLoad = useRef(true)
 
@@ -42,6 +43,13 @@ const BoxMateriais = (props) => {
             firstLoad.current = false
         }
     }, [])
+
+    useEffect (() => {
+        setCurrMat("")
+        setAllMats([])
+        setNewMats({})
+        setTipo("")
+    }, [deptoSelecionado])
 
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
         onSuccess: res => {
@@ -109,9 +117,10 @@ const BoxMateriais = (props) => {
                                         label="Tipo de material"
                                         name="tipo_material"
                                         size="small"
-                                        defaultValue=""
-                                        onChange={(_, c) => {
+                                        value={tipo}
+                                        onChange={(v, c) => {
                                             getMateriaisFromTipos(c)
+                                            setTipo(v.target.value)
                                             setCurrMat("")
                                         }}
                                         disabled={deptoSelecionado === "" || tiposMats?.isLoading}
