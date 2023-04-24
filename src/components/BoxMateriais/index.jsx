@@ -32,6 +32,7 @@ const BoxMateriais = (props) => {
     const [allMats, setAllMats] = useState([])
     const [isQtdError, setIsQtdError] = useState(false)
     const [isInListError, setIsInListError] = useState(false)
+    const [tipoSelected, setTipoSelected] = useState(false)
 
     const firstLoad = useRef(true)
 
@@ -61,8 +62,10 @@ const BoxMateriais = (props) => {
     }
 
     const getMateriaisFromTipos = async (children) => {
+        setTipoSelected(false)
         const tipoRota = children.props.value;
         const val = await getMatItens(tipoRota, true, baseSelecionada, deptoSelecionado);
+        setTipoSelected(true)
         return setAllMats(val.data)
     };
 
@@ -128,6 +131,7 @@ const BoxMateriais = (props) => {
                             {!tiposMats.isFetching ?
                                 <Fade in={true} >
                                     <Box className='grid grid-cols-2 gap-4 row-start-2'>
+                                        <Tooltip title={tipoSelected && allMats.length === 0 ? "Não há materiais desse tipo na base!" : ""}>
                                         <TextField
                                             select
                                             id="material-seletor"
@@ -154,6 +158,7 @@ const BoxMateriais = (props) => {
                                                 )
                                             }
                                         </TextField >
+                                        </Tooltip >
 
                                         <TextField
                                             /* desabilitado se valor anterior nao selecionado */
