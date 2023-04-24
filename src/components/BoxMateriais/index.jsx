@@ -47,8 +47,15 @@ const BoxMateriais = (props) => {
     useEffect (() => {
         setCurrMat("")
         setAllMats([])
-        setNewMats({})
+        //setNewMats({})
         setTipo("")
+        setNewMats( prev => {
+            const clearObj = {}
+            for (const val in prev) {
+                clearObj[val] = []
+            }
+            return clearObj
+        })
     }, [deptoSelecionado])
 
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
@@ -117,7 +124,7 @@ const BoxMateriais = (props) => {
                                         label="Tipo de material"
                                         name="tipo_material"
                                         size="small"
-                                        value={tipo}
+                                        value={tipo}    
                                         onChange={(v, c) => {
                                             getMateriaisFromTipos(c)
                                             setTipo(v.target.value)
