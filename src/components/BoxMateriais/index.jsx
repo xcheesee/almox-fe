@@ -135,11 +135,13 @@ const BoxMateriais = (props) => {
                                         fullWidth
                                     >
                                         {
-                                            tiposMats?.data
-                                            ?.map((val, i) => 
-                                                <MenuItem value={val.id} key={i} >
-                                                    {primeiraLetraMaiuscula(val.nome)}
-                                                </MenuItem>)
+                                            tiposMats?.data 
+                                                ? tiposMats?.data
+                                                    ?.map((val, i) => 
+                                                        <MenuItem value={val.id} key={i} >
+                                                            {primeiraLetraMaiuscula(val.nome)}
+                                                        </MenuItem>)
+                                                :<MenuItem></MenuItem> 
                                         }
                                     </TextField>
                                 </FormGroup>
