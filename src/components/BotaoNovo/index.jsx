@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const BotaoNovo = ({ caminho, display, ...props }) => {
     return (
-        <Box sx={{ display: display }} className="justify-end pt-2 pb-4">
+        <Box sx={{ display: display }} className="flex justify-end pt-2 pb-4">
             <Link to={caminho}>
                 <Button variant="contained">
                     <AddIcon className="mr-1" size="small" />

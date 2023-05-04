@@ -114,7 +114,7 @@ const BoxMateriais = (props) => {
                     setNewMats({...newMats, [currMat.tipo_item_id]: [...mats]})
                 }}
             >
-                <Paper sx={style.container} >
+                <Paper sx={style.container} elevation={8}>
                     <Fade in={true} >
                         <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" >
                             <Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de adicionar materiais!" : ""}`} >

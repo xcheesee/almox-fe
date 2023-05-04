@@ -6,7 +6,7 @@ const style = {
         mb: '0.5rem'
     },
     container: {
-        background: (theme) => theme.palette.color.bgInterno,
+        background: "#d7eae3",
         padding: '1rem',
         display: 'flex',
         flexDirection: 'column'

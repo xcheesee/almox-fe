@@ -17,6 +17,9 @@ import { Routes, Route } from 'react-router';
 import SnackbarAlert from './components/SnackbarAlert';
 import { useAtom } from 'jotai';
 import { snackbarAtom } from './atomStore';
+import Transferencia from './Pages/Transferencia';
+import Ocorrencia from './Pages/Ocorrencia';
+import NovaOcorrencia from './Pages/Ocorrencia/novaOcorrencia';
 
 //Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
 
@@ -41,6 +44,12 @@ function App() {
         <Route path="/ordemservico/baixa/:id" element={ <Baixa setSnackbar={setSnackbar} /> } />
 
         <Route path="/inventario" element={ <PaginaInventario /> } />
+
+        <Route path="/transferencia" element={ <Transferencia />} />
+
+        <Route path="/ocorrencia" element={ <Ocorrencia />} />
+
+        <Route path="/ocorrencia/nova-ocorrencia" element={ <NovaOcorrencia />} />
 
         <Route path="*" element={ <Pagina404 /> } />
       </Routes>
