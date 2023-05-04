@@ -11,7 +11,7 @@ export default function NovaOcorrencia () {
     return(
         <ContainerPrincipal>
             <Titulo
-                voltarPara="/ocorrencia"
+                voltaPara="/ocorrencia"
             >
                 Nova Ocorrência
             </Titulo>
