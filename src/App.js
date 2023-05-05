@@ -20,6 +20,7 @@ import { snackbarAtom } from './atomStore';
 import Transferencia from './Pages/Transferencia';
 import Ocorrencia from './Pages/Ocorrencia';
 import NovaOcorrencia from './Pages/Ocorrencia/novaOcorrencia';
+import NovaTransferencia from './Pages/Transferencia/novaTransferencia';
 
 //Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
 
@@ -46,6 +47,8 @@ function App() {
         <Route path="/inventario" element={ <PaginaInventario /> } />
 
         <Route path="/transferencia" element={ <Transferencia />} />
+
+        <Route path="/transferencia/nova-tranferencia" element={ <NovaTransferencia />} />
 
         <Route path="/ocorrencia" element={ <Ocorrencia />} />
 
