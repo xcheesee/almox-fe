@@ -6,14 +6,12 @@ import BoxMateriais from "../../components/BoxMateriais";
 
 export default function NovaTransferencia () {
 
-    const [tipoOcorrencia, setTipoOcorrencia] = useState("")
-
     return(
         <ContainerPrincipal>
             <Titulo
-                voltaPara="/ocorrencia"
+                voltaPara="/transferencia"
             >
-                Nova Ocorrência
+                Nova Transferência
             </Titulo>
             <Box 
                 component="form"
@@ -23,7 +21,7 @@ export default function NovaTransferencia () {
                     type="date"
                     label="Data de Transferência"
                     name="data-transferencia"
-                    id="data-ocorrencia"
+                    id="data-transferencia"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                 />
