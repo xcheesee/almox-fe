@@ -29,7 +29,7 @@ const OrdemServico = (props) => {
             </BotaoNovo>
 
             <TabelaOrdem 
-                ordens={ordens?.data} 
+                ordens={ordens?.data?.data} 
                 carregando={carregando} 
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}

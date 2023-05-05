@@ -70,7 +70,7 @@ const Ordem = () => {
     return (
         <Box sx={{ cursor: cursor }}>
             <OrdemServico 
-                ordens={ordens?.data}
+                ordens={ordens}
                 carregando={ordens?.isLoading}
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}

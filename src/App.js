@@ -21,6 +21,7 @@ import Transferencia from './Pages/Transferencia';
 import Ocorrencia from './Pages/Ocorrencia';
 import NovaOcorrencia from './Pages/Ocorrencia/novaOcorrencia';
 import NovaTransferencia from './Pages/Transferencia/novaTransferencia';
+import RecusaTranferencia from './Pages/Transferencia/recusaTransferencia';
 
 //Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
 
@@ -49,6 +50,8 @@ function App() {
         <Route path="/transferencia" element={ <Transferencia />} />
 
         <Route path="/transferencia/nova-tranferencia" element={ <NovaTransferencia />} />
+
+        <Route path="/transferencia/recusa-transferencia" element={ <RecusaTranferencia />} />
 
         <Route path="/ocorrencia" element={ <Ocorrencia />} />
 

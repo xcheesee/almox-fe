@@ -1,10 +1,14 @@
-import { TextField, Box, MenuItem, Paper } from "@mui/material";
+import { TextField, Box, MenuItem, Button } from "@mui/material";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
 import BoxMateriais from "../../components/BoxMateriais";
+import DialogEnviar from "../../components/DialogEnviar";
+import FormContainer from "../../components/FormContainer";
 
 export default function NovaTransferencia () {
+
+    const [openConfirmar, setOpenConfirmar] = useState(false)
 
     return(
         <ContainerPrincipal>
@@ -13,9 +17,9 @@ export default function NovaTransferencia () {
             >
                 Nova Transferência
             </Titulo>
-            <Box 
-                component="form"
-                className="w-full py-4 px-8 grid gap-8"
+
+            <FormContainer 
+                id="nova-transferencia"
             >
                 <TextField
                     type="date"
@@ -25,6 +29,7 @@ export default function NovaTransferencia () {
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                 />
+
                 <TextField
                     select
                     label="Base de Origem"
@@ -35,6 +40,7 @@ export default function NovaTransferencia () {
                 >
                     <MenuItem value={0}>Base 0</MenuItem>
                 </TextField>
+
                 <TextField
                     select
                     label="Base de Destino"
@@ -45,12 +51,24 @@ export default function NovaTransferencia () {
                 >
                     <MenuItem value={0}>Base 0</MenuItem>
                 </TextField>
-            </Box>
+            </FormContainer>
+
             <BoxMateriais 
                 label="Materiais Solicitados"
                 deptoSelecionado="3"//valor temporario para teste
             />
-            
+
+            <Box className="flex gap-4 justify-end">
+                <Button onClick={() => setOpenConfirmar(true)}>Enviar</Button>
+            </Box>
+
+            <DialogEnviar 
+                openConfirmar={openConfirmar}
+                setOpenConfirmar={setOpenConfirmar}
+                texto="transferência"
+                form="nova-transferencia"
+            />
+
         </ContainerPrincipal>
     )
 }

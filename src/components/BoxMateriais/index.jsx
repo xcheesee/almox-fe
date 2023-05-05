@@ -47,7 +47,6 @@ const BoxMateriais = (props) => {
     useEffect (() => {
         setCurrMat("")
         setAllMats([])
-        //setNewMats({})
         setTipo("")
         setNewMats( prev => {
             const clearObj = {}
@@ -146,6 +145,7 @@ const BoxMateriais = (props) => {
                                     </TextField>
                                 </FormGroup>
                             </Tooltip>
+
                             {!tiposMats.isFetching ?
                                 <Fade in={true} >
                                     <Box className='grid grid-cols-2 gap-4 row-start-2'>
@@ -196,18 +196,20 @@ const BoxMateriais = (props) => {
                             }
                         </Paper>
                     </Fade>
+
                     <Box className="self-end">
                         <Button type="submit" 
                             startIcon={ <AddIcon fontSize="small" /> } >
                             Adicionar material
                         </Button>
                     </Box>
+
                     { !tiposMats.isLoading 
                         ? Object.entries(newMats)?.map((keyVal, i) => { 
-                            if (keyVal[1].length === 0) return 
+                            if (keyVal[1].length === 0) return <></>
                             return <MatListCard 
                                 key={`tipo${keyVal[0]}-item${i}`} 
-                                tipo={tiposMats?.data?.find(ele => ele.id == `${keyVal[0]}`)} 
+                                tipo={tiposMats?.data?.find(ele => +ele.id === +keyVal[0])} 
                                 mats={keyVal[1]}
                                 getMats={getMats} 
                                 modSelectedMat={modSelectedMat}

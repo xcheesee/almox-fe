@@ -24,6 +24,7 @@ const DialogEnviar = ({ openConfirmar, setOpenConfirmar, texto, form }) => {
                 <Button
                     type="submit" 
                     form={form}
+                    variant='contained'
                     onClick={() => setOpenConfirmar(false)}
                 >
                     Sim

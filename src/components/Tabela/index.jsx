@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
     Paper, 
     TableContainer, 
@@ -18,29 +18,29 @@ import { sortAtom } from '../../atomStore';
 
 const Tabela = (props) => {
     const { cabecalhos, carregando, ...other } = props;
-    const [loading, setLoading] = useState(carregando);
+    //const [loading, setLoading] = useState(carregando);
     
     const [sort, setSort] = useAtom(sortAtom)
 
     const handleClickSort = (valor) => {
         if (valor !== null) {
-            setLoading(true);
+            //setLoading(true);
             setTimeout(() => {
                 sort === valor && valor !== null
                 ? setSort(`-${valor}`)
                 : setSort(valor)
 
-                setTimeout(() => setLoading(false), 100)
+                //setTimeout(() => setLoading(false), 100)
             }, 300);
         }   
     }
 
-    useEffect(() => setLoading(carregando), [carregando])
+    //useEffect(() => setLoading(carregando), [carregando])
 
     return (
         <Fade in={true} timeout={400}>
             <TableContainer component={Paper} elevation={4}>
-                <Collapse in={!loading} collapsedSize={34}>
+                <Collapse in={!carregando} collapsedSize={34}>
                     <Table size="small">
                         <TableHead sx={style.tableHead}>
                             <TableRow>
