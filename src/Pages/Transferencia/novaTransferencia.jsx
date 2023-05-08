@@ -1,14 +1,27 @@
-import { TextField, Box, MenuItem, Button } from "@mui/material";
+import { TextField, Box, MenuItem, Button, Menu } from "@mui/material";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
 import BoxMateriais from "../../components/BoxMateriais";
 import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
+import { useQuery } from "@tanstack/react-query";
+import { getLocais } from "../../common/utils";
 
 export default function NovaTransferencia () {
 
     const [openConfirmar, setOpenConfirmar] = useState(false)
+    const [baseOrigem, setBaseOrigem] = useState("")
+
+    const locais = useQuery({
+        queryKey: ['locais', "", "base"], 
+        queryFn: () => getLocais("", "base"), 
+        //enabled: !(depto === ''),
+        onSuccess: (res) => {
+            setBaseOrigem(res.length === 1 ? res[0].id : "")
+        }
+
+    })
 
     return(
         <ContainerPrincipal>
@@ -35,10 +48,14 @@ export default function NovaTransferencia () {
                     label="Base de Origem"
                     name="base_origem_id"
                     id="base_origem_id"
-                    defaultValue={0}
+                    value={baseOrigem}
+                    onChange={e => setBaseOrigem(e.target.value)} 
                     fullWidth
                 >
-                    <MenuItem value={0}>Base 0</MenuItem>
+                    {locais.isLoading
+                        ?<MenuItem value={0}>Carregando...</MenuItem>
+                        :locais.data?.map((local, index) => <MenuItem value={local.id} key={`local${index}`}>{local.nome}</MenuItem>)
+                    }
                 </TextField>
 
                 <TextField
@@ -46,16 +63,19 @@ export default function NovaTransferencia () {
                     label="Base de Destino"
                     name="base_destino_id"
                     id="base_destino_id"
-                    defaultValue={0}
                     fullWidth
                 >
-                    <MenuItem value={0}>Base 0</MenuItem>
+                    {locais.isLoading
+                        ?<MenuItem value={0}>Carregando...</MenuItem>
+                        :locais.data?.map((local, index) => <MenuItem value={local.id} key={`destino${index}`}>{local.nome}</MenuItem>)
+                    }
                 </TextField>
             </FormContainer>
 
             <BoxMateriais 
                 label="Materiais Solicitados"
-                deptoSelecionado="3"//valor temporario para teste
+                baseSelecionada={baseOrigem}//valor temporario para teste
+                tooltipText="Selecione uma base antes de adicionar materiais!"
             />
 
             <Box className="flex gap-4 justify-end">

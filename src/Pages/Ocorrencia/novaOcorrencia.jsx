@@ -5,11 +5,24 @@ import { useState } from "react";
 import BoxMateriais from "../../components/BoxMateriais";
 import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
+import { getLocais } from "../../common/utils";
+import { useQuery } from "@tanstack/react-query";
 
 export default function NovaOcorrencia () {
 
     const [tipoOcorrencia, setTipoOcorrencia] = useState("")
     const [openConfirmar, setOpenConfirmar] = useState(false)
+    const [baseOrigem, setBaseOrigem] = useState("")
+
+    const locais = useQuery({
+        queryKey: ['locais', "", "base"], 
+        queryFn: () => getLocais("", "base"), 
+        //enabled: !(depto === ''),
+        onSuccess: (res) => {
+            setBaseOrigem(res.length === 1 ? res[0].id : "")
+        }
+
+    })
 
     return(
         <ContainerPrincipal>
@@ -36,10 +49,13 @@ export default function NovaOcorrencia () {
                     label="Base envolvida"
                     name="local_id"
                     id="local_id"
-                    defaultValue={0}
+                    SelectProps={{value: baseOrigem, onChange: (e) => setBaseOrigem(e.target.value)}}
                     fullWidth
                 >
-                    <MenuItem value={0}>Base 0</MenuItem>
+                    {locais.isLoading
+                        ?<MenuItem>Carregando...</MenuItem>
+                        :locais?.data?.map((local, index) => <MenuItem value={local.id} key={`base${index}`}>{local.nome}</MenuItem>)
+                    }
                 </TextField>
 
                 <TextField
@@ -73,7 +89,8 @@ export default function NovaOcorrencia () {
 
             <BoxMateriais 
                 label="Materiais envolvidos"
-                deptoSelecionado="3"//valor temporario para teste
+                baseSelecionada={baseOrigem}//valor temporario para teste
+                tooltipText="Selecione uma base antes de adicionar materiais!"
             />
 
             <Box className="flex gap-4 justify-end">

@@ -7,15 +7,13 @@ import {
     Box
 } from '@mui/material';
 import Tabela from '../Tabela';
-import { authEditOrdem, getRegistro } from '../../common/utils';
+import { authEditOrdem } from '../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
 import { Link } from 'react-router-dom';
-import { matsAtom } from '../../atomStore';
-import { useSetAtom } from 'jotai';
 
 const cabecalhos = {
     "ID": "id",

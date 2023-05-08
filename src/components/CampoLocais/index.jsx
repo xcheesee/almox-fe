@@ -3,16 +3,15 @@ import { MenuItem, TextField } from '@mui/material';
 import { useQuery } from "@tanstack/react-query"
 import { getLocais } from '../../common/utils';
 
-const CampoLocais = ({ name, label, defaultValue, depto, tipo, ...props }) => {
+const CampoLocais = ({ name, label, defaultValue, depto="", getAllBases=false, tipo, ...props }) => {
 
     const [local, setLocal] = useState(0)
 
     const locais = useQuery({
         queryKey: ['locais', depto, tipo], 
         queryFn: () => getLocais(depto, tipo), 
-        enabled: !(depto === ''),
+        //enabled: !(depto === ''),
         onSuccess: (res) => {
-            console.log(res)
             setLocal(defaultValue ?? (res.length === 1 ? res[0].id : ""))}
     })
 
@@ -24,17 +23,15 @@ const CampoLocais = ({ name, label, defaultValue, depto, tipo, ...props }) => {
                     select
                     disabled
                     SelectProps={{ value: 0}}
-                    //value={0}
                 >
                     <MenuItem value={0}>Carregando...</MenuItem>
                 </TextField>
                 :<TextField
                     select
-                    SelectProps={{ value: local}}
+                    SelectProps={{ value: local, onChange: (e) => setLocal(e.target.value)}}
                     name={name}
                     label={label}
-                    //value={local}
-                    disabled={locais.isLoading || depto === ''}
+                    disabled={locais.isLoading || (!getAllBases && depto==="")}
                     fullWidth
                     required
                     {...props}

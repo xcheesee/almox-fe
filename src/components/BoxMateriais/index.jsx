@@ -24,6 +24,7 @@ const BoxMateriais = (props) => {
         label,
         baseSelecionada = "",
         deptoSelecionado = "",
+        tooltipText="Selecione um departamento antes de adicionar materiais!",
     } = props;
 
     const [newMats, setNewMats] = useAtom(matTipoListAtom)
@@ -55,7 +56,7 @@ const BoxMateriais = (props) => {
             }
             return clearObj
         })
-    }, [deptoSelecionado])
+    }, [deptoSelecionado, baseSelecionada])
 
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
         onSuccess: res => {
@@ -116,7 +117,7 @@ const BoxMateriais = (props) => {
                 <Paper sx={style.container} elevation={8}>
                     <Fade in={true} >
                         <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" >
-                            <Tooltip title={`${deptoSelecionado === "" ? "Selecione um departamento antes de adicionar materiais!" : ""}`} >
+                            <Tooltip title={`${(deptoSelecionado === "" && baseSelecionada === "") ? tooltipText : ""}`} >
                                 <FormGroup>
                                     <TextField
                                         select
@@ -129,7 +130,7 @@ const BoxMateriais = (props) => {
                                             setTipo(v.target.value)
                                             setCurrMat("")
                                         }}
-                                        disabled={deptoSelecionado === "" || tiposMats?.isLoading}
+                                        disabled={(deptoSelecionado === "" && baseSelecionada === "") || tiposMats?.isLoading}
                                         className="col-span-2"
                                         fullWidth
                                     >
