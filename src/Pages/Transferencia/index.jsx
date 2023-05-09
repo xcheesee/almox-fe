@@ -4,6 +4,7 @@ import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import TabelaTransferencia from "../../components/TabelaTransferencia";
 import FiltrosTransferencia from "../../components/FiltrosTransferencia";
+import Paginacao from "../../components/Paginacao";
 
 export default function Transferencia () {
 
@@ -19,17 +20,15 @@ export default function Transferencia () {
 
             <Box className="flex gap-4 justify-end">
                 <BotaoNovo
-                    variant="text"
-                    cor="error"
-                    caminho="/transferencia/recusa-transferencia"
-                >Nova Recusa</BotaoNovo>
-                <BotaoNovo
                     caminho="/transferencia/nova-tranferencia"
                 >Nova Transferencia</BotaoNovo>
             </Box>
 
             <TabelaTransferencia />
 
+            <Paginacao 
+                count={5}
+            />
         </ContainerPrincipal>
     )
 }

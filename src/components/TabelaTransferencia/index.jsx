@@ -1,5 +1,6 @@
 import React from 'react';
-import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../common/utils';
+//import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../common/utils';
+import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
 import {
     TableRow,
     TableCell,
@@ -9,6 +10,7 @@ import {
 import Tabela from '../Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
+import { redirect, useNavigate } from 'react-router-dom';
 
 const cabecalhos = {
     "ID": null,
@@ -21,11 +23,23 @@ const cabecalhos = {
 
 const TabelaTransferencia = (props) => {
     const { 
-        entradas, 
+        //entradas, 
         carregando, 
         getSelectedEntradaInfo,
         cursor, 
     } = props;
+
+    const entradas = [
+        {
+            id: 1,
+            data_entrada: "27/01/1998",
+            base_origem: "LAB",
+            base_destino: "UEM Leopoldina",
+            status: "Enviado"
+        }
+    ]
+
+    const navigate = useNavigate()
 
     return (
         <Tabela 
@@ -36,10 +50,9 @@ const TabelaTransferencia = (props) => {
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
                         <TableCell align="center">{entrada.data_entrada || "---"}</TableCell>
-                        <TableCell align="center">{mascaraProcessoSei(entrada.processo_sei || "---")}</TableCell>
-                        <TableCell align="center">{mascaraContrato(entrada.numero_contrato || "---")}</TableCell>
-                        <TableCell align="center">{entrada.local || "---"}</TableCell>
-                        <TableCell align="center">{entrada.numero_nota_fiscal || "---"}</TableCell>
+                        <TableCell align="center">{entrada.base_origem || "---"}</TableCell>
+                        <TableCell align="center">{entrada.base_destino || "---"}</TableCell>
+                        <TableCell align="center">{entrada.status || "---"}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
                                 <IconButton 
@@ -49,12 +62,12 @@ const TabelaTransferencia = (props) => {
                                     <ManageSearchIcon />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Editar" placement="right" sx={{ display: authEditEntrada(localStorage.getItem('perfil')) }}>
+                            <Tooltip title="Recusar" placement="right" >
                                 <IconButton 
                                     disabled={cursor === 'progress'}
-                                    onClick={ () => getSelectedEntradaInfo(entrada.id, 'editar') }
+                                    onClick={ () => navigate("/transferencia/recusa-transferencia") }
                                 >
-                                    <EditIcon />
+                                    <CancelScheduleSendIcon />
                                 </IconButton>
                             </Tooltip>
                         </TableCell>
