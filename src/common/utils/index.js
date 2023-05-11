@@ -19,8 +19,8 @@ export const formataDateTime = (dateTime) => {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit"
+    //hour: "2-digit",
+    //minute: "2-digit"
   });
 
   if (dataFormatada === "Invalid Date" || dateTime === null)
@@ -74,20 +74,7 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
   if (materiais) {
-    Object.values(materiais)?.forEach((material, index) => {
-      material.forEach( item => {
-        const entries = Object.entries(item);
-        entries.forEach(keyValue => {
-          if(keyValue[0] === "quantidade") {
-            return
-          }
-          if(keyValue[0] === "qtd") {
-            formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
-          }
-          formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
-        });
-      })
-    });
+    appendMateriaisToRequest(formData, materiais, campoMats)
   }
 
   if (profissionais) {
@@ -181,7 +168,7 @@ export const getLocais = (depto, tipo) => {
       .catch(err => console.log(err));
 }
 
-export const getTabela = (rota, page, filtros, sort) => {
+export const getTabela = (rota, page="", filtros="", sort="") => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}&sort=${sort || ''}`
   const options = {
       method: 'GET',
@@ -586,4 +573,114 @@ export const loginRequest = async (inputObject) => {
     const errData = await res.json()
     throw new Error(errData.message)
   }
+}
+
+export async function getTransferencias() {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
+  const headers = {
+      "Accept": "application/json",
+      "Authorization": localStorage.getItem('access_token'),
+  };
+  const res = await fetch(url, {
+    headers: headers, 
+  })
+  if(res.ok) {
+    return await res.json()
+  }
+  throw {message: "Nao foi possivel enviar a transferencia", status: res.status, ok: false}
+}
+
+export async function getTransferencia(id) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
+  const headers = {
+      "Accept": "application/json",
+      "Authorization": localStorage.getItem('access_token'),
+  };
+  const res = await fetch(url, {
+    headers: headers, 
+  })
+  if(res.ok) {
+    return await res.json()
+  }
+  throw {message: "Nao foi possivel enviar a transferencia", status: res.status, ok: false}
+}
+
+export async function enviaNovaTransferencia(formData, materiais) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
+  const data = {}
+  formData.append("status", "enviado")
+  //appendMateriaisToRequest(formData, materiais, "itens")
+  for (let item of formData.entries()) {
+    data[item[0]] = item[1]
+  }
+
+  data.itens = [
+    {
+     "entrada_id":1,
+     "item_id":4,
+     "quantidade":1
+    },
+    {
+    "entrada_id":1,
+    "item_id":45,
+    "quantidade":3
+    }
+  ]
+  
+  const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": localStorage.getItem('access_token'),
+  };
+  const res = await fetch(url, {
+    method: "POST",
+    headers: headers, 
+    body: JSON.stringify(data)
+  })
+
+  if(res.ok) {
+    return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
+  }
+  throw {message: "Nao foi possivel enviar a transferencia", status: res.status, ok: false}
+}
+
+export async function recusaTransferencia(id, formData) {
+  let data = {}
+  data = formDataToObj(formData, data)
+  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
+  const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": localStorage.getItem('access_token'),
+  };
+
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: JSON.stringify({"status": "recusado", ...data})
+  })
+}
+
+export function appendMateriaisToRequest(formData, materiais, campoMats) {
+  Object.values(materiais)?.forEach((material, index) => {
+      material.forEach( item => {
+        const entries = Object.entries(item);
+        entries.forEach(keyValue => {
+          if(keyValue[0] === "quantidade") {
+            return
+          }
+          if(keyValue[0] === "qtd") {
+            formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
+          }
+          formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
+        });
+      })
+    });
+}
+
+export function formDataToObj(formData, obj) {
+  for (let item of formData.entries()) {
+    obj[item[0]] = item[1]
+  }
+  return obj
 }

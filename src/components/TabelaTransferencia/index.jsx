@@ -6,11 +6,13 @@ import {
     TableCell,
     IconButton,
     Tooltip,
+    Dialog,
 } from '@mui/material';
 import Tabela from '../Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import EditIcon from '@mui/icons-material/Edit';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { formataDateTime } from '../../common/utils';
+import RecusaTranferencia from '../../Pages/Transferencia/recusaTransferencia';
 
 const cabecalhos = {
     "ID": null,
@@ -23,36 +25,30 @@ const cabecalhos = {
 
 const TabelaTransferencia = (props) => {
     const { 
-        //entradas, 
+        itens, 
         carregando, 
         getSelectedEntradaInfo,
         cursor, 
     } = props;
 
-    const entradas = [
-        {
-            id: 1,
-            data_entrada: "27/01/1998",
-            base_origem: "LAB",
-            base_destino: "UEM Leopoldina",
-            status: "Enviado"
-        }
-    ]
-
     const navigate = useNavigate()
 
     return (
+        <>
         <Tabela 
             cabecalhos={cabecalhos} 
             carregando={carregando} 
         >
-            {entradas?.map(entrada => (
+            
+            {carregando
+                ? <></> 
+                :itens?.map(entrada => (
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
-                        <TableCell align="center">{entrada.data_entrada || "---"}</TableCell>
-                        <TableCell align="center">{entrada.base_origem || "---"}</TableCell>
-                        <TableCell align="center">{entrada.base_destino || "---"}</TableCell>
-                        <TableCell align="center">{entrada.status || "---"}</TableCell>
+                        <TableCell align="center">{formataDateTime(entrada.data_transferencia) || "---"}</TableCell>
+                        <TableCell align="center" className='capitalize'>{entrada.base_origem_id.nome || "---"}</TableCell>
+                        <TableCell align="center" className='capitalize'>{entrada.base_destino_id.nome || "---"}</TableCell>
+                        <TableCell align="center" className='capitalize'>{entrada.status || "---"}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
                                 <IconButton 
@@ -62,19 +58,28 @@ const TabelaTransferencia = (props) => {
                                     <ManageSearchIcon />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Recusar" placement="right" >
-                                <IconButton 
-                                    disabled={cursor === 'progress'}
-                                    onClick={ () => navigate("/transferencia/recusa-transferencia") }
-                                >
-                                    <CancelScheduleSendIcon />
-                                </IconButton>
-                            </Tooltip>
+                            {
+                                entrada.status === "enviado"
+                                    ?<Tooltip title="Recusar" placement="right" >
+                                        <IconButton 
+                                            disabled={cursor === 'progress'}
+                                            onClick={ () => navigate(`/transferencia/recusa-transferencia/${entrada.id}`) }
+                                        >
+                                            <CancelScheduleSendIcon />
+                                        </IconButton>
+                                    </Tooltip> 
+                                    :<></>
+                            }
+                            
                         </TableCell>
                     </TableRow>
                 )
             )}
         </Tabela>
+        <Dialog open={false}>
+            <RecusaTranferencia />
+        </Dialog>
+        </>
     );
 }
 

@@ -1,12 +1,21 @@
-import { Box } from "@mui/material";
+import { Box, Snackbar } from "@mui/material";
 import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import TabelaTransferencia from "../../components/TabelaTransferencia";
 import FiltrosTransferencia from "../../components/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
+import { useQuery } from "@tanstack/react-query";
+import { getTabela, getTransferencias } from "../../common/utils";
+import { useAtom } from "jotai";
+import { snackbarAtom } from "../../atomStore";
 
 export default function Transferencia () {
+    const transferenciasQuery = useQuery({
+        queryKey: ['transferencias'],
+        queryFn: async () => await getTabela("transferencia"),
+        onSuccess: (res) => console.log(res)
+    })
 
     return(
         <ContainerPrincipal>
@@ -24,11 +33,16 @@ export default function Transferencia () {
                 >Nova Transferencia</BotaoNovo>
             </Box>
 
-            <TabelaTransferencia />
+            <TabelaTransferencia 
+                itens={transferenciasQuery?.data?.transferencias} 
+                carregando={transferenciasQuery.isLoading}
+            />
+
 
             <Paginacao 
                 count={5}
             />
+
         </ContainerPrincipal>
     )
 }

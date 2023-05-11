@@ -89,7 +89,7 @@ export default function NovaOcorrencia () {
 
             <BoxMateriais 
                 label="Materiais envolvidos"
-                baseSelecionada={baseOrigem}//valor temporario para teste
+                baseSelecionada={baseOrigem}
                 tooltipText="Selecione uma base antes de adicionar materiais!"
             />
 

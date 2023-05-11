@@ -6,12 +6,17 @@ import BoxMateriais from "../../components/BoxMateriais";
 import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
 import { useQuery } from "@tanstack/react-query";
-import { getLocais } from "../../common/utils";
+import { enviaNovaTransferencia, getLocais } from "../../common/utils";
+import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { snackbarAtom } from "../../atomStore";
 
 export default function NovaTransferencia () {
 
+    const [snackbar, setSnackbar] = useAtom(snackbarAtom)
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")
+    const navigate = useNavigate()
 
     const locais = useQuery({
         queryKey: ['locais', "", "base"], 
@@ -33,12 +38,20 @@ export default function NovaTransferencia () {
 
             <FormContainer 
                 id="nova-transferencia"
+                onSubmit={async (e) => {
+                    e.preventDefault()
+
+                    const formData = new FormData(e.target)
+                    const res = await enviaNovaTransferencia(formData)
+                    setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!"})
+                    navigate("/transferencia")
+                }}
             >
                 <TextField
                     type="date"
                     label="Data de Transferência"
-                    name="data-transferencia"
-                    id="data-transferencia"
+                    name="data_transferencia"
+                    id="data_transferencia"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                 />
@@ -63,6 +76,7 @@ export default function NovaTransferencia () {
                     label="Base de Destino"
                     name="base_destino_id"
                     id="base_destino_id"
+                    defaultValue=""
                     fullWidth
                 >
                     {locais.isLoading

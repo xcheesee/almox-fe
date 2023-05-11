@@ -51,7 +51,7 @@ function App() {
 
         <Route path="/transferencia/nova-tranferencia" element={ <NovaTransferencia />} />
 
-        <Route path="/transferencia/recusa-transferencia" element={ <RecusaTranferencia />} />
+        <Route path="/transferencia/recusa-transferencia/:id" element={ <RecusaTranferencia />} />
 
         <Route path="/ocorrencia" element={ <Ocorrencia />} />
 

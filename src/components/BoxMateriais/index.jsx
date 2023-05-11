@@ -138,7 +138,7 @@ const BoxMateriais = (props) => {
                                             tiposMats?.data 
                                                 ? tiposMats?.data
                                                     ?.map((val, i) => 
-                                                        <MenuItem value={val.id} key={i} >
+                                                        <MenuItem value={val.id} key={`mitem${i}`} >
                                                             {primeiraLetraMaiuscula(val.nome)}
                                                         </MenuItem>)
                                                 :<MenuItem></MenuItem> 
@@ -171,7 +171,7 @@ const BoxMateriais = (props) => {
                                             {
                                                 allMats
                                                 ?.map((val, index) =>
-                                                    <MenuItem value={val} key={index} className="flex justify-between">
+                                                    <MenuItem value={val} key={`idc${index}`} className="flex justify-between">
                                                         {val.nome}
                                                     </MenuItem>
                                                 )
@@ -207,7 +207,7 @@ const BoxMateriais = (props) => {
 
                     { !tiposMats.isLoading 
                         ? Object.entries(newMats)?.map((keyVal, i) => { 
-                            if (keyVal[1].length === 0) return <></>
+                            if (keyVal[1].length === 0) return 
                             return <MatListCard 
                                 key={`tipo${keyVal[0]}-item${i}`} 
                                 tipo={tiposMats?.data?.find(ele => +ele.id === +keyVal[0])} 
