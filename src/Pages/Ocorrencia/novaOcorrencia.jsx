@@ -5,7 +5,7 @@ import { useState } from "react";
 import BoxMateriais from "../../components/BoxMateriais";
 import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
-import { getLocais } from "../../common/utils";
+import { enviaNovaOcorrencia, getLocais } from "../../common/utils";
 import { useQuery } from "@tanstack/react-query";
 
 export default function NovaOcorrencia () {
@@ -34,6 +34,11 @@ export default function NovaOcorrencia () {
 
             <FormContainer 
                 id="nova-ocorrencia"
+                onSubmit={async (e) => {
+                    e.preventDefault()
+                    const formData = new FormData(e.target)
+                    await enviaNovaOcorrencia(formData)
+                }}
             >
                 <TextField
                     type="date"
@@ -76,8 +81,9 @@ export default function NovaOcorrencia () {
                     ?<TextField 
                         name="boletim_ocorrencia"
                         label="Boletim de Ocorrência"
-                        type="file"
-                        inputProps={{ accept: "image/*, application/pdf" }}
+                        //type="file"
+                        value="string"
+                        //inputProps={{ accept: "image/*, application/pdf" }}
                         InputLabelProps={{ shrink: true }}
                         //error={errors.hasOwnProperty('arquivo_nota_fiscal')}
                         //helperText={errors.arquivo_nota_fiscal || ""}

@@ -6,15 +6,12 @@ import TabelaTransferencia from "../../components/TabelaTransferencia";
 import FiltrosTransferencia from "../../components/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
 import { useQuery } from "@tanstack/react-query";
-import { getTabela, getTransferencias } from "../../common/utils";
-import { useAtom } from "jotai";
-import { snackbarAtom } from "../../atomStore";
+import { getTabela } from "../../common/utils";
 
 export default function Transferencia () {
     const transferenciasQuery = useQuery({
         queryKey: ['transferencias'],
         queryFn: async () => await getTabela("transferencia"),
-        onSuccess: (res) => console.log(res)
     })
 
     return(

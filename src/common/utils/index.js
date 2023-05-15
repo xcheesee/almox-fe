@@ -628,14 +628,12 @@ export async function enviaNovaTransferencia(formData, materiais) {
   ]
   
   const headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
       "Authorization": localStorage.getItem('access_token'),
   };
   const res = await fetch(url, {
     method: "POST",
     headers: headers, 
-    body: JSON.stringify(data)
+    body: formData
   })
 
   if(res.ok) {
@@ -661,14 +659,60 @@ export async function recusaTransferencia(id, formData) {
   })
 }
 
+export async function getOcorrencias() {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
+  const headers = {
+      "Authorization": localStorage.getItem('access_token'),
+  };
+  const res = await fetch(url, {
+    method: "GET",
+    headers: headers
+  })
+  if (res.ok) {
+    const json = await res.json()
+    return json.ocorrencia
+  }
+  throw new Error("Nao foi possivel recuperar ocorrencias")
+}
+export async function enviaNovaOcorrencia(formData, materiais) {
+  materiais = { 
+    "1" :[
+      {
+        ocorrencia_id: 1,
+        item_id: 1,
+        quantidade: 1
+      }
+    ]
+  }
+  formData.append("justificativa", "string")
+  appendMateriaisToRequest(formData, materiais, "itens")
+  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
+  const headers = {
+      "Authorization": localStorage.getItem('access_token'),
+  };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: formData 
+  })
+
+  if(res.ok) {
+    return res
+  }
+
+  throw Error(res.message)
+
+}
+
 export function appendMateriaisToRequest(formData, materiais, campoMats) {
   Object.values(materiais)?.forEach((material, index) => {
       material.forEach( item => {
         const entries = Object.entries(item);
         entries.forEach(keyValue => {
-          if(keyValue[0] === "quantidade") {
-            return
-          }
+          //if(keyValue[0] === "quantidade") {
+          //  return
+          //}
           if(keyValue[0] === "qtd") {
             formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
           }

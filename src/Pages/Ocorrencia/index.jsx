@@ -1,10 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Paginacao from "../../components/Paginacao";
-import TabelaEntrada from "../../components/TabelaEntrada";
 import Titulo from "../../components/Titulo";
+import { getTabela } from "../../common/utils";
+import TabelaOcorrencia from "../../components/TabelaOcorrencia";
 
 export default function Ocorrencia () {
+    const ocorrenciaQuery = useQuery({
+        queryKey: ["ocorrencias"],
+        queryFn: async () => await getTabela("ocorrencia"),
+        onSuccess: (res) => console.log(res)
+    })
     return(
         <ContainerPrincipal>
             <Titulo
@@ -18,7 +25,7 @@ export default function Ocorrencia () {
             >
                 Nova Ocorrencia
             </BotaoNovo>
-            <TabelaEntrada />
+            <TabelaOcorrencia itens={ocorrenciaQuery?.data?.ocorrencia} carregando={ocorrenciaQuery.isLoading} />
             <Paginacao count={10} />
         </ContainerPrincipal>
     )
