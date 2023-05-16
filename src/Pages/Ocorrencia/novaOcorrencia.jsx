@@ -1,4 +1,4 @@
-import { TextField, Box, MenuItem, Button } from "@mui/material";
+import { TextField, Box, MenuItem, Button, CircularProgress } from "@mui/material";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
@@ -7,12 +7,19 @@ import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
 import { enviaNovaOcorrencia, getLocais } from "../../common/utils";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
+import { snackbarAtom } from "../../atomStore";
+import { useNavigate } from "react-router-dom";
 
 export default function NovaOcorrencia () {
 
     const [tipoOcorrencia, setTipoOcorrencia] = useState("")
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")
+    const [snackbar, setSnackbar] = useAtom(snackbarAtom)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const navigate = useNavigate()
 
     const locais = useQuery({
         queryKey: ['locais', "", "base"], 
@@ -36,8 +43,17 @@ export default function NovaOcorrencia () {
                 id="nova-ocorrencia"
                 onSubmit={async (e) => {
                     e.preventDefault()
+                    setIsLoading(true)
                     const formData = new FormData(e.target)
-                    await enviaNovaOcorrencia(formData)
+                    try {
+                        await enviaNovaOcorrencia(formData)
+                        setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
+                        navigate("/ocorrencia")
+
+                    } catch(e){
+                        setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a ocorrencia", severity: "error"})
+                    }
+                    setIsLoading(false)
                 }}
             >
                 <TextField
@@ -99,8 +115,14 @@ export default function NovaOcorrencia () {
                 tooltipText="Selecione uma base antes de adicionar materiais!"
             />
 
-            <Box className="flex gap-4 justify-end">
-                <Button onClick={() => setOpenConfirmar(true)}>Enviar</Button>
+            <Box className="flex gap justify-end items-center">
+                    { isLoading
+                        ? <CircularProgress size={24}/>
+                        : <></>
+                    }
+                <Button onClick={() => setOpenConfirmar(true)}>
+                    Enviar
+                </Button>
             </Box>
 
             <DialogEnviar 

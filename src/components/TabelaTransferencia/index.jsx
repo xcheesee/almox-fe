@@ -70,7 +70,6 @@ const TabelaTransferencia = (props) => {
                                     </Tooltip> 
                                     :<></>
                             }
-                            
                         </TableCell>
                     </TableRow>
                 )

@@ -1,4 +1,4 @@
-import { Box, Snackbar } from "@mui/material";
+import { Box } from "@mui/material";
 import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
@@ -16,25 +16,20 @@ export default function Transferencia () {
 
     return(
         <ContainerPrincipal>
-            <Titulo
-                voltarPara="/principal"
-            >
+            <Titulo voltarPara="/principal" >
                 Transferências
             </Titulo>
 
             <FiltrosTransferencia />
 
             <Box className="flex gap-4 justify-end">
-                <BotaoNovo
-                    caminho="/transferencia/nova-tranferencia"
-                >Nova Transferencia</BotaoNovo>
+                <BotaoNovo caminho="/transferencia/nova-tranferencia" > Nova Transferencia </BotaoNovo>
             </Box>
 
             <TabelaTransferencia 
                 itens={transferenciasQuery?.data?.transferencias} 
                 carregando={transferenciasQuery.isLoading}
             />
-
 
             <Paginacao 
                 count={5}

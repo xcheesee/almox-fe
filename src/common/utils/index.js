@@ -552,12 +552,12 @@ export const newPwRequest = async (formData) => {
 export const loginRequest = async (inputObject) => {
   const url = `${process.env.REACT_APP_API_URL}/login`;
   const options = {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-      },
-      body: JSON.stringify(inputObject)
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify(inputObject)
   };
 
   const res = await fetch(url, options)
@@ -607,28 +607,29 @@ export async function getTransferencia(id) {
 
 export async function enviaNovaTransferencia(formData, materiais) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  const data = {}
+  materiais ={
+    "1": [
+      {
+        "entrada_id":1,
+        "item_id":4,
+        "quantidade":1
+      },
+      {
+        "entrada_id":1,
+        "item_id":45,
+        "quantidade":3
+      }
+    ]
+  } 
   formData.append("status", "enviado")
-  //appendMateriaisToRequest(formData, materiais, "itens")
-  for (let item of formData.entries()) {
-    data[item[0]] = item[1]
-  }
+  appendMateriaisToRequest(formData, materiais, "itens")
+  //for (let item of formData.entries()) {
+  //  data[item[0]] = item[1]
+  //}
 
-  data.itens = [
-    {
-     "entrada_id":1,
-     "item_id":4,
-     "quantidade":1
-    },
-    {
-    "entrada_id":1,
-    "item_id":45,
-    "quantidade":3
-    }
-  ]
   
   const headers = {
-      "Authorization": localStorage.getItem('access_token'),
+    "Authorization": localStorage.getItem('access_token'),
   };
   const res = await fetch(url, {
     method: "POST",
@@ -639,7 +640,10 @@ export async function enviaNovaTransferencia(formData, materiais) {
   if(res.ok) {
     return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
   }
-  throw {message: "Nao foi possivel enviar a transferencia", status: res.status, ok: false}
+  const error = new Error("Nao foi possivel enviar a transferencia")
+  error.status = res.status
+  error.ok = false
+  throw error
 }
 
 export async function recusaTransferencia(id, formData) {
@@ -672,8 +676,11 @@ export async function getOcorrencias() {
     const json = await res.json()
     return json.ocorrencia
   }
-  throw new Error("Nao foi possivel recuperar ocorrencias")
+  const error = new Error("Nao foi possivel recuperar ocorrencias")
+  error.status = res.status
+  throw error
 }
+
 export async function enviaNovaOcorrencia(formData, materiais) {
   materiais = { 
     "1" :[
@@ -684,7 +691,7 @@ export async function enviaNovaOcorrencia(formData, materiais) {
       }
     ]
   }
-  formData.append("justificativa", "string")
+  //formData.append("justificativa", "string")
   appendMateriaisToRequest(formData, materiais, "itens")
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
   const headers = {
@@ -700,8 +707,9 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   if(res.ok) {
     return res
   }
-
-  throw Error(res.message)
+  const error = new Error(res.message)
+  error.status = res.status
+  throw error
 
 }
 

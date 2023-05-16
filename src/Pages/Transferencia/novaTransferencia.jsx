@@ -1,4 +1,4 @@
-import { TextField, Box, MenuItem, Button, Menu } from "@mui/material";
+import { TextField, Box, MenuItem, Button, Menu, CircularProgress } from "@mui/material";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
@@ -16,6 +16,7 @@ export default function NovaTransferencia () {
     const [snackbar, setSnackbar] = useAtom(snackbarAtom)
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     const locais = useQuery({
@@ -40,11 +41,16 @@ export default function NovaTransferencia () {
                 id="nova-transferencia"
                 onSubmit={async (e) => {
                     e.preventDefault()
-
+                    setIsLoading(true)
                     const formData = new FormData(e.target)
-                    const res = await enviaNovaTransferencia(formData)
-                    setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!"})
-                    navigate("/transferencia")
+                    try{
+                        await enviaNovaTransferencia(formData)
+                        setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success"})
+                        navigate("/transferencia")
+                    } catch(e) {
+                        setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a transferencia", severity: "error"})
+                    }
+                    setIsLoading(false)
                 }}
             >
                 <TextField
@@ -91,9 +97,14 @@ export default function NovaTransferencia () {
                 baseSelecionada={baseOrigem}//valor temporario para teste
                 tooltipText="Selecione uma base antes de adicionar materiais!"
             />
-
-            <Box className="flex gap-4 justify-end">
-                <Button onClick={() => setOpenConfirmar(true)}>Enviar</Button>
+            <Box className="flex gap justify-end items-center">
+                    { isLoading
+                        ? <CircularProgress size={24}/>
+                        : <></>
+                    }
+                <Button onClick={() => setOpenConfirmar(true)}>
+                    Enviar
+                </Button>
             </Box>
 
             <DialogEnviar 
