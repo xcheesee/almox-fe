@@ -27,6 +27,7 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
             select
             size="small"
             id="mat"
+            name="mat"
             onChange={(e) => {
               let mat = allMatsRef.current.find(ele => ele.id === e.target.value)
               if (mats.find(ele => ele.id === mat.id)) return
@@ -46,6 +47,7 @@ export default function MatListCard({ tipo, mats, getMats, modSelectedMat, delSe
           <TextField 
             label="Quantidade"
             id="qtd"
+            name="qtd"
             InputProps={{ endAdornment: <InputAdornment position="end">/ {ele.quantidade} {ele.medida}</InputAdornment> }}
             inputRef={ ref => qtdRef["current"][index] = ref }
             defaultValue={ele.qtd}

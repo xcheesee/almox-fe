@@ -7,16 +7,18 @@ import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
 import { enviaNovaOcorrencia, getLocais } from "../../common/utils";
 import { useQuery } from "@tanstack/react-query";
-import { useAtom } from "jotai";
-import { snackbarAtom } from "../../atomStore";
+import { useAtom, useAtomValue } from "jotai";
+import { matTipoListAtom, snackbarAtom } from "../../atomStore";
 import { useNavigate } from "react-router-dom";
 
 export default function NovaOcorrencia () {
 
+    const [snackbar, setSnackbar] = useAtom(snackbarAtom)
+    const materiais = useAtomValue(matTipoListAtom)
+
     const [tipoOcorrencia, setTipoOcorrencia] = useState("")
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")
-    const [snackbar, setSnackbar] = useAtom(snackbarAtom)
     const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
@@ -46,7 +48,7 @@ export default function NovaOcorrencia () {
                     setIsLoading(true)
                     const formData = new FormData(e.target)
                     try {
-                        await enviaNovaOcorrencia(formData)
+                        await enviaNovaOcorrencia(formData, materiais)
                         setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
                         navigate("/ocorrencia")
 

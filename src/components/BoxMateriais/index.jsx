@@ -182,12 +182,13 @@ const BoxMateriais = (props) => {
                                         <TextField
                                             /* desabilitado se valor anterior nao selecionado */
                                             name="quantidade"
+                                            id="quantidade"
                                             label="Quantidade"
-                                            disabled={currMat === ""}
+                                            disabled={ currMat === "" }
                                             fullWidth
                                             size="small"
-                                            InputProps={{ endAdornment: <InputAdornment position="end"> { currMat !== "" ? `/ ${currMat.quantidade} ${currMat.medida}` : "" } </InputAdornment>, }}
-                                            onChange={(e) => e.target.value > currMat.quantidade ? setIsQtdError(true) : setIsQtdError(false) } 
+                                            InputProps={{ endAdornment: <InputAdornment position="end"> { currMat !== "" ? `/ ${currMat.quantidade} ${currMat.medida}` : "" } </InputAdornment> }}
+                                            onChange={ (e) => e.target.value > currMat.quantidade ? setIsQtdError(true) : setIsQtdError(false) } 
                                             error={ isQtdError }
                                             helperText={ isQtdError ? 'Quantidade usada não pode exceder a quantidade em estoque.' : '' }
                                         />

@@ -346,7 +346,11 @@ export const enviaEdicao = async (e, url, id, materiais, campo) => {
     return await res.json();
   } else if (res.status === 422) {
     const errData = await res.json()
-    throw {data: errData, status: res.status}
+    const error = new Error("Erro")
+    error.data = errData
+    error.status = res.status
+
+    throw error
   } else {
     // const errData = await res.json()
     throw res
@@ -587,7 +591,10 @@ export async function getTransferencias() {
   if(res.ok) {
     return await res.json()
   }
-  throw {message: "Nao foi possivel enviar a transferencia", status: res.status, ok: false}
+  const error = new Error("Nao foi possivel enviar a transferencia")
+  error.status = res.status
+  error.ok = false
+  throw error
 }
 
 export async function getTransferencia(id) {
@@ -602,25 +609,28 @@ export async function getTransferencia(id) {
   if(res.ok) {
     return await res.json()
   }
-  throw {message: "Nao foi possivel enviar a transferencia", status: res.status, ok: false}
+  const error = new Error("Nao foi possivel enviar a transferencia")
+  error.status = res.status
+  error.ok = false
+  throw error
 }
 
 export async function enviaNovaTransferencia(formData, materiais) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  materiais ={
+  /*materiais ={
     "1": [
       {
         "entrada_id":1,
         "item_id":4,
-        "quantidade":1
+        "qtd":1
       },
       {
         "entrada_id":1,
         "item_id":45,
-        "quantidade":3
+        "qtd":3
       }
     ]
-  } 
+  }*/ 
   formData.append("status", "enviado")
   appendMateriaisToRequest(formData, materiais, "itens")
   //for (let item of formData.entries()) {
@@ -630,6 +640,7 @@ export async function enviaNovaTransferencia(formData, materiais) {
   
   const headers = {
     "Authorization": localStorage.getItem('access_token'),
+    "Accept": "application/json",
   };
   const res = await fetch(url, {
     method: "POST",
@@ -651,7 +662,7 @@ export async function recusaTransferencia(id, formData) {
   data = formDataToObj(formData, data)
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
   const headers = {
-      "Content-Type": "application/json",
+      //"Content-Type": "application/json",
       "Accept": "application/json",
       "Authorization": localStorage.getItem('access_token'),
   };
@@ -661,12 +672,14 @@ export async function recusaTransferencia(id, formData) {
     headers: headers,
     body: JSON.stringify({"status": "recusado", ...data})
   })
+  return res
 }
 
 export async function getOcorrencias() {
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
   const headers = {
-      "Authorization": localStorage.getItem('access_token'),
+    "Authorization": localStorage.getItem('access_token'),
+    "Accept": "application/json",
   };
   const res = await fetch(url, {
     method: "GET",
@@ -682,7 +695,7 @@ export async function getOcorrencias() {
 }
 
 export async function enviaNovaOcorrencia(formData, materiais) {
-  materiais = { 
+  /*materiais = { 
     "1" :[
       {
         ocorrencia_id: 1,
@@ -690,12 +703,13 @@ export async function enviaNovaOcorrencia(formData, materiais) {
         quantidade: 1
       }
     ]
-  }
-  //formData.append("justificativa", "string")
+  }*/
+  formData.append("justificativa", "string")
   appendMateriaisToRequest(formData, materiais, "itens")
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
-  const headers = {
-      "Authorization": localStorage.getItem('access_token'),
+  const headers = { 
+    "Authorization": localStorage.getItem('access_token') ,
+    "Accept": "application/json",
   };
 
   const res = await fetch(url, {
@@ -707,10 +721,10 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   if(res.ok) {
     return res
   }
+
   const error = new Error(res.message)
   error.status = res.status
   throw error
-
 }
 
 export function appendMateriaisToRequest(formData, materiais, campoMats) {
@@ -718,9 +732,9 @@ export function appendMateriaisToRequest(formData, materiais, campoMats) {
       material.forEach( item => {
         const entries = Object.entries(item);
         entries.forEach(keyValue => {
-          //if(keyValue[0] === "quantidade") {
-          //  return
-          //}
+          if(keyValue[0] === "quantidade") {
+            return
+          }
           if(keyValue[0] === "qtd") {
             formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
           }

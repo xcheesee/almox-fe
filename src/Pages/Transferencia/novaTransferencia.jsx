@@ -8,12 +8,14 @@ import FormContainer from "../../components/FormContainer";
 import { useQuery } from "@tanstack/react-query";
 import { enviaNovaTransferencia, getLocais } from "../../common/utils";
 import { useNavigate } from "react-router-dom";
-import { useAtom } from "jotai";
-import { snackbarAtom } from "../../atomStore";
+import { useAtom, useAtomValue } from "jotai";
+import { matTipoListAtom, snackbarAtom } from "../../atomStore";
 
 export default function NovaTransferencia () {
 
     const [snackbar, setSnackbar] = useAtom(snackbarAtom)
+    const materiais = useAtomValue(matTipoListAtom)
+
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")
     const [isLoading, setIsLoading] = useState(false)
@@ -44,7 +46,7 @@ export default function NovaTransferencia () {
                     setIsLoading(true)
                     const formData = new FormData(e.target)
                     try{
-                        await enviaNovaTransferencia(formData)
+                        await enviaNovaTransferencia(formData, materiais)
                         setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success"})
                         navigate("/transferencia")
                     } catch(e) {
