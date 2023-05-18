@@ -32,13 +32,22 @@ export default function RecusaTranferencia() {
                     formData.append("base_origem_id", transferData.transferencia.base_origem_id.id)
                     formData.append("base_destino_id", transferData.transferencia.base_destino_id.id)
                     formData.append("data_transferencia", transferData.transferencia.data_transferencia)
-                    const res = await recusaTransferencia(params.id, formData)
-                    setSnackbar({
-                        message: "Transferencia recusada com sucesso!",
-                        severity: "success",
-                        open: true,
-                    })
-                    navigate("/transferencia")
+                    try {
+                        const res = await recusaTransferencia(params.id, formData)
+                        setSnackbar({
+                            message: "Transferencia recusada com sucesso!",
+                            severity: "success",
+                            open: true,
+                        })
+                        navigate("/transferencia")
+                    } catch(e) {
+                        setSnackbar({
+                            message: "Nao foi possivel enviar a solicitacao!",
+                            severity: "error",
+                            open: true,
+                        })
+                    }
+                    
                 }}
             >
                 <TextField 

@@ -617,20 +617,18 @@ export async function getTransferencia(id) {
 
 export async function enviaNovaTransferencia(formData, materiais) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  /*materiais ={
+  materiais ={
     "1": [
       {
-        "entrada_id":1,
-        "item_id":4,
+        "id":4,
         "qtd":1
       },
       {
-        "entrada_id":1,
-        "item_id":45,
+        "id":45,
         "qtd":3
       }
     ]
-  }*/ 
+  } 
   formData.append("status", "enviado")
   appendMateriaisToRequest(formData, materiais, "itens")
   //for (let item of formData.entries()) {
@@ -661,6 +659,7 @@ export async function recusaTransferencia(id, formData) {
   let data = {}
   data = formDataToObj(formData, data)
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
+  formData.append("status", "recusado")
   const headers = {
       //"Content-Type": "application/json",
       "Accept": "application/json",
@@ -668,9 +667,9 @@ export async function recusaTransferencia(id, formData) {
   };
 
   const res = await fetch(url, {
-    method: "PUT",
+    method: "POST",
     headers: headers,
-    body: JSON.stringify({"status": "recusado", ...data})
+    body: formData
   })
   return res
 }
@@ -695,15 +694,15 @@ export async function getOcorrencias() {
 }
 
 export async function enviaNovaOcorrencia(formData, materiais) {
-  /*materiais = { 
+  materiais = { 
     "1" :[
       {
         ocorrencia_id: 1,
-        item_id: 1,
-        quantidade: 1
+        id: 1,
+        qtd: 1
       }
     ]
-  }*/
+  }
   formData.append("justificativa", "string")
   appendMateriaisToRequest(formData, materiais, "itens")
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
