@@ -693,11 +693,47 @@ export async function getOcorrencias() {
   throw error
 }
 
+export async function getOcorrencia(id) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia/${id}` );
+  const headers = {
+      "Accept": "application/json",
+      "Authorization": localStorage.getItem('access_token'),
+  };
+  const res = await fetch(url, {
+    headers: headers, 
+  })
+  if(res.ok) {
+    return await res.json()
+  }
+  const error = new Error("Nao foi possivel enviar a transferencia")
+  error.status = res.status
+  error.ok = false
+  throw error
+}
+
+export async function getOcorrenciaPDF(id) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia_pdf` );
+  const headers = {
+      "Accept": "application/pdf",
+      "Authorization": localStorage.getItem('access_token'),
+  };
+  const res = await fetch(url, {
+    headers: headers, 
+  })
+  if(res.ok) {
+    return res
+  }
+  const error = new Error("Nao foi possivel enviar a transferencia")
+  error.status = res.status
+  error.ok = false
+  throw error
+
+}
+
 export async function enviaNovaOcorrencia(formData, materiais) {
   materiais = { 
     "1" :[
       {
-        ocorrencia_id: 1,
         id: 1,
         qtd: 1
       }

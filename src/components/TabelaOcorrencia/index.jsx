@@ -10,7 +10,7 @@ import {
 import Tabela from '../Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useNavigate } from 'react-router-dom';
-import { formataDateTime } from '../../common/utils';
+import { formataDateTime, getOcorrencia, getOcorrenciaPDF } from '../../common/utils';
 
 const cabecalhos = {
     "ID": null,
@@ -58,6 +58,12 @@ const TabelaOcorrencia = (props) => {
                                     ?<Tooltip title="Visualizar Boletim" placement="right" >
                                         <IconButton 
                                             disabled={cursor === 'progress'}
+                                            onClick={async () => {
+                                                const res = await getOcorrenciaPDF(entrada.id)
+                                                const blob = await res.blob()
+                                                const file = window.URL.createObjectURL(blob)
+                                                window.open(file)
+                                            }}
                                         >
                                             <PictureAsPdfIcon />
                                         </IconButton>

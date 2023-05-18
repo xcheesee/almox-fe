@@ -99,9 +99,9 @@ export default function NovaOcorrencia () {
                     ?<TextField 
                         name="boletim_ocorrencia"
                         label="Boletim de Ocorrência"
-                        //type="file"
-                        value="string"
-                        //inputProps={{ accept: "image/*, application/pdf" }}
+                        type="file"
+                        //value="string"
+                        inputProps={{ accept: "image/*, application/pdf" }}
                         InputLabelProps={{ shrink: true }}
                         //error={errors.hasOwnProperty('arquivo_nota_fiscal')}
                         //helperText={errors.arquivo_nota_fiscal || ""}
