@@ -27,7 +27,7 @@ const TabelaTransferencia = (props) => {
     const { 
         itens, 
         carregando, 
-        getSelectedEntradaInfo,
+        getSelectedTransfInfo,
         cursor, 
     } = props;
 
@@ -53,7 +53,7 @@ const TabelaTransferencia = (props) => {
                             <Tooltip title="Visualizar" placement="left">
                                 <IconButton 
                                     disabled={cursor === 'progress'}
-                                    onClick={ () => getSelectedEntradaInfo(entrada.id, 'visualizar') }
+                                    onClick={ () => getSelectedTransfInfo(entrada.id) }
                                 >
                                     <ManageSearchIcon />
                                 </IconButton>

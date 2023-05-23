@@ -655,7 +655,7 @@ export async function getTransferencias() {
   if(res.ok) {
     return await res.json()
   }
-  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
+  throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
 }
 
 export async function getTransferencia(id) {
@@ -670,7 +670,7 @@ export async function getTransferencia(id) {
   if(res.ok) {
     return await res.json()
   }
-  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
+  throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
 }
 
 export async function enviaNovaTransferencia(formData, materiais) {
