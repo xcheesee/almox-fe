@@ -1,4 +1,4 @@
-import { TextField, Box, MenuItem, Button, Menu, CircularProgress } from "@mui/material";
+import { TextField, Box, MenuItem, Button, CircularProgress } from "@mui/material";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
@@ -25,35 +25,33 @@ export default function NovaTransferencia () {
         queryKey: ['locais', "", "base"], 
         queryFn: () => getLocais("", "base"), 
         //enabled: !(depto === ''),
-        onSuccess: (res) => {
-            setBaseOrigem(res.length === 1 ? res[0].id : "")
-        }
+        onSuccess: (res) => { setBaseOrigem(res.length === 1 ? res[0].id : "") }
 
     })
 
+    async function enviaTransferenciaForm(e) {
+        e.preventDefault()
+        setIsLoading(true)
+        const formData = new FormData(e.target)
+        try{
+            await enviaNovaTransferencia(formData, materiais)
+            setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success"})
+            navigate("/transferencia")
+        } catch(e) {
+            setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a transferencia", severity: "error"})
+        }
+        setIsLoading(false)
+    }
+
     return(
         <ContainerPrincipal>
-            <Titulo
-                voltaPara="/transferencia"
-            >
+            <Titulo voltaPara="/transferencia" >
                 Nova Transferência
             </Titulo>
 
             <FormContainer 
                 id="nova-transferencia"
-                onSubmit={async (e) => {
-                    e.preventDefault()
-                    setIsLoading(true)
-                    const formData = new FormData(e.target)
-                    try{
-                        await enviaNovaTransferencia(formData, materiais)
-                        setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success"})
-                        navigate("/transferencia")
-                    } catch(e) {
-                        setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a transferencia", severity: "error"})
-                    }
-                    setIsLoading(false)
-                }}
+                onSubmit={ async (e) => await enviaTransferenciaForm(e) }
             >
                 <TextField
                     type="date"
@@ -96,7 +94,7 @@ export default function NovaTransferencia () {
 
             <BoxMateriais 
                 label="Materiais Solicitados"
-                baseSelecionada={baseOrigem}//valor temporario para teste
+                baseSelecionada={baseOrigem}
                 tooltipText="Selecione uma base antes de adicionar materiais!"
             />
             <Box className="flex gap justify-end items-center">

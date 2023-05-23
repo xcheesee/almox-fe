@@ -15,6 +15,33 @@ export default function RecusaTranferencia() {
     const navigate = useNavigate()
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const params = useParams();
+
+    async function enviaRecusaForm(e) {
+        e.preventDefault()
+        const transferData = await getTransferencia(params.id)
+        const formData = new FormData(e.target)
+
+        formData.append("base_origem_id", transferData.transferencia.base_origem_id.id)
+        formData.append("base_destino_id", transferData.transferencia.base_destino_id.id)
+        formData.append("data_transferencia", transferData.transferencia.data_transferencia)
+
+        try {
+            await recusaTransferencia(params.id, formData)
+            setSnackbar({
+                message: "Transferencia recusada com sucesso!",
+                severity: "success",
+                open: true,
+            })
+            navigate("/transferencia")
+        } catch(e) {
+            setSnackbar({
+                message: "Nao foi possivel enviar a solicitacao!",
+                severity: "error",
+                open: true,
+            })
+        }
+    }
+
     return(
         <ContainerPrincipal>
             <Titulo
@@ -25,30 +52,7 @@ export default function RecusaTranferencia() {
 
             <FormContainer 
                 id="recusa-transferencia"
-                onSubmit={async (e) => {
-                    e.preventDefault()
-                    const transferData = await getTransferencia(params.id)
-                    const formData = new FormData(e.target)
-                    formData.append("base_origem_id", transferData.transferencia.base_origem_id.id)
-                    formData.append("base_destino_id", transferData.transferencia.base_destino_id.id)
-                    formData.append("data_transferencia", transferData.transferencia.data_transferencia)
-                    try {
-                        const res = await recusaTransferencia(params.id, formData)
-                        setSnackbar({
-                            message: "Transferencia recusada com sucesso!",
-                            severity: "success",
-                            open: true,
-                        })
-                        navigate("/transferencia")
-                    } catch(e) {
-                        setSnackbar({
-                            message: "Nao foi possivel enviar a solicitacao!",
-                            severity: "error",
-                            open: true,
-                        })
-                    }
-                    
-                }}
+                onSubmit={async (e) => await enviaRecusaForm(e)}
             >
                 <TextField 
                     select
@@ -62,6 +66,7 @@ export default function RecusaTranferencia() {
                     <MenuItem value="furto">Furto</MenuItem>
                     <MenuItem value="avaria">Avaria</MenuItem>
                 </TextField>
+
                 <TextField
                     multiline
                     label="Justificativa"

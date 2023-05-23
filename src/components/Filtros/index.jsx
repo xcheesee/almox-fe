@@ -13,7 +13,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TuneIcon from '@mui/icons-material/Tune';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { filtrosAtom, mudancaAtom, pageAtom } from '../../atomStore';
+import { filtrosAtom, pageAtom } from '../../atomStore';
 import { useAtom, useSetAtom } from 'jotai';
 
 const Filtros = (props) => {
@@ -23,7 +23,10 @@ const Filtros = (props) => {
     const {
         entrada,
         ordem,
+        transferencia,
+        ocorrencia,
         limpaData,
+        limpaForms,
         ...other
     } = props;
 
@@ -32,7 +35,6 @@ const Filtros = (props) => {
     
     const setPage = useSetAtom(pageAtom)
     const [filtros, setFiltros] = useAtom(filtrosAtom)
-    // const setHouveMudanca = useSetAtom(mudancaAtom)
 
     //limpaData apaga o dataRange no callback limpar
     const limpar = () => {
@@ -44,6 +46,7 @@ const Filtros = (props) => {
         if (typeof limpaData === 'function') {
             limpaData([''])
         }
+        limpaForms()
     }
 
     const salvar = (e) => {
@@ -52,12 +55,18 @@ const Filtros = (props) => {
         const formData = new FormData(e.target);
         const [entradaDepoisDe, entradaAntesDe] = validaData(entrada)
         const [ordemDepoisDe, ordemAntesDe] = validaData(ordem)
+        const [transfDepoisDe, transfAntesDe] = validaData(transferencia)
+        const [ocorrenciaDepoisDe, ocorrenciaAntesDe] = validaData(ocorrencia)
         const inputObject = {
             ...Object.fromEntries(formData),
             entrada_depois_de: entradaDepoisDe,
             entrada_antes_de: entradaAntesDe,
             servico_depois_de: ordemDepoisDe,
-            servico_antes_de: ordemAntesDe
+            servico_antes_de: ordemAntesDe,
+            transferencia_depois_de: transfDepoisDe,
+            transferencia_antes_de: transfAntesDe,
+            ocorrencia_depois_de: ocorrenciaDepoisDe,
+            ocorrencia_antes_de: ocorrenciaAntesDe,
         }
         
         setFiltros(

@@ -2,23 +2,14 @@ import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import Filtros from '../Filtros';
 import CampoDataRange from '../CampoDataRange';
-//import { getMatTipos } from '../../common/utils';
-//import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const FiltrosTransferencia = () => {
-    //const queryClient = useQueryClient();
-
-    //const tipos = useQuery(['tiposMateriais'], getMatTipos, {
-    //    staleTime: 120000,
-    //    cacheTime: 120000,
-    //});
     
     const [datas, setDatas] = useState(['']);
 
     return (
         <Filtros
-            //valor da data de entrada e funcao para limpar tal data
-            //entrada={datas}
+            transferencia={datas}
             limpaData={setDatas}
         >
             <CampoDataRange
@@ -33,15 +24,15 @@ const FiltrosTransferencia = () => {
 
             <TextField 
                 label="Base de Origem"
-                name="base_origem_id"
-                id="base_origem_id"
+                name="origem"
+                id="origem"
                 InputLabelProps={{ shrink: true }}
             />
 
             <TextField 
                 label="Base de Destino"
-                name="base_destino_id"
-                id="base_destino_id"
+                name="destino"
+                id="destino"
                 InputLabelProps={{ shrink: true }}
             />
             

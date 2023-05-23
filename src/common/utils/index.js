@@ -1,4 +1,35 @@
 // formatações
+export function appendMateriaisToRequest(formData, materiais, campoMats) {
+  Object.values(materiais)?.forEach((material, index) => {
+      material.forEach( item => {
+        const entries = Object.entries(item);
+        entries.forEach(keyValue => {
+          if(keyValue[0] === "quantidade") {
+            return
+          }
+          if(keyValue[0] === "qtd") {
+            formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
+          }
+          formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
+        });
+      })
+    });
+}
+
+export function errorBuilder(res, text) {
+  const error = new Error(text)
+  error.status = res.status
+  error.ok = false
+  return error
+}
+
+export function formDataToObj(formData, obj) {
+  for (let item of formData.entries()) {
+    obj[item[0]] = item[1]
+  }
+  return obj
+}
+
 export const mascaraProcessoSei = (processoSei) => {
     if (processoSei !== null && processoSei !== "" && processoSei !== undefined)
       return processoSei.replace(/([\d]{4})([\d]{4})([\d]{7})([\d]{1})/gm, '$1.$2/$3-$4');
@@ -60,6 +91,14 @@ export const headers = {
   'Authorization': token
 }
 
+export function headerBuilder () {
+  return {
+    'Accept': 'application/json',
+    'Authorization': localStorage.getItem('access_token')
+
+  }
+}
+
 // Create
 export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) => {
   e.preventDefault();
@@ -73,9 +112,9 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
   if (formData.get('processo_sei') !== null) 
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
-  if (materiais) {
+  if (materiais) 
     appendMateriaisToRequest(formData, materiais, campoMats)
-  }
+  
 
   if (profissionais) {
     profissionais?.forEach((profissional, index) => {
@@ -118,19 +157,20 @@ export const getBaixa = async (baixaId) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token'),
+        ...headerBuilder()
+        //'Accept': 'application/json',
+        //'Authorization': localStorage.getItem('access_token'),
       },
   };
 
   const res = await fetch(url, options)
-  if(res.status === 404) throw res
-  else {
-    const itensRes = await fetch(urlItems, options)
-    const ordem = await res.json()
-    const itens = await itensRes.json()
-    return {ordem, itens}
-  }
+  if(!res.ok) throw res
+  const itensRes = await fetch(urlItems, options)
+  if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperaro os itens da baixa!")
+  const [ordem, itens] = Promise.all([res.json(), itensRes.json()])
+  //const ordem = await res.json()
+  //const itens = await itensRes.json()
+  return {ordem, itens}
 
     // .then(async res => {
     //   if (res.status === 404) {
@@ -155,8 +195,9 @@ export const getLocais = (depto, tipo) => {
   const options = {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token')
+        ...headerBuilder()
+        //'Accept': 'application/json',
+        //'Authorization': localStorage.getItem('access_token')
       }
   };
 
@@ -173,8 +214,9 @@ export const getTabela = (rota, page="", filtros="", sort="") => {
   const options = {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token')
+        ...headerBuilder()
+        //'Accept': 'application/json',
+        //'Authorization': localStorage.getItem('access_token')
       }
   };
 
@@ -188,18 +230,23 @@ export const getTabela = (rota, page="", filtros="", sort="") => {
       )
 }
 
-export const getMateriais = async (rota, id, ) => {
+export const getMateriais = async (rota, id) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     }
   };
 
-  const data = await (await fetch(url, options)).json()
-  return data.data
+  const res = await fetch(url, options)
+  if(res.ok) {
+    const json = await res.json()
+    return json.data
+  }
+  throw errorBuilder(res, "Nao foi possivel recuperar os materiais!")
 }
 
 export const getOrdemProfissionais = async (id, ) => {
@@ -207,27 +254,37 @@ export const getOrdemProfissionais = async (id, ) => {
   const options = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     }
   };
 
-  const data = await (await fetch(url, options)).json()
-  return data.data
+  const res = await fetch(url, options)
+  if(res.ok) {
+    const json = await res.json()
+    return json.data
+  }
+  throw errorBuilder(res, "Nao foi possivel recuperar os profissionais!")
 }
 
-export const getRegistro = async (rota, id, ) => {
+export const getRegistro = async (rota, id) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     }
   };
   
-  const data = await (await fetch(url, options)).json()
-  return data.data
+  const res = await fetch(url, options)
+  if(res.ok) {
+    const json = await res.json()
+    return json.data
+  }
+  throw errorBuilder(res, "Nao foi possivel recuperar o registro!")
 }
 
 export const getDetalhesBaixa = async (id) => {
@@ -235,13 +292,17 @@ export const getDetalhesBaixa = async (id) => {
   const options = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     }
   };
 
-  const data = await (await fetch(url, options)).json();
-  return data;
+  const res = await fetch(url, options);
+  if(res.ok) {
+    return await res.json();
+  }
+  throw errorBuilder(res, "Nao foi possivel recuperar a baixa!")
 }
 
 export const getItemsAcabando = () => {
@@ -249,8 +310,9 @@ export const getItemsAcabando = () => {
   const options = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     }
   };
 
@@ -270,8 +332,9 @@ export const enviaBaixa = async (items, baixaId) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token'),
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token'),
     },
     body: JSON.stringify(items)
   };
@@ -312,8 +375,9 @@ export const AddAlerta = async (alertaData, idAlerta) => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     },
     body: JSON.stringify({
       ...alertaData
@@ -334,8 +398,9 @@ export const enviaEdicao = async (e, url, id, materiais, campo) => {
   const options = {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     },
     body: enviaForm(e, materiais, campo) // TODO: implementar edicao de profissionais
   };
@@ -368,8 +433,9 @@ export const excluiRegistro = (rota, id, /* setHouveMudanca ,*/ setOpenExcluir, 
   const options = {
     method: 'DELETE',
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      ...headerBuilder()
+      //'Accept': 'application/json',
+      //'Authorization': localStorage.getItem('access_token')
     },
   };
 
@@ -407,14 +473,17 @@ export const getMatTipos = async () => {
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
+          //...headerBuilder()
           'Accept': 'application/json',
           'Authorization': localStorage.getItem('access_token'),
       },
   };
   
   const res = await fetch(url, options);
-  const temp = await res.json();
-  return temp.data
+  if (res.ok) {
+    return await res.json();
+  }
+  throw errorBuilder(res, "Nao foi possivel recuperar os materiais")
 }
 
 export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
@@ -426,8 +495,9 @@ export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionad
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': localStorage.getItem('access_token'),
+          ...headerBuilder()
+          //'Accept': 'application/json',
+          //'Authorization': localStorage.getItem('access_token'),
       },
   };
   return await (await fetch(url, options)).json()
@@ -537,16 +607,14 @@ export const authEditOrdem = (perfil) => {
 export const newPwRequest = async (formData) => {
   const url = new URL( `${process.env.REACT_APP_API_URL}/alterar_senha` );
   
-  const headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Authorization": localStorage.getItem('access_token'),
-  };
   const data = {...formData, email: localStorage.getItem('usermail')}
 
   const res = await fetch(url, {
       method: "POST",
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+        ...headerBuilder()
+      },
       body: JSON.stringify(data),
   })
   
@@ -566,53 +634,43 @@ export const loginRequest = async (inputObject) => {
 
   const res = await fetch(url, options)
 
-  if(res.status === 401) {
-    const errData = await res.json()
-    throw new Error(errData.message)
-  } else if (res.ok) {
+  if(res.ok) {
     const data = await res.json()
     data.email = inputObject.email
     return data
-  } else {
-    const errData = await res.json()
-    throw new Error(errData.message)
   }
+  const errData = await res.json()
+  throw errorBuilder(res, errData.message)
 }
 
 export async function getTransferencias() {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  const headers = {
-      "Accept": "application/json",
-      "Authorization": localStorage.getItem('access_token'),
-  };
+  //const headers = {
+  //    "Accept": "application/json",
+  //    "Authorization": localStorage.getItem('access_token'),
+  //};
   const res = await fetch(url, {
     headers: headers, 
   })
   if(res.ok) {
     return await res.json()
   }
-  const error = new Error("Nao foi possivel enviar a transferencia")
-  error.status = res.status
-  error.ok = false
-  throw error
+  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
 }
 
 export async function getTransferencia(id) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
-  const headers = {
-      "Accept": "application/json",
-      "Authorization": localStorage.getItem('access_token'),
-  };
+  //const headers = {
+  //    "Accept": "application/json",
+  //    "Authorization": localStorage.getItem('access_token'),
+  //};
   const res = await fetch(url, {
     headers: headers, 
   })
   if(res.ok) {
     return await res.json()
   }
-  const error = new Error("Nao foi possivel enviar a transferencia")
-  error.status = res.status
-  error.ok = false
-  throw error
+  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
 }
 
 export async function enviaNovaTransferencia(formData, materiais) {
@@ -629,17 +687,14 @@ export async function enviaNovaTransferencia(formData, materiais) {
       }
     ]
   } 
-  formData.append("status", "enviado")
+  //formData.append("status", "enviado")
   appendMateriaisToRequest(formData, materiais, "itens")
-  //for (let item of formData.entries()) {
-  //  data[item[0]] = item[1]
-  //}
-
   
-  const headers = {
-    "Authorization": localStorage.getItem('access_token'),
-    "Accept": "application/json",
-  };
+  //const headers = {
+  //  "Authorization": localStorage.getItem('access_token'),
+  //  "Accept": "application/json",
+  //};
+
   const res = await fetch(url, {
     method: "POST",
     headers: headers, 
@@ -649,37 +704,35 @@ export async function enviaNovaTransferencia(formData, materiais) {
   if(res.ok) {
     return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
   }
-  const error = new Error("Nao foi possivel enviar a transferencia")
-  error.status = res.status
-  error.ok = false
-  throw error
+  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
 }
 
 export async function recusaTransferencia(id, formData) {
-  let data = {}
-  data = formDataToObj(formData, data)
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
   formData.append("status", "recusado")
-  const headers = {
-      //"Content-Type": "application/json",
-      "Accept": "application/json",
-      "Authorization": localStorage.getItem('access_token'),
-  };
+  //const headers = {
+  //    "Accept": "application/json",
+  //    "Authorization": localStorage.getItem('access_token'),
+  //};
 
   const res = await fetch(url, {
     method: "POST",
     headers: headers,
     body: formData
   })
-  return res
+
+  if (res.ok) {
+    return res
+  }
+  throw errorBuilder(res, "Nao foi possivel enviar a recusa")
 }
 
 export async function getOcorrencias() {
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
-  const headers = {
-    "Authorization": localStorage.getItem('access_token'),
-    "Accept": "application/json",
-  };
+  //const headers = {
+  //  "Authorization": localStorage.getItem('access_token'),
+  //  "Accept": "application/json",
+  //};
   const res = await fetch(url, {
     method: "GET",
     headers: headers
@@ -688,46 +741,40 @@ export async function getOcorrencias() {
     const json = await res.json()
     return json.ocorrencia
   }
-  const error = new Error("Nao foi possivel recuperar ocorrencias")
-  error.status = res.status
-  throw error
+  throw errorBuilder(res, "Nao foi possivel recuperar ocorrencias")
 }
 
 export async function getOcorrencia(id) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia/${id}` );
-  const headers = {
-      "Accept": "application/json",
-      "Authorization": localStorage.getItem('access_token'),
-  };
+  //const headers = {
+  //    "Accept": "application/json",
+  //    "Authorization": localStorage.getItem('access_token'),
+  //};
   const res = await fetch(url, {
     headers: headers, 
   })
+
   if(res.ok) {
     return await res.json()
   }
-  const error = new Error("Nao foi possivel enviar a transferencia")
-  error.status = res.status
-  error.ok = false
-  throw error
+  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
 }
 
 export async function getOcorrenciaPDF(id) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia_pdf` );
+  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia_pdf/${id}` );
   const headers = {
       "Accept": "application/pdf",
       "Authorization": localStorage.getItem('access_token'),
   };
+
   const res = await fetch(url, {
     headers: headers, 
   })
+
   if(res.ok) {
     return res
   }
-  const error = new Error("Nao foi possivel enviar a transferencia")
-  error.status = res.status
-  error.ok = false
-  throw error
-
+  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
 }
 
 export async function enviaNovaOcorrencia(formData, materiais) {
@@ -742,10 +789,10 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   formData.append("justificativa", "string")
   appendMateriaisToRequest(formData, materiais, "itens")
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
-  const headers = { 
-    "Authorization": localStorage.getItem('access_token') ,
-    "Accept": "application/json",
-  };
+  //const headers = { 
+  //  "Authorization": localStorage.getItem('access_token') ,
+  //  "Accept": "application/json",
+  //};
 
   const res = await fetch(url, {
     method: "POST",
@@ -756,32 +803,5 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   if(res.ok) {
     return res
   }
-
-  const error = new Error(res.message)
-  error.status = res.status
-  throw error
-}
-
-export function appendMateriaisToRequest(formData, materiais, campoMats) {
-  Object.values(materiais)?.forEach((material, index) => {
-      material.forEach( item => {
-        const entries = Object.entries(item);
-        entries.forEach(keyValue => {
-          if(keyValue[0] === "quantidade") {
-            return
-          }
-          if(keyValue[0] === "qtd") {
-            formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
-          }
-          formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
-        });
-      })
-    });
-}
-
-export function formDataToObj(formData, obj) {
-  for (let item of formData.entries()) {
-    obj[item[0]] = item[1]
-  }
-  return obj
+  throw errorBuilder(res, res.message)
 }

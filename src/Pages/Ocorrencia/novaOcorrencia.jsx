@@ -32,6 +32,21 @@ export default function NovaOcorrencia () {
         }
 
     })
+    
+    async function enviaOcorrenciaForm(e) {
+        e.preventDefault()
+        setIsLoading(true)
+        const formData = new FormData(e.target)
+        try {
+            await enviaNovaOcorrencia(formData, materiais)
+            setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
+            navigate("/ocorrencia")
+
+        } catch(e){
+            setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a ocorrencia", severity: "error"})
+        }
+        setIsLoading(false)
+    }
 
     return(
         <ContainerPrincipal>
@@ -43,20 +58,7 @@ export default function NovaOcorrencia () {
 
             <FormContainer 
                 id="nova-ocorrencia"
-                onSubmit={async (e) => {
-                    e.preventDefault()
-                    setIsLoading(true)
-                    const formData = new FormData(e.target)
-                    try {
-                        await enviaNovaOcorrencia(formData, materiais)
-                        setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
-                        navigate("/ocorrencia")
-
-                    } catch(e){
-                        setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a ocorrencia", severity: "error"})
-                    }
-                    setIsLoading(false)
-                }}
+                onSubmit={ async (e) => await enviaOcorrenciaForm(e) }
             >
                 <TextField
                     type="date"
@@ -72,12 +74,15 @@ export default function NovaOcorrencia () {
                     label="Base envolvida"
                     name="local_id"
                     id="local_id"
-                    SelectProps={{value: baseOrigem, onChange: (e) => setBaseOrigem(e.target.value)}}
+                    SelectProps={{ value: baseOrigem, onChange: (e) => setBaseOrigem(e.target.value) }}
                     fullWidth
                 >
                     {locais.isLoading
                         ?<MenuItem>Carregando...</MenuItem>
-                        :locais?.data?.map((local, index) => <MenuItem value={local.id} key={`base${index}`}>{local.nome}</MenuItem>)
+                        :locais?.data
+                            ?.map( (local, index) => 
+                                <MenuItem value={local.id} key={`base${index}`}>{local.nome}</MenuItem> 
+                            )
                     }
                 </TextField>
 
@@ -87,7 +92,7 @@ export default function NovaOcorrencia () {
                     name="tipo_ocorrencia"
                     id="tipo_ocorrencia"
                     value={tipoOcorrencia}
-                    onChange={(e) => setTipoOcorrencia(e.target.value)}
+                    onChange={ (e) => setTipoOcorrencia(e.target.value) }
                     fullWidth
                 >
                     <MenuItem value="avaria">Avaria</MenuItem>
@@ -100,11 +105,10 @@ export default function NovaOcorrencia () {
                         name="boletim_ocorrencia"
                         label="Boletim de Ocorrência"
                         type="file"
-                        //value="string"
                         inputProps={{ accept: "image/*, application/pdf" }}
                         InputLabelProps={{ shrink: true }}
-                        //error={errors.hasOwnProperty('arquivo_nota_fiscal')}
-                        //helperText={errors.arquivo_nota_fiscal || ""}
+                        //error={errors.hasOwnProperty('boletim_ocorrencia')}
+                        //helperText={errors.boletim_ocorrencia || ""}
                         fullWidth
                     />
                     : <></>
@@ -118,10 +122,10 @@ export default function NovaOcorrencia () {
             />
 
             <Box className="flex gap justify-end items-center">
-                    { isLoading
-                        ? <CircularProgress size={24}/>
-                        : <></>
-                    }
+                { isLoading
+                    ? <CircularProgress size={24}/>
+                    : <></>
+                }
                 <Button onClick={() => setOpenConfirmar(true)}>
                     Enviar
                 </Button>

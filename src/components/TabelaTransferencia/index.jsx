@@ -17,8 +17,8 @@ import RecusaTranferencia from '../../Pages/Transferencia/recusaTransferencia';
 const cabecalhos = {
     "ID": null,
     "Data": "data_transferencia",
-    "Base Origem": "origem.nome",
-    "Base Destino": "destino.nome",
+    "Base Origem": "origem",
+    "Base Destino": "destino",
     "Status": "status",
     "Ação": null
 }
@@ -46,8 +46,8 @@ const TabelaTransferencia = (props) => {
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
                         <TableCell align="center">{formataDateTime(entrada.data_transferencia) || "---"}</TableCell>
-                        <TableCell align="center" className='capitalize'>{entrada.base_origem_id.nome || "---"}</TableCell>
-                        <TableCell align="center" className='capitalize'>{entrada.base_destino_id.nome || "---"}</TableCell>
+                        <TableCell align="center" className='capitalize'>{entrada.origem || "---"}</TableCell>
+                        <TableCell align="center" className='capitalize'>{entrada.destino || "---"}</TableCell>
                         <TableCell align="center" className='capitalize'>{entrada.status || "---"}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">

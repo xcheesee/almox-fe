@@ -60,7 +60,8 @@ const BoxMateriais = (props) => {
 
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
         onSuccess: res => {
-            res.forEach( tipo => setNewMats(prev => ({...prev, [tipo.id]: []})) )
+            console.log(res)
+            res.data.forEach( tipo => setNewMats(prev => ({...prev, [tipo.id]: []})) )
         }
     });
 
@@ -137,6 +138,7 @@ const BoxMateriais = (props) => {
                                         {
                                             tiposMats?.data 
                                                 ? tiposMats?.data
+                                                    ?.data
                                                     ?.map((val, i) => 
                                                         <MenuItem value={val.id} key={`mitem${i}`} >
                                                             {primeiraLetraMaiuscula(val.nome)}
@@ -211,7 +213,7 @@ const BoxMateriais = (props) => {
                             if (keyVal[1].length === 0) return 
                             return <MatListCard 
                                 key={`tipo${keyVal[0]}-item${i}`} 
-                                tipo={tiposMats?.data?.find(ele => +ele.id === +keyVal[0])} 
+                                tipo={tiposMats?.data?.data?.find(ele => +ele.id === +keyVal[0])} 
                                 mats={keyVal[1]}
                                 getMats={getMats} 
                                 modSelectedMat={modSelectedMat}

@@ -5,17 +5,22 @@ import {
     TableCell,
     IconButton,
     Tooltip,
-    Dialog,
 } from '@mui/material';
 import Tabela from '../Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import { useNavigate } from 'react-router-dom';
-import { formataDateTime, getOcorrencia, getOcorrenciaPDF } from '../../common/utils';
+import { formataDateTime, getOcorrenciaPDF } from '../../common/utils';
+
+async function openPdfPopup(id) {
+    const res = await getOcorrenciaPDF(id)
+    const blob = await res.blob()
+    const file = window.URL.createObjectURL(blob)
+    return window.open(file)
+}
 
 const cabecalhos = {
     "ID": null,
-    "Data": "data_transferencia",
-    "Local": "local_id",
+    "Data": "data_ocorrencia",
+    "Local": "local",
     "Tipo de Ocorrencia": "tipo_ocorrencia",
     "Ação": null
 }
@@ -28,7 +33,7 @@ const TabelaOcorrencia = (props) => {
         cursor, 
     } = props;
 
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     return (
         <Tabela 
@@ -42,7 +47,7 @@ const TabelaOcorrencia = (props) => {
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
                         <TableCell align="center">{formataDateTime(entrada.data_ocorrencia) || "---"}</TableCell>
-                        <TableCell align="center" className='capitalize'>{entrada.local_id || "---"}</TableCell>
+                        <TableCell align="center" className='capitalize'>{entrada.local || "---"}</TableCell>
                         <TableCell align="center" className='capitalize'>{entrada.tipo_ocorrencia || "---"}</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Visualizar" placement="left">
@@ -58,12 +63,7 @@ const TabelaOcorrencia = (props) => {
                                     ?<Tooltip title="Visualizar Boletim" placement="right" >
                                         <IconButton 
                                             disabled={cursor === 'progress'}
-                                            onClick={async () => {
-                                                const res = await getOcorrenciaPDF(entrada.id)
-                                                const blob = await res.blob()
-                                                const file = window.URL.createObjectURL(blob)
-                                                window.open(file)
-                                            }}
+                                            onClick={async () => openPdfPopup(entrada.id) }
                                         >
                                             <PictureAsPdfIcon />
                                         </IconButton>
