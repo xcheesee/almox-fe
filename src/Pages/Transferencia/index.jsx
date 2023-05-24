@@ -56,7 +56,7 @@ export default function Transferencia () {
                 />
 
                 <Paginacao 
-                    count={5}
+                    count={transferenciasQuery?.meta?.page}
                 />
 
             </ContainerPrincipal>

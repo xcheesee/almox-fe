@@ -1,9 +1,10 @@
 // formatações
-export function appendMateriaisToRequest(formData, materiais, campoMats) {
-  Object.values(materiais)?.forEach((material, index) => {
-      material.forEach( item => {
+export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {
+  let index = 0 // valor para cadastrar itens de tipos diferentes, em sequencia
+  Object.values(materiaisTipos)?.forEach((materiais) => {
+      materiais.forEach( item => {
         const entries = Object.entries(item);
-        entries.forEach(keyValue => {
+        entries.forEach((keyValue) => {
           if(keyValue[0] === "quantidade") {
             return
           }
@@ -12,6 +13,7 @@ export function appendMateriaisToRequest(formData, materiais, campoMats) {
           }
           formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
         });
+        index++;
       })
     });
 }
@@ -685,18 +687,18 @@ export async function getTransferenciaItem(id) {
 
 export async function enviaNovaTransferencia(formData, materiais) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  materiais ={
-    "1": [
-      {
-        "id":4,
-        "qtd":1
-      },
-      {
-        "id":45,
-        "qtd":3
-      }
-    ]
-  } 
+  //materiais ={
+  //  "1": [
+  //    {
+  //      "id":4,
+  //      "qtd":1
+  //    },
+  //    {
+  //      "id":45,
+  //      "qtd":3
+  //    }
+  //  ]
+  //} 
   appendMateriaisToRequest(formData, materiais, "itens")
   
 

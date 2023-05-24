@@ -37,7 +37,7 @@ export default function Ocorrencia () {
 
             <TabelaOcorrencia itens={ocorrenciaQuery?.data?.data} carregando={ocorrenciaQuery.isLoading} />
 
-            <Paginacao count={10} />
+            <Paginacao count={ocorrenciaQuery?.meta?.page} />
         </ContainerPrincipal>
     )
 }
