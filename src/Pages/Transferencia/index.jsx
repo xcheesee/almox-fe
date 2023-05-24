@@ -6,7 +6,7 @@ import TabelaTransferencia from "../../components/TabelaTransferencia";
 import FiltrosTransferencia from "../../components/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
 import { useQuery } from "@tanstack/react-query";
-import { getTabela, getTransferencia } from "../../common/utils";
+import { getMateriais, getTabela, getTransferencia, getTransferenciaItem } from "../../common/utils";
 import { useAtomValue } from "jotai";
 import { filtrosAtom, pageAtom, sortAtom } from "../../atomStore";
 import DialogDetalhesTransferencia from "../../components/DialogDetalhesTransferencia";
@@ -20,6 +20,7 @@ export default function Transferencia () {
 
     const [openDetalhes, setOpenDetalhes] = useState(false)
     const [transfData, setTransfData] = useState()
+    const [transfItensData, setTransfItensData] = useState()
 
     const transferenciasQuery = useQuery({
         queryKey: ['transferencias', page, filtros, sort],
@@ -28,7 +29,10 @@ export default function Transferencia () {
 
     async function getSelectedTransfInfo(id) {
         const dados = await getTransferencia(id)
+        const itensDados = await getMateriais("transferencia", id)
         setTransfData(dados.data)
+        setTransfItensData(itensDados)
+        //setTransfItensData(itensDados)
         setOpenDetalhes(true)
     }
 
@@ -58,7 +62,10 @@ export default function Transferencia () {
             </ContainerPrincipal>
 
         <Dialog open={openDetalhes} fullWidth>
-            <DialogDetalhesTransferencia setOpenDetalhes={setOpenDetalhes} dados={transfData}/>
+            <DialogDetalhesTransferencia 
+                setOpenDetalhes={setOpenDetalhes} 
+                dados={transfData} 
+                materiais={transfItensData}/>
         </Dialog>
         </>
     )

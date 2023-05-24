@@ -236,8 +236,6 @@ export const getMateriais = async (rota, id) => {
     method: 'GET',
     headers: {
       ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
     }
   };
 
@@ -673,6 +671,18 @@ export async function getTransferencia(id) {
   throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
 }
 
+export async function getTransferenciaItem(id) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia_itens/${id}` );
+  const res = await fetch(url, {
+    headers: headers,
+  })
+  if(res.ok) {
+    return await res.json()
+  }
+  throw errorBuilder(res, "Nao foi possivel recuperar os itens de transferencia")
+
+}
+
 export async function enviaNovaTransferencia(formData, materiais) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
   materiais ={
@@ -687,13 +697,8 @@ export async function enviaNovaTransferencia(formData, materiais) {
       }
     ]
   } 
-  //formData.append("status", "enviado")
   appendMateriaisToRequest(formData, materiais, "itens")
   
-  //const headers = {
-  //  "Authorization": localStorage.getItem('access_token'),
-  //  "Accept": "application/json",
-  //};
 
   const res = await fetch(url, {
     method: "POST",
