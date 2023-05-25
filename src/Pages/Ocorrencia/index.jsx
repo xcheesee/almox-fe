@@ -4,10 +4,10 @@ import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Paginacao from "../../components/Paginacao";
 import Titulo from "../../components/Titulo";
 import { getTabela } from "../../common/utils";
-import TabelaOcorrencia from "../../components/TabelaOcorrencia";
 import { useAtomValue } from "jotai";
 import { filtrosAtom, pageAtom, sortAtom } from "../../atomStore";
-import FiltrosOcorrencia from "../../components/FiltrosOcorrencia";
+import FiltrosOcorrencia from "../../components/Ocorrencia/FiltrosOcorrencia";
+import TabelaOcorrencia from "../../components/Ocorrencia/TabelaOcorrencia";
 
 export default function Ocorrencia () {
     const sort = useAtomValue(sortAtom)

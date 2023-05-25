@@ -1,6 +1,7 @@
 import React from 'react';
 //import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../common/utils';
 import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import {
     TableRow,
     TableCell,
@@ -8,11 +9,11 @@ import {
     Tooltip,
     Dialog,
 } from '@mui/material';
-import Tabela from '../Tabela';
+import Tabela from '../../Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useNavigate } from 'react-router-dom';
-import { formataDateTime } from '../../common/utils';
-import RecusaTranferencia from '../../Pages/Transferencia/recusaTransferencia';
+import { formataDateTime, isAllowedTransf } from '../../../common/utils';
+import RecusaTranferencia from '../../../Pages/Transferencia/recusaTransferencia';
 
 const cabecalhos = {
     "ID": null,
@@ -53,14 +54,15 @@ const TabelaTransferencia = (props) => {
                             <Tooltip title="Visualizar" placement="left">
                                 <IconButton 
                                     disabled={cursor === 'progress'}
-                                    onClick={ () => getSelectedTransfInfo(entrada.id) }
+                                    onClick={ () => getSelectedTransfInfo(entrada.id, "visualizar") }
                                 >
                                     <ManageSearchIcon />
                                 </IconButton>
                             </Tooltip>
                             {
-                                entrada.status === "enviado"
-                                    ?<Tooltip title="Recusar" placement="right" >
+                                entrada.status === "enviado" && isAllowedTransf()
+                                    ?<>
+                                    <Tooltip title="Recusar" placement="right" >
                                         <IconButton 
                                             disabled={cursor === 'progress'}
                                             onClick={ () => navigate(`/transferencia/recusa-transferencia/${entrada.id}`) }
@@ -68,6 +70,15 @@ const TabelaTransferencia = (props) => {
                                             <CancelScheduleSendIcon />
                                         </IconButton>
                                     </Tooltip> 
+                                    <Tooltip title="Receber" placement="right" >
+                                        <IconButton 
+                                            disabled={cursor === 'progress'}
+                                            onClick={ () => getSelectedTransfInfo(entrada.id, "confirmar") }
+                                        >
+                                            <DoneAllIcon />
+                                        </IconButton>
+                                    </Tooltip> 
+                                    </>
                                     :<></>
                             }
                         </TableCell>

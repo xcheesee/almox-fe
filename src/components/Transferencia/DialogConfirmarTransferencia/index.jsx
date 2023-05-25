@@ -11,10 +11,10 @@ import {
     Dialog,
     Modal
 } from '@mui/material';
-import TituloTexto from '../TituloTexto';
-import { mascaraContrato, formataDateTime } from '../../common/utils';
+import TituloTexto from '../../TituloTexto';
+import { mascaraContrato, formataDateTime } from '../../../common/utils';
 
-const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, materiais, isLoading }) => {
+const DialogConfirmarTransferencia = ({ openConfirmar, setOpenConfirmar, dados, materiais, isLoading }) => {
     if (isLoading)
         return (
             <Modal open>
@@ -25,8 +25,8 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
         )
 
     return (
-        <Dialog open={openDetalhes} fullWidth>
-            <DialogTitle>Transferencia #{dados.id}</DialogTitle>
+        <Dialog open={openConfirmar} fullWidth>
+            <DialogTitle>Receber Transferencia #{dados.id}</DialogTitle>
             <DialogContent>
                 <Typography 
                     sx={{
@@ -113,13 +113,20 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
 
             <DialogActions>
                 <Button 
-                    onClick={() => setOpenDetalhes(false)}
+                    onClick={() => setOpenConfirmar(false)}
                 >
-                    OK
+                    Cancelar
+                </Button>
+                <Button 
+                    onClick={() => setOpenConfirmar(false)}
+                    variant='contained'
+                    color="primary"
+                >
+                    Confirmar
                 </Button>
             </DialogActions>
         </Dialog>
     );
 }
 
-export default DialogDetalhesTransferencia;
+export default DialogConfirmarTransferencia;

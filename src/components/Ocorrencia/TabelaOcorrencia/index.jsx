@@ -6,9 +6,9 @@ import {
     IconButton,
     Tooltip,
 } from '@mui/material';
-import Tabela from '../Tabela';
+import Tabela from '../../Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import { formataDateTime, getOcorrenciaPDF } from '../../common/utils';
+import { formataDateTime, getOcorrenciaPDF } from '../../../common/utils';
 
 async function openPdfPopup(id) {
     const res = await getOcorrenciaPDF(id)

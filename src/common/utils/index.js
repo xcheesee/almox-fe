@@ -815,3 +815,15 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   }
   throw errorBuilder(res, res.message)
 }
+
+export function isAllowedTransf() {
+  const perfil = localStorage.getItem("perfil");
+  switch(perfil) {
+    case 'almoxarife':
+      return true;
+    case 'encarregado':
+      return true;
+    default:
+      return false;
+  }
+}

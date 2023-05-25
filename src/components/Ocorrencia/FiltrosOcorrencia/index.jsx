@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MenuItem, TextField } from '@mui/material';
-import Filtros from '../Filtros';
-import CampoDataRange from '../CampoDataRange';
+import Filtros from '../../Filtros';
+import CampoDataRange from '../../CampoDataRange';
 
 const FiltrosOcorrencia = () => {
 
