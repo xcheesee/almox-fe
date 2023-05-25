@@ -69,8 +69,9 @@ const FiltrosEntrada = () => {
                 disabled={tipos.isLoading}
                 className="col-span-2"
             >
-                {                                    
-                    tipos?.data?.data
+                {tipos.isLoading
+                    ?<MenuItem>Carregando...</MenuItem>
+                    :tipos?.data?.data
                         ?.map((val, i) => 
                             <MenuItem value={val.nome} key={i} className='capitalize'>
                                 {val.nome}

@@ -172,7 +172,7 @@ export const getBaixa = async (baixaId) => {
   if(!res.ok) throw res
   const itensRes = await fetch(urlItems, options)
   if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperaro os itens da baixa!")
-  const [ordem, itens] = Promise.all([res.json(), itensRes.json()])
+  const [ordem, itens] = await Promise.all([res.json(), itensRes.json()])
   //const ordem = await res.json()
   //const itens = await itensRes.json()
   return {ordem, itens}
@@ -466,7 +466,6 @@ export const excluiRegistro = (rota, id, /* setHouveMudanca ,*/ setOpenExcluir, 
         });
       }
     })
-    .then(data => console.log(data))
     .catch(err => console.log(err))
 }
 

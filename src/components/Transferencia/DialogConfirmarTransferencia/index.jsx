@@ -122,7 +122,7 @@ const DialogConfirmarTransferencia = ({ openConfirmar, setOpenConfirmar, dados, 
                     variant='contained'
                     color="primary"
                 >
-                    Confirmar
+                    Receber
                 </Button>
             </DialogActions>
         </Dialog>

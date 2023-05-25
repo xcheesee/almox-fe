@@ -1,7 +1,6 @@
 import React from 'react';
-//import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../common/utils';
-import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 import {
     TableRow,
     TableCell,
@@ -67,7 +66,7 @@ const TabelaTransferencia = (props) => {
                                             disabled={cursor === 'progress'}
                                             onClick={ () => navigate(`/transferencia/recusa-transferencia/${entrada.id}`) }
                                         >
-                                            <CancelScheduleSendIcon />
+                                            <DoNotDisturbAltIcon />
                                         </IconButton>
                                     </Tooltip> 
                                     <Tooltip title="Receber" placement="right" >
@@ -75,7 +74,7 @@ const TabelaTransferencia = (props) => {
                                             disabled={cursor === 'progress'}
                                             onClick={ () => getSelectedTransfInfo(entrada.id, "confirmar") }
                                         >
-                                            <DoneAllIcon />
+                                            <ArchiveIcon />
                                         </IconButton>
                                     </Tooltip> 
                                     </>

@@ -59,6 +59,7 @@ export default function RecusaTranferencia() {
                     label="Motivo da Recusa"
                     name="observacao_motivo"
                     id="observacao_motivo"
+                    SelectProps={{ defaultValue: ""}}
                 >
                     <MenuItem value="nao_enviado">Não Enviado</MenuItem>
                     <MenuItem value="itens_faltando">Itens Faltando</MenuItem>
