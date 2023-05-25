@@ -1,4 +1,4 @@
-import { Box, Dialog } from "@mui/material";
+import { Box } from "@mui/material";
 import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
@@ -6,7 +6,7 @@ import TabelaTransferencia from "../../components/TabelaTransferencia";
 import FiltrosTransferencia from "../../components/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
 import { useQuery } from "@tanstack/react-query";
-import { getMateriais, getTabela, getTransferencia, getTransferenciaItem } from "../../common/utils";
+import { getMateriais, getTabela, getTransferencia } from "../../common/utils";
 import { useAtomValue } from "jotai";
 import { filtrosAtom, pageAtom, sortAtom } from "../../atomStore";
 import DialogDetalhesTransferencia from "../../components/DialogDetalhesTransferencia";
@@ -19,8 +19,9 @@ export default function Transferencia () {
     const filtros = useAtomValue(filtrosAtom)
 
     const [openDetalhes, setOpenDetalhes] = useState(false)
-    const [transfData, setTransfData] = useState()
-    const [transfItensData, setTransfItensData] = useState()
+    const [transfData, setTransfData] = useState("")
+    const [transfItensData, setTransfItensData] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     const transferenciasQuery = useQuery({
         queryKey: ['transferencias', page, filtros, sort],
@@ -28,12 +29,12 @@ export default function Transferencia () {
     })
 
     async function getSelectedTransfInfo(id) {
-        const dados = await getTransferencia(id)
-        const itensDados = await getMateriais("transferencia", id)
+        setIsLoading(true)
+        setOpenDetalhes(true)
+        const [dados, itensDados] = await Promise.all([getTransferencia(id), getMateriais("transferencia", id)])
         setTransfData(dados.data)
         setTransfItensData(itensDados)
-        //setTransfItensData(itensDados)
-        setOpenDetalhes(true)
+        setIsLoading(false)
     }
 
     return(
@@ -61,12 +62,12 @@ export default function Transferencia () {
 
             </ContainerPrincipal>
 
-        <Dialog open={openDetalhes} fullWidth>
             <DialogDetalhesTransferencia 
+                openDetalhes={openDetalhes}
                 setOpenDetalhes={setOpenDetalhes} 
                 dados={transfData} 
+                isLoading={isLoading}
                 materiais={transfItensData}/>
-        </Dialog>
         </>
     )
 }

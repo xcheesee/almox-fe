@@ -11,6 +11,7 @@ const Login = () => {
 
     const loginMutation = useMutation((data) => loginRequest(data) , {
         onSuccess: (data) => {
+            console.log(data)
             localStorage.setItem('usermail', data.email)
             localStorage.setItem('access_token', `${data.token_type} ${data.access_token}`);
             localStorage.setItem('username', data.username);

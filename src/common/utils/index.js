@@ -1,4 +1,7 @@
 // formatações
+
+//recebe o store de materiais, separado pelo tipo, e o formData que sera enviado pela requisicao.
+//transfere os itens, sequencialmente, na  configuracao: item[posicao][campo]= valor
 export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {
   let index = 0 // valor para cadastrar itens de tipos diferentes, em sequencia
   Object.values(materiaisTipos)?.forEach((materiais) => {

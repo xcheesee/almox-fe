@@ -6,18 +6,27 @@ import {
     Typography,
     DialogActions,
     Button,
-    Paper
+    Paper,
+    CircularProgress,
+    Dialog,
+    Modal
 } from '@mui/material';
 import TituloTexto from '../TituloTexto';
 import { mascaraContrato, formataDateTime } from '../../common/utils';
 
-const DialogDetalhesTransferencia = ({ setOpenDetalhes, dados, materiais }) => {
+const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, materiais, isLoading }) => {
+    if (isLoading)
+        return (
+            <Modal open>
+                <Box className='flex justify-center items-center w-full h-full'>
+                    <CircularProgress size={36} color='color'/>
+                </Box>
+            </Modal>
+        )
+
     return (
-        <>
-            <DialogTitle>
-                Transferencia #{dados.id}
-            </DialogTitle>
-            
+        <Dialog open={openDetalhes} fullWidth>
+            <DialogTitle>Transferencia #{dados.id}</DialogTitle>
             <DialogContent>
                 <Typography 
                     sx={{
@@ -109,7 +118,7 @@ const DialogDetalhesTransferencia = ({ setOpenDetalhes, dados, materiais }) => {
                     OK
                 </Button>
             </DialogActions>
-        </>
+        </Dialog>
     );
 }
 
