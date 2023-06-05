@@ -19,6 +19,7 @@ export default function NovaTransferencia () {
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [errors, setErrors] = useState({})
     const navigate = useNavigate()
 
     const locais = useQuery({
@@ -32,12 +33,14 @@ export default function NovaTransferencia () {
     async function enviaTransferenciaForm(e) {
         e.preventDefault()
         setIsLoading(true)
+        setErrors({})
         const formData = new FormData(e.target)
         try{
             await enviaNovaTransferencia(formData, materiais)
             setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success"})
             navigate("/transferencia")
         } catch(e) {
+            setErrors(e.errors)
             setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a transferencia", severity: "error"})
         }
         setIsLoading(false)
@@ -57,9 +60,12 @@ export default function NovaTransferencia () {
                     type="date"
                     label="Data de Transferência"
                     name="data_transferencia"
+                    error={errors.hasOwnProperty("data_transferencia")}
+                    helperText = {errors.hasOwnProperty("data_transferencia") ? errors.data_transferencia : "" }
                     id="data_transferencia"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
+                    required
                 />
 
                 <TextField
@@ -67,9 +73,12 @@ export default function NovaTransferencia () {
                     label="Base de Origem"
                     name="base_origem_id"
                     id="base_origem_id"
+                    error={errors.hasOwnProperty("base_origem_id")}
+                    helperText = {errors.hasOwnProperty("base_origem_id") ? errors.base_origem_id : "" }
                     value={baseOrigem}
                     onChange={e => setBaseOrigem(e.target.value)} 
                     fullWidth
+                    required
                 >
                     {locais.isLoading
                         ?<MenuItem value={0}>Carregando...</MenuItem>
@@ -82,8 +91,11 @@ export default function NovaTransferencia () {
                     label="Base de Destino"
                     name="base_destino_id"
                     id="base_destino_id"
+                    error={errors.hasOwnProperty("base_destino_id")}
+                    helperText = {errors.hasOwnProperty("base_destino_id") ? errors.base_destino_id : "" }
                     defaultValue=""
                     fullWidth
+                    required
                 >
                     {locais.isLoading
                         ?<MenuItem value={0}>Carregando...</MenuItem>
@@ -96,6 +108,7 @@ export default function NovaTransferencia () {
                 label="Materiais Solicitados"
                 baseSelecionada={baseOrigem}
                 tooltipText="Selecione uma base antes de adicionar materiais!"
+                errors={errors}
             />
             <Box className="flex gap justify-end items-center">
                     { isLoading

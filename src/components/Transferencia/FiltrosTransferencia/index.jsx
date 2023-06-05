@@ -43,13 +43,12 @@ const FiltrosTransferencia = () => {
                 name="status"
                 id="status"
                 className='col-span-2'
+                defaultValue=""
             >
                 {
-                    Object.entries(statusTransferencia).map( keyVal => (<MenuItem value={keyVal[0]}>{keyVal[1]}</MenuItem>) )
+                    Object.entries(statusTransferencia).map( (keyVal, index) => (<MenuItem key={`status${index}`}value={keyVal[0]}>{keyVal[1]}</MenuItem>) )
                 }
-
             </TextField>
-            
         </Filtros>
     );
 }

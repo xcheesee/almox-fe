@@ -16,6 +16,7 @@ export default function RecusaTranferencia() {
 
     const navigate = useNavigate()
     const [openConfirmar, setOpenConfirmar] = useState(false)
+    const [errors, setErrors] = useState({});
     const params = useParams();
 
     async function enviaRecusaForm(e) {
@@ -62,7 +63,10 @@ export default function RecusaTranferencia() {
                     label="Motivo da Recusa"
                     name="observacao_motivo"
                     id="observacao_motivo"
+                    error={errors.hasOwnProperty("observacao_motivo")}
+                    helperText={errors.hasOwnProperty("observacao_motivo") ? errors.observacao_motivo : ""}
                     SelectProps={{ defaultValue: ""}}
+                    required
                 >
                     <MenuItem value="nao_enviado">Não Enviado</MenuItem>
                     <MenuItem value="itens_faltando">Itens Faltando</MenuItem>
@@ -76,6 +80,8 @@ export default function RecusaTranferencia() {
                     label="Justificativa"
                     rows={4}
                     name="observacao"
+                    error={errors.hasOwnProperty("observacao")}
+                    helperText={errors.hasOwnProperty("observacao") ? errors.observacao : ""}
                     id="observacao"
                 />
             </FormContainer>

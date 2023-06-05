@@ -12,7 +12,7 @@ import {
     Modal
 } from '@mui/material';
 import TituloTexto from '../../TituloTexto';
-import { mascaraContrato, formataDateTime, mascaraMotivoRecusa } from '../../../common/utils';
+import { formataDateTime, mascaraMotivoRecusa } from '../../../common/utils';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, materiais, isLoading }) => {
@@ -67,57 +67,53 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
                     {
                         dados.status === "recusado"
                             ?<>
-                            <TituloTexto 
-                                titulo="Motivo da Recusa"
-                                texto={mascaraMotivoRecusa(dados.observacao_motivo|| "---")}
+                                <TituloTexto 
+                                    titulo="Motivo da Recusa"
+                                    texto={mascaraMotivoRecusa(dados.observacao_motivo|| "---")}
 
-                            />
+                                />
 
-                            <TituloTexto 
-                                titulo="Observacoes"
-                                texto={dados.observacao || "---"}
-                            />
+                                <TituloTexto 
+                                    titulo="Observacoes"
+                                    className="col-start-3"
+                                    texto={dados.observacao || "---"}
+                                />
                             </>
                             :<></>
                     }
-
                 </Box>
 
                 {materiais && materiais.length > 0
-                    ?
-                        <>
-                            <Typography sx={{
-                                color: (theme) => theme.palette.color.bg,
-                                fontSize: '1.3rem',
-                                fontWeight: 'light',
-                                mb: '0.5rem'
-                            }}>
-                                Materiais
-                            </Typography>
-                            <Paper 
-                                className="flex flex-col gap-4 px-4 py-5" 
-                                sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
-                                elevation={3}
-                            >
-                                {materiais.map(material => (
-                                    <Paper className="p-3" key={material.id}>
-                                        <TituloTexto 
-                                            titulo={material.item}
-                                            texto={`${material.quantidade} ${material.medida}`}
-                                        />
-                                    </Paper>
-                                ))}
-                            </Paper>
-                        </>
-                    :
-                        ""
+                    ?<>
+                        <Typography sx={{
+                            color: (theme) => theme.palette.color.bg,
+                            fontSize: '1.3rem',
+                            fontWeight: 'light',
+                            mb: '0.5rem'
+                        }}>
+                            Materiais
+                        </Typography>
+                        <Paper 
+                            className="flex flex-col gap-4 px-4 py-5" 
+                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
+                            elevation={3}
+                        >
+                            {materiais.map(material => (
+                                <Paper className="p-3" key={material.id}>
+                                    <TituloTexto 
+                                        titulo={material.item}
+                                        texto={`${material.quantidade} ${material.medida}`}
+                                    />
+                                </Paper>
+                            ))}
+                        </Paper>
+                    </>
+                    :<></> 
                 }
             </DialogContent>
 
             <DialogActions>
-                <Button 
-                    onClick={() => setOpenDetalhes(false)}
-                >
+                <Button onClick={ () => setOpenDetalhes(false) }>
                     OK
                 </Button>
             </DialogActions>

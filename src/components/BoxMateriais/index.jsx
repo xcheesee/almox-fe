@@ -25,6 +25,7 @@ const BoxMateriais = (props) => {
         baseSelecionada = "",
         deptoSelecionado = "",
         tooltipText="Selecione um departamento antes de adicionar materiais!",
+        errors={},
     } = props;
 
     const [newMats, setNewMats] = useAtom(matTipoListAtom)
@@ -88,6 +89,8 @@ const BoxMateriais = (props) => {
         return await getMatItens(tipoId, true, baseSelecionada, deptoSelecionado)
     }
 
+    if(tiposMats.isFetching) return <></>
+
     return (
         <Box className="mx-8 mb-12">
             <Typography sx={style.label} >
@@ -132,7 +135,9 @@ const BoxMateriais = (props) => {
                                         }}
                                         disabled={(deptoSelecionado === "" && baseSelecionada === "") || tiposMats?.isLoading}
                                         className="col-span-2"
+                                        error={errors.hasOwnProperty("itens")}
                                         fullWidth
+                                        required
                                     >
                                         {
                                             tiposMats?.data 
@@ -148,57 +153,57 @@ const BoxMateriais = (props) => {
                                 </FormGroup>
                             </Tooltip>
 
-                            {!tiposMats.isFetching ?
-                                <Fade in={true} >
-                                    <Box className='grid grid-cols-2 gap-4 row-start-2'>
-                                        <Tooltip title={tipoSelected && allMats.length === 0 ? "Não há materiais desse tipo na base!" : ""}>
-                                        <TextField
-                                            select
-                                            id="material-seletor"
-                                            name="material"
-                                            label="Material"
-                                            defaultValue=""
-                                            value={currMat}
-                                            onChange={e => {
-                                                setIsInListError(false)
-                                                setCurrMat(e.target.value)
-                                            }}
-                                            disabled={allMats.length === 0 }
-                                            size="small"
-                                            error={isInListError}
-                                            helperText={isInListError ? "Material ja se encontra na lista!" : ""}
-                                            fullWidth
-                                        >
-                                            {
-                                                allMats
-                                                ?.map((val, index) =>
-                                                    <MenuItem value={val} key={`idc${index}`} className="flex justify-between">
-                                                        {val.nome}
-                                                    </MenuItem>
-                                                )
-                                            }
-                                        </TextField >
-                                        </Tooltip >
+                            <Fade in={true} >
+                                <Box className='grid grid-cols-2 gap-4 row-start-2'>
+                                    <Tooltip title={tipoSelected && allMats.length === 0 ? "Não há materiais desse tipo na base!" : ""}>
+                                    <TextField
+                                        select
+                                        id="material-seletor"
+                                        name="material"
+                                        label="Material"
+                                        defaultValue=""
+                                        value={currMat}
+                                        onChange={e => {
+                                            setIsInListError(false)
+                                            setCurrMat(e.target.value)
+                                        }}
+                                        disabled={allMats.length === 0 }
+                                        size="small"
+                                        error={isInListError || errors.hasOwnProperty("itens")}
+                                        helperText={isInListError ? "Material ja se encontra na lista!" : ""}
+                                        fullWidth
+                                        required
+                                    >
+                                        {
+                                            allMats
+                                            ?.map((val, index) =>
+                                                <MenuItem value={val} key={`idc${index}`} className="flex justify-between">
+                                                    {val.nome}
+                                                </MenuItem>
+                                            )
+                                        }
+                                    </TextField >
+                                    </Tooltip >
 
-                                        <TextField
-                                            /* desabilitado se valor anterior nao selecionado */
-                                            name="quantidade"
-                                            id="quantidade"
-                                            label="Quantidade"
-                                            disabled={ currMat === "" }
-                                            fullWidth
-                                            size="small"
-                                            InputProps={{ endAdornment: <InputAdornment position="end"> { currMat !== "" ? `/ ${currMat.quantidade} ${currMat.medida}` : "" } </InputAdornment> }}
-                                            onChange={ (e) => e.target.value > currMat.quantidade ? setIsQtdError(true) : setIsQtdError(false) } 
-                                            error={ isQtdError }
-                                            helperText={ isQtdError ? 'Quantidade usada não pode exceder a quantidade em estoque.' : '' }
-                                        />
-                                    </Box>
-                                </Fade>
-                                : ""
-                            }
+                                    <TextField
+                                        /* desabilitado se valor anterior nao selecionado */
+                                        name="quantidade"
+                                        id="quantidade"
+                                        label="Quantidade"
+                                        disabled={ currMat === "" }
+                                        fullWidth
+                                        size="small"
+                                        InputProps={{ endAdornment: <InputAdornment position="end"> { currMat !== "" ? `/ ${currMat.quantidade} ${currMat.medida}` : "" } </InputAdornment> }}
+                                        onChange={ (e) => e.target.value > currMat.quantidade ? setIsQtdError(true) : setIsQtdError(false) } 
+                                        error={ isQtdError || errors.hasOwnProperty("itens") }
+                                        helperText={ isQtdError ? 'Quantidade usada não pode exceder a quantidade em estoque.' : '' }
+                                        required
+                                    />
+                                </Box>
+                            </Fade>
                         </Paper>
                     </Fade>
+                    { errors.hasOwnProperty('itens') ? <Box className='text-center text-red-500 text-lg font-light'>{errors.itens}</Box> : <></>}
 
                     <Box className="self-end">
                         <Button type="submit" 

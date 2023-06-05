@@ -25,8 +25,10 @@ export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {
 
 export function errorBuilder(res, text) {
   const error = new Error(text)
+  error.text = text
   error.status = res.status
   error.ok = false
+  error.errors = res?.errors ?? "" 
   return error
 }
 
@@ -653,16 +655,12 @@ export const loginRequest = async (inputObject) => {
 
 export async function getTransferencias() {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  //const headers = {
-  //    "Accept": "application/json",
-  //    "Authorization": localStorage.getItem('access_token'),
-  //};
   const res = await fetch(url, {
-    headers: headers, 
+    headers: headerBuilder(), 
   })
-  if(res.ok) {
-    return await res.json()
-  }
+
+  if(res.ok) return await res.json()
+  
   throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
 }
 
@@ -681,7 +679,7 @@ export async function getTransferencia(id) {
 export async function getTransferenciaItem(id) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia_itens/${id}` );
   const res = await fetch(url, {
-    headers: headers,
+    headers: headerBuilder(),
   })
   if(res.ok) {
     return await res.json()
@@ -700,42 +698,39 @@ export async function enviaNovaTransferencia(formData, materiais) {
     headers: headerBuilder(), 
     body: formData,
   })
-
+  const json = await res.json()
+  const error = errorBuilder(res, "Nao foi possivel enviar a transferencia")
+  error.errors = json.errors
   if(res.ok) {
     return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
   }
-  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
+  throw error
 }
 
 export async function recusaTransferencia(id, formData) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
   formData.append("status", "recusado")
-  //const headers = {
-  //    "Accept": "application/json",
-  //    "Authorization": localStorage.getItem('access_token'),
-  //};
 
   const res = await fetch(url, {
     method: "POST",
-    headers: headers,
+    headers: headerBuilder(),
     body: formData
   })
 
-  if (res.ok) {
-    return res
-  }
-  throw errorBuilder(res, "Nao foi possivel enviar a recusa")
+  if (res.ok) return res
+
+  const json = res.json()
+  const error = errorBuilder(res, "Nao foi possivel enviar a recusa")
+  error.errors = json.errors
+  
+  throw error
 }
 
 export async function getOcorrencias() {
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
-  //const headers = {
-  //  "Authorization": localStorage.getItem('access_token'),
-  //  "Accept": "application/json",
-  //};
   const res = await fetch(url, {
     method: "GET",
-    headers: headers
+    headers: headerBuilder()
   })
   if (res.ok) {
     const json = await res.json()
@@ -746,17 +741,12 @@ export async function getOcorrencias() {
 
 export async function getOcorrencia(id) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia/${id}` );
-  //const headers = {
-  //    "Accept": "application/json",
-  //    "Authorization": localStorage.getItem('access_token'),
-  //};
   const res = await fetch(url, {
-    headers: headers, 
+    headers: headerBuilder(), 
   })
 
-  if(res.ok) {
-    return await res.json()
-  }
+  if(res.ok)  return await res.json() 
+
   throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
 }
 
@@ -771,38 +761,32 @@ export async function getOcorrenciaPDF(id) {
     headers: headers, 
   })
 
-  if(res.ok) {
-    return res
-  }
+  if(res.ok) return res
+  
   throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
 }
 
 export async function enviaNovaOcorrencia(formData, materiais) {
-  materiais = { 
-    "1" :[
-      {
-        id: 1,
-        qtd: 1
-      }
-    ]
-  }
+  //materiais = { 
+  //  "1" :[
+  //    {
+  //      id: 1,
+  //      qtd: 1
+  //    }
+  //  ]
+  //}
   formData.append("justificativa", "string")
   appendMateriaisToRequest(formData, materiais, "itens")
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
-  //const headers = { 
-  //  "Authorization": localStorage.getItem('access_token') ,
-  //  "Accept": "application/json",
-  //};
 
   const res = await fetch(url, {
     method: "POST",
-    headers: headers,
+    headers: headerBuilder(),
     body: formData 
   })
 
-  if(res.ok) {
-    return res
-  }
+  if(res.ok) return res
+  
   throw errorBuilder(res, res.message)
 }
 
@@ -813,6 +797,11 @@ export async function confirmaTransferencia(id_transferencia) {
     headers: headerBuilder(),
     body: JSON.stringify({status: "recebido"})
   })
+
+  const json = await res.json()
+  if(res.ok) return
+
+  throw errorBuilder(res, json.mensagem)
 }
 
 export function isAllowedTransf() {

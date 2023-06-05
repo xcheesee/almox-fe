@@ -14,6 +14,8 @@ import {
 import TituloTexto from '../../TituloTexto';
 import { formataDateTime, confirmaTransferencia } from '../../../common/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSetAtom } from 'jotai';
+import { snackbarAtom } from '../../../atomStore';
 
 const DialogConfirmarTransferencia = ({ 
     openConfirmar,
@@ -23,6 +25,7 @@ const DialogConfirmarTransferencia = ({
     isLoading,
     setIsLoading
 }) => {
+    const setSnackbar = useSetAtom(snackbarAtom)
 
     const queryClient = useQueryClient() 
     const confirmarMutation = useMutation( async (id_transferencia) => {
@@ -32,6 +35,19 @@ const DialogConfirmarTransferencia = ({
         onSuccess: async () => {
             await queryClient.invalidateQueries(['transferencias'])
             setIsLoading(false);
+            setSnackbar({
+                open: true,
+                severity: "success",
+                message: "Transferencia Recebida Com Sucesso!"
+            })
+        },
+        onError: async (res) => {
+            setSnackbar({
+                open: true,
+                severity: "error",
+                message: res.text
+            })
+            setIsLoading(false)
         }
     })
 
@@ -80,44 +96,39 @@ const DialogConfirmarTransferencia = ({
                         className="capitalize"
                         texto={dados.status || "---"}
                     />
-
                 </Box>
 
                 {materiais && materiais.length > 0
-                    ?
-                        <>
-                            <Typography sx={{
-                                color: (theme) => theme.palette.color.bg,
-                                fontSize: '1.3rem',
-                                fontWeight: 'light',
-                                mb: '0.5rem'
-                            }}>
-                                Materiais
-                            </Typography>
-                            <Paper 
-                                className="flex flex-col gap-4 px-4 py-5" 
-                                sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
-                                elevation={3}
-                            >
-                                {materiais.map(material => (
-                                    <Paper className="p-3" key={material.id}>
-                                        <TituloTexto 
-                                            titulo={material.item}
-                                            texto={`${material.quantidade} ${material.medida}`}
-                                        />
-                                    </Paper>
-                                ))}
-                            </Paper>
-                        </>
-                    :
-                        ""
+                    ?<>
+                        <Typography sx={{
+                            color: (theme) => theme.palette.color.bg,
+                            fontSize: '1.3rem',
+                            fontWeight: 'light',
+                            mb: '0.5rem'
+                        }}>
+                            Materiais
+                        </Typography>
+                        <Paper 
+                            className="flex flex-col gap-4 px-4 py-5" 
+                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
+                            elevation={3}
+                        >
+                            {materiais.map(material => (
+                                <Paper className="p-3" key={material.id}>
+                                    <TituloTexto 
+                                        titulo={material.item}
+                                        texto={`${material.quantidade} ${material.medida}`}
+                                    />
+                                </Paper>
+                            ))}
+                        </Paper>
+                    </>
+                    :<></>
                 }
             </DialogContent>
 
             <DialogActions>
-                <Button 
-                    onClick={() => setOpenConfirmar(false)}
-                >
+                <Button onClick={ () => setOpenConfirmar(false) }>
                     Cancelar
                 </Button>
                 <Button 
