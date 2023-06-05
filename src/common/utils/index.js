@@ -1,5 +1,7 @@
 // formatações
 
+import { motivosRecusa } from "./constants";
+
 //recebe o store de materiais, separado pelo tipo, e o formData que sera enviado pela requisicao.
 //transfere os itens, sequencialmente, na  configuracao: item[posicao][campo]= valor
 export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {
@@ -47,6 +49,10 @@ export const mascaraContrato = (contrato) => {
         return contrato.replace(/([\d]{3})([\w]{4})(\d{4})/gm, '$1/$2/$3');
     else
         return "";
+}
+
+export function mascaraMotivoRecusa (motivoRecusa) {
+  return motivosRecusa[motivoRecusa]
 }
 
 export const formataDateTime = (dateTime) => {
@@ -662,13 +668,10 @@ export async function getTransferencias() {
 
 export async function getTransferencia(id) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
-  //const headers = {
-  //    "Accept": "application/json",
-  //    "Authorization": localStorage.getItem('access_token'),
-  //};
   const res = await fetch(url, {
-    headers: headers, 
+    headers: headerBuilder(), 
   })
+
   if(res.ok) {
     return await res.json()
   }
@@ -689,25 +692,13 @@ export async function getTransferenciaItem(id) {
 
 export async function enviaNovaTransferencia(formData, materiais) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  //materiais ={
-  //  "1": [
-  //    {
-  //      "id":4,
-  //      "qtd":1
-  //    },
-  //    {
-  //      "id":45,
-  //      "qtd":3
-  //    }
-  //  ]
-  //} 
   appendMateriaisToRequest(formData, materiais, "itens")
   
 
   const res = await fetch(url, {
     method: "POST",
-    headers: headers, 
-    body: formData
+    headers: headerBuilder(), 
+    body: formData,
   })
 
   if(res.ok) {
@@ -813,6 +804,15 @@ export async function enviaNovaOcorrencia(formData, materiais) {
     return res
   }
   throw errorBuilder(res, res.message)
+}
+
+export async function confirmaTransferencia(id_transferencia) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/transferir_itens/${id_transferencia}` );
+  const res = await fetch(url, {
+    method: "POST",
+    headers: headerBuilder(),
+    body: JSON.stringify({status: "recebido"})
+  })
 }
 
 export function isAllowedTransf() {

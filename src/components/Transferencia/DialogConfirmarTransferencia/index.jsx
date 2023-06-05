@@ -12,9 +12,29 @@ import {
     Modal
 } from '@mui/material';
 import TituloTexto from '../../TituloTexto';
-import { mascaraContrato, formataDateTime } from '../../../common/utils';
+import { formataDateTime, confirmaTransferencia } from '../../../common/utils';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const DialogConfirmarTransferencia = ({ openConfirmar, setOpenConfirmar, dados, materiais, isLoading }) => {
+const DialogConfirmarTransferencia = ({ 
+    openConfirmar,
+    setOpenConfirmar,
+    dados,
+    materiais,
+    isLoading,
+    setIsLoading
+}) => {
+
+    const queryClient = useQueryClient() 
+    const confirmarMutation = useMutation( async (id_transferencia) => {
+        setIsLoading(true);
+        await confirmaTransferencia(id_transferencia)
+    }, {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(['transferencias'])
+            setIsLoading(false);
+        }
+    })
+
     if (isLoading)
         return (
             <Modal open>
@@ -61,23 +81,6 @@ const DialogConfirmarTransferencia = ({ openConfirmar, setOpenConfirmar, dados, 
                         texto={dados.status || "---"}
                     />
 
-                    {
-                        dados.status === "recusado"
-                            ?<>
-                            <TituloTexto 
-                                titulo="Motivo da Recusa"
-                                texto={mascaraContrato(dados.observacao_motivo|| "---")}
-
-                            />
-
-                            <TituloTexto 
-                                titulo="Observacoes"
-                                texto={dados.observacao || "---"}
-                            />
-                            </>
-                            :<></>
-                    }
-
                 </Box>
 
                 {materiais && materiais.length > 0
@@ -118,7 +121,10 @@ const DialogConfirmarTransferencia = ({ openConfirmar, setOpenConfirmar, dados, 
                     Cancelar
                 </Button>
                 <Button 
-                    onClick={() => setOpenConfirmar(false)}
+                    onClick={() => {
+                        confirmarMutation.mutate(dados.id)
+                        setOpenConfirmar(false)}
+                    }
                     variant='contained'
                     color="primary"
                 >

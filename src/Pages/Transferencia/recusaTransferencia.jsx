@@ -8,9 +8,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getTransferencia, recusaTransferencia } from "../../common/utils";
 import { useSetAtom } from "jotai";
 import { snackbarAtom } from "../../atomStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function RecusaTranferencia() {
     const setSnackbar = useSetAtom(snackbarAtom)
+    const queryClient = useQueryClient()
 
     const navigate = useNavigate()
     const [openConfirmar, setOpenConfirmar] = useState(false)
@@ -21,9 +23,9 @@ export default function RecusaTranferencia() {
         const transferData = await getTransferencia(params.id)
         const formData = new FormData(e.target)
 
-        formData.append("base_origem_id", transferData.transferencia.base_origem_id.id)
-        formData.append("base_destino_id", transferData.transferencia.base_destino_id.id)
-        formData.append("data_transferencia", transferData.transferencia.data_transferencia)
+        formData.append("base_origem_id", transferData.data.base_origem_id)
+        formData.append("base_destino_id", transferData.data.base_destino_id)
+        formData.append("data_transferencia", transferData.data.data_transferencia)
 
         try {
             await recusaTransferencia(params.id, formData)
@@ -32,6 +34,7 @@ export default function RecusaTranferencia() {
                 severity: "success",
                 open: true,
             })
+            await queryClient.invalidateQueries(['transferencias'])
             navigate("/transferencia")
         } catch(e) {
             setSnackbar({

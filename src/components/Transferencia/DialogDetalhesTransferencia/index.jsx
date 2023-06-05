@@ -12,7 +12,8 @@ import {
     Modal
 } from '@mui/material';
 import TituloTexto from '../../TituloTexto';
-import { mascaraContrato, formataDateTime } from '../../../common/utils';
+import { mascaraContrato, formataDateTime, mascaraMotivoRecusa } from '../../../common/utils';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, materiais, isLoading }) => {
     if (isLoading)
@@ -39,15 +40,17 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
                     Detalhes
                 </Typography>
                 
-                <Box className="mx-4 my-5 grid grid-cols-2 gap-8">
-                    <TituloTexto 
-                        titulo="Base de Destino"
-                        texto={dados.destino || "---"}
-                    />
-
+                <Box className="mx-4 my-5 grid grid-cols-[1fr_max_content_1fr] items-center gap-8">
                     <TituloTexto 
                         titulo="Base de Origem"
                         texto={dados.origem || "---"}
+                    />
+
+                    <ArrowForwardIcon />
+
+                    <TituloTexto 
+                        titulo="Base de Destino"
+                        texto={dados.destino || "---"}
                     />
 
                     <TituloTexto 
@@ -57,7 +60,7 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
 
                     <TituloTexto 
                         titulo="Status"
-                        className="capitalize"
+                        className="capitalize col-start-3"
                         texto={dados.status || "---"}
                     />
 
@@ -66,7 +69,7 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
                             ?<>
                             <TituloTexto 
                                 titulo="Motivo da Recusa"
-                                texto={mascaraContrato(dados.observacao_motivo|| "---")}
+                                texto={mascaraMotivoRecusa(dados.observacao_motivo|| "---")}
 
                             />
 

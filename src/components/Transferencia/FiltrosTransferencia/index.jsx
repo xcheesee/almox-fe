@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import Filtros from '../../Filtros';
 import CampoDataRange from '../../CampoDataRange';
+import { statusTransferencia } from '../../../common/utils/constants';
 
 const FiltrosTransferencia = () => {
     
@@ -35,6 +36,19 @@ const FiltrosTransferencia = () => {
                 id="destino"
                 InputLabelProps={{ shrink: true }}
             />
+
+            <TextField
+                select
+                label="Status"
+                name="status"
+                id="status"
+                className='col-span-2'
+            >
+                {
+                    Object.entries(statusTransferencia).map( keyVal => (<MenuItem value={keyVal[0]}>{keyVal[1]}</MenuItem>) )
+                }
+
+            </TextField>
             
         </Filtros>
     );

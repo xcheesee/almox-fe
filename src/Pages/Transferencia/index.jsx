@@ -90,6 +90,7 @@ export default function Transferencia () {
                 setOpenConfirmar={setOpenConfirmar} 
                 dados={transfData} 
                 isLoading={isLoading}
+                setIsLoading={setIsLoading}
                 materiais={transfItensData}/>
         </>
     )

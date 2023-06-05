@@ -23,7 +23,7 @@ export default function NovaTransferencia () {
 
     const locais = useQuery({
         queryKey: ['locais', "", "base"], 
-        queryFn: () => getLocais("", "base"), 
+        queryFn: () => getLocais("", ""), 
         //enabled: !(depto === ''),
         onSuccess: (res) => { setBaseOrigem(res.length === 1 ? res[0].id : "") }
 
