@@ -6,7 +6,7 @@ import TabelaTransferencia from "../../components/Transferencia/TabelaTransferen
 import FiltrosTransferencia from "../../components/Transferencia/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
 import { useQuery } from "@tanstack/react-query";
-import { getMateriais, getTabela, getTransferencia } from "../../common/utils";
+import { authCreateTransf, getMateriais, getTabela, getTransferencia } from "../../common/utils";
 import { useAtomValue } from "jotai";
 import { filtrosAtom, pageAtom, sortAtom } from "../../atomStore";
 import DialogDetalhesTransferencia from "../../components/Transferencia/DialogDetalhesTransferencia";
@@ -61,10 +61,12 @@ export default function Transferencia () {
                 </Titulo>
 
                 <FiltrosTransferencia />
-
-                <Box className="flex gap-4 justify-end">
-                    <BotaoNovo caminho="/transferencia/nova-tranferencia" > Nova Transferencia </BotaoNovo>
-                </Box>
+                { authCreateTransf(localStorage.getItem("perfil"))
+                    ?<Box className="flex gap-4 justify-end">
+                        <BotaoNovo caminho="/transferencia/nova-tranferencia" > Nova Transferencia </BotaoNovo>
+                    </Box>
+                    :<></>
+                }
 
                 <TabelaTransferencia 
                     itens={transferenciasQuery?.data?.data} 

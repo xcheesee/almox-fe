@@ -410,8 +410,6 @@ export const enviaEdicao = async (e, url, id, materiais, campo) => {
     method: 'POST',
     headers: {
       ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
     },
     body: enviaForm(e, materiais, campo) // TODO: implementar edicao de profissionais
   };
@@ -445,8 +443,6 @@ export const excluiRegistro = (rota, id, /* setHouveMudanca ,*/ setOpenExcluir, 
     method: 'DELETE',
     headers: {
       ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
     },
   };
 
@@ -611,6 +607,17 @@ export const authEditOrdem = (perfil) => {
       return '';
     default:
       return 'none';
+  }
+}
+
+export const authCreateTransf = (perfil) => {
+  switch (perfil) {
+    case 'almoxarife':
+      return true;
+    case 'encarregado':
+      return true;
+    default:
+      return false;
   }
 }
 
