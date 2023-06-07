@@ -1,179 +1,235 @@
-/*import React, { useState } from 'react';
-import { 
-    Box,
+import React, { useEffect, useRef, useState } from 'react';
+import {
     Typography,
     Paper,
+    Fade,
     MenuItem,
     TextField,
     InputAdornment,
     Tooltip,
-    IconButton,
+    Box,
     Button,
-    Fade
+    FormGroup
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import style from './style';
 import AddIcon from '@mui/icons-material/Add';
-import style from '../BoxMateriais/style';
-import Selecao from '../Selecao';
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from '../../common/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import MatListCard from '../MatListCard';
+import { useAtom } from 'jotai';
+import { matTipoListAtom } from '../../atomStore'
 
-const BoxMateriaisEntrada = ({ materiais, setMateriais, deptoSelecionado }) => {
-    //const queryClient = useQueryClient()
-    const tipos = useQuery(['tiposMateriais'], getMatTipos)
+const BoxMateriaisEntrada = (props) => {
+    const {
+        label,
+        baseSelecionada = "",
+        deptoSelecionado = "",
+        tooltipText="Selecione um departamento antes de adicionar materiais!",
+        errors={},
+    } = props;
 
-    const [listaMateriais, setListaMateriais] = useState([]);
+    const [newMats, setNewMats] = useAtom(matTipoListAtom)
 
-    const getMateriaisFromTipos = async (e) => {
-        const val = await getMatItens(e.target.value);
-        setListaMateriais(val.data);
-        
-        return setMateriais([{
-            id: '',
-            matDesabilitado: false,
-            mats: val.data,
-            currMat: '',
-            qtdDesabilitado: false,
-            quantidade: '',
-            medida: '',
-        }]);
+    const [currMat, setCurrMat] = useState("")
+    const [allMats, setAllMats] = useState([])
+    //const [isQtdError, setIsQtdError] = useState(false)
+    const [isInListError, setIsInListError] = useState(false)
+    const [tipoSelected, setTipoSelected] = useState(false)
+    const [tipo, setTipo] = useState("")
+
+    const firstLoad = useRef(true)
+
+    useEffect(() => { 
+        if(firstLoad.current) {
+            setNewMats({})
+            firstLoad.current = false
+        }
+    }, [])
+
+    useEffect (() => {
+        setCurrMat("")
+        setAllMats([])
+        setTipo("")
+        setNewMats( prev => {
+            const clearObj = {}
+            for (const val in prev) {
+                clearObj[val] = []
+            }
+            return clearObj
+        })
+    }, [deptoSelecionado, baseSelecionada])
+
+    const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
+        onSuccess: res => {
+            res.data.forEach( tipo => setNewMats(prev => ({...prev, [tipo.id]: []})) )
+        }
+    });
+
+    function delSelectedMat (tipoId, matIndex) {
+        let mats = newMats[tipoId]
+        mats.splice(matIndex, 1)
+        setNewMats( prev => ({...prev, [tipoId]: mats}) )
+    }
+
+    function modSelectedMat (matObj, tipoId, matIndex) {
+        let matArray = newMats[tipoId]
+        matArray[matIndex] = matObj
+        return setNewMats( prev => ({...prev, [tipoId]: matArray}) )
+    }
+
+    const getMateriaisFromTipos = async (children) => {
+        setTipoSelected(false)
+        const tipoRota = children.props.value;
+        const val = await getMatItens(tipoRota, false, "", "");
+        setTipoSelected(true)
+        return setAllMats(val.data)
     };
 
-    const adicionaMaterial = () => {
-        setMateriais(prev => [...prev, { 
-            id: '',
-            matDesabilitado: false,
-            mats: listaMateriais,
-            currMat: '',
-            qtdDesabilitado: false,
-            quantidade: '',
-            medida: '',
-        }]);
-    };
+    async function getMats (tipoId) {
+        return await getMatItens(tipoId, false, "", "")
+    }
 
-    const modMaterial = (materiais, formIndex, values) => {
-        let mats = [...materiais];
-        let mat = {
-            ...materiais[formIndex],
-            ...values
-        };
-        mats[formIndex] = mat;
-        return mats
-    };
-
-    const removeMaterial = (index) => {
-        let tempArr = materiais;
-        tempArr.splice(index, 1);
-        setMateriais([...tempArr]);
-    };
-
-    const handleChange = (element, children, formIndex) => {
-        const materialIndex = children.props.value;
-        const materialAlvo = element.target.value;
-        const mod = {
-            qtdDesabilitado: false,
-            medida: materiais[formIndex]['mats'][materialIndex]['medida'],
-            id: materiais[formIndex]['mats'][materialIndex]['id'],
-            currMat: materialAlvo,
-        };
-        return setMateriais(prev => modMaterial(prev, formIndex, mod))
-    };
-
-    const handleQtdChange = (element, formIndex) => {
-        setMateriais(prev => modMaterial(prev, formIndex, {quantidade: element.target.value,}))
-    };
+    if(tiposMats.isFetching) return <></>
 
     return (
         <Box className="mx-8 mb-12">
             <Typography sx={style.label} >
-                Materiais entregues
+                {label}
             </Typography>
-            <Tooltip title={`${!deptoSelecionado ? "Selecione um departamento antes de adicionar materiais!" : ""}`}>
-                <Selecao
-                    label= {tipos?.isLoading? "Carregando..." : "Tipo de material"}
-                    name="tipo_material"
-                    size="small"
-                    onChange={(e) => { getMateriaisFromTipos(e); }}
-                    carregando={tipos?.isLoading}
-                    disabled={!deptoSelecionado}
-                    className="col-span-2"
-                    margin="dense"
-                    fullWidth
-                >
-                    {
-                        tipos?.data?.map(val => 
-                            <MenuItem className='capitalize' value={val.id} key={val.id} >
-                                {val.nome}
-                            </MenuItem>)
-                    }
-                </Selecao>
-            </Tooltip>
 
-            {materiais.length > 0 
-                ?
-                    <Fade in={true}>
-                        <Paper sx={style.container} className="my-4" >
-                            {materiais.map((material, index) => {
-                                return (
-                                    <Paper className="p-4 mb-4" key={index}>
-                                        <Box className='grid grid-cols-[2fr_1fr_max-content] gap-4'>
-                                            <Selecao
-                                                label="Material"
-                                                name="id"
-                                                size="small"
-                                                value={material.currMat}
-                                                onChange={(e, c) => handleChange(e, c, index)}
-                                            >
-                                                {
-                                                    material.mats?.map((val, matLoc) =>
-                                                        <MenuItem value={matLoc} key={matLoc}>
-                                                            {val.nome}
+            <Box component="form"
+                onSubmit={e => {
+                    e.preventDefault()
+                    setIsInListError(false)
+
+                    //if (isQtdError) return
+
+                    const formData = new FormData(e.target)
+                    const qtd = formData.get('quantidade')
+
+                    //if(qtd > currMat.quantidade) return setIsQtdError(true)
+
+                    let mats = [...newMats[currMat.tipo_item_id]]
+
+                    if(mats.find(ele => ele.id === currMat.id)) return setIsInListError(true)
+
+                    mats.push({...currMat, qtd: qtd})
+                    setNewMats({...newMats, [currMat.tipo_item_id]: [...mats]})
+                }}
+            >
+                <Paper sx={style.container} elevation={8}>
+                    <Fade in={true} >
+                        <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" >
+                            <Tooltip title={`${(deptoSelecionado === "" && baseSelecionada === "") ? tooltipText : ""}`} >
+                                <FormGroup>
+                                    <TextField
+                                        select
+                                        label="Tipo de material"
+                                        name="tipo_material"
+                                        size="small"
+                                        value={tipo}    
+                                        onChange={(v, c) => {
+                                            getMateriaisFromTipos(c)
+                                            setTipo(v.target.value)
+                                            setCurrMat("")
+                                        }}
+                                        disabled={(deptoSelecionado === "" && baseSelecionada === "") || tiposMats?.isLoading}
+                                        className="col-span-2"
+                                        error={errors.hasOwnProperty("itens")}
+                                        fullWidth
+                                        required
+                                    >
+                                        {
+                                            tiposMats?.data 
+                                                ? tiposMats?.data
+                                                    ?.data
+                                                    ?.map((val, i) => 
+                                                        <MenuItem value={val.id} key={`mitem${i}`} >
+                                                            {primeiraLetraMaiuscula(val.nome)}
                                                         </MenuItem>)
-                                                }
-                                            </Selecao>
+                                                :<MenuItem></MenuItem> 
+                                        }
+                                    </TextField>
+                                </FormGroup>
+                            </Tooltip>
 
-                                            <TextField
-                                                name="quantidade"
-                                                label="Quantidade"
-                                                disabled={material.qtdDesabilitado}
-                                                value={material.quantidade}
-                                                onChange={(e) => handleQtdChange(e, index)}
-                                                fullWidth
-                                                size="small"
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment position="end">{material.medida}</InputAdornment>,
-                                                }}
-                                            />
+                            <Fade in={true} >
+                                <Box className='grid grid-cols-2 gap-4 row-start-2'>
+                                    <Tooltip title={tipoSelected && allMats.length === 0 ? "Não há materiais desse tipo na base!" : ""}>
+                                    <TextField
+                                        select
+                                        id="material-seletor"
+                                        name="material"
+                                        label="Material"
+                                        defaultValue=""
+                                        value={currMat}
+                                        onChange={e => {
+                                            setIsInListError(false)
+                                            setCurrMat(e.target.value)
+                                        }}
+                                        disabled={allMats.length === 0 }
+                                        size="small"
+                                        error={isInListError || errors.hasOwnProperty("itens")}
+                                        helperText={isInListError ? "Material ja se encontra na lista!" : ""}
+                                        fullWidth
+                                        required
+                                    >
+                                        {
+                                            allMats
+                                            ?.map((val, index) =>
+                                                <MenuItem value={val} key={`idc${index}`} className="flex justify-between">
+                                                    {val.nome}
+                                                </MenuItem>
+                                            )
+                                        }
+                                    </TextField >
+                                    </Tooltip >
 
-                                            <Tooltip title="Remover" placement="right">
-                                                <Box>
-                                                    <IconButton 
-                                                        onClick={() => removeMaterial(index)} 
-                                                        disabled={index === 0}
-                                                    >
-                                                        <CloseIcon />
-                                                    </IconButton>
-                                                </Box>
-                                            </Tooltip>
-
-                                        </Box>
-                                    </Paper>
-                                )
-                            })}
-
-                            <Box className="self-end">
-                                <Button onClick={adicionaMaterial} >
-                                    <AddIcon fontSize="small" />
-                                    Adicionar material
-                                </Button>
-                            </Box>
+                                    <TextField
+                                        /* desabilitado se valor anterior nao selecionado */
+                                        name="quantidade"
+                                        id="quantidade"
+                                        label="Quantidade"
+                                        disabled={ currMat === "" }
+                                        fullWidth
+                                        size="small"
+                                        InputProps={{ endAdornment: <InputAdornment position="end"> { currMat !== "" ? `${currMat.medida}` : "" } </InputAdornment> }}
+                                        //onChange={ (e) => e.target.value > currMat.quantidade ? setIsQtdError(true) : setIsQtdError(false) } 
+                                        error={ errors.hasOwnProperty("itens") }
+                                        //helperText={ isQtdError ? 'Quantidade usada não pode exceder a quantidade em estoque.' : '' }
+                                        required
+                                    />
+                                </Box>
+                            </Fade>
                         </Paper>
                     </Fade>
-                :
-                    ""
-            }
+                    { errors.hasOwnProperty('itens') ? <Box className='text-center text-red-500 text-lg font-light'>{errors.itens}</Box> : <></>}
+
+                    <Box className="self-end">
+                        <Button type="submit" 
+                            startIcon={ <AddIcon fontSize="small" /> } >
+                            Adicionar material
+                        </Button>
+                    </Box>
+
+                    { !tiposMats.isLoading 
+                        ? Object.entries(newMats)?.map((keyVal, i) => { 
+                            if (keyVal[1].length === 0) return 
+                            return <MatListCard 
+                                key={`tipo${keyVal[0]}-item${i}`} 
+                                tipo={tiposMats?.data?.data?.find(ele => +ele.id === +keyVal[0])} 
+                                mats={keyVal[1]}
+                                getMats={getMats} 
+                                modSelectedMat={modSelectedMat}
+                                delSelectedMat={delSelectedMat}
+                            />
+                        })
+                        : <></> 
+                    }
+                </Paper>
+            </Box>
         </Box>
     );
 }
 
-export default BoxMateriaisEntrada;*/
+export default BoxMateriaisEntrada;

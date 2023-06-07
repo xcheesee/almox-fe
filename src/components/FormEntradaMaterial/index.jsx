@@ -13,6 +13,7 @@ import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../common/utils'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { deptoAtom, snackbarAtom, matTipoListAtom } from '../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import BoxMateriaisEntrada from '../BoxMateriaisEntrada';
 
 const FormEntradaMaterial = (props) => {
     const { 
@@ -186,7 +187,7 @@ const FormEntradaMaterial = (props) => {
                 ?
                 ""
                 :
-                <BoxMateriais 
+                <BoxMateriaisEntrada 
                     label="Materiais"
                     deptoSelecionado={deptoSelecionado}
                 />
