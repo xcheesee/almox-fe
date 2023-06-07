@@ -39,7 +39,7 @@ export default function RecusaTranferencia() {
             navigate("/transferencia")
         } catch(e) {
             setSnackbar({
-                message: "Nao foi possivel enviar a solicitacao!",
+                message: e?.text ?? "Nao foi possivel enviar a solicitacao!",
                 severity: "error",
                 open: true,
             })
@@ -48,9 +48,7 @@ export default function RecusaTranferencia() {
 
     return(
         <ContainerPrincipal>
-            <Titulo
-                voltaPara="/transferencia"
-            >
+            <Titulo voltaPara="/transferencia" >
                 Recusa de Transferência N# {params.id}
             </Titulo>
 

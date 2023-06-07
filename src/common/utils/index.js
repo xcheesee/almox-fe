@@ -705,30 +705,28 @@ export async function enviaNovaTransferencia(formData, materiais) {
     headers: headerBuilder(), 
     body: formData,
   })
+  if(res.ok) return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
+  
   const json = await res.json()
   const error = errorBuilder(res, "Nao foi possivel enviar a transferencia")
   error.errors = json.errors
-  if(res.ok) {
-    return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
-  }
   throw error
 }
 
-export async function recusaTransferencia(id, formData) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
-  formData.append("status", "recusado")
+export async function recusaTransferencia(id) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/recusar/${id}` );
 
   const res = await fetch(url, {
     method: "POST",
     headers: headerBuilder(),
-    body: formData
   })
 
   if (res.ok) return res
 
-  const json = res.json()
-  const error = errorBuilder(res, "Nao foi possivel enviar a recusa")
+  const json = await res.json()
+  const error = errorBuilder(res, json.mensagem)
   error.errors = json.errors
+  console.log(error)
   
   throw error
 }
@@ -774,14 +772,6 @@ export async function getOcorrenciaPDF(id) {
 }
 
 export async function enviaNovaOcorrencia(formData, materiais) {
-  //materiais = { 
-  //  "1" :[
-  //    {
-  //      id: 1,
-  //      qtd: 1
-  //    }
-  //  ]
-  //}
   formData.append("justificativa", "string")
   appendMateriaisToRequest(formData, materiais, "itens")
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
@@ -793,8 +783,12 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   })
 
   if(res.ok) return res
+
+  const json = await res.json()
+  const error = errorBuilder(res, json.mensagem)
+  error.errors = json.errors
   
-  throw errorBuilder(res, res.message)
+  throw error
 }
 
 export async function confirmaTransferencia(id_transferencia) {

@@ -44,20 +44,20 @@ const TabelaOcorrencia = (props) => {
             {carregando
                 ? <></> 
                 :itens?.map(entrada => (
-                    <TableRow key={entrada.id}>
+                    <TableRow key={entrada.id} sx={{height: '4rem'}}>
                         <TableCell align="center">{entrada.id}</TableCell>
                         <TableCell align="center">{formataDateTime(entrada.data_ocorrencia) || "---"}</TableCell>
                         <TableCell align="center" className='capitalize'>{entrada.local || "---"}</TableCell>
                         <TableCell align="center" className='capitalize'>{entrada.tipo_ocorrencia || "---"}</TableCell>
                         <TableCell align="center">
-                            <Tooltip title="Visualizar" placement="left">
+                            {/*<Tooltip title="Visualizar" placement="left">
                                 <IconButton 
                                     disabled={cursor === 'progress'}
                                     onClick={ () => getSelectedEntradaInfo(entrada.id, 'visualizar') }
                                 >
                                     <ManageSearchIcon />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip>*/}
                             {
                                 entrada.tipo_ocorrencia !== "avaria"
                                     ?<Tooltip title="Visualizar Boletim" placement="right" >

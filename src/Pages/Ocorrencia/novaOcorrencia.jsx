@@ -20,6 +20,7 @@ export default function NovaOcorrencia () {
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [errors, setErrors] = useState({})
 
     const navigate = useNavigate()
 
@@ -43,7 +44,8 @@ export default function NovaOcorrencia () {
             navigate("/ocorrencia")
 
         } catch(e){
-            setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a ocorrencia", severity: "error"})
+            setErrors(e.errors)
+            setSnackbar({...snackbar, open: true, message: e?.text ?? "Ocorreu um erro.", severity: "error"})
         }
         setIsLoading(false)
     }
@@ -65,8 +67,11 @@ export default function NovaOcorrencia () {
                     label="Data da Ocorrência"
                     name="data_ocorrencia"
                     id="data_ocorrencia"
+                    error={errors.hasOwnProperty("data_ocorrencia")}
+                    helperText={errors?.data_ocorrencia ?? ""}
                     InputLabelProps={{ shrink: true }}
                     fullWidth
+                    required
                 />
 
                 <TextField
@@ -74,8 +79,11 @@ export default function NovaOcorrencia () {
                     label="Base envolvida"
                     name="local_id"
                     id="local_id"
+                    error={errors.hasOwnProperty("local_id")}
+                    helperText={errors?.local_id ?? ""}
                     SelectProps={{ value: baseOrigem, onChange: (e) => setBaseOrigem(e.target.value) }}
                     fullWidth
+                    required
                 >
                     {locais.isLoading
                         ?<MenuItem>Carregando...</MenuItem>
@@ -93,7 +101,10 @@ export default function NovaOcorrencia () {
                     id="tipo_ocorrencia"
                     value={tipoOcorrencia}
                     onChange={ (e) => setTipoOcorrencia(e.target.value) }
+                    error={errors.hasOwnProperty("tipo_ocorrencia")}
+                    helperText={errors?.tipo_ocorrencia ?? ""}
                     fullWidth
+                    required
                 >
                     <MenuItem value="avaria">Avaria</MenuItem>
                     <MenuItem value="furto">Furto</MenuItem>
@@ -107,6 +118,7 @@ export default function NovaOcorrencia () {
                         type="file"
                         inputProps={{ accept: "image/*, application/pdf" }}
                         InputLabelProps={{ shrink: true }}
+                        required={tipoOcorrencia === "furto" || tipoOcorrencia === "extravio"}
                         //error={errors.hasOwnProperty('boletim_ocorrencia')}
                         //helperText={errors.boletim_ocorrencia || ""}
                         fullWidth
