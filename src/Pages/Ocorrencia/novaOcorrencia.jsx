@@ -82,7 +82,11 @@ export default function NovaOcorrencia () {
                     id="local_id"
                     error={errors.hasOwnProperty("local_id")}
                     helperText={errors?.local_id ?? ""}
-                    SelectProps={{ value: baseOrigem, /*onChange: (e) => setBaseOrigem(e.target.value)*/}}
+                    SelectProps={{ value: baseOrigem, onChange: (e) => {
+                        if(localStorage.getItem("local") !== "") return
+
+                        setBaseOrigem(e.target.value)
+                    }}}
                     fullWidth
                     required
                 >

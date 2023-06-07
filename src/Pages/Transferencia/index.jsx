@@ -28,6 +28,7 @@ export default function Transferencia () {
     const transferenciasQuery = useQuery({
         queryKey: ['transferencias', page, filtros, sort],
         queryFn: async () => await getTabela("transferencia", page, filtros, sort),
+        onSuccess: (res) => console.log(res)
     })
 
     async function getSelectedTransfInfo(id, operation) {
@@ -75,7 +76,7 @@ export default function Transferencia () {
                 />
 
                 <Paginacao 
-                    count={transferenciasQuery?.meta?.page}
+                    count={transferenciasQuery?.data?.meta?.last_page}
                 />
 
             </ContainerPrincipal>

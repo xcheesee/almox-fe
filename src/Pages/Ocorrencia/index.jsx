@@ -3,7 +3,7 @@ import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Paginacao from "../../components/Paginacao";
 import Titulo from "../../components/Titulo";
-import { getTabela } from "../../common/utils";
+import { authCreateOcorrencia, getTabela } from "../../common/utils";
 import { useAtomValue } from "jotai";
 import { filtrosAtom, pageAtom, sortAtom } from "../../atomStore";
 import FiltrosOcorrencia from "../../components/Ocorrencia/FiltrosOcorrencia";
@@ -28,16 +28,14 @@ export default function Ocorrencia () {
 
             <FiltrosOcorrencia />
 
-            <BotaoNovo 
-                caminho="/ocorrencia/nova-ocorrencia" 
-                //display={authCreateEntrada(localStorage.getItem('perfil'))}
-            >
-                Nova Ocorrencia
-            </BotaoNovo>
+            {authCreateOcorrencia(localStorage.getItem("perfil"))
+                ?<BotaoNovo caminho="/ocorrencia/nova-ocorrencia" > Nova Ocorrencia </BotaoNovo>
+                :<></>
+            }
 
             <TabelaOcorrencia itens={ocorrenciaQuery?.data?.data} carregando={ocorrenciaQuery.isLoading} />
 
-            <Paginacao count={ocorrenciaQuery?.meta?.page} />
+            <Paginacao count={ocorrenciaQuery?.data?.meta?.last_page} />
         </ContainerPrincipal>
     )
 }

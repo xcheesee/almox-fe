@@ -621,6 +621,17 @@ export const authCreateTransf = (perfil) => {
   }
 }
 
+export const authCreateOcorrencia = (perfil) => {
+  switch (perfil) {
+    case 'almoxarife':
+      return true;
+    case 'encarregado':
+      return true;
+    default:
+      return false;
+  }
+}
+
 export const newPwRequest = async (formData) => {
   const url = new URL( `${process.env.REACT_APP_API_URL}/alterar_senha` );
   

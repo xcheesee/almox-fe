@@ -79,7 +79,10 @@ export default function NovaTransferencia () {
                     error={errors.hasOwnProperty("base_origem_id")}
                     helperText = {errors.hasOwnProperty("base_origem_id") ? errors.base_origem_id : "" }
                     value={baseOrigem}
-                    //onChange={e => setBaseOrigem(e.target.value)} 
+                    onChange={e => {
+                        if(localStorage.getItem("local") !== "") return
+                        setBaseOrigem(e.target.value)
+                    }} 
                     fullWidth
                     //disabled
                     required
