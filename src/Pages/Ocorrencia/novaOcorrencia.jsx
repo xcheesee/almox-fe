@@ -29,7 +29,8 @@ export default function NovaOcorrencia () {
         queryFn: () => getLocais("", "base"), 
         //enabled: !(depto === ''),
         onSuccess: (res) => {
-            setBaseOrigem(res.length === 1 ? res[0].id : "")
+            setBaseOrigem((res.find(local => local.id === +localStorage.getItem("local"))).id ?? "");
+            //setBaseOrigem(res.length === 1 ? res[0].id : "")
         }
 
     })
@@ -81,7 +82,7 @@ export default function NovaOcorrencia () {
                     id="local_id"
                     error={errors.hasOwnProperty("local_id")}
                     helperText={errors?.local_id ?? ""}
-                    SelectProps={{ value: baseOrigem, onChange: (e) => setBaseOrigem(e.target.value) }}
+                    SelectProps={{ value: baseOrigem, /*onChange: (e) => setBaseOrigem(e.target.value)*/}}
                     fullWidth
                     required
                 >
