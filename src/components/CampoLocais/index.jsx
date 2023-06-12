@@ -3,7 +3,16 @@ import { MenuItem, TextField } from '@mui/material';
 import { useQuery } from "@tanstack/react-query"
 import { getLocais } from '../../common/utils';
 
-const CampoLocais = ({ name, label, defaultValue, depto="", getAllBases=false, tipo, ...props }) => {
+const CampoLocais = ({
+    name, 
+    label, 
+    defaultValue, 
+    tipo, 
+    depto="", 
+    getAllBases=false, 
+    onChange="", 
+    ...props
+}) => {
 
     const [local, setLocal] = useState(0)
 
@@ -28,7 +37,13 @@ const CampoLocais = ({ name, label, defaultValue, depto="", getAllBases=false, t
                 </TextField>
                 :<TextField
                     select
-                    SelectProps={{ value: local, onChange: (e) => setLocal(e.target.value)}}
+                    SelectProps={{ 
+                        value: local, 
+                        onChange: (e) => {
+                            onChange(e)
+                            setLocal(e.target.value)
+                        }
+                    }}
                     name={name}
                     label={label}
                     disabled={locais.isLoading || (!getAllBases && depto==="")}

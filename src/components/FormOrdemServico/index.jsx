@@ -4,14 +4,16 @@ import {
     TextField,
     Box,
     Typography, 
-    Paper
+    Paper,
+    Switch,
+    FormGroup,
+    FormControlLabel
 } from '@mui/material';
 import FormContainer from '../FormContainer';
 import Selecao from '../Selecao';
 import CampoLocais from '../CampoLocais';
 import BoxMateriais from '../BoxMateriais';
 import BoxProfissionais from '../BoxProfissionais';
-import style from './style';
 import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../common/utils';
 import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
@@ -49,6 +51,7 @@ const FormOrdemServico = (props) => {
         ["data_inicio"]: '',
         ["horas_empregadas"]: '',
     }])
+    const [isNoOSForm, setIsNoOSForm] = useState(false);
     
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -76,16 +79,20 @@ const FormOrdemServico = (props) => {
             materiaisInterno,
             'ordem_servico_items'
         )
-    }, { onSuccess: async (res) => {
+    },
+    {
+        onSuccess: async (res) => {
             setOpenEditar(false)
             setCarregando(false)
             queryClient.invalidateQueries(['ordemItens'])
             setFormSnackbar(setSnackbar, "Ordem de serviço", { edit: true })
-        }, onError: async (res) => {
+        },
+        onError: async (res) => {
             setCarregando(false)
             if(res.status === 422) { /* setErrors(res?.errors) */ }
             setFormSnackbar(setSnackbar, "", { error: true , status: res.status, edit: true })
-    }})
+        }
+    })
 
     const addMutation = useMutation( async (data) => {
         setOpenConfirmar(false)
@@ -120,6 +127,46 @@ const FormOrdemServico = (props) => {
                     : addMutation.mutate(e)
             }}
         >
+            <Box className='flex flex-col'>
+                <TextField
+                    select
+                    name='numero_ordem_servico'
+                    id="numbero_ordem_servico"
+                    label="Nro Ordem de Servico"
+                    defaultValue=""
+                    disabled={isNoOSForm}
+                    required={!isNoOSForm}
+                    fullWidth
+                >
+                    <MenuItem value={'teste'}>Teste</MenuItem>
+                </TextField>
+
+                <Box className='flex'>
+                    <FormGroup>
+                        <FormControlLabel  
+                            control={
+                                <Switch 
+                                    checked={isNoOSForm} 
+                                    onChange={() => setIsNoOSForm(prev => !prev)}
+                                />
+                            } 
+                            label="O.S. sem numero" 
+                        />
+                    </FormGroup>
+                </Box>
+            </Box>
+            
+            {isNoOSForm
+                ?<TextField 
+                    multiline
+                    rows={4}
+                    name='justificativa_os'
+                    id='justificativa_os'
+                    label="Justificativa"
+                    required
+                />
+                :<></>
+            }
             <Selecao
                 label="Departamento"
                 name="departamento_id"
@@ -229,7 +276,7 @@ const FormOrdemServico = (props) => {
             />
         
             <Box>
-                <Typography 
+                {/*<Typography 
                     sx={style.subtituloForm} 
                 >
                     Almoxarife responsável
@@ -258,7 +305,7 @@ const FormOrdemServico = (props) => {
                         required
                         fullWidth
                     />
-                </Box>
+                </Box>*/}
                 {profissionais && profissionais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
                 ?
                     <Box className='my-10'>

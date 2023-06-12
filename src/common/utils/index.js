@@ -527,7 +527,7 @@ export const getProfissionais = async (base, depto) => {
   };
   const data = await(await fetch(url, {
       method: "GET",
-      headers,
+      headers: headerBuilder(),
   })).json()
 
   return await data

@@ -1,14 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import {
-    TableRow,
-    TableCell,
-    IconButton,
-    Tooltip,
-} from '@mui/material';
+import { TableRow, TableCell, Modal, CircularProgress, Box } from '@mui/material';
 import Tabela from '../../Tabela';
-import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { formataDateTime, getOcorrenciaPDF } from '../../../common/utils';
+import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 
 async function openPdfPopup(id) {
     const res = await getOcorrenciaPDF(id)
@@ -25,58 +20,55 @@ const cabecalhos = {
     "Ação": null
 }
 
-const TabelaOcorrencia = (props) => {
+export default function TabelaOcorrencia (props) {
     const { 
         itens, 
         carregando, 
-        getSelectedEntradaInfo,
-        cursor, 
     } = props;
 
-    //const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     return (
-        <Tabela 
-            cabecalhos={cabecalhos} 
-            carregando={carregando} 
-        >
-            
-            {carregando
-                ? <></> 
-                :itens?.map(entrada => (
-                    <TableRow key={entrada.id} sx={{height: '4rem'}}>
-                        <TableCell align="center">{entrada.id}</TableCell>
-                        <TableCell align="center">{formataDateTime(entrada.data_ocorrencia) || "---"}</TableCell>
-                        <TableCell align="center" className='capitalize'>{entrada.local || "---"}</TableCell>
-                        <TableCell align="center" className='capitalize'>{entrada.tipo_ocorrencia || "---"}</TableCell>
-                        <TableCell align="center">
-                            {/*<Tooltip title="Visualizar" placement="left">
-                                <IconButton 
-                                    disabled={cursor === 'progress'}
-                                    onClick={ () => getSelectedEntradaInfo(entrada.id, 'visualizar') }
-                                >
-                                    <ManageSearchIcon />
-                                </IconButton>
-                            </Tooltip>*/}
-                            {
-                                entrada.tipo_ocorrencia !== "avaria"
-                                    ?<Tooltip title="Visualizar Boletim" placement="right" >
-                                        <IconButton 
-                                            disabled={cursor === 'progress'}
-                                            onClick={async () => openPdfPopup(entrada.id) }
-                                        >
-                                            <PictureAsPdfIcon />
-                                        </IconButton>
-                                    </Tooltip> 
+        <>
+            <Tabela 
+                cabecalhos={cabecalhos} 
+                carregando={carregando} 
+            >
+
+                {carregando
+                    ? <></> 
+                    :itens?.map(entrada => (
+                        <TableRow key={entrada.id} sx={{height: '4rem'}}>
+                            <TableCell align="center">{entrada.id}</TableCell>
+                            <TableCell align="center">{formataDateTime(entrada.data_ocorrencia) || "---"}</TableCell>
+                            <TableCell align="center" className='capitalize'>{entrada.local || "---"}</TableCell>
+                            <TableCell align="center" className='capitalize'>{entrada.tipo_ocorrencia || "---"}</TableCell>
+                            <TableCell align="center">
+                                {entrada.tipo_ocorrencia !== "avaria"
+                                    ?<TabelaAcaoBtn
+                                        title="Visualizar Boletim"
+                                        placement="right"
+                                        disabled={isLoading}
+                                        onClick={ async () => {
+                                            setIsLoading(true)
+                                            await openPdfPopup(entrada.id)
+                                            setIsLoading(false)
+                                        } }
+                                    >
+                                        <PictureAsPdfIcon />
+                                    </TabelaAcaoBtn>
                                     :<></>
-                            }
-                            
-                        </TableCell>
-                    </TableRow>
-                )
-            )}
-        </Tabela>
+                                }
+                            </TableCell>
+                        </TableRow>
+                    ))
+                }
+            </Tabela>
+            <Modal open={isLoading}>
+                <Box className='flex justify-center items-center h-full'>
+                    <CircularProgress size={64} color='color'/>
+                </Box>
+            </Modal>
+        </>
     );
 }
-
-export default TabelaOcorrencia;

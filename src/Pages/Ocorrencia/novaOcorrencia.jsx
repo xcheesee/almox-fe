@@ -32,7 +32,6 @@ export default function NovaOcorrencia () {
             setBaseOrigem((res.find(local => local.id === +localStorage.getItem("local"))).id ?? "");
             //setBaseOrigem(res.length === 1 ? res[0].id : "")
         }
-
     })
     
     async function enviaOcorrenciaForm(e) {
@@ -43,7 +42,6 @@ export default function NovaOcorrencia () {
             await enviaNovaOcorrencia(formData, materiais)
             setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
             navigate("/ocorrencia")
-
         } catch(e){
             setErrors(e.errors)
             setSnackbar({...snackbar, open: true, message: e?.text ?? "Ocorreu um erro.", severity: "error"})
@@ -154,7 +152,6 @@ export default function NovaOcorrencia () {
                 texto="ocorrência"
                 form="nova-ocorrencia"
             />
-            
         </ContainerPrincipal>
     )
 }
