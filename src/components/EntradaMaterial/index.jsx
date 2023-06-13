@@ -5,21 +5,36 @@ import FiltrosEntrada from '../FiltrosEntrada';
 import TabelaEntrada from '../TabelaEntrada';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
-import { authCreateEntrada } from '../../common/utils';
+import { authCreateEntrada, getTabela } from '../../common/utils';
+import { useQuery } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
+import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useRef } from 'react';
 
 const EntradaMaterial = (props) => {
     const {
-        entradas,
-        carregando,
         getSelectedEntradaInfo,
         cursor,
     } = props;
+
+    const sort = useAtomValue(sortAtom);
+    const page = useAtomValue(pageAtom);
+    const filtros = useAtomValue(filtrosAtom);
+
+
+    const entradas = useQuery({
+        queryKey: ['entradaItens', page, filtros, sort],
+        queryFn: () => getTabela('entradas', page, filtros, sort),
+        onSuccess: res => pageCountRef.current = res.meta.last_page
+    });
+
+    const pageCountRef = useRef(entradas?.data?.meta?.last_page ?? 1)
 
     return (
         <ContainerPrincipal>
             <Titulo 
                 voltaPara="/principal" 
-                carregando={carregando}
+                carregando={entradas.isLoading}
             >
                 Entrada de material
             </Titulo>
@@ -34,14 +49,14 @@ const EntradaMaterial = (props) => {
             </BotaoNovo>
             
             <TabelaEntrada 
-                entradas={entradas?.data} 
-                carregando={carregando}
+                entradas={entradas?.data?.data} 
+                carregando={entradas.isLoading}
                 getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}
             />
 
             <Paginacao
-                count={entradas?.meta?.last_page}
+                count={pageCountRef.current}
             />
         </ContainerPrincipal>
     );

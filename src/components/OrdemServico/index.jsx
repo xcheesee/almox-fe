@@ -5,19 +5,33 @@ import FiltrosOrdem from '../FiltrosOrdem';
 import TabelaOrdem from '../TabelaOrdem';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
-import { authCreateOrdem } from '../../common/utils';
+import { authCreateOrdem, getTabela } from '../../common/utils';
+import { useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
+import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
 
 const OrdemServico = (props) => {
     const {
-        ordens,
-        carregando,
         cursor,
         getSelectedOrdemInfo,
     } = props;
 
+    const sort = useAtomValue(sortAtom);
+    const filtros = useAtomValue(filtrosAtom);
+    const page = useAtomValue(pageAtom);
+
+    const ordens = useQuery({
+        queryKey: ['ordemItens', page, filtros, sort],
+        queryFn: () => getTabela('ordem_servicos', page, filtros, sort),
+        onSuccess: res => pageCountRef.current = res.meta.last_page
+    });
+
+    const pageCountRef = useRef(ordens?.data?.meta?.last_page ?? 1)
+
     return (
-        <ContainerPrincipal carregando={carregando}>
-            <Titulo carregando={carregando}>Ordem de serviço</Titulo>
+        <ContainerPrincipal carregando={ordens.isLoading}>
+            <Titulo carregando={ordens.isLoading}>Ordem de serviço</Titulo>
 
             <FiltrosOrdem />
 
@@ -30,13 +44,13 @@ const OrdemServico = (props) => {
 
             <TabelaOrdem 
                 ordens={ordens?.data?.data} 
-                carregando={carregando} 
+                carregando={ordens.isLoading} 
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
             />
 
             <Paginacao 
-                count={ordens?.meta?.last_page}
+                count={pageCountRef.current}
             />
         </ContainerPrincipal>
     );

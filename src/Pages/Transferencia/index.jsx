@@ -1,4 +1,4 @@
-import { Box, breadcrumbsClasses } from "@mui/material";
+import { Box } from "@mui/material";
 import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
@@ -12,6 +12,7 @@ import { filtrosAtom, pageAtom, sortAtom } from "../../atomStore";
 import DialogDetalhesTransferencia from "../../components/Transferencia/DialogDetalhesTransferencia";
 import { useState } from "react";
 import DialogConfirmarTransferencia from "../../components/Transferencia/DialogConfirmarTransferencia";
+import { useRef } from "react";
 
 export default function Transferencia () {
 
@@ -25,11 +26,14 @@ export default function Transferencia () {
     const [transfItensData, setTransfItensData] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
+
     const transferenciasQuery = useQuery({
         queryKey: ['transferencias', page, filtros, sort],
         queryFn: async () => await getTabela("transferencia", page, filtros, sort),
-        onSuccess: (res) => console.log(res)
+        onSuccess: (res) => pageCountRef.current = res.meta.last_page
     })
+
+    const pageCountRef = useRef(transferenciasQuery?.data?.meta?.last_page ?? 1)
 
     async function getSelectedTransfInfo(id, operation) {
         switch(operation) {
@@ -76,7 +80,7 @@ export default function Transferencia () {
                 />
 
                 <Paginacao 
-                    count={transferenciasQuery?.data?.meta?.last_page}
+                    count={pageCountRef.current}
                 />
 
             </ContainerPrincipal>

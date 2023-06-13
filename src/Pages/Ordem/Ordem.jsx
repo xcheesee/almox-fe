@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getDetalhesBaixa, getMateriais, getOrdemProfissionais, getRegistro, getTabela } from '../../common/utils';
+import { getDetalhesBaixa, getMateriais, getOrdemProfissionais, getRegistro } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
@@ -8,9 +8,8 @@ import FormOrdemServico from '../../components/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { excluirAtom, filtrosAtom, matsAtom, pageAtom, profissionaisAtom, sortAtom } from '../../atomStore';
-import { useQuery } from '@tanstack/react-query'
+import { useAtom, useSetAtom } from 'jotai';
+import { excluirAtom, matsAtom, profissionaisAtom } from '../../atomStore';
 
 const Ordem = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -24,13 +23,8 @@ const Ordem = () => {
     const [openBaixa, setOpenBaixa] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
-    const sort = useAtomValue(sortAtom);
-    const filtros = useAtomValue(filtrosAtom);
-    const page = useAtomValue(pageAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
-
-    const ordens = useQuery(['ordemItens', page, filtros, sort], () => getTabela('ordem_servicos', page, filtros, sort));
 
     const getSelectedOrdemInfo = async (id, command) => {
         setCursor('progress')
@@ -70,8 +64,6 @@ const Ordem = () => {
     return (
         <Box sx={{ cursor: cursor }}>
             <OrdemServico 
-                ordens={ordens}
-                carregando={ordens?.isLoading}
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
             />

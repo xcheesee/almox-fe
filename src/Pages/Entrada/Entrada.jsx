@@ -7,9 +7,8 @@ import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
 import FormEntradaMaterial from '../../components/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
-import { excluirAtom, filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useQuery } from '@tanstack/react-query'
+import { excluirAtom, matsAtom } from '../../atomStore';
+import { useAtom, useSetAtom } from 'jotai';
 
 const Entrada = () => {
     const [openEditar, setOpenEditar] = useState(false);
@@ -22,12 +21,7 @@ const Entrada = () => {
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
-    const sort = useAtomValue(sortAtom);
-    const page = useAtomValue(pageAtom);
-    const filtros = useAtomValue(filtrosAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
-
-    const entradas = useQuery(['entradaItens', page, filtros, sort], () => getTabela('entradas', page, filtros, sort));
 
     const getSelectedEntradaInfo = async (id, command) => {
         setCursor('progress')
@@ -52,8 +46,6 @@ const Entrada = () => {
     return (
         <Box sx={{ cursor: cursor }}>
             <EntradaMaterial 
-                entradas={entradas?.data} 
-                carregando={entradas?.isLoading}
                 getSelectedEntradaInfo={getSelectedEntradaInfo}
                 cursor={cursor}
             />
