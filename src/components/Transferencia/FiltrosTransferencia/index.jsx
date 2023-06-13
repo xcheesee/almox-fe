@@ -49,12 +49,16 @@ const FiltrosTransferencia = () => {
                 name="status"
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value)}
-                //inputProps={{ value: tipo, onChange: (e) => setTipo(e.target.value)}}
                 id="status"
                 className='col-span-2'
             >
-                {
-                    Object.entries(statusTransferencia).map( (keyVal, index) => (<MenuItem key={`status${index}`}value={keyVal[0]}>{keyVal[1]}</MenuItem>) )
+                { Object.entries(statusTransferencia).map((keyVal, index) => 
+                    (<MenuItem 
+                        key={`status${index}`}
+                        value={keyVal[0]}
+                    >
+                        {keyVal[1]}
+                    </MenuItem>))
                 }
             </TextField>
         </Filtros>

@@ -10,7 +10,7 @@ import {
     Paper
 } from '@mui/material';
 import TituloTexto from '../TituloTexto';
-import { mascaraProcessoSei, mascaraContrato } from '../../common/utils';
+import { mascaraProcessoSei, mascaraContrato, formataDateTime } from '../../common/utils';
 
 const DialogDetalhesEntrada = ({ openDetalhes, setOpenDetalhes, entrada, materiais }) => {
     return (
@@ -44,7 +44,7 @@ const DialogDetalhesEntrada = ({ openDetalhes, setOpenDetalhes, entrada, materia
 
                     <TituloTexto 
                         titulo="Data de entrada"
-                        texto={entrada.data_entrada || "---"}
+                        texto={formataDateTime(entrada.data_entrada) || "---"}
                     />
 
                     <TituloTexto 

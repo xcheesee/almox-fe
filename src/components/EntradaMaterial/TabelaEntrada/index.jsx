@@ -1,5 +1,5 @@
 import React from 'react';
-import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../../common/utils';
+import { mascaraProcessoSei, mascaraContrato, authEditEntrada, formataDateTime } from '../../../common/utils';
 import {
     TableRow,
     TableCell,
@@ -36,7 +36,7 @@ const TabelaEntrada = (props) => {
             {entradas?.map(entrada => (
                     <TableRow key={entrada.id}>
                         <TableCell align="center">{entrada.id}</TableCell>
-                        <TableCell align="center">{entrada.data_entrada || "---"}</TableCell>
+                        <TableCell align="center">{formataDateTime(entrada.data_entrada) || "---"}</TableCell>
                         <TableCell align="center">{mascaraProcessoSei(entrada.processo_sei || "---")}</TableCell>
                         <TableCell align="center">{mascaraContrato(entrada.numero_contrato || "---")}</TableCell>
                         <TableCell align="center">{entrada.local || "---"}</TableCell>

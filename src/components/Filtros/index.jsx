@@ -26,7 +26,7 @@ const Filtros = (props) => {
         transferencia,
         ocorrencia,
         limpaData,
-        limpaForms,
+        limpaForms=()=>{},
         ...other
     } = props;
 

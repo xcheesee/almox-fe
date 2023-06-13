@@ -5,7 +5,7 @@ import {
     Box
 } from '@mui/material';
 import Tabela from '../../Tabela';
-import { authEditOrdem } from '../../../common/utils';
+import { authEditOrdem, formataDateTime } from '../../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
@@ -38,10 +38,10 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                     <TableCell align="center">{ordem.id}</TableCell>
                     <TableCell align="center">{ordem.status}</TableCell>
                     <TableCell align="center">
-                        {ordem.data_inicio_servico || "---"}
+                        {formataDateTime(ordem.data_inicio_servico) || "---"}
                     </TableCell>
                     <TableCell align="center">
-                        {ordem.data_fim_servico || "---"}
+                        {formataDateTime(ordem.data_fim_servico) || "---"}
                     </TableCell>
                     <TableCell align="center">{ordem.origem}</TableCell>
                     <TableCell align="center">{ordem.local_servico}</TableCell>
