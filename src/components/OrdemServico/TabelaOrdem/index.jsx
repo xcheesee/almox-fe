@@ -2,19 +2,17 @@ import React from 'react';
 import {
     TableRow,
     TableCell,
-    IconButton,
-    Tooltip,
     Box
 } from '@mui/material';
-import Tabela from '../Tabela';
-import { authEditOrdem } from '../../common/utils';
+import Tabela from '../../Tabela';
+import { authEditOrdem } from '../../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
-import { Link, useNavigate } from 'react-router-dom';
-import TabelaAcaoBtn from '../TabelaAcaoBtn';
+import { useNavigate } from 'react-router-dom';
+import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 
 const cabecalhos = {
     "ID": "id",
@@ -57,16 +55,7 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                             >
                                 <ManageSearchIcon fontSize="small" />
                             </TabelaAcaoBtn>
-                            {/*<Box>
-                                <Tooltip title="Visualizar ordem" placement="left">
-                                    <IconButton 
-                                        disabled={cursor === 'progress'}
-                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'visualizar') }
-                                    >
-                                        <ManageSearchIcon fontSize="small" />
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>*/}
+
                             <TabelaAcaoBtn
                                 display={ authEditOrdem(localStorage.getItem('perfil')) }
                                 title="Editar"
@@ -76,18 +65,8 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                             >
                                 <EditIcon fontSize="small" />
                             </TabelaAcaoBtn>
-                            {/*<Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
-                                <Tooltip title="Editar" placement="right">
-                                    <IconButton 
-                                        disabled={cursor === 'progress'} 
-                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
-                                    >
-                                        <EditIcon fontSize="small" />
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>*/}
-                            {
-                                ordem.flg_baixa === 0
+
+                            {ordem.flg_baixa === 0
                                 ?
                                     <TabelaAcaoBtn 
                                         display={ authEditOrdem(localStorage.getItem('perfil')) }
@@ -98,17 +77,6 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                     >
                                         <GradingIcon fontSize="small" />
                                     </TabelaAcaoBtn>
-                                    //<Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
-                                    //    <Tooltip title="Baixa" placement="left">
-                                    //        <Link to={`/ordemservico/baixa/${ordem.id}`} >
-                                    //            <Box>
-                                    //                <IconButton disabled={cursor === 'progress'}>
-                                    //                    <GradingIcon fontSize="small" />
-                                    //                </IconButton>
-                                    //            </Box>
-                                    //        </Link>
-                                    //    </Tooltip>
-                                    //</Box>
                                 :
                                     <TabelaAcaoBtn 
                                         title="Visualizar Baixa"
@@ -118,19 +86,8 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                     >
                                         <ContentPasteSearchIcon fontSize="small" />
                                     </TabelaAcaoBtn>
-                                    //<Box>
-                                    //    <Tooltip title="Visualizar baixa" placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'} >
-                                    //        <Box>
-                                    //            <IconButton 
-                                    //                disabled={cursor === 'progress'}
-                                    //                onClick={() => getSelectedOrdemInfo(ordem.id, 'baixa')}
-                                    //            >
-                                    //                <ContentPasteSearchIcon fontSize="small" />
-                                    //            </IconButton>
-                                    //        </Box>
-                                    //    </Tooltip>
-                                    //</Box>
                             }
+
                             <TabelaAcaoBtn 
                                 display={ authEditOrdem(localStorage.getItem('perfil')) }
                                 title="Imprimir"
@@ -140,19 +97,6 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                             >
                                 <PrintIcon fontSize="small" />
                             </TabelaAcaoBtn>
-                            {/*<Box sx={{ display: authEditOrdem(localStorage.getItem('perfil')) }}>
-                                <Tooltip title="Imprimir" placement="right">
-                                    <a 
-                                        href={`${process.env.REACT_APP_API_URL}/ordem_servico/${ordem.id}/baixa_pdf`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        <IconButton disabled={cursor === 'progress'}>
-                                            <PrintIcon fontSize="small" />
-                                        </IconButton>
-                                    </a>
-                                </Tooltip>
-                            </Box>*/}
                         </Box>
                     </TableCell>
                 </TableRow>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField } from '@mui/material';
-import Filtros from '../Filtros';
+import Filtros from '../../Filtros';
 
 const FiltrosInventario = () => {
     return (

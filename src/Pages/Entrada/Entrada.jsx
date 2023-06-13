@@ -4,7 +4,7 @@ import { getMateriais, getRegistro, getTabela } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
 import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
-import FormEntradaMaterial from '../../components/FormEntradaMaterial';
+import FormEntradaMaterial from '../../components/EntradaMaterial/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
 import { excluirAtom, matsAtom } from '../../atomStore';

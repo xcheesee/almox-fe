@@ -1,8 +1,8 @@
 import React from 'react';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
-import FiltrosOrdem from '../FiltrosOrdem';
-import TabelaOrdem from '../TabelaOrdem';
+import FiltrosOrdem from './FiltrosOrdem';
+import TabelaOrdem from './TabelaOrdem';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
 import { authCreateOrdem, getTabela } from '../../common/utils';

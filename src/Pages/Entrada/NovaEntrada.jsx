@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NovaEntradaMaterial from '../../components/NovaEntradaMaterial';
+import NovaEntradaMaterial from '../../components/EntradaMaterial/NovaEntradaMaterial';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';

@@ -3,17 +3,17 @@ import {
     MenuItem,
     TextField,
 } from '@mui/material';
-import FormContainer from '../FormContainer';
-import Selecao from '../Selecao';
-import CampoLocais from '../CampoLocais';
-import CampoProcessoSei from '../CampoProcessoSei';
-import CampoNumContrato from '../CampoNumContrato';
-import BoxMateriais from '../BoxMateriais';
-import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../common/utils';
+import FormContainer from '../../FormContainer';
+import Selecao from '../../Selecao';
+import CampoLocais from '../../CampoLocais';
+import CampoProcessoSei from '../../CampoProcessoSei';
+import CampoNumContrato from '../../CampoNumContrato';
+//import BoxMateriais from '../BoxMateriais';
+import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../../common/utils';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { deptoAtom, snackbarAtom, matTipoListAtom } from '../../atomStore';
+import { deptoAtom, snackbarAtom, matTipoListAtom } from '../../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import BoxMateriaisEntrada from '../BoxMateriaisEntrada';
+import BoxMateriaisEntrada from '../../BoxMateriaisEntrada';
 
 const FormEntradaMaterial = (props) => {
     const { 

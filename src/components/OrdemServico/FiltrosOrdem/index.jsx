@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField } from '@mui/material';
-import Filtros from '../Filtros';
-import CampoDataRange from '../CampoDataRange';
+import Filtros from '../../Filtros';
+import CampoDataRange from '../../CampoDataRange';
 
 const FiltrosOrdem = () => {
     const [datas, setDatas] = useState([''])
@@ -33,7 +33,7 @@ const FiltrosOrdem = () => {
                 InputLabelProps={{ shrink: true }}
             />
 
-            <TextField 
+            {/*<TextField 
                 label="Nome almoxarife responsável"
                 name="almoxarife_nome"
                 InputLabelProps={{ shrink: true }}
@@ -43,8 +43,7 @@ const FiltrosOrdem = () => {
                 label="E-mail almoxarife responsável"
                 name="almoxarife_email"
                 InputLabelProps={{ shrink: true }}
-            />
-
+            />*/}
             
         </Filtros>
     );

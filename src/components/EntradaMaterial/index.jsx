@@ -1,8 +1,8 @@
 import React from 'react';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
-import FiltrosEntrada from '../FiltrosEntrada';
-import TabelaEntrada from '../TabelaEntrada';
+import FiltrosEntrada from './FiltrosEntrada';
+import TabelaEntrada from './TabelaEntrada';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
 import { authCreateEntrada, getTabela } from '../../common/utils';
@@ -20,7 +20,6 @@ const EntradaMaterial = (props) => {
     const sort = useAtomValue(sortAtom);
     const page = useAtomValue(pageAtom);
     const filtros = useAtomValue(filtrosAtom);
-
 
     const entradas = useQuery({
         queryKey: ['entradaItens', page, filtros, sort],

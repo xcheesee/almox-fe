@@ -9,16 +9,16 @@ import {
     FormGroup,
     FormControlLabel
 } from '@mui/material';
-import FormContainer from '../FormContainer';
-import Selecao from '../Selecao';
-import CampoLocais from '../CampoLocais';
-import BoxMateriais from '../BoxMateriais';
-import BoxProfissionais from '../BoxProfissionais';
-import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../common/utils';
-import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../atomStore';
+import FormContainer from '../../FormContainer';
+import Selecao from '../../Selecao';
+import CampoLocais from '../../CampoLocais';
+import BoxMateriais from '../../BoxMateriais';
+import BoxProfissionais from '../../BoxProfissionais';
+import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../../common/utils';
+import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import TituloTexto from '../TituloTexto';
+import TituloTexto from '../../TituloTexto';
 import { useLocation } from 'react-router-dom';
 
 const FormOrdemServico = (props) => {
@@ -205,7 +205,7 @@ const FormOrdemServico = (props) => {
     
             <TextField 
                 defaultValue={defaultValue?.data_inicio_servico}
-                type="date"
+                type="datetime-local"
                 name="data_inicio_servico"
                 label="Data de início do serviço"
                 InputLabelProps={{ shrink: true }}
@@ -217,7 +217,7 @@ const FormOrdemServico = (props) => {
         
             <TextField 
                 defaultValue={defaultValue?.data_fim_servico}
-                type="date"
+                type="datetime-local"
                 name="data_fim_servico"
                 label="Data de fim do serviço"
                 InputLabelProps={{ shrink: true }}

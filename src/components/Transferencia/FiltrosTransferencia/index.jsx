@@ -7,11 +7,17 @@ import { statusTransferencia } from '../../../common/utils/constants';
 const FiltrosTransferencia = () => {
     
     const [datas, setDatas] = useState(['']);
+    const [tipo, setTipo] = useState("")
+
+    function limpaForms() {
+        setTipo("")
+    }
 
     return (
         <Filtros
             transferencia={datas}
             limpaData={setDatas}
+            limpaForms={limpaForms}
         >
             <CampoDataRange
                 label={'Data de Transferencia - faixa de pesquisa'}
@@ -41,9 +47,11 @@ const FiltrosTransferencia = () => {
                 select
                 label="Status"
                 name="status"
+                value={tipo}
+                onChange={(e) => setTipo(e.target.value)}
+                //inputProps={{ value: tipo, onChange: (e) => setTipo(e.target.value)}}
                 id="status"
                 className='col-span-2'
-                defaultValue=""
             >
                 {
                     Object.entries(statusTransferencia).map( (keyVal, index) => (<MenuItem key={`status${index}`}value={keyVal[0]}>{keyVal[1]}</MenuItem>) )

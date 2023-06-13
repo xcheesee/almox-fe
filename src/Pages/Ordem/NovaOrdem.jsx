@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NovaOrdemServico from '../../components/NovaOrdemServico';
+import NovaOrdemServico from '../../components/OrdemServico/NovaOrdemServico';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';

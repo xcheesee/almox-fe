@@ -1,9 +1,8 @@
 import React from 'react';
-import { Box } from '@mui/material';
 import ContainerPrincipal from '../ContainerPrincipal';
 import Titulo from '../Titulo';
-import FiltrosInventario from '../FiltrosInventario';
-import TabelaInventario from '../TabelaInventario';
+import FiltrosInventario from './FiltrosInventario';
+import TabelaInventario from './TabelaInventario';
 import Paginacao from '../Paginacao';
 import { useAtomValue } from 'jotai';
 import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
@@ -44,13 +43,10 @@ const Inventario = (props) => {
                 cursor={cursor}
             />
 
-            <Box className="mt-10">
-                <Paginacao 
-                    count={pageCountRef.current}
-                />
-            </Box>
+            <Paginacao 
+                count={pageCountRef.current}
+            />
         </ContainerPrincipal>
-
     );
 }
 

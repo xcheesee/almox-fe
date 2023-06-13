@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, MenuItem } from '@mui/material';
-import Filtros from '../Filtros';
-import CampoDataRange from '../CampoDataRange';
-import { getMatTipos } from '../../common/utils';
+import Filtros from '../../Filtros';
+import CampoDataRange from '../../CampoDataRange';
+import { getMatTipos } from '../../../common/utils';
 import { useQuery } from '@tanstack/react-query'
 
 const FiltrosEntrada = () => {

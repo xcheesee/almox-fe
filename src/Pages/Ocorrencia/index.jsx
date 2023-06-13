@@ -15,7 +15,6 @@ export default function Ocorrencia () {
     const page = useAtomValue(pageAtom)
     const filtros = useAtomValue(filtrosAtom)
 
-
     const ocorrenciaQuery = useQuery({
         queryKey: ["ocorrencias", page, filtros, sort],
         queryFn: async () => await getTabela("ocorrencia", page, filtros, sort),
@@ -23,7 +22,6 @@ export default function Ocorrencia () {
     })
 
     const pageCountRef = useRef(ocorrenciaQuery?.data?.meta?.last_page ?? 1)
-
 
     return(
         <ContainerPrincipal>
@@ -44,7 +42,6 @@ export default function Ocorrencia () {
             />
 
             <Paginacao count={pageCountRef.current} />
-
         </ContainerPrincipal>
     )
 }

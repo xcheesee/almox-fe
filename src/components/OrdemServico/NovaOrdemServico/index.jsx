@@ -1,43 +1,47 @@
 import React, { useState } from 'react';
 import { 
-    Box, 
+    Box,
     Button,
     CircularProgress
 } from '@mui/material';
-import ContainerPrincipal from '../ContainerPrincipal';
-import Titulo from '../Titulo';
-import FormEntradaMaterial from '../FormEntradaMaterial';
+import ContainerPrincipal from '../../ContainerPrincipal';
+import Titulo from '../../Titulo';
+import FormOrdemServico from '../FormOrdemServico';
 
-const NovaEntradaMaterial = (props) => {
+const NovaOrdemServico = (props) => {
     const {
+        materiais,
+        setMateriais,
         setOpenCancelar,
         setOpenConfirmar,
         carregando,
         setCarregando,
         navigate,
-        deptoSelecionado,
-        setDeptoSelecionado
+        baseSelecionada,
+        setBaseSelecionada,
     } = props;
 
     const [errors, setErrors] = useState({});
-
+    
     return (
         <ContainerPrincipal>
-            <Titulo voltaPara="/entrada">
-                Nova entrada de material
+            <Titulo voltaPara="/ordemservico">
+                Nova ordem de serviço
             </Titulo>
-            
-            <FormEntradaMaterial
-                acao='cadastrar'
-                navigate={navigate}
+
+            <FormOrdemServico 
+                acao='cadastrar' 
+                navigate={navigate} 
                 setOpenConfirmar={setOpenConfirmar}
-                setCarregando={setCarregando}
-                deptoSelecionado={deptoSelecionado}
-                setDeptoSelecionado={setDeptoSelecionado}
+                setCarregando={setCarregando} 
+                materiais={materiais}
+                setMateriais={setMateriais}
                 errors={errors}
                 setErrors={setErrors}
+                baseSelecionada={baseSelecionada}
+                setBaseSelecionada={setBaseSelecionada}
             />
-            
+
             <Box className="flex justify-end gap-4">
                 <Button onClick={() => setOpenCancelar(true)}>
                     Cancelar
@@ -59,4 +63,4 @@ const NovaEntradaMaterial = (props) => {
     );
 }
 
-export default NovaEntradaMaterial;
+export default NovaOrdemServico;

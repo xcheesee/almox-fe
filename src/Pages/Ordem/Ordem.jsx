@@ -4,7 +4,7 @@ import { getDetalhesBaixa, getMateriais, getOrdemProfissionais, getRegistro } fr
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
-import FormOrdemServico from '../../components/FormOrdemServico';
+import FormOrdemServico from '../../components/OrdemServico/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
@@ -29,34 +29,34 @@ const Ordem = () => {
     const getSelectedOrdemInfo = async (id, command) => {
         setCursor('progress')
         switch(command) {
-            case 'visualizar':
-                const [registroData, matsData, profsData] = await Promise.all([
-                    getRegistro('ordem_servico', id,),
-                    getMateriais('ordem_servico', id),
-                    getOrdemProfissionais(id, )
-                ])
-                setOrdemServico( registroData)
-                setMateriais( matsData)
-                setProfissionais( profsData)
-                setOpenDetalhes(true)
-                break;
-            case 'editar':
-                const [registroEditData, matsEditData, profsEditData] = await Promise.all([
-                    getRegistro('ordem_servico', id,),
-                    getMateriais('ordem_servico', id),
-                    getOrdemProfissionais(id, )
-                ])
-                setOrdemServico(registroEditData);
-                setMateriais(matsEditData)
-                setProfissionais(profsEditData)
-                setOpenEditar(true)
-                break;
-            case 'baixa':
-                setBaixa(await getDetalhesBaixa(id));
-                setOpenBaixa(true);
-                break;
-            default:
-                break;
+        case 'visualizar':
+            const [registroData, matsData, profsData] = await Promise.all([
+                getRegistro('ordem_servico', id,),
+                getMateriais('ordem_servico', id),
+                getOrdemProfissionais(id, )
+            ])
+            setOrdemServico( registroData)
+            setMateriais( matsData)
+            setProfissionais( profsData)
+            setOpenDetalhes(true)
+            break;
+        case 'editar':
+            const [registroEditData, matsEditData, profsEditData] = await Promise.all([
+                getRegistro('ordem_servico', id,),
+                getMateriais('ordem_servico', id),
+                getOrdemProfissionais(id, )
+            ])
+            setOrdemServico(registroEditData);
+            setMateriais(matsEditData)
+            setProfissionais(profsEditData)
+            setOpenEditar(true)
+            break;
+        case 'baixa':
+            setBaixa(await getDetalhesBaixa(id));
+            setOpenBaixa(true);
+            break;
+        default:
+            break;
         }
         setCursor('auto')
     }

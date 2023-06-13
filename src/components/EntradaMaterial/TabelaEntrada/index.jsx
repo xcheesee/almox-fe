@@ -1,12 +1,12 @@
 import React from 'react';
-import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../common/utils';
+import { mascaraProcessoSei, mascaraContrato, authEditEntrada } from '../../../common/utils';
 import {
     TableRow,
     TableCell,
     IconButton,
     Tooltip,
 } from '@mui/material';
-import Tabela from '../Tabela';
+import Tabela from '../../Tabela';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 
