@@ -42,32 +42,28 @@ export default function Transferencia () {
     const pageCountRef = useRef(transferenciasQuery?.data?.meta?.last_page ?? 1)
 
     async function getSelectedTransfInfo(id, operation) {
+        setIsLoading(true)
         let dados, itensDados;
+        try{
+            [dados, itensDados] = await Promise.all([getRegistro('transferencia', id), getMateriais("transferencia", id)])
+        } catch(e) {
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `Nao foi possivel recuperar a transferencia: ${e.status} (${e.message})`
+            })
+            setIsLoading(false)
+            return
+        }
         switch(operation) {
             case "visualizar":
-                setIsLoading(true)
                 setOpenDetalhes(true)
-                try {
-                    [dados, itensDados] = await Promise.all([getRegistro('transferencia', id), getMateriais("transferencia", id)])
-                    console.log(itensDados)
-                } catch(e) {
-                    setSnackbar({
-                        open: true,
-                        severity: 'error',
-                        message: `Nao foi possivel recuperar a transferencia: ${e.status} (${e.message})`
-                    })
-                    setIsLoading(false)
-                    setOpenDetalhes(false)
-                    return
-                }
                 setTransfData(dados)
                 setTransfItensData(itensDados?.data)
                 setIsLoading(false)
                 break;
             case "confirmar":
-                setIsLoading(true)
                 setOpenConfirmar(true)
-                [dados, itensDados] = await Promise.all([getTransferencia(id), getMateriais("transferencia", id)])
                 setTransfData(dados)
                 setTransfItensData(itensDados?.data)
                 setIsLoading(false)
