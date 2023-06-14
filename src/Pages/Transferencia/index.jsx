@@ -6,9 +6,9 @@ import TabelaTransferencia from "../../components/Transferencia/TabelaTransferen
 import FiltrosTransferencia from "../../components/Transferencia/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
 import { useQuery } from "@tanstack/react-query";
-import { authCreateTransf, getMateriais, getTabela, getTransferencia } from "../../common/utils";
-import { useAtomValue } from "jotai";
-import { filtrosAtom, pageAtom, sortAtom } from "../../atomStore";
+import { authCreateTransf, getMateriais, getRegistro, getTabela, getTransferencia } from "../../common/utils";
+import { useAtomValue, useSetAtom } from "jotai";
+import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from "../../atomStore";
 import DialogDetalhesTransferencia from "../../components/Transferencia/DialogDetalhesTransferencia";
 import { useState } from "react";
 import DialogConfirmarTransferencia from "../../components/Transferencia/DialogConfirmarTransferencia";
@@ -19,6 +19,7 @@ export default function Transferencia () {
     const sort = useAtomValue(sortAtom)
     const page = useAtomValue(pageAtom)
     const filtros = useAtomValue(filtrosAtom)
+    const setSnackbar = useSetAtom(snackbarAtom)
 
     const [openDetalhes, setOpenDetalhes] = useState(false)
     const [openConfirmar, setOpenConfirmar] = useState(false)
@@ -30,27 +31,45 @@ export default function Transferencia () {
     const transferenciasQuery = useQuery({
         queryKey: ['transferencias', page, filtros, sort],
         queryFn: async () => await getTabela("transferencia", page, filtros, sort),
-        onSuccess: (res) => pageCountRef.current = res.meta.last_page
+        onSuccess: (res) => pageCountRef.current = res.meta.last_page,
+        onError: error => setSnackbar({
+            open: true,
+            severity: "error",
+            message: `Nao foi possivel recuperar os dados de transferencia: ${error.status} (${error.message})`
+        })
     })
 
     const pageCountRef = useRef(transferenciasQuery?.data?.meta?.last_page ?? 1)
 
     async function getSelectedTransfInfo(id, operation) {
+        let dados, itensDados;
         switch(operation) {
             case "visualizar":
                 setIsLoading(true)
                 setOpenDetalhes(true)
-                const [dados, itensDados] = await Promise.all([getTransferencia(id), getMateriais("transferencia", id)])
-                setTransfData(dados.data)
-                setTransfItensData(itensDados)
+                try {
+                    [dados, itensDados] = await Promise.all([getRegistro('transferencia', id), getMateriais("transferencia", id)])
+                    console.log(itensDados)
+                } catch(e) {
+                    setSnackbar({
+                        open: true,
+                        severity: 'error',
+                        message: `Nao foi possivel recuperar a transferencia: ${e.status} (${e.message})`
+                    })
+                    setIsLoading(false)
+                    setOpenDetalhes(false)
+                    return
+                }
+                setTransfData(dados)
+                setTransfItensData(itensDados?.data)
                 setIsLoading(false)
                 break;
             case "confirmar":
                 setIsLoading(true)
                 setOpenConfirmar(true)
-                const [confDados, confItensDados] = await Promise.all([getTransferencia(id), getMateriais("transferencia", id)])
-                setTransfData(confDados.data)
-                setTransfItensData(confItensDados)
+                [dados, itensDados] = await Promise.all([getTransferencia(id), getMateriais("transferencia", id)])
+                setTransfData(dados)
+                setTransfItensData(itensDados?.data)
                 setIsLoading(false)
                 break;
             default:

@@ -25,7 +25,7 @@ export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {
 
 export function errorBuilder(res, text) {
   const error = new Error(text)
-  error.text = text
+  error.message = text
   error.status = res.status
   error.ok = false
   error.errors = res?.errors ?? "" 
@@ -108,7 +108,6 @@ export function headerBuilder () {
   return {
     'Accept': 'application/json',
     'Authorization': localStorage.getItem('access_token')
-
   }
 }
 
@@ -222,25 +221,23 @@ export const getLocais = (depto, tipo) => {
       .catch(err => console.log(err));
 }
 
-export const getTabela = (rota, page="", filtros="", sort="") => {
+export async function getTabela (rota, page="", filtros="", sort="") {
   const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}&sort=${sort || ''}`
   const options = {
       method: 'GET',
-      headers: {
-        ...headerBuilder()
-        //'Accept': 'application/json',
-        //'Authorization': localStorage.getItem('access_token')
-      }
+      headers: headerBuilder()
   };
 
-  return fetch(url, options)
-      .then(res => res.json())
-      .then(data => {
-        return new Promise((res) =>  setTimeout(() => {
-          res(data)
-        }, 250))}
-
-      )
+  try{
+    const res = await fetch(url, options)
+    if(res.status === 404) {
+      throw errorBuilder(res, "Nao encontrado")
+    }
+    const json = await res.json()
+    return await new Promise(res => setTimeout(() => res(json), 250))
+  } catch(e) {
+    throw errorBuilder(e, e.message)
+  }
 }
 
 export const getMateriais = async (rota, id) => {
@@ -248,14 +245,16 @@ export const getMateriais = async (rota, id) => {
   const options = {
     method: 'GET',
     headers: {
-      ...headerBuilder()
+      ...headerBuilder(),
+      'Content-Type': 'application/json',
     }
   };
 
   const res = await fetch(url, options)
   if(res.ok) {
     const json = await res.json()
-    return json.data
+    console.log(json)
+    return json
   }
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais!")
 }
@@ -283,19 +282,17 @@ export const getRegistro = async (rota, id) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'GET',
-    headers: {
-      ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
-    }
+    headers: headerBuilder()
   };
   
   const res = await fetch(url, options)
   if(res.ok) {
     const json = await res.json()
     return json.data
+  } else if(res.status === 404) {
+    throw errorBuilder(res, "Nao encontrado")
   }
-  throw errorBuilder(res, "Nao foi possivel recuperar o registro!")
+  throw errorBuilder(res, res.message)
 }
 
 export const getDetalhesBaixa = async (id) => {
@@ -386,20 +383,24 @@ export const AddAlerta = async (alertaData, idAlerta) => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
+      header: headerBuilder()
     },
     body: JSON.stringify({
       ...alertaData
     })
   };
 
-  const res = await fetch(url, options)
-  if (!res.ok) 
-    throw new Error(`(Erro ${res.status})`)
+  try {
+    const res = await fetch(url, options)
+    if(res.status === 404) {
+      console.log(res)
+      throw errorBuilder(res, "Item nao encontrado.")
+    }
+    return await res.json()
+  } catch(e) {
+    throw errorBuilder(e, e.message)
+  }
   
-  return await res.json()
 }
 
 
@@ -690,6 +691,9 @@ export async function getTransferencia(id) {
 
   if(res.ok) {
     return await res.json()
+  } else if (res.status === 404) {
+    throw errorBuilder(res, "Nao encontrado")
+
   }
   throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
 }

@@ -3,6 +3,8 @@ import { Box } from '@mui/material';
 import Inventario from '../components/Inventario';
 import DialogDefinirAlerta from '../components/DialogDefinirAlerta';
 import { getRegistro } from '../common/utils';
+import { useSetAtom } from 'jotai';
+import { snackbarAtom } from '../atomStore';
 
 const PaginaInventario = () => {
 
@@ -10,15 +12,27 @@ const PaginaInventario = () => {
     const [openDefinir, setOpenDefinir] = useState(false);
     const [idAlerta, setIdAlerta] = useState('');
     const [cursor, setCursor] = useState('auto');
+
+    const setSnackbar = useSetAtom(snackbarAtom)
     
 
     const inventarioItemDefinirAlerta = async (id) => {
         setCursor('progress')
 
-        setRegistro(await getRegistro('inventario', id, ))
+        try{
+            const registro = await getRegistro('inventario', id)
+            setRegistro(registro)
+        } catch(e) {
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `Nao foi possivel definir o alerta: ${e.status} (${e.message})`
+            })
+            return setCursor('auto')
+        }
+
         setIdAlerta(id)
         setOpenDefinir(true)
-
         setCursor('auto')
     }
 

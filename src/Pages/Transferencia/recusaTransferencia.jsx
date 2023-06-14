@@ -1,4 +1,4 @@
-import { MenuItem, TextField, Box, Button } from "@mui/material";
+import { MenuItem, TextField, Box, Button, CircularProgress } from "@mui/material";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import FormContainer from "../../components/FormContainer";
@@ -17,10 +17,12 @@ export default function RecusaTranferencia() {
     const navigate = useNavigate()
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false)
     const params = useParams();
 
     async function enviaRecusaForm(e) {
         e.preventDefault()
+        setIsLoading(true)
         const transferData = await getTransferencia(params.id)
         const formData = new FormData(e.target)
 
@@ -39,11 +41,12 @@ export default function RecusaTranferencia() {
             navigate("/transferencia")
         } catch(e) {
             setSnackbar({
-                message: e?.text ?? "Nao foi possivel enviar a solicitacao!",
+                message: e?.message ?? "Nao foi possivel enviar a solicitacao!",
                 severity: "error",
                 open: true,
             })
         }
+        setIsLoading(false)
     }
 
     return(
@@ -83,8 +86,11 @@ export default function RecusaTranferencia() {
                     id="observacao"
                 />
             </FormContainer>
-
-            <Box className="flex gap-4 justify-end">
+            <Box className="flex gap-2 justify-end items-center">
+                { isLoading
+                    ?<CircularProgress size={24} />
+                    :<></>
+                }
                 <Button onClick={() => setOpenConfirmar(true)}>Enviar</Button>
             </Box>
 

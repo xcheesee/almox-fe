@@ -43,7 +43,7 @@ const DialogDefinirAlerta = (props) => {
         setSnackbar({
           open: true, 
           severity: 'error', 
-          message: `Não foi possível definir o alerta ${res}`
+          message: `Não foi possível definir o alerta: ${res.status} - ${res.message}`
         });
       }
     })

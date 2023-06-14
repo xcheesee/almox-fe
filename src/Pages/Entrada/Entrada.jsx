@@ -7,25 +7,36 @@ import DialogDetalhesEntrada from '../../components/DialogDetalhesEntrada';
 import FormEntradaMaterial from '../../components/EntradaMaterial/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
-import { excluirAtom, matsAtom } from '../../atomStore';
+import { excluirAtom, matsAtom, snackbarAtom } from '../../atomStore';
 import { useAtom, useSetAtom } from 'jotai';
 
 const Entrada = () => {
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
-    
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('auto');
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
+    const setSnackbar = useSetAtom(snackbarAtom);
     const [materiais, setMateriais] = useAtom(matsAtom);
 
     const getSelectedEntradaInfo = async (id, command) => {
         setCursor('progress')
-        const [registroData, matsData] = await Promise.all([getRegistro('entrada', id,), getMateriais('entrada', id,)])
+        let registroData, matsData; 
+        try {
+            [registroData, matsData] = await Promise.all([getRegistro('entrada', id), getMateriais('entrada', id)])
+        } catch(e) {
+            setSnackbar({
+              open: true, 
+              severity: 'error', 
+              message: `Não foi possível exibir os dados: ${e.status} (${e.message})`
+            });
+            setCursor('auto')
+            return;
+        }
         switch(command) {
             case 'visualizar':
                 setEntradaMaterial(registroData)
