@@ -12,11 +12,11 @@ import {
     TableBody
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import { getItemsAcabando } from '../../common/utils';
+import { getDados, getItemsAcabando } from '../../common/utils';
 import { useQuery } from '@tanstack/react-query'
 
 const MenuItemsAcabando = ({ username, style }) => {
-    const itemsAcabando = useQuery(['itemsAcabando'], getItemsAcabando)
+    const itemsAcabando = useQuery(['itemsAcabando'], async () => await getDados('items_acabando'))
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -79,7 +79,10 @@ const MenuItemsAcabando = ({ username, style }) => {
                             </TableRow>
                         </TableHead>
                             <TableBody>
-                                {itemsAcabando?.data?.map(item => (
+
+                                {itemsAcabando.isLoading
+                                    ?<></>
+                                    :itemsAcabando?.data?.data?.map(item => (
                                     <TableRow key={item.id}>
                                         <TableCell>{item.item}</TableCell>
                                         <TableCell align='right'>{item.quantidade} {item.medida}</TableCell>

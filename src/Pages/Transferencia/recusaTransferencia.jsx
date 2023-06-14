@@ -5,7 +5,7 @@ import FormContainer from "../../components/FormContainer";
 import { useState } from "react";
 import DialogEnviar from "../../components/DialogEnviar";
 import { useNavigate, useParams } from "react-router-dom";
-import { getTransferencia, recusaTransferencia } from "../../common/utils";
+import { getRegistro, getTransferencia, recusaTransferencia } from "../../common/utils";
 import { useSetAtom } from "jotai";
 import { snackbarAtom } from "../../atomStore";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,15 +23,15 @@ export default function RecusaTranferencia() {
     async function enviaRecusaForm(e) {
         e.preventDefault()
         setIsLoading(true)
-        const transferData = await getTransferencia(params.id)
-        const formData = new FormData(e.target)
+        const transferData = await getRegistro("transferencia", params.id)
+        //const formData = new FormData(e.target)
 
-        formData.append("base_origem_id", transferData.data.base_origem_id)
-        formData.append("base_destino_id", transferData.data.base_destino_id)
-        formData.append("data_transferencia", transferData.data.data_transferencia)
+        //formData.append("base_origem_id", transferData.data.base_origem_id)
+        //formData.append("base_destino_id", transferData.data.base_destino_id)
+        //formData.append("data_transferencia", transferData.data.data_transferencia)
 
         try {
-            await recusaTransferencia(params.id, formData)
+            await recusaTransferencia(params.id)
             setSnackbar({
                 message: "Transferencia recusada com sucesso!",
                 severity: "success",

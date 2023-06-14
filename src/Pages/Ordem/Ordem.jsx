@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getDetalhesBaixa, getMateriais, getOrdemProfissionais, getRegistro } from '../../common/utils';
+import { getDados, getDetalhesBaixa, getMateriais, getOrdemProfissionais, getRegistro } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
@@ -9,7 +9,7 @@ import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useSetAtom } from 'jotai';
-import { excluirAtom, matsAtom, profissionaisAtom } from '../../atomStore';
+import { excluirAtom, matsAtom, profissionaisAtom, snackbarAtom } from '../../atomStore';
 
 const Ordem = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -23,6 +23,7 @@ const Ordem = () => {
     const [openBaixa, setOpenBaixa] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
+    const setSnackbar = useSetAtom(snackbarAtom)
     const [materiais, setMateriais] = useAtom(matsAtom);
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
 
@@ -52,7 +53,17 @@ const Ordem = () => {
             setOpenEditar(true)
             break;
         case 'baixa':
-            setBaixa(await getDetalhesBaixa(id));
+            try{
+                let baixa = await getDados(`ordem_servico/${id}/baixa_json`);
+                setBaixa(baixa);
+            } catch(e) {
+                setSnackbar({
+                    open: true,
+                    severity: "error",
+                    message: `Nao foi possivel recuperar a baixa: ${e.status} (${e.message})`
+                })
+                return setCursor('auto')
+            }
             setOpenBaixa(true);
             break;
         default:

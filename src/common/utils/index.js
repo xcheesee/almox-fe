@@ -170,8 +170,6 @@ export const getBaixa = async (baixaId) => {
       headers: {
         'Content-Type': 'application/json',
         ...headerBuilder()
-        //'Accept': 'application/json',
-        //'Authorization': localStorage.getItem('access_token'),
       },
   };
 
@@ -180,8 +178,6 @@ export const getBaixa = async (baixaId) => {
   const itensRes = await fetch(urlItems, options)
   if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperaro os itens da baixa!")
   const [ordem, itens] = await Promise.all([res.json(), itensRes.json()])
-  //const ordem = await res.json()
-  //const itens = await itensRes.json()
   return {ordem, itens}
 
     // .then(async res => {
@@ -206,11 +202,7 @@ export const getLocais = (depto, tipo) => {
   const url = `${process.env.REACT_APP_API_URL}/locais?filter[tipo]=${tipo}&filter[departamento_id]=${depto}`;
   const options = {
       method: 'GET',
-      headers: {
-        ...headerBuilder()
-        //'Accept': 'application/json',
-        //'Authorization': localStorage.getItem('access_token')
-      }
+      headers: headerBuilder()
   };
 
   return fetch(url, options)
@@ -219,6 +211,21 @@ export const getLocais = (depto, tipo) => {
       })
       .then( data => data.data )
       .catch(err => console.log(err));
+}
+
+export async function getDados(rota) {
+  const url = `${process.env.REACT_APP_API_URL}/${rota}`
+  const options = { headers: headerBuilder() };
+
+  try{
+    const res = await fetch(url, options)
+    if(res.status === 404) {
+      throw errorBuilder(res, "Nao encontrado")
+    }
+    return await res.json()
+  } catch(e) {
+    throw errorBuilder(e, e.message)
+  }
 }
 
 export async function getTabela (rota, page="", filtros="", sort="") {
@@ -253,21 +260,16 @@ export const getMateriais = async (rota, id) => {
   const res = await fetch(url, options)
   if(res.ok) {
     const json = await res.json()
-    console.log(json)
     return json
   }
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais!")
 }
 
-export const getOrdemProfissionais = async (id, ) => {
+export const getOrdemProfissionais = async (id) => {
   const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/profissionais`;
   const options = {
     method: 'GET',
-    headers: {
-      ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
-    }
+    headers: headerBuilder() 
   };
 
   const res = await fetch(url, options)
@@ -295,43 +297,39 @@ export const getRegistro = async (rota, id) => {
   throw errorBuilder(res, res.message)
 }
 
-export const getDetalhesBaixa = async (id) => {
-  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/baixa_json`;
-  const options = {
-    method: 'GET',
-    headers: {
-      ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
-    }
-  };
+//export const getDetalhesBaixa = async (id) => {
+//  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/baixa_json`;
+//  const options = {
+//    method: 'GET',
+//    headers: headerBuilder() 
+//  };
+//
+//  const res = await fetch(url, options);
+//  if(res.ok) {
+//    return await res.json();
+//  }
+//  throw errorBuilder(res, "Nao foi possivel recuperar a baixa!")
+//}
 
-  const res = await fetch(url, options);
-  if(res.ok) {
-    return await res.json();
-  }
-  throw errorBuilder(res, "Nao foi possivel recuperar a baixa!")
-}
-
-export const getItemsAcabando = () => {
-  const url = `${process.env.REACT_APP_API_URL}/items_acabando`;
-  const options = {
-    method: 'GET',
-    headers: {
-      ...headerBuilder()
-      //'Accept': 'application/json',
-      //'Authorization': localStorage.getItem('access_token')
-    }
-  };
-
-  return fetch(url, options)
-    .then(res => {
-      if (res.ok)
-        return res.json();
-    })
-    .then( data => data.data )
-    .catch(err => console.log(err))
-}
+//export const getItemsAcabando = () => {
+//  const url = `${process.env.REACT_APP_API_URL}/items_acabando`;
+//  const options = {
+//    method: 'GET',
+//    headers: {
+//      ...headerBuilder()
+//      //'Accept': 'application/json',
+//      //'Authorization': localStorage.getItem('access_token')
+//    }
+//  };
+//
+//  return fetch(url, options)
+//    .then(res => {
+//      if (res.ok)
+//        return res.json();
+//    })
+//    .then( data => data.data )
+//    .catch(err => console.log(err))
+//}
 
 // Update
 export const enviaBaixa = async (items, baixaId) => {
@@ -672,31 +670,31 @@ export const loginRequest = async (inputObject) => {
   throw errorBuilder(res, errData.message)
 }
 
-export async function getTransferencias() {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  const res = await fetch(url, {
-    headers: headerBuilder(), 
-  })
-
-  if(res.ok) return await res.json()
-  
-  throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
-}
-
-export async function getTransferencia(id) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
-  const res = await fetch(url, {
-    headers: headerBuilder(), 
-  })
-
-  if(res.ok) {
-    return await res.json()
-  } else if (res.status === 404) {
-    throw errorBuilder(res, "Nao encontrado")
-
-  }
-  throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
-}
+//export async function getTransferencias() {
+//  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
+//  const res = await fetch(url, {
+//    headers: headerBuilder(), 
+//  })
+//
+//  if(res.ok) return await res.json()
+//  
+//  throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
+//}
+//
+//export async function getTransferencia(id) {
+//  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/${id}` );
+//  const res = await fetch(url, {
+//    headers: headerBuilder(), 
+//  })
+//
+//  if(res.ok) {
+//    return await res.json()
+//  } else if (res.status === 404) {
+//    throw errorBuilder(res, "Nao encontrado")
+//
+//  }
+//  throw errorBuilder(res, "Nao foi possivel recuperar a transferencia")
+//}
 
 export async function getTransferenciaItem(id) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia_itens/${id}` );
@@ -741,7 +739,6 @@ export async function recusaTransferencia(id) {
   const json = await res.json()
   const error = errorBuilder(res, json.mensagem)
   error.errors = json.errors
-  console.log(error)
   
   throw error
 }

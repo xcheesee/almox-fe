@@ -10,7 +10,7 @@ const CampoLocais = ({
     tipo, 
     depto="", 
     getAllBases=false, 
-    onChange="", 
+    onChange=() => {}, 
     ...props
 }) => {
 

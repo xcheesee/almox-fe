@@ -6,7 +6,7 @@ import TabelaTransferencia from "../../components/Transferencia/TabelaTransferen
 import FiltrosTransferencia from "../../components/Transferencia/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
 import { useQuery } from "@tanstack/react-query";
-import { authCreateTransf, getMateriais, getRegistro, getTabela, getTransferencia } from "../../common/utils";
+import { authCreateTransf, getMateriais, getRegistro, getTabela } from "../../common/utils";
 import { useAtomValue, useSetAtom } from "jotai";
 import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from "../../atomStore";
 import DialogDetalhesTransferencia from "../../components/Transferencia/DialogDetalhesTransferencia";
@@ -26,7 +26,6 @@ export default function Transferencia () {
     const [transfData, setTransfData] = useState("")
     const [transfItensData, setTransfItensData] = useState("")
     const [isLoading, setIsLoading] = useState(false)
-
 
     const transferenciasQuery = useQuery({
         queryKey: ['transferencias', page, filtros, sort],
