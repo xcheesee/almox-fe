@@ -97,12 +97,12 @@ export const setFormSnackbar = (setSnackbar, tipoEnvio, options = {
 }
 
 // variáveis
-export const token = localStorage.getItem('access_token');
-
-export const headers = {
-  'Accept': 'application/json',
-  'Authorization': token
-}
+//export const token = localStorage.getItem('access_token');
+//
+//export const headers = {
+//  'Accept': 'application/json',
+//  'Authorization': token
+//}
 
 export function headerBuilder () {
   return {
@@ -173,44 +173,26 @@ export const getBaixa = async (baixaId) => {
       },
   };
 
-  const res = await fetch(url, options)
-  if(!res.ok) throw res
-  const itensRes = await fetch(urlItems, options)
-  if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperaro os itens da baixa!")
+  const [res, itensRes] = await Promise.all([fetch(url, options), fetch(urlItems, options)])
+  if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar a baixa!")
+  if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperar os itens da baixa!")
+
   const [ordem, itens] = await Promise.all([res.json(), itensRes.json()])
   return {ordem, itens}
-
-    // .then(async res => {
-    //   if (res.status === 404) {
-    //     navigate('/404', { replace: true });
-    //     return res.json();
-    //   } else {
-    //     const data = await res.json();
-    //     setOrdemServico(data.data || {});
-    //     fetch(urlItems, options)
-    //       .then(resItems => resItems.json())
-    //       .then(dataItems => {
-    //         setMateriais(dataItems.data);
-    //         setCarregando(false);
-    //       });
-    //   }
-    // })
-    // .catch(err => console.log(err));
 }
 
-export const getLocais = (depto, tipo) => {
+export async function getLocais (depto, tipo) {
   const url = `${process.env.REACT_APP_API_URL}/locais?filter[tipo]=${tipo}&filter[departamento_id]=${depto}`;
   const options = {
-      method: 'GET',
-      headers: headerBuilder()
+    method: 'GET',
+    headers: headerBuilder()
   };
 
-  return fetch(url, options)
-      .then(res => {
-        return res.json()
-      })
-      .then( data => data.data )
-      .catch(err => console.log(err));
+  const res = await fetch(url, options)
+  if(!res.ok) {
+    throw errorBuilder(res, "Nao foi possivel recuperar os locais")
+  }
+  return (await res.json()).data
 }
 
 export async function getDados(rota) {
@@ -351,28 +333,6 @@ export const enviaBaixa = async (items, baixaId) => {
   } else {
     throw res
   }
-      // .then(res => {
-      //   if (res.ok) {
-      //     setCarregandoBaixa(false);
-      //     setSnackbar({
-      //       open: true,
-      //       severity: 'success',
-      //       message: 'Baixa da ordem de serviço efetuada com sucesso!'
-      //     });
-      //     navigate('/ordemservico', { replace: true });
-      //     return res.json();
-      //   } else {
-      //     setCarregandoBaixa(false);
-      //     setSnackbar({
-      //       open: true,
-      //       severity: 'error',
-      //       message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
-      //     });
-      //     return res.json();
-      //   }
-      // })
-      // .then(data => data)
-      // .catch(err => console.log(err));
 }
 
 export const AddAlerta = async (alertaData, idAlerta) => {
@@ -391,14 +351,12 @@ export const AddAlerta = async (alertaData, idAlerta) => {
   try {
     const res = await fetch(url, options)
     if(res.status === 404) {
-      console.log(res)
       throw errorBuilder(res, "Item nao encontrado.")
     }
     return await res.json()
   } catch(e) {
     throw errorBuilder(e, e.message)
   }
-  
 }
 
 
@@ -407,9 +365,7 @@ export const enviaEdicao = async (e, url, id, materiais, campo) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
-    headers: {
-      ...headerBuilder()
-    },
+    headers: headerBuilder() ,
     body: enviaForm(e, materiais, campo) // TODO: implementar edicao de profissionais
   };
   
@@ -425,51 +381,46 @@ export const enviaEdicao = async (e, url, id, materiais, campo) => {
 
     throw error
   } else {
-    // const errData = await res.json()
-    throw res
+    throw errorBuilder(res, "Nao foi possivel editar o item!")
   }
-    // .then(data => {
-    //   if (data.errors)
-    //     // setErrors(data.errors)
-    // })
-    // .catch(err => console.log(err));
 }
 
 // Delete
-export const excluiRegistro = (rota, id, /* setHouveMudanca ,*/ setOpenExcluir, setOpenEditar, setCarregando, setSnackbar, tipoRegistro) => {
+export async function excluiRegistro ( rota, id ) {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
     method: 'DELETE',
-    headers: {
-      ...headerBuilder()
-    },
+    headers: headerBuilder() ,
   };
 
-  setOpenExcluir(false);
-  setCarregando(true);
-
-  fetch(urlCompleta, options)
-    .then(res => {
-      if (res.ok) {
-        // setHouveMudanca(prev => !prev);
-        setOpenEditar(false);
-        setCarregando(false);
-        setSnackbar({
-          open: true, 
-          severity: 'success', 
-          message: `${tipoRegistro} excluída com sucesso!`
-        });
-        return res.json()
-      } else {
-        setCarregando(false);
-        setSnackbar({
-          open: true,
-          severity: 'error',
-          message: `Não foi possível excluir (Erro ${res.status})`
-        });
-      }
-    })
-    .catch(err => console.log(err))
+  //setOpenExcluir(false);
+  //setCarregando(true);
+  const res = await fetch(urlCompleta, options)
+  if(!res.ok) {
+    throw errorBuilder(res, "Nao foi possivel excluir o registro!")
+  }
+  return res
+  //fetch(urlCompleta, options)
+  //  .then(res => {
+  //    if (res.ok) {
+  //      setOpenEditar(false);
+  //      setCarregando(false);
+  //      setSnackbar({
+  //        open: true, 
+  //        severity: 'success', 
+  //        message: `${tipoRegistro} excluída com sucesso!`
+  //      });
+  //      return res.json()
+  //    } else {
+  //      setCarregando(false);
+  //      setSnackbar({
+  //        open: true,
+  //        severity: 'error',
+  //        message: `Não foi possível excluir (Erro ${res.status})`
+  //      });
+  //    }
+  //  })
+  //  .catch(err => console.log(err))
 }
 
 export const getMatTipos = async () => {

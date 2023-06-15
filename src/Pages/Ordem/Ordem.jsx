@@ -34,7 +34,7 @@ const Ordem = () => {
             const [registroData, matsData, profsData] = await Promise.all([
                 getRegistro('ordem_servico', id,),
                 getMateriais('ordem_servico', id),
-                getOrdemProfissionais(id, )
+                getDados(id, )
             ])
             setOrdemServico( registroData)
             setMateriais( matsData)
@@ -112,6 +112,7 @@ const Ordem = () => {
                 id={ordemServico.id}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
+                tabelaOrigem="ordemItens"
             />
             <DialogDetalhesOrdem 
                 openDetalhes={openDetalhes}

@@ -92,6 +92,8 @@ const Entrada = () => {
                 texto="entrada de material"
                 id={entradaMaterial.id}
                 setOpenEditar={setOpenEditar}
+                setCarregando={setCarregandoEdicao}
+                tabelaOrigem="entradaItens"
             />
             <DialogDetalhesEntrada
                 openDetalhes={openDetalhes} 

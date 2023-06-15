@@ -12,7 +12,7 @@ import {
     TableBody
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import { getDados, getItemsAcabando } from '../../common/utils';
+import { getDados } from '../../common/utils';
 import { useQuery } from '@tanstack/react-query'
 
 const MenuItemsAcabando = ({ username, style }) => {
