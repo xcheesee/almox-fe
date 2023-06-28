@@ -11,6 +11,7 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
+import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
 import { Link } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
 import { filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
@@ -39,14 +40,26 @@ const MenuPrincipal = () => {
             <Box className="grid gap-6 grid-cols-6 grid-rows-2 my-8 px-10">
                 <Link to="/entrada" className="col-span-3" >
                     <Button sx={style.button} variant="outlined">
-                        <ArchiveIcon />
+                        <ArchiveIcon fontSize='large'/>
                         Entrada de material
                     </Button>
                 </Link>
                 <Link to="/inventario" className="col-span-3">
                     <Button sx={style.button} variant="outlined">
-                        <InventoryIcon /> 
+                        <InventoryIcon fontSize='large'/> 
                         Inventário
+                    </Button>
+                </Link>
+                <Link to="/ordemservico" className="col-span-6" >
+                    <Button sx={style.button} variant="outlined">
+                        <AssignmentIcon fontSize='large'/>
+                        Ordem de serviço
+                    </Button>
+                </Link>
+                <Link to="/saida" className="col-span-2" >
+                    <Button sx={style.button} variant="outlined">
+                        <SendAndArchiveIcon fontSize='large' />
+                        Saída
                     </Button>
                 </Link>
                 <Link to="/transferencia" className="col-span-2" >
@@ -55,15 +68,9 @@ const MenuPrincipal = () => {
                         Transferências
                     </Button>
                 </Link>
-                <Link to="/ordemservico" className="col-span-2" >
-                    <Button sx={style.button} variant="outlined">
-                        <AssignmentIcon />
-                        Ordem de serviço
-                    </Button>
-                </Link>
                 <Link to="/ocorrencia" className="col-span-2" >
                     <Button sx={style.button} variant="outlined">
-                        <AssignmentLateIcon />
+                        <AssignmentLateIcon fontSize='large'/>
                         Ocorrências
                     </Button>
                 </Link>

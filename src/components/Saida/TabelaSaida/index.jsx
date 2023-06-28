@@ -24,7 +24,7 @@ const cabecalhos = {
     "Ação": null
 };
 
-const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
+const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
     const perfil =  localStorage.getItem('perfil');
     const navigate = useNavigate()
 
@@ -46,9 +46,9 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                     <TableCell align="center">{ordem.origem}</TableCell>
                     <TableCell align="center">{ordem.local_servico}</TableCell>
                     <TableCell align="center">
-                        <Box className="grid grid-cols-3">
+                        <Box className="grid grid-cols-2">
                             <TabelaAcaoBtn
-                                title="Visualizar Ordem"
+                                title="Visualizar Saída"
                                 placement="left"
                                 disabled={cursor === 'progress'}
                                 onClick={ () => getSelectedOrdemInfo(ordem.id, 'visualizar') }
@@ -66,7 +66,7 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                 <EditIcon fontSize="small" />
                             </TabelaAcaoBtn>
 
-                            {/*ordem.flg_baixa === 0
+                            {ordem.flg_baixa === 0
                                 ?
                                     <TabelaAcaoBtn 
                                         display={ authEditOrdem(localStorage.getItem('perfil')) }
@@ -86,7 +86,7 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                     >
                                         <ContentPasteSearchIcon fontSize="small" />
                                     </TabelaAcaoBtn>
-                            */}
+                            }
 
                             <TabelaAcaoBtn 
                                 display={ authEditOrdem(localStorage.getItem('perfil')) }
@@ -106,4 +106,4 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
     );
 }
 
-export default TabelaOrdem;
+export default TabelaSaida;

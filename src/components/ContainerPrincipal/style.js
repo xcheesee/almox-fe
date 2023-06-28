@@ -7,7 +7,7 @@ const style = {
     },
     paper: { 
         padding: '1rem',
-        margin: '2rem 0'
+        margin: '1rem 0'
     },
 };
 

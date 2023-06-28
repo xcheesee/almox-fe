@@ -22,6 +22,8 @@ import Ocorrencia from './Pages/Ocorrencia';
 import NovaOcorrencia from './Pages/Ocorrencia/novaOcorrencia';
 import NovaTransferencia from './Pages/Transferencia/novaTransferencia';
 import RecusaTranferencia from './Pages/Transferencia/recusaTransferencia';
+import NovaSaida from './Pages/Saida/NovaSaida';
+import Saida from './Pages/Saida';
 
 //Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
 
@@ -42,6 +44,10 @@ function App() {
         <Route path="/ordemservico" element={ <Ordem /> } />
 
         <Route path="/ordemservico/nova-ordem" element={ <NovaOrdem /> } />
+
+        <Route path="/saida" element={ <Saida /> } />
+
+        <Route path="/saida/nova-saida" element={ <NovaSaida /> } />
 
         <Route path="/ordemservico/baixa/:id" element={ <Baixa setSnackbar={setSnackbar} /> } />
 

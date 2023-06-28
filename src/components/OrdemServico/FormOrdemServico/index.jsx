@@ -127,7 +127,7 @@ const FormOrdemServico = (props) => {
                     : addMutation.mutate(e)
             }}
         >
-            <Box className='flex flex-col'>
+            {/*<Box className='flex flex-col'>
                 <TextField
                     select
                     name='numero_ordem_servico'
@@ -154,9 +154,9 @@ const FormOrdemServico = (props) => {
                         />
                     </FormGroup>
                 </Box>
-            </Box>
+            </Box> */}
             
-            {isNoOSForm
+            {/*{isNoOSForm
                 ?<TextField 
                     multiline
                     rows={4}
@@ -166,7 +166,7 @@ const FormOrdemServico = (props) => {
                     required
                 />
                 :<></>
-            }
+            }*/}
             <Selecao
                 label="Departamento"
                 name="departamento_id"

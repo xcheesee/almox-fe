@@ -6,10 +6,11 @@ export default function TabelaAcaoBtn({
     placement, 
     disabled, 
     onClick, 
+    className,
     children
 }) {
     return (
-        <Box sx={{display: display}}>
+        <Box sx={{display: display}} className={className}>
             <Tooltip title={title} placement={placement} >
                 <Box>
                     <IconButton 
