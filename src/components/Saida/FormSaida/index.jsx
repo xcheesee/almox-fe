@@ -20,6 +20,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../../TituloTexto';
 import { useLocation } from 'react-router-dom';
+import OSAutocomplete from '../../OSAutocomplete';
 
 const FormSaida = (props) => {
     const queryClient = useQueryClient()
@@ -52,6 +53,7 @@ const FormSaida = (props) => {
         ["horas_empregadas"]: '',
     }])
     const [isNoOSForm, setIsNoOSForm] = useState(false);
+    const [ordemServico, setOrdemServico] = useState()
     
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -120,7 +122,12 @@ const FormSaida = (props) => {
     return (
         <>
             <Box className='flex flex-col pt-8'>
-                <TextField
+                <OSAutocomplete 
+                    disabled={isNoOSForm}
+                    ordemServico={ordemServico}
+                    setOrdemServico={setOrdemServico}
+                />
+                {/*<TextField
                     select
                     name='numero_ordem_servico'
                     id="numbero_ordem_servico"
@@ -131,7 +138,7 @@ const FormSaida = (props) => {
                     fullWidth
                 >
                     <MenuItem value={'teste'}>Teste</MenuItem>
-                </TextField>
+                </TextField>*/}
 
                 <Box className='flex'>
                     <FormGroup>
@@ -166,7 +173,7 @@ const FormSaida = (props) => {
                             label="Justificativa"
                             required
                         />
-                        <Selecao
+                        {/*<Selecao
                             label="Departamento"
                             name="departamento_id"
                             onChange={async (e) => {
@@ -183,7 +190,7 @@ const FormSaida = (props) => {
                                     {departamento[1]}
                                 </MenuItem>
                             ))}
-                        </Selecao>
+                        </Selecao>*/}
 
                         <Selecao
                             label="Status"
@@ -193,6 +200,7 @@ const FormSaida = (props) => {
                             // defaultValue={defaultValue?.status}
                             error={errors.hasOwnProperty('status')}
                             helperText={errors.status || ""}
+                            disabled
                             required
                         >
                             {statusEnum?.data?.map((status, index) => (
@@ -202,7 +210,7 @@ const FormSaida = (props) => {
                             ))}
                         </Selecao>
     
-                        <TextField 
+                        {/*<TextField 
                             defaultValue={defaultValue?.data_inicio_servico}
                             type="datetime-local"
                             name="data_inicio_servico"
@@ -223,7 +231,7 @@ const FormSaida = (props) => {
                             error={errors.hasOwnProperty('data_fim_servico')}
                             helperText={errors.data_fim_servico || ""}
                             fullWidth
-                        />
+                        />*/}
 
                         <CampoLocais
                             label="Base de origem dos materiais"
@@ -251,6 +259,19 @@ const FormSaida = (props) => {
                             helperText={errors.local_servico_id || ""}
                             required
                         />
+
+                        <TextField 
+                            select
+                            label="Tipo de Serviço"
+                            name="tipo_servico"
+                            id="tipo_servico"
+                        >
+                            <MenuItem value="civil">Civil</MenuItem>
+                            <MenuItem value="hidraulica">Hidráulica</MenuItem>
+                            <MenuItem value="eletrica">Elétrica</MenuItem>
+                            <MenuItem value="serralheria">Serralheria</MenuItem>
+                            <MenuItem value="carpintaria">Carpintaria</MenuItem>
+                        </TextField>
         
                         <TextField 
                             defaultValue={defaultValue?.especificacao}

@@ -186,7 +186,7 @@ const FormOrdemServico = (props) => {
                 ))}
             </Selecao>
 
-            <Selecao
+            {/*<Selecao
                 label="Status"
                 name="status"
                 onChange={(e) => setStatus(e.target.value)}
@@ -201,9 +201,9 @@ const FormOrdemServico = (props) => {
                         {status}
                     </MenuItem>
                 ))}
-            </Selecao>
+            </Selecao>*/}
     
-            <TextField 
+            {/*<TextField 
                 defaultValue={defaultValue?.data_inicio_servico}
                 type="datetime-local"
                 name="data_inicio_servico"
@@ -224,7 +224,7 @@ const FormOrdemServico = (props) => {
                 error={errors.hasOwnProperty('data_fim_servico')}
                 helperText={errors.data_fim_servico || ""}
                 fullWidth
-            />
+            />*/}
 
             <CampoLocais
                 label="Base de origem dos materiais"
@@ -239,7 +239,7 @@ const FormOrdemServico = (props) => {
             />
 
             <CampoLocais 
-                label="Local de serviço"
+                label="Local de Serviço"
                 name="local_servico_id"
                 tipo="parque"
                 depto={deptoSelecionado}
@@ -252,6 +252,19 @@ const FormOrdemServico = (props) => {
                 helperText={errors.local_servico_id || ""}
                 required
             />
+
+            <TextField 
+                select
+                label="Tipo de Serviço"
+                name="tipo_servico"
+                id="tipo_servico"
+            >
+                <MenuItem value="civil">Civil</MenuItem>
+                <MenuItem value="hidraulica">Hidráulica</MenuItem>
+                <MenuItem value="eletrica">Elétrica</MenuItem>
+                <MenuItem value="serralheria">Serralheria</MenuItem>
+                <MenuItem value="carpintaria">Carpintaria</MenuItem>
+            </TextField>
         
             <TextField 
                 defaultValue={defaultValue?.especificacao}
@@ -386,6 +399,7 @@ const FormOrdemServico = (props) => {
                     label="Material utilizado"
                     baseSelecionada={baseSelecionada}
                     deptoSelecionado={deptoSelecionado}
+                    required={false}
                 />
             </>
         }

@@ -26,6 +26,7 @@ const BoxMateriais = (props) => {
         deptoSelecionado = "",
         tooltipText="Selecione um departamento antes de adicionar materiais!",
         errors={},
+        required=true,
     } = props;
 
     const [newMats, setNewMats] = useAtom(matTipoListAtom)
@@ -137,7 +138,7 @@ const BoxMateriais = (props) => {
                                         className="col-span-2"
                                         error={errors.hasOwnProperty("itens")}
                                         fullWidth
-                                        required
+                                        required={required}
                                     >
                                         {
                                             tiposMats?.data 
@@ -172,7 +173,7 @@ const BoxMateriais = (props) => {
                                         error={isInListError || errors.hasOwnProperty("itens")}
                                         helperText={isInListError ? "Material ja se encontra na lista!" : ""}
                                         fullWidth
-                                        required
+                                        required={required}
                                     >
                                         {
                                             allMats
@@ -197,7 +198,7 @@ const BoxMateriais = (props) => {
                                         onChange={ (e) => e.target.value > currMat.quantidade ? setIsQtdError(true) : setIsQtdError(false) } 
                                         error={ isQtdError || errors.hasOwnProperty("itens") }
                                         helperText={ isQtdError ? 'Quantidade usada não pode exceder a quantidade em estoque.' : '' }
-                                        required
+                                        required={required}
                                     />
                                 </Box>
                             </Fade>

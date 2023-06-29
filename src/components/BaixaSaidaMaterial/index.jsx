@@ -38,7 +38,7 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
 
   return (
     <ContainerPrincipal>
-      <Titulo voltaPara="/ordemservico" carregando={carregando}>
+      <Titulo voltaPara="/saida" carregando={carregando}>
         Baixa da saída de material
       </Titulo>
 

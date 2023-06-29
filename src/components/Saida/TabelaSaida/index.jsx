@@ -46,7 +46,7 @@ const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                     <TableCell align="center">{ordem.origem}</TableCell>
                     <TableCell align="center">{ordem.local_servico}</TableCell>
                     <TableCell align="center">
-                        <Box className="grid grid-cols-2">
+                        <Box className="grid grid-cols-3">
                             <TabelaAcaoBtn
                                 title="Visualizar Saída"
                                 placement="left"
@@ -88,7 +88,7 @@ const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                     </TabelaAcaoBtn>
                             }
 
-                            <TabelaAcaoBtn 
+                            {/*<TabelaAcaoBtn 
                                 display={ authEditOrdem(localStorage.getItem('perfil')) }
                                 title="Imprimir"
                                 placement='right'
@@ -96,7 +96,7 @@ const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                 disabled={cursor === 'progress'}
                             >
                                 <PrintIcon fontSize="small" />
-                            </TabelaAcaoBtn>
+                            </TabelaAcaoBtn>*/}
                         </Box>
                     </TableCell>
                 </TableRow>

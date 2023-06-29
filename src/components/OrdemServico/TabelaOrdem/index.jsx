@@ -16,9 +16,9 @@ import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 
 const cabecalhos = {
     "ID": "id",
-    "Status": null,
-    "Início do serviço": "data_inicio_servico",
-    "Fim do serviço": "data_fim_servico",
+    //"Status": null,
+    "Data do serviço": "data_inicio_servico",
+    //"Fim do serviço": "data_fim_servico",
     "Base origem": "origem.nome",
     "Local serviço": "locais.nome",
     "Ação": null
@@ -36,13 +36,13 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
             {ordens?.map(ordem => (
                 <TableRow key={ordem.id}>
                     <TableCell align="center">{ordem.id}</TableCell>
-                    <TableCell align="center">{ordem.status}</TableCell>
+                    {/*<TableCell align="center">{ordem.status}</TableCell>*/}
                     <TableCell align="center">
                         {formataDateTime(ordem.data_inicio_servico) || "---"}
                     </TableCell>
-                    <TableCell align="center">
+                    {/*<TableCell align="center">
                         {formataDateTime(ordem.data_fim_servico) || "---"}
-                    </TableCell>
+                    </TableCell>*/}
                     <TableCell align="center">{ordem.origem}</TableCell>
                     <TableCell align="center">{ordem.local_servico}</TableCell>
                     <TableCell align="center">
