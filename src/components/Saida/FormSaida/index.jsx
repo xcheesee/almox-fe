@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
     MenuItem,
     TextField,
@@ -21,30 +21,34 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../../TituloTexto';
 import { useLocation } from 'react-router-dom';
 import OSAutocomplete from '../../OSAutocomplete';
+import SaidaOSCard from '../../SaidaOSCard';
+import SaidaSemOsForm from './saidaSemOsForm';
 
 const FormSaida = (props) => {
-    const queryClient = useQueryClient()
-    const location = useLocation();
 
     const { 
-        defaultValue, 
+        //defaultValue, 
         setCarregando, 
-        setOpenEditar, 
+        //setOpenEditar, 
         setOpenConfirmar, 
-        navigate, 
-        acao, 
-        materiais,
-        profissionais,
+        //navigate, 
+        //acao, 
+        //materiais,
+        //profissionais,
         errors,
         setErrors,
-        baseSelecionada,
-        setBaseSelecionada,
+        //baseSelecionada,
+        //setBaseSelecionada,
     } = props;
 
-    const statusEnum = useQuery(['statusEnum'], getStatusEnum)
+    //const statusEnum = useQuery(['statusEnum'], getStatusEnum)
+    //const firstLoad = useRef(true);
 
-    const [localServico, setLocalServico] = useState()
-    const [status, setStatus] = useState(defaultValue?.status ?? "A iniciar")
+    //const [status, setStatus] = useState(defaultValue?.status ?? "A iniciar")
+    const [local, setLocal] = useState()
+    const [isNoOSForm, setIsNoOSForm] = useState(false);
+    const [ordemServico, setOrdemServico] = useState()
+    const [baseSelecionada, setBaseSelecionada] = useState()
     const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
         nome: '',
@@ -52,80 +56,37 @@ const FormSaida = (props) => {
         ["data_inicio"]: '',
         ["horas_empregadas"]: '',
     }])
-    const [isNoOSForm, setIsNoOSForm] = useState(false);
-    const [ordemServico, setOrdemServico] = useState()
-    
+
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
-    const materiaisInterno = useAtomValue(matTipoListAtom)
 
-    const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-    const departamentoKeys = Object.keys(departamentos)
-    
-    useEffect(() => {
-        setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
-        if(acao === 'editar') {
-            setDeptoSelecionado(defaultValue?.departamento_id)
-        } else if (departamentoKeys.length === 1) {
-            setDeptoSelecionado(departamentoKeys[0])
-        }
-    }, [])
+    //useEffect(() => {
+    //        //setBaseSelecionada(ordemServico?.origem_id ?? null)
+    //        //setDeptoSelecionado(ordemServico?.departamento_id ?? null )
+    //        //setLocal(ordemServico?.local_servico_id ?? null)
+    //        (async () => {
+    //            const res = await getProfissionais(ordemServico?.local_servico_id, ordemServico?.departamento_id)
+    //            setProfissionaisDisponiveis(res)
+    //        })();
+    //}, [ordemServico])
 
-    const editMutation = useMutation( async (data) => {
-        setOpenConfirmar(false)
-        setCarregando(true)
-        return await enviaEdicao(
-            data,
-            'ordem_servico', 
-            defaultValue.id, 
-            materiaisInterno,
-            'ordem_servico_items'
-        )
-    },
-    {
-        onSuccess: async (res) => {
-            setOpenEditar(false)
-            setCarregando(false)
-            queryClient.invalidateQueries(['ordemItens'])
-            setFormSnackbar(setSnackbar, "Ordem de serviço", { edit: true })
-        },
-        onError: async (res) => {
-            setCarregando(false)
-            if(res.status === 422) { /* setErrors(res?.errors) */ }
-            setFormSnackbar(setSnackbar, "", { error: true , status: res.status, edit: true })
-        }
-    })
-
-    const addMutation = useMutation( async (data) => {
-        setOpenConfirmar(false)
-        setCarregando(true)
-        return await enviaNovoForm(
-            data, 
-            'ordem_servico', 
-            materiaisInterno,
-            'ordem_servico_items',
-            profissionaisEmpregados,
-            "ordem_servico_profissionais"
-        )
-    }, { onSuccess: async (res) => {
-            setCarregando(false)
-            queryClient.invalidateQueries(['ordemItens'])
-            setFormSnackbar(setSnackbar, "Ordem de serviço")
-            navigate(`/ordemservico`, { replace: true });
-        }, onError: async (res) => {
-            setCarregando(false)
-            if(res.status === 422) { setErrors(res?.errors) }
-            setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
-        }
-    })
+    async function setOrdemFromOptions (value) {
+        setOrdemServico(value)
+        setBaseSelecionada(value.origem_id)
+        setDeptoSelecionado(value.departamento_id)
+        const res = await getProfissionais(value.local_id, value.departamento_id)
+        setProfissionaisDisponiveis(res.data)
+    }
 
     return (
         <>
             <Box className='flex flex-col pt-8'>
                 <OSAutocomplete 
                     disabled={isNoOSForm}
-                    ordemServico={ordemServico}
-                    setOrdemServico={setOrdemServico}
+                    setOrdemServico={setOrdemFromOptions}
+                    setBaseSelecionada={setBaseSelecionada}
+                    setDeptoSelecionado={setDeptoSelecionado}
+                    setProfissionaisDisponiveis={setProfissionaisDisponiveis}
                 />
                 {/*<TextField
                     select
@@ -146,7 +107,10 @@ const FormSaida = (props) => {
                             control={
                                 <Switch 
                                     checked={isNoOSForm} 
-                                    onChange={() => setIsNoOSForm(prev => !prev)}
+                                    onChange={() => {
+                                        setIsNoOSForm(prev => !prev)
+                                        setOrdemServico()
+                                    }}
                                 />
                             } 
                             label="Saida sem O.S." 
@@ -156,7 +120,16 @@ const FormSaida = (props) => {
             </Box>
             {isNoOSForm
                 ?<>
-                    <FormContainer
+                    <SaidaSemOsForm 
+                        setOpenConfirmar={setOpenConfirmar}
+                        setCarregando={setCarregando}
+                        baseSelecionada={baseSelecionada}
+                        setBaseSelecionada={setBaseSelecionada}
+                        setProfissionaisDisponiveis={setProfissionaisDisponiveis}
+                        errors={errors}
+                        setErrors={setErrors}
+                    />
+                    {/*<FormContainer
                         id="nova-ordem"
                         onSubmit={(e) => {
                             acao === 'editar'
@@ -173,7 +146,7 @@ const FormSaida = (props) => {
                             label="Justificativa"
                             required
                         />
-                        {/*<Selecao
+                        <Selecao
                             label="Departamento"
                             name="departamento_id"
                             onChange={async (e) => {
@@ -190,7 +163,7 @@ const FormSaida = (props) => {
                                     {departamento[1]}
                                 </MenuItem>
                             ))}
-                        </Selecao>*/}
+                        </Selecao>
 
                         <Selecao
                             label="Status"
@@ -210,7 +183,7 @@ const FormSaida = (props) => {
                             ))}
                         </Selecao>
     
-                        {/*<TextField 
+                        <TextField 
                             defaultValue={defaultValue?.data_inicio_servico}
                             type="datetime-local"
                             name="data_inicio_servico"
@@ -231,7 +204,7 @@ const FormSaida = (props) => {
                             error={errors.hasOwnProperty('data_fim_servico')}
                             helperText={errors.data_fim_servico || ""}
                             fullWidth
-                        />*/}
+                        />
 
                         <CampoLocais
                             label="Base de origem dos materiais"
@@ -296,7 +269,7 @@ const FormSaida = (props) => {
                         />
         
                         <Box>
-                            {/*<Typography 
+                            <Typography 
                                 sx={style.subtituloForm} 
                             >
                                 Almoxarife responsável
@@ -325,7 +298,7 @@ const FormSaida = (props) => {
                                     required
                                     fullWidth
                                 />
-                            </Box>*/}
+                            </Box>
                             {profissionais && profissionais.length > 0 && location.pathname !== '/saida/nova-saida'
                                 ?<Box className='my-10'>
                                     <Typography sx={{
@@ -381,10 +354,10 @@ const FormSaida = (props) => {
                                 :""
                             }
                         </Box>
-                    </FormContainer>
+                    </FormContainer>*/}
         
                     <>
-                        {acao === 'editar'
+                        {/*acao === 'editar'
                             ?""
                             :<>
                                <BoxProfissionais
@@ -402,11 +375,27 @@ const FormSaida = (props) => {
                                    deptoSelecionado={deptoSelecionado}
                                />
                             </>
-                        }
+                        */}
                     </>
                 </>
-                :<></>
+                :<SaidaOSCard ordemServico={ordemServico} />
             }
+            <BoxProfissionais
+                label= "Profissionais empregados"
+                // baseSelecionada={baseSelecionada}
+                // deptoSelecionado={deptoSelecionado}
+                profissionaisDisponiveis={profissionaisDisponiveis}
+                profissionaisEmpregados={profissionaisEmpregados}
+                setProfissionaisEmpregados={setProfissionaisEmpregados}
+                departamento={deptoSelecionado}
+                local={local}
+            />
+
+            <BoxMateriais
+                label="Material utilizado"
+                baseSelecionada={baseSelecionada}
+                deptoSelecionado={deptoSelecionado}
+            />
         </>
     );
 }

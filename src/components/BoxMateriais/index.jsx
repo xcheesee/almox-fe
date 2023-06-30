@@ -60,7 +60,7 @@ const BoxMateriais = (props) => {
         })
     }, [deptoSelecionado, baseSelecionada])
 
-    const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
+    const tiposMats = useQuery(['tiposMateriais'], () => getMatTipos(), {
         onSuccess: res => {
             res.data.forEach( tipo => setNewMats(prev => ({...prev, [tipo.id]: []})) )
         }

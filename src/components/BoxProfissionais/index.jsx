@@ -77,24 +77,27 @@ const BoxProfissionais = (props) => {
                     return (
                         <Fade in={true} key={index} >
                             <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
-                                <Selecao
+                                <TextField
+                                    select
                                     label="Nome"
                                     name="nome"
                                     size="small"
                                     onChange={(e, c) => handleProfChange(e, c, index)}
-                                    carregando={profissionaisDisponiveis === ''}
+                                    disabled={!profissionaisDisponiveis}
                                     value={profissional.nome}
                                     className="col-span-2"
                                     fullWidth
                                 >
                                     {
-                                        profissionaisDisponiveis?.data
+                                        profissionaisDisponiveis ?
+                                        profissionaisDisponiveis
                                             ?.map((val, i) => 
                                                 <MenuItem value={val.nome} prof-index={val.id} key={i} >
                                                     {val.nome}
                                                 </MenuItem>)
+                                        : <></>
                                     }
-                                </Selecao>
+                                </TextField>
                                 {
                                     profissional.nome !== ""
                                         ?<Fade in={true} key={`${index}a`} >

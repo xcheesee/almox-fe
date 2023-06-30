@@ -4,15 +4,17 @@ import { getRegistro, getTabela } from "../../common/utils";
 
 export default function OSAutocomplete ({
     disabled,
-    ordemServico,
     setOrdemServico,
+    setBaseSelecionada,
+    setDeptoSelecionado,
+    setProfissionaisDisponiveis,
 }) {
 
-    const [ordemSelecionada, setOrdemSelecionada] = useState({id: 0})
+    const [ordens, setOrdens] = useState([{id: 0}])
     const [isLoading, setIsLoading] = useState(false)
     async function fetchOrdem (id) {
         const res = await getTabela("ordem_servicos", "" , `&filter[id]=${id}`)
-        setOrdemSelecionada(res.data[0] ?? {id: 0})
+        setOrdens(res.data ?? [{id: 0}])
     }
 
     return (
@@ -20,10 +22,12 @@ export default function OSAutocomplete ({
             freeSolo
             disabled={disabled}
             id="ordem_servico"
+            loading={isLoading}
             renderInput={ (params) => <TextField 
                 {...params} 
                 label="Ordem de Servico" 
                 onChange={async (e) => {
+                    setOrdens([])
                     setIsLoading(true)
                     await new Promise((res, rej) => {
                         setTimeout(() => res(), 3000)
@@ -31,12 +35,19 @@ export default function OSAutocomplete ({
                     try{
                         await fetchOrdem(e.target.value)
                     } catch(e) {
-                        setOrdemSelecionada({id: 0})
+                        setOrdens([{id: 0}])
                     }
                     setIsLoading(false)
                 }}
-
-                
+                InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                        <> 
+                            { isLoading ? <CircularProgress color="inherit" size={24} /> : null }
+                            {params.InputProps.endAdornment}
+                        </> 
+                    )
+                }}
             />}
             renderOption={(props, option) => {
                 if (isLoading) {return (
@@ -50,28 +61,16 @@ export default function OSAutocomplete ({
                         </Box>
                     )
                 }
-                return (<Paper component="div" elevation={4} className="m-4" >
+                return (
                     <Box {...props}>
-                        <Box className="p-4 grid grid-cols-2 gap-4 justify-center" >
-                            <Box>Ordem de Servico Nº {option.id}</Box>
-                            <Box className="text-gray-400 justify-self-end">Inicio: {option.data_inicio_servico} - Fim: {option.data_fim_servico ?? "N/A"}</Box>
-                            <Box className="font-bold col-span-2 justify-self-center py-2">{option.departamento}</Box>
-                            <Box>Origem: {option.origem}</Box>
-                            <Box>Local de Servico: {option.local_servico}</Box>
-                            <Box>Status: {option.status}</Box>
-                            <Box>Especificacoes: {option.especificacao ?? "N/A"}</Box>
-                            <Box>Observacoes: {option.observacoes ?? "N/A"}</Box>
-                        </Box>
+                        <Box>O.S. Nº {option.id}: {option.especificacao ?? "N/A"}</Box>
                     </Box>
-                </Paper>)
+                )
             }}
             onChange={ async (event, value) => {
-                //await new Promise((res, rej) => {
-                //    setTimeout(() => res(), 3000)
-                //})
-                console.log(value)
+                await setOrdemServico(value)
             }}
-            options={[ordemSelecionada]}
+            options={ordens}
             getOptionLabel={(option) => `${option.id} - ${option.local_servico}`}
             filterOptions={(x) => x}
         />
