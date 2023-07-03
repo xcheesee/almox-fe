@@ -65,6 +65,13 @@ const FormSaida = (props) => {
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
 
+    //async function getProfissionaisDisponiveis () {
+    //    if (!deptoSelecionado || !local) return
+    //    const res = await getProfissionais(base, depto)
+    //    console.log(res)
+    //    //setProfissionaisDisponiveis(res)
+    //}
+
     //useEffect(() => {
     //        //setBaseSelecionada(ordemServico?.origem_id ?? null)
     //        //setDeptoSelecionado(ordemServico?.departamento_id ?? null )
@@ -86,7 +93,6 @@ const FormSaida = (props) => {
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
         setIsLoadingDados(false)
-        //setProfissionaisDisponiveis(profRes.data)
     }
 
     return (
@@ -95,9 +101,6 @@ const FormSaida = (props) => {
                 <OSAutocomplete 
                     disabled={isNoOSForm}
                     setOrdemServico={setOrdemFromOptions}
-                    setBaseSelecionada={setBaseSelecionada}
-                    setDeptoSelecionado={setDeptoSelecionado}
-                    setProfissionaisDisponiveis={setProfissionaisDisponiveis}
                 />
 
                 <Box className='flex'>
@@ -111,6 +114,7 @@ const FormSaida = (props) => {
                                         setOrdemServico()
                                         setOrdemMats()
                                         setOrdemProfs()
+                                        setLocal()
                                         setBaseSelecionada()
                                         setDeptoSelecionado()
                                     }}
@@ -126,6 +130,7 @@ const FormSaida = (props) => {
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregando}
                     baseSelecionada={baseSelecionada}
+                    setLocal={setLocal}
                     setBaseSelecionada={setBaseSelecionada}
                     setProfissionaisDisponiveis={setProfissionaisDisponiveis}
                     errors={errors}

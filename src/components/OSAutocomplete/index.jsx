@@ -6,9 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 export default function OSAutocomplete ({
     disabled,
     setOrdemServico,
-    //setBaseSelecionada,
-    //setDeptoSelecionado,
-    //setProfissionaisDisponiveis,
 }) {
 
     const [ordens, setOrdens] = useState([])
@@ -27,7 +24,6 @@ export default function OSAutocomplete ({
 
     return (
         <Autocomplete
-            //freeSolo
             disabled={disabled}
             id="ordem_servico"
             loading={ordensQuery.isFetching}

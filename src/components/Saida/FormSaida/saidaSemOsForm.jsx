@@ -134,7 +134,8 @@ export default function SaidaSemOsForm ({
                 name="departamento_id"
                 onChange={async (e) => {
                     setDeptoSelecionado(e.target.value)
-                    if(localServico) setProfissionaisDisponiveis(await getProfissionais(localServico, e.target.value)) 
+                    const res = await getProfissionais(localServico, e.target.value)
+                    if(localServico) setProfissionaisDisponiveis(res.data) 
                 }}
                 value={deptoSelecionado}
                 //defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
@@ -208,7 +209,8 @@ export default function SaidaSemOsForm ({
                 depto={deptoSelecionado}
                 onChange={ async e => {
                     setLocalServico(e.target.value)
-                    if(deptoSelecionado) setProfissionaisDisponiveis(await getProfissionais(e.target.value, deptoSelecionado)) 
+                    const res = await getProfissionais(e.target.value, deptoSelecionado)
+                    if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
                 }}
                 //defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
