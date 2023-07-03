@@ -3,12 +3,12 @@ import TituloTexto from "../TituloTexto";
 
 export default function OrdemProfsCard ({profissionais, isLoading}) {
     if (isLoading) return (
-        <Box className="flex justify-center">
+        <Box className="flex justify-center py-4">
             <CircularProgress size={24} />
         </Box>
     )
-    if (!profissionais) return <></>
-    return (<>
+    if (!profissionais || profissionais?.length === 0) return <></>
+    return (<Box className="py-4">
         <Typography sx={{
             color: (theme) => theme.palette.color.bg,
             fontSize: '1.3rem',
@@ -31,5 +31,5 @@ export default function OrdemProfsCard ({profissionais, isLoading}) {
                 </Paper>
             ))}
         </Paper>
-    </>)
+    </Box>)
 }

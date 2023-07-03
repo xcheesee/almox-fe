@@ -27,7 +27,7 @@ export default function OSAutocomplete ({
 
     return (
         <Autocomplete
-            freeSolo
+            //freeSolo
             disabled={disabled}
             id="ordem_servico"
             loading={ordensQuery.isFetching}

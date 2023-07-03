@@ -76,6 +76,7 @@ const FormSaida = (props) => {
     //}, [ordemServico])
 
     async function setOrdemFromOptions (value) {
+        if (!value) return
         setIsLoadingDados(true)
         setOrdemServico(value)
         setBaseSelecionada(value.origem_id)
@@ -121,7 +122,7 @@ const FormSaida = (props) => {
                 </Box>
             </Box>
             {isNoOSForm
-                ?<SaidaSemOsForm 
+                ?<><SaidaSemOsForm 
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregando}
                     baseSelecionada={baseSelecionada}
@@ -130,10 +131,6 @@ const FormSaida = (props) => {
                     errors={errors}
                     setErrors={setErrors}
                 />
-                :<SaidaOSCard ordemServico={ordemServico} />
-            }
-            { isNoOSForm || (!ordemMats && !ordemServico)
-                ?<>
                 <BoxProfissionais
                     label= "Profissionais empregados"
                     // baseSelecionada={baseSelecionada}
@@ -151,30 +148,35 @@ const FormSaida = (props) => {
                     deptoSelecionado={deptoSelecionado}
                 />
                 </>
-                :<></>/*<Box className='py-4'>
-                    <OrdemMatsCard 
+                :<SaidaOSCard ordemServico={ordemServico} />
+            }
+                {!isNoOSForm && (!ordemMats || ordemMats.length === 0) && !isLoadingDados
+                    ?<BoxMateriais
+                        label="Material utilizado"
+                        baseSelecionada={baseSelecionada}
+                        deptoSelecionado={deptoSelecionado}
+                    />
+                    :<OrdemMatsCard 
                         materiais={ordemMats} 
                         isLoading={isLoadingDados}
                     />
-                </Box>*/
-            }
-            {ordemMats && ordemMats.length !== 0
-                ?<Box className='py-4'>
-                    <OrdemMatsCard 
-                        materiais={ordemMats} 
-                        isLoading={isLoadingDados}
+                }
+                {!isNoOSForm && (!ordemProfs || ordemProfs.length === 0) && !isLoadingDados
+                    ?<BoxProfissionais
+                        label= "Profissionais empregados"
+                        // baseSelecionada={baseSelecionada}
+                        // deptoSelecionado={deptoSelecionado}
+                        profissionaisDisponiveis={profissionaisDisponiveis}
+                        profissionaisEmpregados={profissionaisEmpregados}
+                        setProfissionaisEmpregados={setProfissionaisEmpregados}
+                        departamento={deptoSelecionado}
+                        local={local}
                     />
-                </Box>
-                :<></>
-            }
-            {ordemProfs && ordemProfs.length !== 0
-                ?<Box className='py-4'>
-                    <OrdemProfsCard 
+                    :<OrdemProfsCard 
                         profissionais={ordemProfs}
                         isLoading={isLoadingDados}
                     />
-                </Box>
-                :<></>}
+                }
         </>
     );
 }

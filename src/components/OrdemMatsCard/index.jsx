@@ -2,12 +2,12 @@ import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 import TituloTexto from "../TituloTexto";
 
 export default function OrdemMatsCard ({materiais, isLoading}) {
-    if (isLoading) return (<Box className="flex justify-center">
+    if (isLoading) return (<Box className="flex justify-center py-4">
         <CircularProgress size={24} />
     </Box>)
-    if (!materiais) return <></>
+    if (!materiais || materiais.length === 0) return <></>
     return(
-        <>
+        <Box className="py-4">
             <Typography sx={{
                 color: (theme) => theme.palette.color.bg,
                 fontSize: '1.3rem',
@@ -30,7 +30,7 @@ export default function OrdemMatsCard ({materiais, isLoading}) {
                     </Paper>
                 ))}
             </Paper>
-        </>
+        </Box>
 
     )
 }
