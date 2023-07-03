@@ -95,7 +95,7 @@ const BoxProfissionais = (props) => {
                                                 <MenuItem value={val.nome} prof-index={val.id} key={i} >
                                                     {val.nome}
                                                 </MenuItem>)
-                                        : <></>
+                                        : <MenuItem></MenuItem>
                                     }
                                 </TextField>
                                 {

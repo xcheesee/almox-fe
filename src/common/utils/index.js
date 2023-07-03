@@ -388,6 +388,20 @@ export const getOrdemProfissionais = async (id) => {
   throw errorBuilder(res, "Nao foi possivel recuperar os profissionais!")
 }
 
+export async function getOrdemDados (id, tipoDados) {
+  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/${tipoDados}`;
+  const options = {
+    method: 'GET',
+    headers: headerBuilder() 
+  };
+
+  const res = await fetch(url, options)
+  if(res.ok) {
+    const json = await res.json()
+    return json.data
+  }
+  throw errorBuilder(res, `Nao foi possivel recuperar os ${tipoDados}!`)
+}
 export const getProfissionais = async (base, depto) => {
   const url = new URL(
     `${process.env.REACT_APP_API_URL}/profissionais`
