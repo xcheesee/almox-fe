@@ -17,8 +17,8 @@ const NovaSaidaMats = (props) => {
         carregando,
         setCarregando,
         navigate,
-        baseSelecionada,
-        setBaseSelecionada,
+        //baseSelecionada,
+        //setBaseSelecionada,
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -38,8 +38,8 @@ const NovaSaidaMats = (props) => {
                 setMateriais={setMateriais}
                 errors={errors}
                 setErrors={setErrors}
-                baseSelecionada={baseSelecionada}
-                setBaseSelecionada={setBaseSelecionada}
+                //baseSelecionada={baseSelecionada}
+                //setBaseSelecionada={setBaseSelecionada}
             />
 
             <Box className="flex justify-end gap-4">

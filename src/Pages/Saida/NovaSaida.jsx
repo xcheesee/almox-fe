@@ -18,7 +18,7 @@ const NovaSaida = () => {
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [baseSelecionada, setBaseSelecionada] = useState('');
+    //const [baseSelecionada, setBaseSelecionada] = useState('');
 
     const navigate = useNavigate();
 
@@ -32,20 +32,20 @@ const NovaSaida = () => {
                 carregando={carregando}
                 setCarregando={setCarregando}
                 navigate={navigate}
-                baseSelecionada={baseSelecionada}
-                setBaseSelecionada={setBaseSelecionada}
+                //baseSelecionada={baseSelecionada}
+                //setBaseSelecionada={setBaseSelecionada}
             />
             <DialogCancelar
-                paginaAnterior="ordem de serviço"
-                rota="/ordemservico"
+                paginaAnterior="saída de materiais"
+                rota="/saida"
                 openCancelar={openCancelar}
                 setOpenCancelar={setOpenCancelar}
             />
             <DialogEnviar 
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
-                texto="ordem de serviço"
-                form="nova-ordem"
+                texto="saída de materiais"
+                form="nova-saida"
             />
         </>
     );

@@ -1,25 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { 
-    MenuItem,
-    TextField,
     Box,
-    Typography, 
-    Paper,
     Switch,
     FormGroup,
     FormControlLabel
 } from '@mui/material';
-import FormContainer from '../../FormContainer';
-import Selecao from '../../Selecao';
-import CampoLocais from '../../CampoLocais';
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
-import { enviaEdicao, enviaNovoForm, getOrdemDados, getProfissionais, getStatusEnum, setFormSnackbar } from '../../../common/utils';
-import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import TituloTexto from '../../TituloTexto';
-import { useLocation } from 'react-router-dom';
+import { getOrdemDados, getProfissionais } from '../../../common/utils';
+import { deptoAtom, snackbarAtom } from '../../../atomStore';
+import { useAtom, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../../SaidaOSCard';
 import SaidaSemOsForm from './saidaSemOsForm';
@@ -29,24 +19,14 @@ import OrdemProfsCard from '../../OrdemProfsCard';
 const FormSaida = (props) => {
 
     const { 
-        //defaultValue, 
         setCarregando, 
-        //setOpenEditar, 
         setOpenConfirmar, 
-        //navigate, 
-        //acao, 
-        //materiais,
-        //profissionais,
         errors,
         setErrors,
         //baseSelecionada,
         //setBaseSelecionada,
     } = props;
 
-    //const statusEnum = useQuery(['statusEnum'], getStatusEnum)
-    //const firstLoad = useRef(true);
-
-    //const [status, setStatus] = useState(defaultValue?.status ?? "A iniciar")
     const [local, setLocal] = useState()
     const [isNoOSForm, setIsNoOSForm] = useState(false);
     const [ordemServico, setOrdemServico] = useState()
@@ -63,24 +43,17 @@ const FormSaida = (props) => {
     }])
 
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
-    const setSnackbar = useSetAtom(snackbarAtom)
+    //const setSnackbar = useSetAtom(snackbarAtom)
 
-    //async function getProfissionaisDisponiveis () {
-    //    if (!deptoSelecionado || !local) return
-    //    const res = await getProfissionais(base, depto)
-    //    console.log(res)
-    //    //setProfissionaisDisponiveis(res)
-    //}
+    async function clearForm () {
+        setOrdemServico()
+        setOrdemMats()
+        setOrdemProfs()
+        setLocal()
+        setBaseSelecionada()
+        setDeptoSelecionado()
 
-    //useEffect(() => {
-    //        //setBaseSelecionada(ordemServico?.origem_id ?? null)
-    //        //setDeptoSelecionado(ordemServico?.departamento_id ?? null )
-    //        //setLocal(ordemServico?.local_servico_id ?? null)
-    //        (async () => {
-    //            const res = await getProfissionais(ordemServico?.local_servico_id, ordemServico?.departamento_id)
-    //            setProfissionaisDisponiveis(res)
-    //        })();
-    //}, [ordemServico])
+    }
 
     async function setOrdemFromOptions (value) {
         if (!value) return
@@ -88,8 +61,12 @@ const FormSaida = (props) => {
         setOrdemServico(value)
         setBaseSelecionada(value.origem_id)
         setDeptoSelecionado(value.departamento_id)
+        setLocal(value.local_servico_id)
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
-        console.log(profRes)
+        if(!profRes || profRes.length === 0) {
+            const profsDispRes = await getProfissionais(value.local_servico_id, value.departamento_id)
+            setProfissionaisDisponiveis(profsDispRes.data)
+        }
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
         setIsLoadingDados(false)
@@ -101,6 +78,7 @@ const FormSaida = (props) => {
                 <OSAutocomplete 
                     disabled={isNoOSForm}
                     setOrdemServico={setOrdemFromOptions}
+                    clearForm={clearForm}
                 />
 
                 <Box className='flex'>
@@ -111,12 +89,7 @@ const FormSaida = (props) => {
                                     checked={isNoOSForm} 
                                     onChange={() => {
                                         setIsNoOSForm(prev => !prev)
-                                        setOrdemServico()
-                                        setOrdemMats()
-                                        setOrdemProfs()
-                                        setLocal()
-                                        setBaseSelecionada()
-                                        setDeptoSelecionado()
+                                        clearForm()
                                     }}
                                 />
                             } 

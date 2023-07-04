@@ -61,31 +61,6 @@ export default function SaidaSemOsForm ({
         }
     }, [])
 
-    //const editMutation = useMutation( async (data) => {
-    //    setOpenConfirmar(false)
-    //    setCarregando(true)
-    //    return await enviaEdicao(
-    //        data,
-    //        'ordem_servico', 
-    //        defaultValue.id, 
-    //        materiaisInterno,
-    //        'ordem_servico_items'
-    //    )
-    //},
-    //{
-    //    onSuccess: async (res) => {
-    //        setOpenEditar(false)
-    //        setCarregando(false)
-    //        queryClient.invalidateQueries(['ordemItens'])
-    //        setFormSnackbar(setSnackbar, "Ordem de serviço", { edit: true })
-    //    },
-    //    onError: async (res) => {
-    //        setCarregando(false)
-    //        if(res.status === 422) { /* setErrors(res?.errors) */ }
-    //        setFormSnackbar(setSnackbar, "", { error: true , status: res.status, edit: true })
-    //    }
-    //})
-
     const addMutation = useMutation( async (data) => {
         setOpenConfirmar(false)
         setCarregando(true)
@@ -112,12 +87,8 @@ export default function SaidaSemOsForm ({
     return(
         <>
         <FormContainer
-            id="nova-ordem"
-            onSubmit={(e) => {
-                /*acao === 'editar'
-                    ? editMutation.mutate(e)
-                    :*/ addMutation.mutate(e)
-            }}
+            id="nova-saida"
+            onSubmit={(e) => { addMutation.mutate(e) }}
         >
 
             <TextField 
@@ -150,7 +121,8 @@ export default function SaidaSemOsForm ({
                 ))}
             </Selecao>
 
-            <Selecao
+            <TextField
+                select
                 label="Status"
                 name="status"
                 disabled
@@ -165,7 +137,7 @@ export default function SaidaSemOsForm ({
                     <MenuItem value="A Iniciar">
                         A Iniciar
                     </MenuItem>
-            </Selecao>
+            </TextField>
     
             {/*<TextField 
                 defaultValue={defaultValue?.data_inicio_servico}
@@ -252,93 +224,6 @@ export default function SaidaSemOsForm ({
                 helperText={errors.observacoes || ""}
                 fullWidth
             />
-        
-            <Box>
-                {/*<Typography 
-                    sx={style.subtituloForm} 
-                >
-                    Almoxarife responsável
-                </Typography>
-
-                <Box 
-                    className="flex flex-col gap-10 my-4"
-                >
-                    <TextField 
-                        defaultValue={defaultValue?.almoxarife_nome}
-                        name="almoxarife_nome"
-                        label="Nome"
-                        error={errors.hasOwnProperty('almoxarife_nome')}
-                        helperText={errors.almoxarife_nome || ""}
-                        required
-                        fullWidth
-                    />
-        
-                    <TextField 
-                        defaultValue={defaultValue?.almoxarife_email}
-                        name="almoxarife_email"
-                        label="E-mail"
-                        type="email"
-                        error={errors.hasOwnProperty('almoxarife_email')}
-                        helperText={errors.almoxarife_email || ""}
-                        required
-                        fullWidth
-                    />
-                </Box>*/}
-                {/*profissionais && profissionais.length > 0 && location.pathname !== '/saida/nova-saida'
-                    ?<Box className='my-10'>
-                        <Typography sx={{
-                            color: (theme) => theme.palette.color.bg,
-                            fontSize: '1.3rem',
-                            fontWeight: 'light',
-                            mb: '0.5rem'
-                        }}>
-                            Profissionais
-                        </Typography>
-                        <Paper 
-                            className="flex flex-col gap-4 px-4 py-5" 
-                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
-                            elevation={3}
-                        >
-                            {profissionais?.map(profissional => (
-                                <Paper className="p-3" key={profissional.profissional_id}>
-                                    <TituloTexto 
-                                        titulo={profissional.profissional}
-                                        texto={`${profissional.data_inicio_formatada} -  ${profissional.horas_empregadas}h`}
-                                    />
-                                </Paper>
-                            ))}
-                        </Paper>
-                    </Box>
-                    :""
-                */}
-                {/*materiais && materiais.length > 0 && location.pathname !== '/saida/nova-saida'
-                    ?<>
-                        <Typography sx={{
-                            color: (theme) => theme.palette.color.bg,
-                            fontSize: '1.3rem',
-                            fontWeight: 'light',
-                            mb: '0.5rem'
-                        }}>
-                            Materiais
-                        </Typography>
-                        <Paper 
-                            className="flex flex-col gap-4 px-4 py-5" 
-                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
-                            elevation={3}
-                        >
-                            {materiais.map(material => (
-                                <Paper className="p-3" key={material.id}>
-                                    <TituloTexto 
-                                        titulo={material.item}
-                                        texto={`${material.quantidade} ${material.medida}`}
-                                    />
-                                </Paper>
-                            ))}
-                        </Paper>
-                    </>
-                    :""
-                */}
-            </Box>
         </FormContainer>
 
         </>

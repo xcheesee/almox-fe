@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function OSAutocomplete ({
     disabled,
     setOrdemServico,
+    clearForm,
 }) {
 
     const [ordens, setOrdens] = useState([])
@@ -60,7 +61,13 @@ export default function OSAutocomplete ({
                     </Box>
                 )
             }}
-            onChange={ async (event, value) => { await setOrdemServico(value) }}
+            onChange={ async (event, value, reason) => { 
+                if (reason === "clear") {
+                    setOrdemId("")
+                    return clearForm()
+                }
+                await setOrdemServico(value)
+             }}
             options={ordens}
             filterOptions={(x) => x}
         />
