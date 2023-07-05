@@ -49,7 +49,7 @@ function App() {
 
         <Route path="/saida/nova-saida" element={ <NovaSaida /> } />
 
-        <Route path="/ordemservico/baixa/:id" element={ <Baixa setSnackbar={setSnackbar} /> } />
+        <Route path="/saida/:id/baixa" element={ <Baixa setSnackbar={setSnackbar} /> } />
 
         <Route path="/inventario" element={ <PaginaInventario /> } />
 

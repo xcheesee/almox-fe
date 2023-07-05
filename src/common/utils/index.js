@@ -466,7 +466,7 @@ export async function recusaTransferencia(id) {
 }
 
 export const enviaBaixa = async (items, baixaId) => {
-  const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}/baixa`;
+  const url = `${process.env.REACT_APP_API_URL}/saida/${baixaId}/baixa`;
   const options = {
     method: 'POST',
     headers: {

@@ -21,17 +21,19 @@ const SaidaMats = (props) => {
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
 
-    const ordens = useQuery({
-        queryKey: ['ordemItens', page, filtros, sort],
-        queryFn: () => getTabela('ordem_servicos', page, filtros, sort),
-        onSuccess: res => pageCountRef.current = res.meta.last_page
+    const saidas = useQuery({
+        queryKey: ['saidas', page, filtros, sort],
+        queryFn: () => getTabela('saidas', page, filtros, sort),
+        onSuccess: res => {
+            pageCountRef.current = res.meta.last_page
+        }
     });
 
-    const pageCountRef = useRef(ordens?.data?.meta?.last_page ?? 1)
+    const pageCountRef = useRef(saidas?.data?.meta?.last_page ?? 1)
 
     return (
-        <ContainerPrincipal carregando={ordens.isLoading}>
-            <Titulo carregando={ordens.isLoading}>Saída de Materiais</Titulo>
+        <ContainerPrincipal carregando={saidas.isLoading}>
+            <Titulo carregando={saidas.isLoading}>Saída de Materiais</Titulo>
 
             <FiltrosSaida />
 
@@ -43,8 +45,8 @@ const SaidaMats = (props) => {
             </BotaoNovo>*/}
 
             <TabelaSaida 
-                ordens={ordens?.data?.data} 
-                carregando={ordens.isLoading} 
+                saidas={saidas?.data?.data} 
+                carregando={saidas.isLoading} 
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
             />

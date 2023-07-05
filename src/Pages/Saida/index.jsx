@@ -10,6 +10,7 @@ import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useSetAtom } from 'jotai';
 import { excluirAtom, matsAtom, profissionaisAtom, snackbarAtom } from '../../atomStore';
+import DialogDetalhesSaida from '../../components/Saida/DialogDetalhesSaida';
 
 const Saida = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -32,20 +33,20 @@ const Saida = () => {
         switch(command) {
         case 'visualizar':
             const [registroData, matsData, profsData] = await Promise.all([
-                getRegistro('ordem_servico', id,),
-                getMateriais('ordem_servico', id),
-                getDados(id, )
+                getRegistro('saida', id),
+                getMateriais('saida', id),
+                getDados(`saida/${id}/profissionais`)
             ])
-            setOrdemServico( registroData)
-            setMateriais( matsData)
-            setProfissionais( profsData)
+            setOrdemServico(registroData)
+            setMateriais(matsData)
+            setProfissionais(profsData)
             setOpenDetalhes(true)
             break;
         case 'editar':
             const [registroEditData, matsEditData, profsEditData] = await Promise.all([
-                getRegistro('ordem_servico', id,),
-                getMateriais('ordem_servico', id),
-                getOrdemProfissionais(id, )
+                getRegistro('saida', id),
+                getMateriais('saida', id),
+                getDados(`saida/${id}/profissionais`)
             ])
             setOrdemServico(registroEditData);
             setMateriais(matsEditData)
@@ -114,12 +115,12 @@ const Saida = () => {
                 setCarregando={setCarregandoEdicao}
                 tabelaOrigem="ordemItens"
             />
-            <DialogDetalhesOrdem 
+            <DialogDetalhesSaida 
                 openDetalhes={openDetalhes}
-                profissionais={profissionais}
+                profissionais={profissionais?.data}
                 setOpenDetalhes={setOpenDetalhes}
-                ordem={ordemServico}
-                materiais={materiais}
+                saida={ordemServico}
+                materiais={materiais?.data}
             />
             <DialogDetalhesBaixa 
                 openBaixa={openBaixa}

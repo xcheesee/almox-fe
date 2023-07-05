@@ -17,14 +17,13 @@ import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 const cabecalhos = {
     "ID": "id",
     "Status": null,
-    "Início do serviço": "data_inicio_servico",
-    "Fim do serviço": "data_fim_servico",
+    "Data Baixa": "baixa_datahora",
     "Base origem": "origem.nome",
     "Local serviço": "locais.nome",
     "Ação": null
 };
 
-const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
+const TabelaSaida = ({ saidas, carregando, cursor, getSelectedOrdemInfo }) => {
     const perfil =  localStorage.getItem('perfil');
     const navigate = useNavigate()
 
@@ -33,25 +32,22 @@ const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
             cabecalhos={cabecalhos} 
             carregando={carregando}
         >
-            {ordens?.map(ordem => (
-                <TableRow key={ordem.id}>
-                    <TableCell align="center">{ordem.id}</TableCell>
-                    <TableCell align="center">{ordem.status}</TableCell>
+            {saidas?.map(saida => (
+                <TableRow key={saida.id}>
+                    <TableCell align="center">{saida.id}</TableCell>
+                    <TableCell align="center">{saida.status}</TableCell>
                     <TableCell align="center">
-                        {formataDateTime(ordem.data_inicio_servico) || "---"}
+                        {formataDateTime(saida.baixa_datahora) || "---"}
                     </TableCell>
-                    <TableCell align="center">
-                        {formataDateTime(ordem.data_fim_servico) || "---"}
-                    </TableCell>
-                    <TableCell align="center">{ordem.origem}</TableCell>
-                    <TableCell align="center">{ordem.local_servico}</TableCell>
+                    <TableCell align="center">{saida.origem}</TableCell>
+                    <TableCell align="center">{saida.local_servico}</TableCell>
                     <TableCell align="center">
                         <Box className="grid grid-cols-3">
                             <TabelaAcaoBtn
                                 title="Visualizar Saída"
                                 placement="left"
                                 disabled={cursor === 'progress'}
-                                onClick={ () => getSelectedOrdemInfo(ordem.id, 'visualizar') }
+                                onClick={ () => getSelectedOrdemInfo(saida.id, 'visualizar') }
                             >
                                 <ManageSearchIcon fontSize="small" />
                             </TabelaAcaoBtn>
@@ -61,18 +57,18 @@ const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                 title="Editar"
                                 placement="right"
                                 disabled={cursor === 'progress'}
-                                onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
+                                onClick={ () => getSelectedOrdemInfo(saida.id, 'editar') }
                             >
                                 <EditIcon fontSize="small" />
                             </TabelaAcaoBtn>
 
-                            {ordem.flg_baixa === 0
+                            {saida.flg_baixa === 0
                                 ?
                                     <TabelaAcaoBtn 
                                         display={ authEditOrdem(localStorage.getItem('perfil')) }
                                         title="Baixa"
                                         placement='left'
-                                        onClick={ () => navigate(`/ordemservico/baixa/${ordem.id}`) }
+                                        onClick={ () => navigate(`/saida/${saida.id}/baixa`) }
                                         disabled={cursor === 'progress'}
                                     >
                                         <GradingIcon fontSize="small" />
@@ -81,7 +77,7 @@ const TabelaSaida = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                     <TabelaAcaoBtn 
                                         title="Visualizar Baixa"
                                         placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'}
-                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'baixa') }
+                                        onClick={ () => getSelectedOrdemInfo(saida.id, 'baixa') }
                                         disabled={cursor === 'progress'}
                                     >
                                         <ContentPasteSearchIcon fontSize="small" />

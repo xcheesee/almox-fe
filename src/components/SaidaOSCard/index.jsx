@@ -2,7 +2,6 @@ import { Box, Paper } from "@mui/material"
 
 export default function SaidaOSCard ({ordemServico}) {
     if (!ordemServico) return <></>
-    console.log({ordemServico})
 
     return (
         <Paper component={Box} elevation={4} >

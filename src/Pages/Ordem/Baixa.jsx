@@ -3,21 +3,31 @@ import BaixaSaidaMaterial from '../../components/BaixaSaidaMaterial';
 import DialogConfirmaBaixa from '../../components/DialogConfirmaBaixa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { enviaBaixa, getBaixa } from '../../common/utils';
+import { enviaBaixa, getBaixa, getDados } from '../../common/utils';
 
 const Baixa = ({ setSnackbar }) => {
   let params = useParams();
   const navigate = useNavigate();
   const [ordemServico, setOrdemServico] = useState({});
   const [materiais, setMateriais] = useState([]);
+  const [profissionais, setProfissionais] = useState()
   const [openBaixa, setOpenBaixa] = useState(false);
   const [errors, setErrors] = useState({});
   const [items, setItems] = useState([]);
 
-  const baixa = useQuery(['baixaItem', params.id], () => getBaixa(params.id), {
+  const baixa = useQuery(['baixaItem', params.id], async () => {
+    let dados;
+    const [saidaRes, itensRes, profsRes] = await Promise.all([getDados(`saida/${params.id}`), getDados(`saida/${params.id}/items`), getDados(`saida/${params.id}/profissionais`)])
+    dados = saidaRes.data;
+    dados.itens = itensRes.data
+    dados.profissionais = profsRes.data
+    return dados
+  }, {
     onSuccess: async (res) => {
-      setOrdemServico(res.ordem.data || {})
-      setMateriais(res.itens.data)
+      const profsRes = await getDados(`saida/${params.id}/profissionais`)
+      setProfissionais(res.profissionais)
+      setOrdemServico(res || {})
+      setMateriais(res.itens)
     }, onError: async (res) => {
       if (res.status === 404) navigate('/404', { replace: true });
     }
@@ -77,6 +87,7 @@ const Baixa = ({ setSnackbar }) => {
     <>
     <BaixaSaidaMaterial 
     ordemServico={ordemServico}
+    profissionais={profissionais}
     carregando={baixa?.isFetching} 
     id={params.id} 
     materiais={materiais} 

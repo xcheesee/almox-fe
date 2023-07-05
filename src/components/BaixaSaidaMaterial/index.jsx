@@ -14,8 +14,9 @@ import Titulo from '../Titulo';
 import TituloTexto from '../TituloTexto';
 import { formataDateTime } from '../../common/utils';
 import { Link } from 'react-router-dom';
+import OrdemProfsCard from '../OrdemProfsCard';
 
-const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErros, errors, setErrors, carregandoBaixa }) => {
+const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, materiais, checaErros, errors, setErrors, carregandoBaixa }) => {
   const [enviado, setEnviado] = useState([]);
   const [usado, setUsado] = useState([]);
   const [retorno, setRetorno] = useState([]);
@@ -50,6 +51,10 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
         <Collapse in={!carregando}>
           <Box className="p-6 grid grid-cols-3 gap-8">
             <TituloTexto 
+              titulo="Departamento"
+              texto={ordemServico.departamento}
+            />
+            <TituloTexto 
               titulo="Origem"
               texto={ordemServico.origem}
             />
@@ -59,21 +64,21 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
               texto={ordemServico.local_servico}
             />
 
-            <TituloTexto 
+            {/*<TituloTexto 
               titulo="Profissional"
               texto={ordemServico.profissional || "---"}
-            />
+            />*/}
 
-            <TituloTexto
+            {/*<TituloTexto
               titulo="Especificações"
               texto={ordemServico.especificacao || "---"}
               className="col-span-3"
               component="code"
               childComponent="pre"
               childStyle={{ whiteSpace: 'pre-wrap' }}
-            />
+            />*/}
           
-            <TituloTexto 
+            {/*<TituloTexto 
               titulo="Horas de execução"
               texto={`
                 ${ordemServico.horas_execucao || "---"} 
@@ -82,7 +87,7 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
                   : ""
                 }`
               }
-            />
+            />*/}
             
             <TituloTexto 
               titulo="Data de início do serviço"
@@ -94,6 +99,8 @@ const BaixaSaidaMaterial = ({ ordemServico, carregando, id, materiais, checaErro
               texto={ formataDateTime(ordemServico.data_fim_servico) || "Data de fim indeterminada" }
             />
           </Box>
+
+          <OrdemProfsCard profissionais={profissionais} />
         </Collapse>
       </Box>
 

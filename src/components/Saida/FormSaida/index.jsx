@@ -52,7 +52,6 @@ const FormSaida = (props) => {
         setLocal()
         setBaseSelecionada()
         setDeptoSelecionado()
-
     }
 
     async function setOrdemFromOptions (value) {
@@ -70,6 +69,16 @@ const FormSaida = (props) => {
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
         setIsLoadingDados(false)
+    }
+
+    //confere se a ordem nao possui tanto profissionais quanto materiais,
+    //nao eh uma saida sem ordem e nao esta em carregamento
+    function isBasicOS() {
+        return (!isNoOSForm 
+            && (!ordemProfs || ordemProfs.length === 0)
+            && (!ordemMats || ordemMats.length === 0)
+            && !isLoadingDados
+        )
     }
 
     return (
@@ -128,18 +137,32 @@ const FormSaida = (props) => {
                 </>
                 :<SaidaOSCard ordemServico={ordemServico} />
             }
-                {!isNoOSForm && (!ordemMats || ordemMats.length === 0) && !isLoadingDados
-                    ?<BoxMateriais
+                {isBasicOS()
+                    ?<><BoxMateriais
                         label="Material utilizado"
                         baseSelecionada={baseSelecionada}
                         deptoSelecionado={deptoSelecionado}
                     />
-                    :<OrdemMatsCard 
+                    <BoxProfissionais
+                        label= "Profissionais empregados"
+                        // baseSelecionada={baseSelecionada}
+                        // deptoSelecionado={deptoSelecionado}
+                        profissionaisDisponiveis={profissionaisDisponiveis}
+                        profissionaisEmpregados={profissionaisEmpregados}
+                        setProfissionaisEmpregados={setProfissionaisEmpregados}
+                        departamento={deptoSelecionado}
+                        local={local}
+                    /></>
+                    :<><OrdemMatsCard 
                         materiais={ordemMats} 
                         isLoading={isLoadingDados}
                     />
+                    <OrdemProfsCard 
+                        profissionais={ordemProfs}
+                        isLoading={isLoadingDados}
+                    /></>
                 }
-                {!isNoOSForm && (!ordemProfs || ordemProfs.length === 0) && !isLoadingDados
+                {/*!isNoOSForm && (!ordemProfs || ordemProfs.length === 0) && !isLoadingDados
                     ?<BoxProfissionais
                         label= "Profissionais empregados"
                         // baseSelecionada={baseSelecionada}
@@ -154,7 +177,7 @@ const FormSaida = (props) => {
                         profissionais={ordemProfs}
                         isLoading={isLoadingDados}
                     />
-                }
+                */}
         </>
     );
 }
