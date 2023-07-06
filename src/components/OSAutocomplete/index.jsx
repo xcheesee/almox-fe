@@ -28,9 +28,11 @@ export default function OSAutocomplete ({
             disabled={disabled}
             id="ordem_servico"
             loading={ordensQuery.isFetching}
-            getOptionLabel={(option) => `${option.id} - ${option?.especificacao ?? "N/A"}`}
+            getOptionLabel={(option) => `${option.id}`}
             renderInput={ (params) => <TextField 
                     {...params} 
+                    name="ordem_servico_id"
+                    value={ordemId}
                     label="Ordem de Servico" 
                     onChange={async (e) => { 
                         setOrdens([])

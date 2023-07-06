@@ -39,7 +39,6 @@ export default function SaidaSemOsForm ({
 
     const [localServico, setLocalServico] = useState()
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
-    const materiaisInterno = useAtomValue(matTipoListAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
 
     const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
@@ -61,43 +60,16 @@ export default function SaidaSemOsForm ({
         }
     }, [])
 
-    const addMutation = useMutation( async (data) => {
-        setOpenConfirmar(false)
-        setCarregando(true)
-        return await enviaNovoForm(
-            data, 
-            'ordem_servico', 
-            materiaisInterno,
-            'ordem_servico_items',
-            profissionaisEmpregados,
-            "ordem_servico_profissionais"
-        )
-    }, { onSuccess: async (res) => {
-            setCarregando(false)
-            queryClient.invalidateQueries(['ordemItens'])
-            setFormSnackbar(setSnackbar, "Ordem de serviço")
-            navigate(`/ordemservico`, { replace: true });
-        }, onError: async (res) => {
-            setCarregando(false)
-            if(res.status === 422) { setErrors(res?.errors) }
-            setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
-        }
-    })
 
     return(
-        <>
-        <FormContainer
-            id="nova-saida"
-            onSubmit={(e) => { addMutation.mutate(e) }}
-        >
-
+            <>
             <TextField 
                 multiline
                 rows={4}
                 name='justificativa_os'
                 id='justificativa_os'
                 label="Justificativa"
-                required
+                //required
             />
             {/* Campo Temporario, utilizado para testes */}
             <Selecao
@@ -112,7 +84,7 @@ export default function SaidaSemOsForm ({
                 //defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
                 helperText={errors?.departamento_id ?? ""}
-                required
+                //required
             >
                 {Object.entries(departamentos).map(departamento => (
                     <MenuItem key={departamento[0]} value={departamento[0]}>
@@ -126,15 +98,15 @@ export default function SaidaSemOsForm ({
                 label="Status"
                 name="status"
                 disabled
-                value={"A Iniciar"}
+                value={"a_iniciar"}
                 //onChange={(e) => setStatus(e.target.value)}
                 //value={ status }
                 // defaultValue={defaultValue?.status}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors?.status || ""}
-                required
+                //required
             >
-                    <MenuItem value="A Iniciar">
+                    <MenuItem value="a_iniciar">
                         A Iniciar
                     </MenuItem>
             </TextField>
@@ -147,7 +119,7 @@ export default function SaidaSemOsForm ({
                 InputLabelProps={{ shrink: true }}
                 error={errors.hasOwnProperty('data_inicio_servico')}
                 helperText={errors.data_inicio_servico || ""}
-                required
+                //required
                 fullWidth
             />
         
@@ -171,7 +143,7 @@ export default function SaidaSemOsForm ({
                 //defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors?.origem_id ?? ""}
-                required
+                //required
             />
 
             <CampoLocais 
@@ -187,7 +159,7 @@ export default function SaidaSemOsForm ({
                 //defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
-                required
+                //required
             />
 
             <TextField 
@@ -224,8 +196,6 @@ export default function SaidaSemOsForm ({
                 helperText={errors.observacoes || ""}
                 fullWidth
             />
-        </FormContainer>
-
         </>
     )
 }

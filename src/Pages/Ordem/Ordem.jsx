@@ -34,22 +34,22 @@ const Ordem = () => {
             const [registroData, matsData, profsData] = await Promise.all([
                 getRegistro('ordem_servico', id,),
                 getMateriais('ordem_servico', id),
-                getDados(id, )
+                getOrdemProfissionais(id)
             ])
             setOrdemServico( registroData)
-            setMateriais( matsData)
-            setProfissionais( profsData)
+            setMateriais(matsData)
+            setProfissionais(profsData)
             setOpenDetalhes(true)
             break;
         case 'editar':
             const [registroEditData, matsEditData, profsEditData] = await Promise.all([
-                getRegistro('ordem_servico', id,),
+                getRegistro('ordem_servico', id),
                 getMateriais('ordem_servico', id),
-                getOrdemProfissionais(id, )
+                getOrdemProfissionais(id)
             ])
             setOrdemServico(registroEditData);
-            setMateriais(matsEditData)
-            setProfissionais(profsEditData)
+            setMateriais(matsEditData);
+            setProfissionais(profsEditData);
             setOpenEditar(true)
             break;
         case 'baixa':

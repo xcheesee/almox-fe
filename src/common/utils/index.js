@@ -16,6 +16,16 @@ export function formDataToObj(formData, obj) {
   return obj
 }
 
+export function MaterialTipoToMaterialObj(materiaisTipos) {
+  let list = []
+  Object.values(materiaisTipos)?.forEach( materiais => {
+    materiais.forEach( item => {
+      list.push(item)
+    })
+  })
+  return list
+}
+
 export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {
   let index = 0 // valor para cadastrar itens de tipos diferentes, em sequencia
   Object.values(materiaisTipos)?.forEach((materiais) => {
@@ -156,6 +166,21 @@ export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais,
     throw res
   }
   return await res.json()
+}
+
+export async function enviaNovaSaida({formData, materiais=[], profissionais=[]}) { 
+  const url = `${process.env.REACT_APP_API_URL}/saida`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      //'Content-Type' : 'application/json',
+      'Authorization': localStorage.getItem('access_token')
+    },
+    body: formData,
+  }
+  const res = await fetch(url, options)
+  console.log(res)
 }
 
 export async function enviaNovaOcorrencia(formData, materiais) {
@@ -334,7 +359,7 @@ export const getMateriais = async (rota, id) => {
   const res = await fetch(url, options)
   if(res.ok) {
     const json = await res.json()
-    return json
+    return json.data
   }
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais!")
 }

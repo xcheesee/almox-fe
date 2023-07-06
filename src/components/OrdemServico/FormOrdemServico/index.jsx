@@ -260,6 +260,7 @@ const FormOrdemServico = (props) => {
                 select
                 label="Tipo de Serviço"
                 name="tipo_servico"
+                defaultValue=""
                 id="tipo_servico"
             >
                 <MenuItem value="civil">Civil</MenuItem>

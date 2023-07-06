@@ -5,7 +5,7 @@ export default function SaidaOSCard ({ordemServico}) {
 
     return (
         <Paper component={Box} elevation={4} >
-            <Box className="bg-[#f3f6ff] py-4 px-8 my-8">
+            <Box className="bg-[#f3f6ff] py-4 px-8">
                 <Box className="p-4 grid grid-cols-2 gap-4 justify-center">
                     <Box className="font-bold text-xl">Ordem de Servico Nº {ordemServico.id}</Box>
                     <Box className="text-gray-400 justify-self-end">
