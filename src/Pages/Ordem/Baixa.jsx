@@ -8,7 +8,7 @@ import { enviaBaixa, getBaixa, getDados } from '../../common/utils';
 const Baixa = ({ setSnackbar }) => {
   let params = useParams();
   const navigate = useNavigate();
-  const [ordemServico, setOrdemServico] = useState({});
+  const [baixaItems, setBaixaItems] = useState({});
   const [materiais, setMateriais] = useState([]);
   const [profissionais, setProfissionais] = useState()
   const [openBaixa, setOpenBaixa] = useState(false);
@@ -17,17 +17,21 @@ const Baixa = ({ setSnackbar }) => {
 
   const baixa = useQuery(['baixaItem', params.id], async () => {
     let dados;
-    const [saidaRes, itensRes, profsRes] = await Promise.all([getDados(`saida/${params.id}`), getDados(`saida/${params.id}/items`), getDados(`saida/${params.id}/profissionais`)])
+    const [saidaRes, itensRes, profsRes] = await Promise.all([
+      getDados(`saida/${params.id}`), 
+      getDados(`saida/${params.id}/items`), 
+      getDados(`saida/${params.id}/profissionais`)
+    ])
     dados = saidaRes.data;
     dados.itens = itensRes.data
     dados.profissionais = profsRes.data
     return dados
   }, {
     onSuccess: async (res) => {
-      const profsRes = await getDados(`saida/${params.id}/profissionais`)
-      setProfissionais(res.profissionais)
-      setOrdemServico(res || {})
-      setMateriais(res.itens)
+      //const profsRes = await getDados(`saida/${params.id}/profissionais`)
+      //setProfissionais(res.profissionais)
+      //setBaixaItems(res || {})
+      //setMateriais(res.itens)
     }, onError: async (res) => {
       if (res.status === 404) navigate('/404', { replace: true });
     }
@@ -75,7 +79,7 @@ const Baixa = ({ setSnackbar }) => {
       }
     });
 
-    setItems({ ordem_servico_items: [...arr] });
+    setItems({ saida_items: [...arr] });
     setErrors(objErros);
 
     if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 ) {
@@ -86,11 +90,9 @@ const Baixa = ({ setSnackbar }) => {
   return (
     <>
     <BaixaSaidaMaterial 
-    ordemServico={ordemServico}
-    profissionais={profissionais}
+    baixa={baixa?.data}
     carregando={baixa?.isFetching} 
     id={params.id} 
-    materiais={materiais} 
     checaErros={checaErros}
     errors={errors}
     setErrors={setErrors}

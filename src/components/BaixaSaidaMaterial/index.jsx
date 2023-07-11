@@ -16,7 +16,15 @@ import { formataDateTime } from '../../common/utils';
 import { Link } from 'react-router-dom';
 import OrdemProfsCard from '../OrdemProfsCard';
 
-const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, materiais, checaErros, errors, setErrors, carregandoBaixa }) => {
+const BaixaSaidaMaterial = ({ 
+  baixa,
+  carregando, 
+  id, 
+  checaErros, 
+  errors, 
+  setErrors, 
+  carregandoBaixa 
+}) => {
   const [enviado, setEnviado] = useState([]);
   const [usado, setUsado] = useState([]);
   const [retorno, setRetorno] = useState([]);
@@ -27,14 +35,21 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
     arr[index] = e.target.value;
 
     if (valor === enviado)
-      setEnviado([...arr]);
+      return
+      //setEnviado([...arr]);
     else
       setUsado([...arr]);
 
     let arrRetorno = retorno;
-    arrRetorno[index] = enviado[index] - usado[index];
+    arrRetorno[index] = quantidade - usado[index];
 
     setRetorno([...arrRetorno]);
+  }
+  
+  if (carregando){
+    return(<Box className='w-full h-full flex justify-center'>
+      <CircularProgress size={48} color='primary'/>
+    </Box>)
   }
 
   return (
@@ -45,33 +60,36 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
 
       <Box sx={style.box}>
         <Typography sx={style.subTitulo} >
-          Ordem de serviço <strong>#{`${id}`}</strong>
+          {baixa.ordem_servico_id
+            ?  <span>Ordem de serviço <strong>#{`${baixa.ordem_servico_id}`}</strong></span>
+            : <span>Saida de Materiais <strong>#{`${id}`}</strong></span>
+          }
         </Typography>
 
         <Collapse in={!carregando}>
           <Box className="p-6 grid grid-cols-3 gap-8">
             <TituloTexto 
               titulo="Departamento"
-              texto={ordemServico.departamento}
+              texto={baixa.departamento}
             />
             <TituloTexto 
               titulo="Origem"
-              texto={ordemServico.origem}
+              texto={baixa.origem}
             />
 
             <TituloTexto 
               titulo="Local de serviço"
-              texto={ordemServico.local_servico}
+              texto={baixa.local_servico}
             />
 
             {/*<TituloTexto 
               titulo="Profissional"
-              texto={ordemServico.profissional || "---"}
+              texto={baixaItems.profissional || "---"}
             />*/}
 
             {/*<TituloTexto
               titulo="Especificações"
-              texto={ordemServico.especificacao || "---"}
+              texto={baixaItems.especificacao || "---"}
               className="col-span-3"
               component="code"
               childComponent="pre"
@@ -81,9 +99,9 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
             {/*<TituloTexto 
               titulo="Horas de execução"
               texto={`
-                ${ordemServico.horas_execucao || "---"} 
-                ${ordemServico.horas_execucao 
-                  ? ordemServico.horas_execucao > 1 ? "horas" : "hora" 
+                ${baixaItems.horas_execucao || "---"} 
+                ${baixaItems.horas_execucao 
+                  ? baixaItems.horas_execucao > 1 ? "horas" : "hora" 
                   : ""
                 }`
               }
@@ -91,16 +109,16 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
             
             <TituloTexto 
               titulo="Data de início do serviço"
-              texto={ formataDateTime(ordemServico.data_inicio_servico) || "Data de início indeterminada" }
+              texto={ formataDateTime(baixa.data_inicio_servico) || "Data de início indeterminada" }
             />
 
             <TituloTexto 
               titulo="Data de fim do serviço"
-              texto={ formataDateTime(ordemServico.data_fim_servico) || "Data de fim indeterminada" }
+              texto={ formataDateTime(baixa.data_fim_servico) || "Data de fim indeterminada" }
             />
           </Box>
 
-          <OrdemProfsCard profissionais={profissionais} />
+          <OrdemProfsCard profissionais={baixa.profissionais} />
         </Collapse>
       </Box>
 
@@ -110,16 +128,16 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
         </Typography>
 
         <Collapse 
-          in={materiais.length > 0} 
+          in={baixa?.itens ? baixa.itens.length > 0 : false} 
           component="form" 
           id="baixa-items"
           onSubmit={checaErros}
         >
           <Paper sx={style.paperBg}>
           {
-            materiais.length > 0
+            baixa?.itens.length > 0
             ?
-              materiais.map((material, index) => (
+              baixa?.itens.map((material, index) => (
                   <Paper className='p-4 grid grid-cols-2 items-center' key={material.id}>
                     <Typography>{material.item}</Typography>
 
@@ -127,26 +145,26 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
                       <TextField
                         label="Solicitado"
                         value={material.quantidade}
+                        name={`saida_items[${index}].quantidade`}
                         size="small"
-                        disabled
                       />
 
                       {/* adiciona o id ao FormData */}
                       <input 
                         type="text" 
-                        name={`ordem_servico_items[${index}].id`} 
+                        name={`saida_items[${index}].id`} 
                         defaultValue={material.item_id} 
                         style={{ display: 'none' }} 
                       />
 
                       <TextField
                         label="Enviado"
-                        defaultValue={material.enviado}
+                        value={material.quantidade}
                         onBlur={(e) => { 
-                          handleBlur(e, index, enviado);
+                          handleBlur(e, index, enviado, material.quantidade);
                           setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade))); 
                         }}
-                        name={`ordem_servico_items[${index}].enviado`}
+                        name={`saida_items[${index}].enviado`}
                         error={parseInt(enviado[index]) > parseInt(material.quantidade)}
                         helperText={parseInt(enviado[index]) > parseInt(material.quantidade) ? "O valor de enviado não pode ser maior que o valor solicitado" : ""}
                         size="small"
@@ -156,10 +174,10 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
                         label="Usado"
                         defaultValue={material.usado}
                         onBlur={(e) => { 
-                          handleBlur(e, index, usado); 
+                          handleBlur(e, index, usado, material.quantidade); 
                           setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade))); 
                         }}
-                        name={`ordem_servico_items[${index}].usado`}
+                        name={`saida_items[${index}].usado`}
                         error={parseInt(enviado[index]) < parseInt(usado[index])}
                         helperText={parseInt(enviado[index]) < parseInt(usado[index]) ? "O valor de usado não pode ser maior que o valor enviado" : ""}
                         size="small"
@@ -168,7 +186,7 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
                       <TextField
                         label="Retorno"
                         value={retorno[index] || 0}
-                        name={`ordem_servico_items[${index}].retorno`}
+                        name={`saida_items[${index}].retorno`}
                         size="small"
                         onBlur={() => setErrors({})}
                         error={errors.hasOwnProperty(`retorno[${index}]`)}
@@ -185,7 +203,7 @@ const BaixaSaidaMaterial = ({ ordemServico, profissionais, carregando, id, mater
       </Box>
 
       <Box className="flex justify-end gap-4 pt-4">
-        <Link to="/ordemservico">
+        <Link to="/saida">
           <Button>
             Cancelar
           </Button>

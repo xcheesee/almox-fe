@@ -33,7 +33,7 @@ const Baixa = ({ setSnackbar }) => {
         severity: 'success',
         message: 'Baixa da ordem de serviço efetuada com sucesso!',
       });
-      navigate('/ordemservico', { replace: true });
+      navigate('/saida', { replace: true });
     }, onError: async (res) => {
       console.log(res)
       setSnackbar({

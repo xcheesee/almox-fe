@@ -17,13 +17,7 @@ export function formDataToObj(formData, obj) {
 }
 
 export function MaterialTipoToMaterialObj(materiaisTipos) {
-  let list = []
-  Object.values(materiaisTipos)?.forEach( materiais => {
-    materiais.forEach( item => {
-      list.push(item)
-    })
-  })
-  return list
+  return [].concat(...Object.values(materiaisTipos)) 
 }
 
 export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {

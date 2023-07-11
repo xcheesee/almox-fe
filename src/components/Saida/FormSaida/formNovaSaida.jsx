@@ -7,27 +7,26 @@ import {
 } from '@mui/material';
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
-import { MaterialTipoToMaterialObj, appendMateriaisToRequest, enviaNovaSaida, enviaNovoForm, getOrdemDados, getProfissionais, setFormSnackbar } from '../../../common/utils';
+import { MaterialTipoToMaterialObj, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar } from '../../../common/utils';
 import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../../SaidaOSCard';
-import SaidaSemOsForm from './saidaSemOsForm';
+import { FormSemOs } from '.';
 import OrdemMatsCard from '../../OrdemMatsCard';
 import OrdemProfsCard from '../../OrdemProfsCard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FormContainer from '../../FormContainer';
 import { useNavigate } from 'react-router-dom';
 
-const FormSaida = (props) => {
+export default function FormNovaSaida (props) {
 
     const { 
         setCarregando, 
         setOpenConfirmar, 
         errors,
         setErrors,
-        //baseSelecionada,
-        //setBaseSelecionada,
+        formId,
     } = props;
 
     const queryClient = useQueryClient()
@@ -88,6 +87,29 @@ const FormSaida = (props) => {
         )
     }
 
+    function formatItemForSaida(itemObjArr) {
+        const saidaItens = itemObjArr.map(itemObj => {
+            const saidaItem = {}
+            saidaItem.id = itemObj.id
+            //valores duplicados para conformidade entre envio de saida com e sem ordem de servico
+            //TODO: implementar solucao sem o uso de duplicatas
+            saidaItem.quantidade = itemObj.qtd
+            saidaItem.enviado = itemObj.qtd
+            return saidaItem
+        })
+        return saidaItens
+    }
+    
+    function formatOrdemForSaida(ordem) {
+        const saida = {}
+        saida.departamento_id = ordem.departamento_id
+        saida.origem_id = ordem.origem_id
+        saida.local_servico_id = ordem.local_servico_id
+        saida.ordem_servico_id = ordem.id
+
+        return saida
+    }
+
     const addMutation = useMutation( async ({formData: data, materiais: materiaisInterno}) => {
         setOpenConfirmar(false)
         setCarregando(true)
@@ -96,7 +118,7 @@ const FormSaida = (props) => {
             setCarregando(false)
             queryClient.invalidateQueries(['saidas'])
             setFormSnackbar(setSnackbar, "Saida de Materiais")
-            //navigate(`/saida`, { replace: true });
+            navigate(`/saida`, { replace: true });
         }, onError: async (res) => {
             setCarregando(false)
             if(res.status === 422) { setErrors(res?.errors) }
@@ -105,36 +127,35 @@ const FormSaida = (props) => {
     })
 
     async function sendSaida(e) {
-        const almoxarife_nome = localStorage.getItem("username")
-        const almoxarife_email = localStorage.getItem("usermail")
-        const materiais = []
-        if(!isNoOSForm) {
-            let saida = ordemServico
-            let formData = new FormData()
-            saida.ordem_servico_id = ordemServico.id
-            saida.baixa_datahora = new Date().toLocaleDateString('pt-br')
-            saida.almoxarife_nome = almoxarife_nome
-            saida.almoxarife_email = almoxarife_email
-            Object.entries(saida).forEach( keyVal => {
-                formData.append(keyVal[0], keyVal[1])
-            })
-            return addMutation.mutate({
-                formData: formData, 
-                //materiais: materiaisInterno
-            })
+        if(isNoOSForm) {
+            const formData = new FormData(e.target)
+            const itens = MaterialTipoToMaterialObj(materiaisInterno);
+            const saidaItens = formatItemForSaida(itens)
+            formData.append("almoxarife_nome", localStorage.getItem("username"))
+            formData.append("almoxarife_email", localStorage.getItem("usermail"))
+            formData.append("saida_items",  JSON.stringify(saidaItens))
+            formData.append("saida_profissionais", JSON.stringify(profissionaisEmpregados))
+
+            return addMutation.mutate({formData: formData}) 
         }
-        const formData = new FormData(e.target)
-        formData.append("almoxarife_nome", almoxarife_nome)
-        formData.append("almoxarife_email", almoxarife_email)
-        formData.append("saida_items", JSON.stringify(MaterialTipoToMaterialObj(materiaisInterno)) )
-        formData.append("ordem_servico_id", "45") //input temporario
-        addMutation.mutate({formData: formData}) 
+
+        let saida = formatOrdemForSaida(ordemServico)
+        saida.almoxarife_nome = localStorage.getItem('username')
+        saida.almoxarife_email = localStorage.getItem('usermail')
+
+        let formData = new FormData()
+
+        Object.entries(saida).forEach( keyVal => {
+            formData.append(keyVal[0], keyVal[1])
+        })
+
+        return addMutation.mutate({ formData: formData })
     }
 
     return (
         <>
             <FormContainer
-                id="nova-saida"
+                id={formId}
                 onSubmit={(e) => { 
                     e.preventDefault()
                     sendSaida(e)
@@ -164,8 +185,9 @@ const FormSaida = (props) => {
                         </FormGroup>
                     </Box>
                 </Box>
+
                 {isNoOSForm
-                    ?<SaidaSemOsForm 
+                    ?<FormSemOs 
                             setOpenConfirmar={setOpenConfirmar}
                             setCarregando={setCarregando}
                             baseSelecionada={baseSelecionada}
@@ -208,6 +230,7 @@ const FormSaida = (props) => {
                         baseSelecionada={baseSelecionada}
                         deptoSelecionado={deptoSelecionado}
                     />
+
                     <BoxProfissionais
                         label= "Profissionais empregados"
                         // baseSelecionada={baseSelecionada}
@@ -221,9 +244,10 @@ const FormSaida = (props) => {
                 </>
                 :<>
                     <OrdemMatsCard 
-                    materiais={ordemMats} 
-                    isLoading={isLoadingDados}
+                        materiais={ordemMats} 
+                        isLoading={isLoadingDados}
                     />
+
                     <OrdemProfsCard 
                         profissionais={ordemProfs}
                         isLoading={isLoadingDados}
@@ -233,6 +257,3 @@ const FormSaida = (props) => {
         </>
     );
 }
-    
-
-export default FormSaida;

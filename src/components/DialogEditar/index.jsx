@@ -11,7 +11,16 @@ import {
 } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-const DialogEditar = ({ titulo, openEditar, setOpenEditar, defaultValue, setOpenConfirmar, setOpenExcluir, carregando, ...other }) => {
+const DialogEditar = ({ 
+    titulo, 
+    openEditar, 
+    setOpenEditar, 
+    defaultValue={id: ""}, 
+    setOpenConfirmar, 
+    setOpenExcluir, 
+    carregando, 
+    ...other 
+}) => {
 
     return (
         <Dialog open={openEditar} fullWidth maxWidth="md">

@@ -73,7 +73,7 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                 {saida?.justificativa_os
                     ?<TituloTexto
                         titulo="Justificativa"
-                        texto={saida.especificacao || "---"}
+                        texto={saida.justificativa_os || "---"}
                         className="col-span-2"
                         component="code"
                         childComponent="pre"

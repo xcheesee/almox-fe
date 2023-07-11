@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getDados, getDetalhesBaixa, getMateriais, getOrdemProfissionais, getRegistro } from '../../common/utils';
+import { getDados, getMateriais, getRegistro } from '../../common/utils';
 import SaidaMats from '../../components/Saida';
-import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
-import FormOrdemServico from '../../components/OrdemServico/FormOrdemServico';
-import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useSetAtom } from 'jotai';
 import { excluirAtom, matsAtom, profissionaisAtom, snackbarAtom } from '../../atomStore';
 import DialogDetalhesSaida from '../../components/Saida/DialogDetalhesSaida';
+import DialogEditaSaida from '../../components/Saida/DialogEditaSaida';
+import { FormEditSaida } from '../../components/Saida/FormSaida';
 
 const Saida = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -49,7 +48,7 @@ const Saida = () => {
             ])
             setOrdemServico(registroEditData);
             setMateriais(matsEditData)
-            setProfissionais(profsEditData)
+            setProfissionais(profsEditData ?? null)
             setOpenEditar(true)
             break;
         case 'baixa':
@@ -78,42 +77,31 @@ const Saida = () => {
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
             />
-            <DialogEditar
-                titulo="Editar ordem de serviço"
-                openEditar={openEditar}
-                setOpenEditar={setOpenEditar}
+
+            <DialogEditaSaida 
+                formId="edit_saida"
+                open={openEditar}
+                setOpen={setOpenEditar}
                 defaultValue={ordemServico}
                 carregando={carregandoEdicao}
+                openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 setOpenExcluir={setOpenExcluir}
             >
-                <FormOrdemServico 
-                    defaultValue={ordemServico} 
-                    setCarregando={setCarregandoEdicao}
-                    setOpenEditar={setOpenEditar}
-                    setOpenConfirmar={setOpenConfirmar}
-                    materiais={materiais}
-                    profissionais={profissionais}
-                    acao="editar"
-                    errors={errors}
-                    setErrors={setErrors}
+                <FormEditSaida
+                    defaultValue={ordemServico}
                 />
-            </DialogEditar>
-            <DialogConfirmaEdicao
-                texto="ordem de serviço"
-                id={ordemServico.id}
-                openConfirmar={openConfirmar}
-                setOpenConfirmar={setOpenConfirmar}
-                form="nova-ordem"
-            />
+            </DialogEditaSaida >
+
             <DialogExcluir 
-                rota="ordem_servico"
-                texto="ordem de serviço"
+                rota="saida"
+                texto="Saida de Materiais"
                 id={ordemServico.id}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 tabelaOrigem="ordemItens"
             />
+
             <DialogDetalhesSaida 
                 openDetalhes={openDetalhes}
                 profissionais={profissionais?.data}
@@ -121,6 +109,7 @@ const Saida = () => {
                 saida={ordemServico}
                 materiais={materiais}
             />
+
             <DialogDetalhesBaixa 
                 openBaixa={openBaixa}
                 setOpenBaixa={setOpenBaixa}

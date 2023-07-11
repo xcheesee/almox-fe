@@ -5,16 +5,7 @@ import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 
 const NovaSaida = () => {
-    const [materiais, setMateriais] = useState([{ 
-        id: '',
-        tipo: '', 
-        matDesabilitado: true,
-        mats:[],
-        currMat: '',
-        qtdDesabilitado: true,
-        quantidade: '',
-        medida: '',
-    }]);
+
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
@@ -25,27 +16,19 @@ const NovaSaida = () => {
     return (
         <>
             <NovaSaidaMats 
-                materiais={materiais}
-                setMateriais={setMateriais}
                 setOpenCancelar={setOpenCancelar}
+                openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 carregando={carregando}
                 setCarregando={setCarregando}
-                navigate={navigate}
-                //baseSelecionada={baseSelecionada}
-                //setBaseSelecionada={setBaseSelecionada}
+                formId="nova_saida"
             />
+
             <DialogCancelar
                 paginaAnterior="saída de materiais"
                 rota="/saida"
                 openCancelar={openCancelar}
                 setOpenCancelar={setOpenCancelar}
-            />
-            <DialogEnviar 
-                openConfirmar={openConfirmar}
-                setOpenConfirmar={setOpenConfirmar}
-                texto="saída de materiais"
-                form="nova-saida"
             />
         </>
     );
