@@ -25,6 +25,7 @@ const Filtros = (props) => {
         ordem,
         transferencia,
         ocorrencia,
+        saida,
         limpaData,
         limpaForms=()=>{},
         ...other
@@ -57,6 +58,7 @@ const Filtros = (props) => {
         const [ordemDepoisDe, ordemAntesDe] = validaData(ordem)
         const [transfDepoisDe, transfAntesDe] = validaData(transferencia)
         const [ocorrenciaDepoisDe, ocorrenciaAntesDe] = validaData(ocorrencia)
+        const [saidaDepoisDe, saidaAntesDe] = validaData(saida)
         const inputObject = {
             ...Object.fromEntries(formData),
             entrada_depois_de: entradaDepoisDe,
@@ -67,6 +69,8 @@ const Filtros = (props) => {
             transferencia_antes_de: transfAntesDe,
             ocorrencia_depois_de: ocorrenciaDepoisDe,
             ocorrencia_antes_de: ocorrenciaAntesDe,
+            baixa_depois_de: saidaDepoisDe,
+            baixa_antes_de: saidaAntesDe
         }
         
         setFiltros(

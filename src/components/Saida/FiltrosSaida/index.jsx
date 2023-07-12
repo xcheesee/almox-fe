@@ -7,12 +7,12 @@ const FiltrosSaida = () => {
     const [datas, setDatas] = useState([''])
     return (
         <Filtros
-            //valor da data de servico e funcao para limpar tal data
-            ordem={datas}
+            //valor da data de baixa e funcao para limpar tal data
+            saida={datas}
             limpaData={setDatas}
         >
             <CampoDataRange
-                label={'Data de serviço - faixa de pesquisa'}
+                label={'Data da Baixa - faixa de pesquisa'}
                 intervalo={datas}
                 onChange={setDatas}
                 className={"col-span-2"}

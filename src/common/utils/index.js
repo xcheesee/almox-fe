@@ -313,10 +313,13 @@ export async function getTabela (rota, page="", filtros="", sort="") {
 
   try{
     const res = await fetch(url, options)
+    const json = await res.json()
     if(res.status === 404) {
       throw errorBuilder(res, "Nao encontrado")
     }
-    const json = await res.json()
+    if(!res.ok) {
+      throw errorBuilder(res, json.message)
+    }
     return await new Promise(res => setTimeout(() => res(json), 250))
   } catch(e) {
     throw errorBuilder(e, e.message)

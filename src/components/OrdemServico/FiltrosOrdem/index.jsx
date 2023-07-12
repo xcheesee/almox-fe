@@ -12,7 +12,7 @@ const FiltrosOrdem = () => {
             limpaData={setDatas}
         >
             <CampoDataRange
-                label={'Data de serviço - faixa de pesquisa'}
+                label={'Data de Emissão - faixa de pesquisa'}
                 intervalo={datas}
                 onChange={setDatas}
                 className={"col-span-2"}

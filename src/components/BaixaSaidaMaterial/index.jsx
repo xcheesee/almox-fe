@@ -46,10 +46,8 @@ const BaixaSaidaMaterial = ({
     setRetorno([...arrRetorno]);
   }
   
-  if (carregando){
-    return(<Box className='w-full h-full flex justify-center'>
-      <CircularProgress size={48} color='primary'/>
-    </Box>)
+  if (!baixa){
+    return <></>
   }
 
   return (

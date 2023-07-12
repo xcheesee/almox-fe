@@ -3,7 +3,8 @@ import BaixaSaidaMaterial from '../../components/BaixaSaidaMaterial';
 import DialogConfirmaBaixa from '../../components/DialogConfirmaBaixa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { enviaBaixa, getBaixa, getDados } from '../../common/utils';
+import { enviaBaixa, errorBuilder, getBaixa, getDados } from '../../common/utils';
+import { Box, CircularProgress } from '@mui/material';
 
 const Baixa = ({ setSnackbar }) => {
   let params = useParams();
@@ -23,17 +24,31 @@ const Baixa = ({ setSnackbar }) => {
       getDados(`saida/${params.id}/profissionais`)
     ])
     dados = saidaRes.data;
+    if (dados.flg_baixa) {
+      throw errorBuilder(saidaRes, "Baixa Ja realizada")
+    }
     dados.itens = itensRes.data
     dados.profissionais = profsRes.data
     return dados
   }, {
+    retry: 1,
     onSuccess: async (res) => {
       //const profsRes = await getDados(`saida/${params.id}/profissionais`)
       //setProfissionais(res.profissionais)
       //setBaixaItems(res || {})
       //setMateriais(res.itens)
     }, onError: async (res) => {
-      if (res.status === 404) navigate('/404', { replace: true });
+      if (res.status === 404) {
+        navigate('/404', { replace: true })
+      } else {
+        setSnackbar({
+          open: true,
+          severity: 'error',
+          message: res.message
+        })
+        navigate('/saida', { replace: true })
+      };
+      
     }
   })
 
@@ -49,7 +64,6 @@ const Baixa = ({ setSnackbar }) => {
       });
       navigate('/saida', { replace: true });
     }, onError: async (res) => {
-      console.log(res)
       setSnackbar({
         open: true,
         severity: 'error',
@@ -85,6 +99,14 @@ const Baixa = ({ setSnackbar }) => {
     if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 ) {
       setOpenBaixa(true);
     }
+  }
+
+  if(baixa.isLoading) {
+    return (
+      <Box className='flex justify-center'>
+        <CircularProgress size={48} />
+      </Box>
+    )
   }
 
   return (

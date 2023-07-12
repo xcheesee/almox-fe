@@ -8,8 +8,8 @@ import Paginacao from '../Paginacao';
 import { authCreateOrdem, getTabela } from '../../common/utils';
 import { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
-import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from '../../atomStore';
 
 const OrdemServico = (props) => {
     const {
@@ -20,11 +20,19 @@ const OrdemServico = (props) => {
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
+    const setSnackbar = useSetAtom(snackbarAtom)
 
     const ordens = useQuery({
         queryKey: ['ordemItens', page, filtros, sort],
         queryFn: () => getTabela('ordem_servicos', page, filtros, sort),
-        onSuccess: res => pageCountRef.current = res.meta.last_page
+        onSuccess: res => pageCountRef.current = res.meta.last_page,
+        onError: res => {
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: res.message
+            })
+        }
     });
 
     const pageCountRef = useRef(ordens?.data?.meta?.last_page ?? 1)
