@@ -37,7 +37,7 @@ const SaidaMats = (props) => {
 
             <FiltrosSaida />
 
-            <BotaoNovo caminho="/ordemservico/nova-ordem" >
+            <BotaoNovo caminho="/saida/nova-saida" >
                 Nova Saida
             </BotaoNovo>
 
