@@ -37,12 +37,9 @@ const SaidaMats = (props) => {
 
             <FiltrosSaida />
 
-            {/*<BotaoNovo 
-                caminho="/ordemservico/nova-ordem"
-                display={authCreateOrdem(localStorage.getItem('perfil'))}    
-            >
+            <BotaoNovo caminho="/ordemservico/nova-ordem" >
                 Nova Saida
-            </BotaoNovo>*/}
+            </BotaoNovo>
 
             <TabelaSaida 
                 saidas={saidas?.data?.data} 

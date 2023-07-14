@@ -29,6 +29,7 @@ const BaixaSaidaMaterial = ({
   const [usado, setUsado] = useState([]);
   const [retorno, setRetorno] = useState([]);
   const [error, setError] = useState(false);
+  const [invalidFocus, setInvalidFocus] = useState(false)
 
   const handleBlur = (e, index, valor, quantidade) => {
     let arr = valor;
@@ -45,7 +46,7 @@ const BaixaSaidaMaterial = ({
 
     setRetorno([...arrRetorno]);
   }
-  
+
   if (!baixa){
     return <></>
   }
@@ -142,6 +143,7 @@ const BaixaSaidaMaterial = ({
                     <Box className='flex gap-4'>
                       <TextField
                         label="Solicitado"
+                        style={{ display: 'none' }} 
                         value={material.quantidade}
                         name={`saida_items[${index}].quantidade`}
                         size="small"
@@ -157,15 +159,18 @@ const BaixaSaidaMaterial = ({
 
                       <TextField
                         label="Enviado"
+                        onFocus={() => setInvalidFocus(true)}
                         value={material.quantidade}
                         onBlur={(e) => { 
+                          setInvalidFocus(false)
                           handleBlur(e, index, enviado, material.quantidade);
                           setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade))); 
                         }}
                         name={`saida_items[${index}].enviado`}
-                        error={parseInt(enviado[index]) > parseInt(material.quantidade)}
-                        helperText={parseInt(enviado[index]) > parseInt(material.quantidade) ? "O valor de enviado não pode ser maior que o valor solicitado" : ""}
+                        error={invalidFocus}
+                        helperText={invalidFocus ? "Campo não alteravel!"  : ""}
                         size="small"
+
                       />
 
                       <TextField
