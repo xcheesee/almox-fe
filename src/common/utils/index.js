@@ -16,27 +16,8 @@ export function formDataToObj(formData, obj) {
   return obj
 }
 
-export function MaterialTipoToMaterialObj(materiaisTipos) {
+export function objToArr(materiaisTipos) {
   return [].concat(...Object.values(materiaisTipos)) 
-}
-
-export function appendMateriaisToRequest(formData, materiaisTipos, campoMats) {
-  let index = 0 // valor para cadastrar itens de tipos diferentes, em sequencia
-  Object.values(materiaisTipos)?.forEach((materiais) => {
-      materiais.forEach( item => {
-        const entries = Object.entries(item);
-        entries.forEach((keyValue) => {
-          if(keyValue[0] === "quantidade") {
-            return
-          }
-          if(keyValue[0] === "qtd") {
-            formData.append(`${campoMats}[${index}][quantidade]`, keyValue[1])
-          }
-          formData.append(`${campoMats}[${index}][${keyValue[0]}]`, keyValue[1]);
-        });
-        index++;
-      })
-    });
 }
 
 export const setFormSnackbar = (setSnackbar, tipoEnvio, options = {
@@ -95,8 +76,6 @@ export const formataDateTime = (dateTime) => {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-    //hour: "2-digit",
-    //minute: "2-digit"
   });
 
   if (dataFormatada === "Invalid Date" || dateTime === null)
@@ -126,8 +105,11 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
   if (formData.get('processo_sei') !== null) 
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
-  if (materiais) 
-    appendMateriaisToRequest(formData, materiais, campoMats)
+  if (materiais) {
+    const materiaisArray = objToArr(materiais)
+    materiaisArray.forEach( material => material.quantidade = material.qtd)
+    formData.append(campoMats, JSON.stringify(materiaisArray))
+  } 
 
   if (profissionais) {
     profissionais?.forEach((profissional, index) => {
@@ -162,24 +144,27 @@ export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais,
   return await res.json()
 }
 
-export async function enviaNovaSaida({formData, materiais=[], profissionais=[]}) { 
+export async function enviaNovaSaida({ formData }) { 
   const url = `${process.env.REACT_APP_API_URL}/saida`;
   const options = {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      //'Content-Type' : 'application/json',
       'Authorization': localStorage.getItem('access_token')
     },
     body: formData,
   }
-  const res = await fetch(url, options)
-  console.log(res)
+  try {
+    const res = await fetch(url, options)
+  } catch(e) {
+    throw errorBuilder(e, e.message)
+  }
 }
 
 export async function enviaNovaOcorrencia(formData, materiais) {
-  //formData.append("justificativa", "string")
-  appendMateriaisToRequest(formData, materiais, "itens")
+  const materiaisArray = objToArr(materiais)
+  formData.append("itens", JSON.stringify(materiaisArray))
+
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
 
   const res = await fetch(url, {
@@ -199,7 +184,9 @@ export async function enviaNovaOcorrencia(formData, materiais) {
 
 export async function enviaNovaTransferencia(formData, materiais) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-  appendMateriaisToRequest(formData, materiais, "itens")
+
+  const materiaisArray = objToArr(materiais)
+  formData.append("itens", JSON.stringify(materiaisArray))
 
   const res = await fetch(url, {
     method: "POST",
@@ -338,7 +325,7 @@ export const getRegistro = async (rota, id) => {
     const json = await res.json()
     return json.data
   } else if(res.status === 404) {
-    throw errorBuilder(res, "Nao encontrado")
+    throw errorBuilder(res, "Não encontrado")
   }
   throw errorBuilder(res, res.message)
 }

@@ -114,6 +114,15 @@ export default function NovaOcorrencia () {
                     <MenuItem value="extravio">Extravio</MenuItem>
                 </TextField>
 
+                <TextField
+                    multiline
+                    fullWidth
+                    rows={4}
+                    name="justificativa"
+                    id="justificativa"
+                    label="Justificativa"
+                />
+
                 {tipoOcorrencia === "furto" || tipoOcorrencia === "extravio"
                     ?<TextField 
                         name="boletim_ocorrencia"

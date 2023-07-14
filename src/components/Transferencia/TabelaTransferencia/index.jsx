@@ -16,7 +16,7 @@ import RecusaTranferencia from '../../../Pages/Transferencia/recusaTransferencia
 
 const cabecalhos = {
     "ID": null,
-    "Data": "data_transferencia",
+    "Data de Transferência": "data_transferencia",
     "Base Origem": "origem",
     "Base Destino": "destino",
     "Status": "status",

@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
-import { MaterialTipoToMaterialObj, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar } from '../../../common/utils';
+import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar } from '../../../common/utils';
 import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
@@ -129,7 +129,7 @@ export default function FormNovaSaida (props) {
     async function sendSaida(e) {
         if(isNoOSForm) {
             const formData = new FormData(e.target)
-            const itens = MaterialTipoToMaterialObj(materiaisInterno);
+            const itens = objToArr(materiaisInterno);
             const saidaItens = formatItemForSaida(itens)
             formData.append("almoxarife_nome", localStorage.getItem("username"))
             formData.append("almoxarife_email", localStorage.getItem("usermail"))

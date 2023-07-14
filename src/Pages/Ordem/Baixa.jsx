@@ -9,9 +9,6 @@ import { Box, CircularProgress } from '@mui/material';
 const Baixa = ({ setSnackbar }) => {
   let params = useParams();
   const navigate = useNavigate();
-  const [baixaItems, setBaixaItems] = useState({});
-  const [materiais, setMateriais] = useState([]);
-  const [profissionais, setProfissionais] = useState()
   const [openBaixa, setOpenBaixa] = useState(false);
   const [errors, setErrors] = useState({});
   const [items, setItems] = useState([]);

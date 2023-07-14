@@ -17,7 +17,7 @@ import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 const cabecalhos = {
     "ID": "id",
     "Status": null,
-    "Data Baixa": "baixa_datahora",
+    "Data da Baixa": "baixa_datahora",
     "Base origem": "origem.nome",
     "Local serviço": "locais.nome",
     "Ação": null
