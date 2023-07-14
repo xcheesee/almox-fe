@@ -156,6 +156,8 @@ export async function enviaNovaSaida({ formData }) {
   }
   try {
     const res = await fetch(url, options)
+    const json = await res.json()
+    if(!res.ok) throw errorBuilder(res, json.message)
   } catch(e) {
     throw errorBuilder(e, e.message)
   }

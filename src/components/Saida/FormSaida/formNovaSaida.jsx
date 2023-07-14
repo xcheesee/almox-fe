@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
-import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar } from '../../../common/utils';
+import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar, errorBuilder } from '../../../common/utils';
 import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
@@ -113,7 +113,11 @@ export default function FormNovaSaida (props) {
     const addMutation = useMutation( async ({formData: data, materiais: materiaisInterno}) => {
         setOpenConfirmar(false)
         setCarregando(true)
-        return await enviaNovaSaida({formData: data, materiais: materiaisInterno})
+        try {
+            await enviaNovaSaida({formData: data, materiais: materiaisInterno})
+        } catch(e) {
+            throw e
+        }
     }, { onSuccess: async (res) => {
             setCarregando(false)
             queryClient.invalidateQueries(['saidas'])
@@ -122,7 +126,12 @@ export default function FormNovaSaida (props) {
         }, onError: async (res) => {
             setCarregando(false)
             if(res.status === 422) { setErrors(res?.errors) }
-            setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
+            setSnackbar({
+                open: true,
+                severity: "error",
+                message: res.message
+            })
+            //setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
         }
     })
 
