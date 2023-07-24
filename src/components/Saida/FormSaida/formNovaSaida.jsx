@@ -8,7 +8,7 @@ import {
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
 import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar, errorBuilder } from '../../../common/utils';
-import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
+import { deptoAtom, matTipoListAtom, snackbarAtom, tipoServicoAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../../SaidaOSCard';
@@ -18,6 +18,7 @@ import OrdemProfsCard from '../../OrdemProfsCard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FormContainer from '../../FormContainer';
 import { useNavigate } from 'react-router-dom';
+import CampoTipoServicos from '../../CampoTipoServicos';
 
 export default function FormNovaSaida (props) {
 
@@ -48,6 +49,7 @@ export default function FormNovaSaida (props) {
     }])
 
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
+    const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
     const materiaisInterno = useAtomValue(matTipoListAtom)
 
@@ -106,6 +108,8 @@ export default function FormNovaSaida (props) {
         saida.origem_id = ordem.origem_id
         saida.local_servico_id = ordem.local_servico_id
         saida.ordem_servico_id = ordem.id
+        saida.especificacao = ordem.especificacao
+        saida.observacoes = ordem.observacoes
 
         return saida
     }
@@ -151,6 +155,7 @@ export default function FormNovaSaida (props) {
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
         saida.almoxarife_email = localStorage.getItem('usermail')
+        saida.tipo_servico_id = tipoServicoSelecionado
 
         let formData = new FormData()
 
@@ -206,7 +211,23 @@ export default function FormNovaSaida (props) {
                             errors={errors}
                             setErrors={setErrors}
                     />
-                    :<SaidaOSCard ordemServico={ordemServico} />
+                    :
+                    <>
+                        <CampoTipoServicos 
+                            label="Tipo de Serviço"
+                            name="tipo_servico"
+                            tipo_servico=""
+                            onChange={ async e => {
+                                setTipoServicoSelecionado(e.target.value)
+                            }}
+                            value={tipoServicoSelecionado ?? ""}
+                            //defaultValue={tipoServicoSelecionado ?? ""}
+                            error={errors.hasOwnProperty('tipo_servico_id')}
+                            helperText={errors.tipo_servico_id || ""}
+                            //required
+                        />
+                        <SaidaOSCard ordemServico={ordemServico} />
+                    </>
                 }
             </FormContainer>
 

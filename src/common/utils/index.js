@@ -366,6 +366,22 @@ export const getMatTipos = async () => {
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais")
 }
 
+export const getTipoServicos = async () => {
+  const url = `${process.env.REACT_APP_API_URL}/tipo_servicos`;
+  const options = {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          ...headerBuilder()
+      },
+  };
+  
+  const res = await fetch(url, options);
+  if (res.ok) return await res.json();
+
+  throw errorBuilder(res, "Nao foi possivel recuperar os tipos de serviço")
+}
+
 export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
   const url = 
     ordemServico

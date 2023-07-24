@@ -1,10 +1,16 @@
 import { MenuItem, TextField } from "@mui/material"
+import { statusAtom, tipoServicoAtom } from '../../../atomStore';
+import { useAtom } from 'jotai';
+import CampoTipoServicos from '../../CampoTipoServicos';
 
 export default function FormEditSaida({ 
     defaultValue, 
     errors={}, 
 
 }) {
+    const [statusSelecionado, setStatusSelecionado] = useAtom(statusAtom)
+    const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
+
     return(
         <>
             <TextField 
@@ -43,14 +49,24 @@ export default function FormEditSaida({
                 select
                 label="Status"
                 name="status"
-                disabled
-                defaultValue={defaultValue?.status ?? "a_iniciar"}
+                //disabled
+                onChange={async (e) => {
+                    setStatusSelecionado(e.target.value)
+                }}
+                value={defaultValue?.status ?? "A iniciar"}
+                defaultValue={defaultValue?.status ?? "A iniciar"}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors?.status || ""}
             >
-                    <MenuItem value="A Iniciar">
-                        A Iniciar
-                    </MenuItem>
+                <MenuItem key="A iniciar" value="A iniciar">
+                    A Iniciar
+                </MenuItem>
+                <MenuItem key="Iniciada" value="Iniciada">
+                    Iniciada
+                </MenuItem>
+                <MenuItem key="Finalizada" value="Finalizada">
+                    Finalizada
+                </MenuItem>
             </TextField>
     
             {/*<CampoLocais
@@ -81,29 +97,28 @@ export default function FormEditSaida({
                 //required
             />*/}
 
-            <TextField 
-                select
+            <CampoTipoServicos 
                 label="Tipo de Serviço"
                 name="tipo_servico"
-                defaultValue={defaultValue?.tipo_servico ?? ""}
-                id="tipo_servico"
-            >
-                <MenuItem value="civil">Civil</MenuItem>
-                <MenuItem value="hidraulica">Hidráulica</MenuItem>
-                <MenuItem value="eletrica">Elétrica</MenuItem>
-                <MenuItem value="serralheria">Serralheria</MenuItem>
-                <MenuItem value="carpintaria">Carpintaria</MenuItem>
-            </TextField>
+                tipo_servico={defaultValue?.tipo_servico ?? ""}
+                onChange={ async e => {
+                    setTipoServicoSelecionado(e.target.value)
+                }}
+                defaultValue={defaultValue?.tipo_servico_id ?? ""}
+                error={errors.hasOwnProperty('local_servico_id')}
+                helperText={errors.tipo_servico_id || ""}
+                //required
+            />
         
             <TextField 
-                defaultValue={defaultValue?.especificacao ?? ""}
-                name="especificacao"
-                label="Especificação"
                 multiline
-                minRows={4}
+                rows={4}
+                name="especificacao"
+                id="especificacao"
+                label="Especificação"
+                defaultValue={defaultValue?.especificacao ?? ""}
                 error={errors.hasOwnProperty('especificacao')}
                 helperText={errors.especificacao || ""}
-                fullWidth
             />
         
             <TextField 

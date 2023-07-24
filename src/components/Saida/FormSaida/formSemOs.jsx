@@ -4,8 +4,9 @@ import {
     TextField,
 } from '@mui/material';
 import CampoLocais from '../../CampoLocais';
+import CampoTipoServicos from '../../CampoTipoServicos';
 import { getProfissionais } from '../../../common/utils';
-import { deptoAtom } from '../../../atomStore';
+import { deptoAtom, tipoServicoAtom } from '../../../atomStore';
 import { useAtom } from 'jotai';
 
 export default function FormSemOs ({
@@ -17,6 +18,7 @@ export default function FormSemOs ({
 
     const [localServico, setLocalServico] = useState()
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
+    const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
@@ -26,6 +28,7 @@ export default function FormSemOs ({
         if (departamentoKeys.length === 1) {
             setDeptoSelecionado(departamentoKeys[0])
         }
+        setTipoServicoSelecionado('')
     }, [])
 
 
@@ -104,19 +107,19 @@ export default function FormSemOs ({
                 //required
             />
 
-            <TextField 
-                select
+            <CampoTipoServicos 
                 label="Tipo de Serviço"
                 name="tipo_servico"
-                defaultValue=""
-                id="tipo_servico"
-            >
-                <MenuItem value="civil">Civil</MenuItem>
-                <MenuItem value="hidraulica">Hidráulica</MenuItem>
-                <MenuItem value="eletrica">Elétrica</MenuItem>
-                <MenuItem value="serralheria">Serralheria</MenuItem>
-                <MenuItem value="carpintaria">Carpintaria</MenuItem>
-            </TextField>
+                tipo_servico=""
+                onChange={ async e => {
+                    setTipoServicoSelecionado(e.target.value)
+                }}
+                value={tipoServicoSelecionado ?? ""}
+                //defaultValue={tipoServicoSelecionado ?? ""}
+                error={errors.hasOwnProperty('tipo_servico_id')}
+                helperText={errors.tipo_servico_id || ""}
+                //required
+            />
         
             <TextField 
                 //defaultValue={defaultValue?.especificacao}
