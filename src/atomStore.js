@@ -19,6 +19,8 @@ export const profissionaisAtom = atom([])
 
 export const deptoAtom = atom('')
 
+export const statusAtom = atom('')
+
 export const snackbarAtom = atom({
     open: false,
     severity: 'success',
@@ -26,3 +28,5 @@ export const snackbarAtom = atom({
 })
 
 export const matTipoListAtom = atom({})
+
+export const tipoServicoAtom = atom({})

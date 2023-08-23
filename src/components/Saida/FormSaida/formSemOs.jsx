@@ -4,8 +4,9 @@ import {
     TextField,
 } from '@mui/material';
 import CampoLocais from '../../CampoLocais';
-import { getProfissionais, getTiposServico } from '../../../common/utils';
-import { deptoAtom } from '../../../atomStore';
+import CampoTipoServicos from '../../CampoTipoServicos';
+import { getProfissionais } from '../../../common/utils';
+import { deptoAtom, tipoServicoAtom } from '../../../atomStore';
 import { useAtom } from 'jotai';
 import { useQuery } from '@tanstack/react-query';
 import TipoServicoInput from '../../tipoServicoInput';
@@ -19,6 +20,7 @@ export default function FormSemOs ({
 
     const [localServico, setLocalServico] = useState()
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
+    const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
@@ -28,6 +30,7 @@ export default function FormSemOs ({
         if (departamentoKeys.length === 1) {
             setDeptoSelecionado(departamentoKeys[0])
         }
+        setTipoServicoSelecionado('')
     }, [])
     
     return(
@@ -105,7 +108,20 @@ export default function FormSemOs ({
                 //required
             />
 
-            <TipoServicoInput deptoSelecionado={deptoSelecionado} />
+            <CampoTipoServicos 
+                label="Tipo de Serviço"
+                name="tipo_servico"
+                tipo_servico=""
+                onChange={ async e => {
+                    setTipoServicoSelecionado(e.target.value)
+                }}
+                value={tipoServicoSelecionado ?? ""}
+                //defaultValue={tipoServicoSelecionado ?? ""}
+                error={errors.hasOwnProperty('tipo_servico_id')}
+                helperText={errors.tipo_servico_id || ""}
+                //required
+            />
+        
             <TextField 
                 //defaultValue={defaultValue?.especificacao}
                 name="especificacao"
