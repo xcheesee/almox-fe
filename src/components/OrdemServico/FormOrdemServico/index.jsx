@@ -20,6 +20,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../../TituloTexto';
 import { useLocation } from 'react-router-dom';
+import TipoServicoInput from '../../tipoServicoInput';
 
 const FormOrdemServico = (props) => {
     const queryClient = useQueryClient()
@@ -186,46 +187,6 @@ const FormOrdemServico = (props) => {
                 ))}
             </Selecao>
 
-            {/*<Selecao
-                label="Status"
-                name="status"
-                onChange={(e) => setStatus(e.target.value)}
-                value={ status }
-                // defaultValue={defaultValue?.status}
-                error={errors.hasOwnProperty('status')}
-                helperText={errors.status || ""}
-                required
-            >
-                {statusEnum?.data?.map((status, index) => (
-                    <MenuItem key={`status${index}`} value={status}>
-                        {status}
-                    </MenuItem>
-                ))}
-            </Selecao>*/}
-    
-            {/*<TextField 
-                defaultValue={defaultValue?.data_inicio_servico}
-                type="datetime-local"
-                name="data_inicio_servico"
-                label="Data de início do serviço"
-                InputLabelProps={{ shrink: true }}
-                error={errors.hasOwnProperty('data_inicio_servico')}
-                helperText={errors.data_inicio_servico || ""}
-                required
-                fullWidth
-            />
-        
-            <TextField 
-                defaultValue={defaultValue?.data_fim_servico}
-                type="datetime-local"
-                name="data_fim_servico"
-                label="Data de fim do serviço"
-                InputLabelProps={{ shrink: true }}
-                error={errors.hasOwnProperty('data_fim_servico')}
-                helperText={errors.data_fim_servico || ""}
-                fullWidth
-            />*/}
-
             <CampoLocais
                 label="Base de origem dos materiais"
                 name="origem_id"
@@ -256,19 +217,7 @@ const FormOrdemServico = (props) => {
                 required
             />
 
-            <TextField 
-                select
-                label="Tipo de Serviço"
-                name="tipo_servico"
-                defaultValue=""
-                id="tipo_servico"
-            >
-                <MenuItem value="civil">Civil</MenuItem>
-                <MenuItem value="hidraulica">Hidráulica</MenuItem>
-                <MenuItem value="eletrica">Elétrica</MenuItem>
-                <MenuItem value="serralheria">Serralheria</MenuItem>
-                <MenuItem value="carpintaria">Carpintaria</MenuItem>
-            </TextField>
+            <TipoServicoInput defaultValue={defaultValue?.tipo_servico_id ?? ""} deptoSelecionado={deptoSelecionado} />
         
             <TextField 
                 defaultValue={defaultValue?.especificacao}
@@ -293,36 +242,6 @@ const FormOrdemServico = (props) => {
             />
         
             <Box>
-                {/*<Typography 
-                    sx={style.subtituloForm} 
-                >
-                    Almoxarife responsável
-                </Typography>
-                
-                <Box 
-                    className="flex flex-col gap-10 my-4"
-                >
-                    <TextField 
-                        defaultValue={defaultValue?.almoxarife_nome}
-                        name="almoxarife_nome"
-                        label="Nome"
-                        error={errors.hasOwnProperty('almoxarife_nome')}
-                        helperText={errors.almoxarife_nome || ""}
-                        required
-                        fullWidth
-                    />
-        
-                    <TextField 
-                        defaultValue={defaultValue?.almoxarife_email}
-                        name="almoxarife_email"
-                        label="E-mail"
-                        type="email"
-                        error={errors.hasOwnProperty('almoxarife_email')}
-                        helperText={errors.almoxarife_email || ""}
-                        required
-                        fullWidth
-                    />
-                </Box>*/}
                 {profissionais && profissionais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
                 ?
                     <Box className='my-10'>

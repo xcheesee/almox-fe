@@ -57,14 +57,19 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
 
                 <TituloTexto 
                     titulo="Status do serviço"
-                    className="col-span-2"
                     texto={saida.status|| "---"}
+                />
+
+                <TituloTexto 
+                    titulo="Tipo de Serviço"
+                    texto={saida.tipo_servico || "---"}
                 />
 
                 <TituloTexto 
                     titulo="Data de baixa"
                     texto={formataDateTime(saida.baixa_datahora) || "---"}
                 />
+
 
                 {/*<TituloTexto 
                     titulo="E-mail do almoxarife"

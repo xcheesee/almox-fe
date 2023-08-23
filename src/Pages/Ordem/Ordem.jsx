@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getDados, getDetalhesBaixa, getMateriais, getOrdemProfissionais, getRegistro } from '../../common/utils';
+import { getMateriais, getOrdemProfissionais, getRegistro } from '../../common/utils';
 import OrdemServico from '../../components/OrdemServico';
 import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/OrdemServico/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
-import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
+//import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useSetAtom } from 'jotai';
 import { excluirAtom, matsAtom, profissionaisAtom, snackbarAtom } from '../../atomStore';
 
@@ -16,14 +16,14 @@ const Ordem = () => {
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [ordemServico, setOrdemServico] = useState({});
-    const [baixa, setBaixa] = useState({});
+    //const [baixa, setBaixa] = useState({});
     const [cursor, setCursor] = useState('auto');
     const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
-    const [openBaixa, setOpenBaixa] = useState(false);
+    //const [openBaixa, setOpenBaixa] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
-    const setSnackbar = useSetAtom(snackbarAtom)
+    //const setSnackbar = useSetAtom(snackbarAtom)
     const [materiais, setMateriais] = useAtom(matsAtom);
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
 
@@ -52,20 +52,20 @@ const Ordem = () => {
             setProfissionais(profsEditData);
             setOpenEditar(true)
             break;
-        case 'baixa':
-            try{
-                let baixa = await getDados(`ordem_servico/${id}/baixa_json`);
-                setBaixa(baixa);
-            } catch(e) {
-                setSnackbar({
-                    open: true,
-                    severity: "error",
-                    message: `Nao foi possivel recuperar a baixa: ${e.status} (${e.message})`
-                })
-                return setCursor('auto')
-            }
-            setOpenBaixa(true);
-            break;
+        //case 'baixa':
+        //    try{
+        //        let baixa = await getDados(`ordem_servico/${id}/baixa_json`);
+        //        setBaixa(baixa);
+        //    } catch(e) {
+        //        setSnackbar({
+        //            open: true,
+        //            severity: "error",
+        //            message: `Nao foi possivel recuperar a baixa: ${e.status} (${e.message})`
+        //        })
+        //        return setCursor('auto')
+        //    }
+        //    setOpenBaixa(true);
+        //    break;
         default:
             break;
         }
@@ -99,6 +99,7 @@ const Ordem = () => {
                     setErrors={setErrors}
                 />
             </DialogEditar>
+
             <DialogConfirmaEdicao
                 texto="ordem de serviço"
                 id={ordemServico.id}
@@ -106,6 +107,7 @@ const Ordem = () => {
                 setOpenConfirmar={setOpenConfirmar}
                 form="nova-ordem"
             />
+
             <DialogExcluir 
                 rota="ordem_servico"
                 texto="ordem de serviço"
@@ -114,6 +116,7 @@ const Ordem = () => {
                 setCarregando={setCarregandoEdicao}
                 tabelaOrigem="ordemItens"
             />
+
             <DialogDetalhesOrdem 
                 openDetalhes={openDetalhes}
                 profissionais={profissionais}
@@ -121,11 +124,12 @@ const Ordem = () => {
                 ordem={ordemServico}
                 materiais={materiais}
             />
-            <DialogDetalhesBaixa 
+
+            {/*<DialogDetalhesBaixa 
                 openBaixa={openBaixa}
                 setOpenBaixa={setOpenBaixa}
                 baixa={baixa}
-            />
+            />*/}
         </Box>
     );
 }

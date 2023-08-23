@@ -3,7 +3,7 @@ import BaixaSaidaMaterial from '../../components/BaixaSaidaMaterial';
 import DialogConfirmaBaixa from '../../components/DialogConfirmaBaixa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { enviaBaixa, errorBuilder, getBaixa, getDados } from '../../common/utils';
+import { enviaBaixa, errorBuilder, getDados } from '../../common/utils';
 import { Box, CircularProgress } from '@mui/material';
 
 const Baixa = ({ setSnackbar }) => {
@@ -108,23 +108,23 @@ const Baixa = ({ setSnackbar }) => {
 
   return (
     <>
-    <BaixaSaidaMaterial 
-    baixa={baixa?.data}
-    carregando={baixa?.isFetching} 
-    id={params.id} 
-    checaErros={checaErros}
-    errors={errors}
-    setErrors={setErrors}
-    setOpenBaixa={setOpenBaixa}
-    carregandoBaixa={enviarBaixa.isLoading}
-    />
+      <BaixaSaidaMaterial 
+      baixa={baixa?.data}
+      carregando={baixa?.isFetching} 
+      id={params.id} 
+      checaErros={checaErros}
+      errors={errors}
+      setErrors={setErrors}
+      setOpenBaixa={setOpenBaixa}
+      carregandoBaixa={enviarBaixa.isLoading}
+      />
 
-    <DialogConfirmaBaixa 
-    openBaixa={openBaixa}
-    setOpenBaixa={setOpenBaixa}
-    id={params.id}
-    enviaBaixa={() => enviarBaixa.mutate()}
-    />
+      <DialogConfirmaBaixa 
+      openBaixa={openBaixa}
+      setOpenBaixa={setOpenBaixa}
+      id={params.id}
+      enviaBaixa={() => enviarBaixa.mutate()}
+      />
     </>
   );
 }

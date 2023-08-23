@@ -4,9 +4,11 @@ import {
     TextField,
 } from '@mui/material';
 import CampoLocais from '../../CampoLocais';
-import { getProfissionais } from '../../../common/utils';
+import { getProfissionais, getTiposServico } from '../../../common/utils';
 import { deptoAtom } from '../../../atomStore';
 import { useAtom } from 'jotai';
+import { useQuery } from '@tanstack/react-query';
+import TipoServicoInput from '../../tipoServicoInput';
 
 export default function FormSemOs ({
     setBaseSelecionada,
@@ -27,8 +29,7 @@ export default function FormSemOs ({
             setDeptoSelecionado(departamentoKeys[0])
         }
     }, [])
-
-
+    
     return(
             <>
             <TextField 
@@ -104,20 +105,7 @@ export default function FormSemOs ({
                 //required
             />
 
-            <TextField 
-                select
-                label="Tipo de Serviço"
-                name="tipo_servico"
-                defaultValue=""
-                id="tipo_servico"
-            >
-                <MenuItem value="civil">Civil</MenuItem>
-                <MenuItem value="hidraulica">Hidráulica</MenuItem>
-                <MenuItem value="eletrica">Elétrica</MenuItem>
-                <MenuItem value="serralheria">Serralheria</MenuItem>
-                <MenuItem value="carpintaria">Carpintaria</MenuItem>
-            </TextField>
-        
+            <TipoServicoInput deptoSelecionado={deptoSelecionado} />
             <TextField 
                 //defaultValue={defaultValue?.especificacao}
                 name="especificacao"

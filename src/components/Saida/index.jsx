@@ -5,7 +5,7 @@ import FiltrosSaida from './FiltrosSaida';
 import TabelaSaida from './TabelaSaida';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
-import { authCreateOrdem, getTabela } from '../../common/utils';
+import { getTabela } from '../../common/utils';
 import { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';

@@ -8,10 +8,7 @@ import Tabela from '../../Tabela';
 import { authEditOrdem, formataDateTime } from '../../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
-import GradingIcon from '@mui/icons-material/Grading';
-import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
-import { useNavigate } from 'react-router-dom';
 import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 
 const cabecalhos = {
@@ -23,9 +20,6 @@ const cabecalhos = {
 };
 
 const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
-    const perfil =  localStorage.getItem('perfil');
-    const navigate = useNavigate()
-
     return (
         <Tabela 
             cabecalhos={cabecalhos} 
@@ -34,13 +28,9 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
             {ordens?.map(ordem => (
                 <TableRow key={ordem.id}>
                     <TableCell align="center">{ordem.id}</TableCell>
-                    {/*<TableCell align="center">{ordem.status}</TableCell>*/}
                     <TableCell align="center">
                         {formataDateTime(ordem.data_inicio_servico) || "---"}
                     </TableCell>
-                    {/*<TableCell align="center">
-                        {formataDateTime(ordem.data_fim_servico) || "---"}
-                    </TableCell>*/}
                     <TableCell align="center">{ordem.origem}</TableCell>
                     <TableCell align="center">{ordem.local_servico}</TableCell>
                     <TableCell align="center">
@@ -63,28 +53,6 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                             >
                                 <EditIcon fontSize="small" />
                             </TabelaAcaoBtn>
-
-                            {/*ordem.flg_baixa === 0
-                                ?
-                                    <TabelaAcaoBtn 
-                                        display={ authEditOrdem(localStorage.getItem('perfil')) }
-                                        title="Baixa"
-                                        placement='left'
-                                        onClick={ () => navigate(`/ordemservico/baixa/${ordem.id}`) }
-                                        disabled={cursor === 'progress'}
-                                    >
-                                        <GradingIcon fontSize="small" />
-                                    </TabelaAcaoBtn>
-                                :
-                                    <TabelaAcaoBtn 
-                                        title="Visualizar Baixa"
-                                        placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'}
-                                        onClick={ () => getSelectedOrdemInfo(ordem.id, 'baixa') }
-                                        disabled={cursor === 'progress'}
-                                    >
-                                        <ContentPasteSearchIcon fontSize="small" />
-                                    </TabelaAcaoBtn>
-                            */}
 
                             <TabelaAcaoBtn 
                                 display={ authEditOrdem(localStorage.getItem('perfil')) }

@@ -44,7 +44,6 @@ const FiltrosOrdem = () => {
                 name="almoxarife_email"
                 InputLabelProps={{ shrink: true }}
             />*/}
-            
         </Filtros>
     );
 }

@@ -1,4 +1,5 @@
 import { MenuItem, TextField } from "@mui/material"
+import TipoServicoInput from "../../tipoServicoInput"
 
 export default function FormEditSaida({ 
     defaultValue, 
@@ -44,13 +45,13 @@ export default function FormEditSaida({
                 label="Status"
                 name="status"
                 disabled
-                defaultValue={defaultValue?.status ?? "a_iniciar"}
+                defaultValue={defaultValue?.status ?? "A Iniciar"}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors?.status || ""}
             >
-                    <MenuItem value="A Iniciar">
-                        A Iniciar
-                    </MenuItem>
+                <MenuItem value="A Iniciar">
+                    A Iniciar
+                </MenuItem>
             </TextField>
     
             {/*<CampoLocais
@@ -81,20 +82,11 @@ export default function FormEditSaida({
                 //required
             />*/}
 
-            <TextField 
-                select
-                label="Tipo de Serviço"
-                name="tipo_servico"
-                defaultValue={defaultValue?.tipo_servico ?? ""}
-                id="tipo_servico"
-            >
-                <MenuItem value="civil">Civil</MenuItem>
-                <MenuItem value="hidraulica">Hidráulica</MenuItem>
-                <MenuItem value="eletrica">Elétrica</MenuItem>
-                <MenuItem value="serralheria">Serralheria</MenuItem>
-                <MenuItem value="carpintaria">Carpintaria</MenuItem>
-            </TextField>
-        
+            <TipoServicoInput 
+                defaultValue={defaultValue?.tipo_servico_id ?? ""} 
+                deptoSelecionado={defaultValue?.departamento_id}
+            />
+
             <TextField 
                 defaultValue={defaultValue?.especificacao ?? ""}
                 name="especificacao"

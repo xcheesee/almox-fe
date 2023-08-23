@@ -441,6 +441,21 @@ export const getStatusEnum = async () => {
   return await status
 }
 
+export async function getTiposServico({depto=""}) {
+  const url = new URL(
+    `${process.env.REACT_APP_API_URL}/tipo_servicos/${depto}`
+  );
+
+  const res = await fetch(url, {
+      method: "GET",
+      headers: headerBuilder(),
+  })
+
+  if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar os tipos de servicos!")
+
+  return await res.json()
+}
+
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 /*                                       Update                                                       */
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   

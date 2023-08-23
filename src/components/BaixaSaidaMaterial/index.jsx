@@ -37,7 +37,6 @@ const BaixaSaidaMaterial = ({
 
     if (valor === enviado)
       return
-      //setEnviado([...arr]);
     else
       setUsado([...arr]);
 
@@ -81,11 +80,6 @@ const BaixaSaidaMaterial = ({
               texto={baixa.local_servico}
             />
 
-            {/*<TituloTexto 
-              titulo="Profissional"
-              texto={baixaItems.profissional || "---"}
-            />*/}
-
             {/*<TituloTexto
               titulo="Especificações"
               texto={baixaItems.especificacao || "---"}
@@ -95,17 +89,6 @@ const BaixaSaidaMaterial = ({
               childStyle={{ whiteSpace: 'pre-wrap' }}
             />*/}
           
-            {/*<TituloTexto 
-              titulo="Horas de execução"
-              texto={`
-                ${baixaItems.horas_execucao || "---"} 
-                ${baixaItems.horas_execucao 
-                  ? baixaItems.horas_execucao > 1 ? "horas" : "hora" 
-                  : ""
-                }`
-              }
-            />*/}
-            
             <TituloTexto 
               titulo="Data de início do serviço"
               texto={ formataDateTime(baixa.data_inicio_servico) || "Data de início indeterminada" }
