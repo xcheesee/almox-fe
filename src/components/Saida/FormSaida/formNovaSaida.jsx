@@ -215,6 +215,7 @@ export default function FormNovaSaida ({
                             label="Tipo de Serviço"
                             name="tipo_servico"
                             id="tipo_servico"
+                            deptoSelecionado={deptoSelecionado}
                             error={errors.hasOwnProperty('tipo_servico_id')}
                             helperText={errors.tipo_servico_id || ""}
                         />
