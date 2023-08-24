@@ -6,31 +6,25 @@ import {
 import CampoLocais from '../../CampoLocais';
 import CampoTipoServicos from '../../CampoTipoServicos';
 import { getProfissionais } from '../../../common/utils';
-import { deptoAtom, tipoServicoAtom } from '../../../atomStore';
+import { deptoAtom } from '../../../atomStore';
 import { useAtom } from 'jotai';
-import { useQuery } from '@tanstack/react-query';
-import TipoServicoInput from '../../tipoServicoInput';
 
 export default function FormSemOs ({
     setBaseSelecionada,
     setProfissionaisDisponiveis,
     errors={},
-    setErrors
 }) {
 
     const [localServico, setLocalServico] = useState()
+
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
-    const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
 
     useEffect(() => {
         setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
-        if (departamentoKeys.length === 1) {
-            setDeptoSelecionado(departamentoKeys[0])
-        }
-        setTipoServicoSelecionado('')
+        if (departamentoKeys.length === 1) { setDeptoSelecionado(departamentoKeys[0]) }
     }, [])
     
     return(
@@ -71,11 +65,11 @@ export default function FormSemOs ({
                 label="Status"
                 name="status"
                 disabled
-                defaultValue="a_iniciar"
+                defaultValue="A Iniciar"
                 error={errors.hasOwnProperty('status')}
                 helperText={errors?.status || ""}
             >
-                    <MenuItem value="a_iniciar">
+                    <MenuItem value="A Iniciar">
                         A Iniciar
                     </MenuItem>
             </TextField>
@@ -110,13 +104,9 @@ export default function FormSemOs ({
 
             <CampoTipoServicos 
                 label="Tipo de Serviço"
-                name="tipo_servico"
-                tipo_servico=""
-                onChange={ async e => {
-                    setTipoServicoSelecionado(e.target.value)
-                }}
-                value={tipoServicoSelecionado ?? ""}
-                //defaultValue={tipoServicoSelecionado ?? ""}
+                name="tipo_servico_id"
+                id="tipo_servico_id"
+                deptoSelecionado={deptoSelecionado}
                 error={errors.hasOwnProperty('tipo_servico_id')}
                 helperText={errors.tipo_servico_id || ""}
                 //required

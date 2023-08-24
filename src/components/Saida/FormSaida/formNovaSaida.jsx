@@ -20,15 +20,13 @@ import FormContainer from '../../FormContainer';
 import { useNavigate } from 'react-router-dom';
 import CampoTipoServicos from '../../CampoTipoServicos';
 
-export default function FormNovaSaida (props) {
-
-    const { 
-        setCarregando, 
-        setOpenConfirmar, 
-        errors,
-        setErrors,
-        formId,
-    } = props;
+export default function FormNovaSaida ({ 
+    setCarregando, 
+    setOpenConfirmar, 
+    errors,
+    setErrors,
+    formId,
+}) {
 
     const queryClient = useQueryClient()
     const navigate = useNavigate()
@@ -49,7 +47,7 @@ export default function FormNovaSaida (props) {
     }])
 
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
-    const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
+    //const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
     const materiaisInterno = useAtomValue(matTipoListAtom)
 
@@ -155,7 +153,7 @@ export default function FormNovaSaida (props) {
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
         saida.almoxarife_email = localStorage.getItem('usermail')
-        saida.tipo_servico_id = tipoServicoSelecionado
+        //saida.tipo_servico_id = tipoServicoSelecionado
 
         let formData = new FormData()
 
@@ -216,16 +214,11 @@ export default function FormNovaSaida (props) {
                         <CampoTipoServicos 
                             label="Tipo de Serviço"
                             name="tipo_servico"
-                            tipo_servico=""
-                            onChange={ async e => {
-                                setTipoServicoSelecionado(e.target.value)
-                            }}
-                            value={tipoServicoSelecionado ?? ""}
-                            //defaultValue={tipoServicoSelecionado ?? ""}
+                            id="tipo_servico"
                             error={errors.hasOwnProperty('tipo_servico_id')}
                             helperText={errors.tipo_servico_id || ""}
-                            //required
                         />
+
                         <SaidaOSCard ordemServico={ordemServico} />
                     </>
                 }

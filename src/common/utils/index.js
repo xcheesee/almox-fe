@@ -366,8 +366,8 @@ export const getMatTipos = async () => {
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais")
 }
 
-export const getTipoServicos = async () => {
-  const url = `${process.env.REACT_APP_API_URL}/tipo_servicos`;
+export const getTipoServicos = async ({depto}) => {
+  const url = `${process.env.REACT_APP_API_URL}/tipo_servicos/${depto}`;
   const options = {
       method: 'GET',
       headers: {

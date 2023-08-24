@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { getDados, getMateriais, getRegistro } from '../../common/utils';
-import SaidaMats from '../../components/Saida';
+import SaidaTable from '../../components/Saida';
 import DialogExcluir from '../../components/DialogExcluir';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useSetAtom } from 'jotai';
@@ -73,7 +73,7 @@ const Saida = () => {
 
     return (
         <Box sx={{ cursor: cursor }}>
-            <SaidaMats
+            <SaidaTable
                 getSelectedOrdemInfo={getSelectedOrdemInfo}
                 cursor={cursor}
             />

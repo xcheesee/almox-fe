@@ -5,23 +5,21 @@ import { getTipoServicos } from '../../common/utils';
 
 const CampoTipoServicos = ({
     name, 
+    id,
     label, 
-    defaultValue, 
-    tipo_servico="", 
-    getAllBases=false, 
-    onChange=() => {}, 
+    defaultValue="", 
+    deptoSelecionado,
     ...props
 }) => {
 
-    const [tipoServico, setTipoServico] = useState(0)
-
+    const [tipoServico, setTipoServico] = useState(defaultValue)
+    
     const tipo_servicos = useQuery({
-        queryKey: ['tipo_servicos'], 
-        queryFn: () => getTipoServicos(), 
-        //enabled: !(tipo_servico === ''),
-        onSuccess: (res) => {
-            setTipoServico(defaultValue ?? (res.length === 1 ? res[0].id : ""))}
-    })
+        queryKey: ['tipo_servicos', deptoSelecionado], 
+        queryFn: () => getTipoServicos({depto: deptoSelecionado}), 
+        //reseta o valor do tipo de servico caso ocorra mudanca do departamento selecionado
+        onSuccess: () => { setTipoServico(defaultValue ?? "") } 
+        })
 
 
     return (
@@ -37,32 +35,29 @@ const CampoTipoServicos = ({
                 :<TextField
                     select
                     SelectProps={{ 
-                        value: tipoServico, 
-                        onChange: (e) => {
-                            onChange(e)
-                            setTipoServico(e.target.value)
-                        }
+                        value: tipoServico,
+                        onChange: (e) => { setTipoServico(e.target.value) }
                     }}
                     name={name}
                     label={label}
-                    id="tipo_servico"
-                    disabled={tipo_servicos.isLoading}
+                    id={id}
+                    disabled={!deptoSelecionado || tipo_servicos.isLoading}
                     fullWidth
                     required
                     {...props}
                 >
-                    {tipo_servicos.data.data ? tipo_servicos?.data.data
-                        ?.map(tipoServico => (
-                            <MenuItem key={tipoServico.id} value={tipoServico.id}>
-                                {tipoServico.servico}
-                            </MenuItem>
-                        ))
-                    : <MenuItem></MenuItem>}
+                    {tipo_servicos?.data?.servicos 
+                        ?  tipo_servicos?.data.servicos
+                            ?.map(tipoServico => (
+                                <MenuItem key={tipoServico.id} value={tipoServico.id}>
+                                    {tipoServico.servico}
+                                </MenuItem>
+                            ))
+                        : <MenuItem></MenuItem>
+                    }
                 </TextField>
             }
-            
         </>
-        
 )};
 
 export default CampoTipoServicos;

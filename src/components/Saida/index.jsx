@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
 
-const SaidaMats = (props) => {
+const SaidaTable = (props) => {
     const {
         cursor,
         getSelectedOrdemInfo,
@@ -55,4 +55,4 @@ const SaidaMats = (props) => {
     );
 }
 
-export default SaidaMats;
+export default SaidaTable;

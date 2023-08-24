@@ -1,6 +1,6 @@
 import { MenuItem, TextField } from "@mui/material"
-import { statusAtom, tipoServicoAtom } from '../../../atomStore';
-import { useAtom } from 'jotai';
+//import { statusAtom, tipoServicoAtom } from '../../../atomStore';
+//import { useAtom } from 'jotai';
 import CampoTipoServicos from '../../CampoTipoServicos';
 
 export default function FormEditSaida({ 
@@ -8,8 +8,7 @@ export default function FormEditSaida({
     errors={}, 
 
 }) {
-    const [statusSelecionado, setStatusSelecionado] = useAtom(statusAtom)
-    const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
+    //const [statusSelecionado, setStatusSelecionado] = useAtom(statusAtom)
 
     return(
         <>
@@ -50,10 +49,10 @@ export default function FormEditSaida({
                 label="Status"
                 name="status"
                 //disabled
-                onChange={async (e) => {
-                    setStatusSelecionado(e.target.value)
-                }}
-                value={defaultValue?.status ?? "A iniciar"}
+                //onChange={async (e) => {
+                //    setStatusSelecionado(e.target.value)
+                //}}
+                //value={defaultValue?.status ?? "A iniciar"}
                 defaultValue={defaultValue?.status ?? "A iniciar"}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors?.status || ""}
@@ -99,15 +98,12 @@ export default function FormEditSaida({
 
             <CampoTipoServicos 
                 label="Tipo de Serviço"
-                name="tipo_servico"
-                tipo_servico={defaultValue?.tipo_servico ?? ""}
-                onChange={ async e => {
-                    setTipoServicoSelecionado(e.target.value)
-                }}
-                defaultValue={defaultValue?.tipo_servico_id ?? ""}
+                name="tipo_servico_id"
+                id="tipo_servico_id"
+                deptoSelecionado={defaultValue?.departamento_id}
+                defaultValue={defaultValue?.tipo_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.tipo_servico_id || ""}
-                //required
             />
         
             <TextField 

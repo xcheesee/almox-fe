@@ -9,7 +9,7 @@ import Titulo from '../../Titulo';
 import { FormNovaSaida } from '../FormSaida';
 import DialogEnviar from '../../DialogEnviar';
 
-const NovaSaidaMats = (props) => {
+const NovaSaidaContainer = (props) => {
     const {
         setOpenCancelar,
         openConfirmar,
@@ -17,6 +17,7 @@ const NovaSaidaMats = (props) => {
         carregando,
         setCarregando,
         formId,
+        children
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -28,13 +29,14 @@ const NovaSaidaMats = (props) => {
                     Nova Saída de Materiais
                 </Titulo>
 
-                <FormNovaSaida 
+                {children}
+                {/*<FormNovaSaida 
                     formId={formId}
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregando} 
                     errors={errors}
                     setErrors={setErrors}
-                />
+                />*/}
 
                 <Box className="flex justify-end gap-4">
                     <Button onClick={() => setOpenCancelar(true)}>
@@ -64,4 +66,4 @@ const NovaSaidaMats = (props) => {
     );
 }
 
-export default NovaSaidaMats;
+export default NovaSaidaContainer;
