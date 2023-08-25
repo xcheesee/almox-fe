@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getDados, getMateriais, getRegistro } from '../../common/utils';
+import { formatProfissional, getDados, getMateriais, getRegistro } from '../../common/utils';
 import SaidaTable from '../../components/Saida';
 import DialogExcluir from '../../components/DialogExcluir';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
@@ -17,12 +17,13 @@ const Saida = () => {
     const [ordemServico, setOrdemServico] = useState({});
     const [baixa, setBaixa] = useState({});
     const [cursor, setCursor] = useState('auto');
-    const [errors, setErrors] = useState({});
+    //const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     const [openBaixa, setOpenBaixa] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
     const setSnackbar = useSetAtom(snackbarAtom)
+
     const [materiais, setMateriais] = useAtom(matsAtom);
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
 
@@ -48,7 +49,7 @@ const Saida = () => {
             ])
             setOrdemServico(registroEditData);
             setMateriais(matsEditData)
-            setProfissionais(profsEditData ?? null)
+            setProfissionais(formatProfissional(profsEditData?.data))
             setOpenEditar(true)
             break;
         case 'baixa':
@@ -89,7 +90,7 @@ const Saida = () => {
                 setOpenExcluir={setOpenExcluir}
             >
                 <FormEditSaida
-                    defaultValue={ordemServico}
+                    defaultValue={{...ordemServico, profissionais: profissionais}}
                 />
             </DialogEditaSaida >
 

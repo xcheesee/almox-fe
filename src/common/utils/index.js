@@ -88,6 +88,21 @@ export const primeiraLetraMaiuscula = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export function formatProfissional(profissionais) {
+    let inputFormatado = {}
+    let arr = []
+    for(let profissional of profissionais) {
+        inputFormatado = {
+            nome: profissional.profissional,
+            horas_empregadas: profissional.horas_empregadas,
+            id: profissional.profissional_id,
+            data_inicio: profissional.data_inicio
+        }
+        arr.push(inputFormatado)
+    }
+    return arr
+}
+
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 /*                                       Create                                                       */

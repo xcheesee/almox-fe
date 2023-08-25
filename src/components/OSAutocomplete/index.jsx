@@ -4,13 +4,14 @@ import { getTabela } from "../../common/utils";
 import { useQuery } from "@tanstack/react-query";
 
 export default function OSAutocomplete ({
-    disabled,
-    setOrdemServico,
-    clearForm,
+    disabled=false,
+    setOrdemServico=() => null,
+    clearForm=() => null,
+    defaultValue="",
 }) {
 
     const [ordens, setOrdens] = useState([])
-    const [ordemId, setOrdemId] = useState("")
+    const [ordemId, setOrdemId] = useState(defaultValue ?? "")
 
     const ordensQuery = useQuery({
         queryKey: ['ordemItens', ordemId],
@@ -25,7 +26,7 @@ export default function OSAutocomplete ({
 
     return (
         <Autocomplete
-            disabled={disabled}
+            disabled={disabled || defaultValue != ""}
             id="ordem_servico"
             loading={ordensQuery.isFetching}
             getOptionLabel={(option) => `${option.id}`}
@@ -72,6 +73,7 @@ export default function OSAutocomplete ({
              }}
             options={ordens}
             filterOptions={(x) => x}
+            defaultValue={{id: defaultValue}}
         />
     )
 }

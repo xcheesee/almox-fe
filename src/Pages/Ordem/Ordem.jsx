@@ -6,7 +6,7 @@ import DialogEditar from '../../components/DialogEditar';
 import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/OrdemServico/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
-import DialogDetalhesOrdem from '../../components/DialogDetalhesOrdem';
+import DialogDetalhesOrdem from '../../components/OrdemServico/DialogDetalhesOrdem';
 //import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
 import { useAtom, useSetAtom } from 'jotai';
 import { excluirAtom, matsAtom, profissionaisAtom, snackbarAtom } from '../../atomStore';

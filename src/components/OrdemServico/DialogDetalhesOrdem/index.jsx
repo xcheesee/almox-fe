@@ -9,7 +9,7 @@ import {
     Button,
     Paper
 } from '@mui/material';
-import TituloTexto from '../TituloTexto';
+import TituloTexto from '../../TituloTexto';
 
 const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, profissionais,}) => (
     <Dialog open={openDetalhes} fullWidth>

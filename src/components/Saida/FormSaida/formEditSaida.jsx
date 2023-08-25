@@ -1,17 +1,23 @@
 import { MenuItem, TextField } from "@mui/material"
-//import { statusAtom, tipoServicoAtom } from '../../../atomStore';
-//import { useAtom } from 'jotai';
 import CampoTipoServicos from '../../CampoTipoServicos';
+import BoxProfissionais from "../../BoxProfissionais";
+import CampoLocais from "../../CampoLocais";
+import OSAutocomplete from "../../OSAutocomplete";
 
 export default function FormEditSaida({ 
     defaultValue, 
     errors={}, 
-
 }) {
-    //const [statusSelecionado, setStatusSelecionado] = useAtom(statusAtom)
 
     return(
         <>
+            <OSAutocomplete 
+                disabled={defaultValue?.ordem_servico_id}
+                defaultValue={defaultValue?.ordem_servico_id ?? ""}
+                //setOrdemServico={setOrdemFromOptions}
+                //clearForm={clearForm}
+            />
+
             <TextField 
                 multiline
                 rows={4}
@@ -48,11 +54,6 @@ export default function FormEditSaida({
                 select
                 label="Status"
                 name="status"
-                //disabled
-                //onChange={async (e) => {
-                //    setStatusSelecionado(e.target.value)
-                //}}
-                //value={defaultValue?.status ?? "A iniciar"}
                 defaultValue={defaultValue?.status ?? "A iniciar"}
                 error={errors.hasOwnProperty('status')}
                 helperText={errors?.status || ""}
@@ -67,6 +68,12 @@ export default function FormEditSaida({
                     Finalizada
                 </MenuItem>
             </TextField>
+
+            <BoxProfissionais
+                baseSelecionada={defaultValue.origem_id}
+                deptoSelecionado={defaultValue.departamento_id}
+                defaultValue={defaultValue.profissionais}
+            />
     
             {/*<CampoLocais
                 label="Base de origem dos materiais"
@@ -80,21 +87,21 @@ export default function FormEditSaida({
                 //required
             />*/}
 
-            {/*<CampoLocais 
+            <CampoLocais 
                 label="Local de serviço"
                 name="local_servico_id"
                 tipo="parque"
-                depto={deptoSelecionado}
-                onChange={ async e => {
-                    setLocalServico(e.target.value)
-                    const res = await getProfissionais(e.target.value, deptoSelecionado)
-                    if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
-                }}
+                depto={defaultValue.departamento_id}
+                //onChange={ async e => {
+                //    setLocalServico(e.target.value)
+                //    const res = await getProfissionais(e.target.value, deptoSelecionado)
+                //    if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
+                //}}
                 defaultValue={defaultValue?.local_servico_id ?? ""}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
                 //required
-            />*/}
+            />
 
             <CampoTipoServicos 
                 label="Tipo de Serviço"

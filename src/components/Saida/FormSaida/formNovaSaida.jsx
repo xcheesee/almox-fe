@@ -8,10 +8,10 @@ import {
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
 import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar, errorBuilder } from '../../../common/utils';
-import { deptoAtom, matTipoListAtom, snackbarAtom, tipoServicoAtom } from '../../../atomStore';
+import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
-import SaidaOSCard from '../../SaidaOSCard';
+import SaidaOSCard from '../SaidaOSCard';
 import { FormSemOs } from '.';
 import OrdemMatsCard from '../../OrdemMatsCard';
 import OrdemProfsCard from '../../OrdemProfsCard';
@@ -70,7 +70,7 @@ export default function FormNovaSaida ({
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
         if(!profRes || profRes.length === 0) {
             const profsDispRes = await getProfissionais(value.local_servico_id, value.departamento_id)
-            setProfissionaisDisponiveis(profsDispRes.data)
+            setProfissionaisDisponiveis(profsDispRes.data.data)
         }
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
@@ -231,11 +231,11 @@ export default function FormNovaSaida ({
                         label= "Profissionais empregados"
                         // baseSelecionada={baseSelecionada}
                         // deptoSelecionado={deptoSelecionado}
-                        profissionaisDisponiveis={profissionaisDisponiveis}
-                        profissionaisEmpregados={profissionaisEmpregados}
-                        setProfissionaisEmpregados={setProfissionaisEmpregados}
-                        departamento={deptoSelecionado}
-                        local={local}
+                        //profissionaisDisponiveis={profissionaisDisponiveis}
+                        //profissionaisEmpregados={profissionaisEmpregados}
+                        //setProfissionaisEmpregados={setProfissionaisEmpregados}
+                        //departamento={deptoSelecionado}
+                        //local={local}
                     />
 
                     <BoxMateriais

@@ -178,6 +178,7 @@ const FormOrdemServico = (props) => {
                 defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
                 helperText={errors.departamento_id || ""}
+                disabled={defaultValue?.departamento_id ?? false}
                 required
             >
                 {Object.entries(departamentos).map(departamento => (
@@ -196,6 +197,7 @@ const FormOrdemServico = (props) => {
                 defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors.origem_id || ""}
+                disabled={defaultValue?.origem_id ?? false}
                 required
             />
 

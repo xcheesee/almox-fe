@@ -9,8 +9,8 @@ import {
     Button,
     Paper
 } from '@mui/material';
-import TituloTexto from '../TituloTexto';
-import { mascaraProcessoSei, mascaraContrato, formataDateTime } from '../../common/utils';
+import TituloTexto from '../../TituloTexto';
+import { mascaraProcessoSei, mascaraContrato, formataDateTime } from '../../../common/utils';
 
 const DialogDetalhesEntrada = ({ openDetalhes, setOpenDetalhes, entrada, materiais }) => {
     return (
