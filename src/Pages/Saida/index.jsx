@@ -108,7 +108,7 @@ const Saida = () => {
 
             <DialogDetalhesSaida 
                 openDetalhes={openDetalhes}
-                profissionais={profissionais?.data}
+                profissionais={profissionais}
                 setOpenDetalhes={setOpenDetalhes}
                 saida={ordemServico}
                 materiais={materiais}
