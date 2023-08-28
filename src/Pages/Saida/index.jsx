@@ -91,6 +91,9 @@ const Saida = () => {
             >
                 <FormEditSaida
                     defaultValue={{...ordemServico, profissionais: profissionais}}
+                    formId="edit_saida"
+                    setCarregando={setCarregandoEdicao}
+                    setOpen={setOpenEditar}
                 />
             </DialogEditaSaida >
 

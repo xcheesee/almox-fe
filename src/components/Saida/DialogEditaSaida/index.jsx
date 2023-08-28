@@ -1,7 +1,9 @@
+import { profissionaisAtom } from "../../../atomStore";
 import DialogConfirmaEdicao from "../../DialogConfirmaEdicao";
 import DialogEditar from "../../DialogEditar";
 import FormContainer from "../../FormContainer";
 import OrdemMatsCard from "../../OrdemMatsCard";
+import { useAtom } from 'jotai';
 
 export default function DialogEditaSaida({ 
     formId, 
@@ -15,6 +17,8 @@ export default function DialogEditaSaida({
     setOpenExcluir,
     children
 }) {
+    
+
     return(
         <>
         <DialogEditar
@@ -26,18 +30,7 @@ export default function DialogEditaSaida({
             setOpenConfirmar={setOpenConfirmar}
             setOpenExcluir={setOpenExcluir}
         >
-            <FormContainer
-                id={formId}
-                onSubmit={(e) => {
-                    e.preventDefault()
-
-                    const formData = new FormData(e.target)
-                    console.log(formData)
-                }}
-            >
-                { children }
-            </FormContainer>
-
+            { children }
             <OrdemMatsCard materiais={materiais} isLoading={carregando}/>
         </DialogEditar>
 

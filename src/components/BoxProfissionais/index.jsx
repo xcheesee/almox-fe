@@ -159,7 +159,7 @@ export default function BoxProfissionais ({
                         Adicionar Profissional
                     </Button>
                 </Box>
-
+                <Typography className='pb-4'>Empregados</Typography>
                 {profissionais?.map((profissional, index) => {
                     return (
                         <Fade in={true} key={index} >

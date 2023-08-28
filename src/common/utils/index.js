@@ -607,6 +607,21 @@ export const newPwRequest = async (formData) => {
   return await res.json()
 }
 
+export async function editaSaida({id, formData}) {
+  const url = new URL( `${process.env.REACT_APP_API_URL}/saida/${id}` );
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      ...headerBuilder()
+    },
+    body: formData,
+  })
+  if(!res.ok) throw errorBuilder(res, "Nao foi possivel enviar edicao!"); 
+
+  return await res.json()
+} 
+
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 /*                                       Delete                                                       */
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
