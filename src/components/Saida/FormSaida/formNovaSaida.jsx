@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
-import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar } from '../../../common/utils';
+import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar, formatProfissional } from '../../../common/utils';
 import { deptoAtom, matTipoListAtom, profissionaisAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
@@ -49,7 +49,7 @@ export default function FormNovaSaida ({
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
     const materiaisInterno = useAtomValue(matTipoListAtom)
-    const profissionais = useAtomValue(profissionaisAtom)
+    const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
     async function clearForm () {
         setOrdemServico()
@@ -74,6 +74,7 @@ export default function FormNovaSaida ({
         }
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
+        setProfissionais(formatProfissional(profRes))
         setIsLoadingDados(false)
     }
 
@@ -112,11 +113,11 @@ export default function FormNovaSaida ({
         return saida
     }
 
-    const addMutation = useMutation( async ({formData: data, materiais: materiaisInterno}) => {
+    const addMutation = useMutation( async ({formData: data, materiais: materiaisInterno, profissionais: profissionais}) => {
         setOpenConfirmar(false)
         setCarregando(true)
         try {
-            await enviaNovaSaida({formData: data, materiais: materiaisInterno})
+            await enviaNovaSaida({formData: data, materiais: materiaisInterno, profissionais})
         } catch(e) {
             throw e
         }
@@ -145,7 +146,6 @@ export default function FormNovaSaida ({
             formData.append("almoxarife_nome", localStorage.getItem("username"))
             formData.append("almoxarife_email", localStorage.getItem("usermail"))
             formData.append("saida_items",  JSON.stringify(saidaItens))
-            formData.append("saida_profissionais", JSON.stringify(profissionais))
 
             return addMutation.mutate({formData: formData}) 
         }
@@ -160,6 +160,7 @@ export default function FormNovaSaida ({
         Object.entries(saida).forEach( keyVal => {
             formData.append(keyVal[0], keyVal[1])
         })
+        formData.append("saida_profissionais", JSON.stringify(profissionais))
 
         return addMutation.mutate({ formData: formData })
     }

@@ -31,6 +31,14 @@ export default function FormEditSaida({
                 message: 'Edicao enviada com sucesso!'
             })
             setOpen(false)
+        }, 
+        onError: (err) => {
+            console.log(err)
+            setSnackbar({
+                open: true,
+                severity: 'error',
+                message: `${err.errors}`
+            })
         }
 
     })
@@ -42,8 +50,13 @@ export default function FormEditSaida({
                 onSubmit={(e) => {
                     e.preventDefault()
 
+                    const autoComplete = document.getElementById('ordem_servico')
+
                     setCarregando(true)
                     const formData = new FormData(e.target)
+                    if(autoComplete.disabled){
+                        formData.append('ordem_servico_id', defaultValue.ordem_servico_id)
+                    }
                     formData.append('saida_profissionais', JSON.stringify(profissionais))
                     const id = defaultValue.id
                     editSaidaMutation.mutate({id, formData})
@@ -56,15 +69,18 @@ export default function FormEditSaida({
                     defaultValue={defaultValue?.ordem_servico_id ?? ""}
                 />
 
-                <TextField 
-                    multiline
-                    rows={4}
-                    name='justificativa_os'
-                    id='justificativa_os'
-                    label="Justificativa"
-                    defaultValue={defaultValue?.justificativa_os ?? ""}
-                    //required
-                />
+                {!defaultValue.ordem_servico_id
+                    ?<TextField 
+                        multiline
+                        rows={4}
+                        name='justificativa_os'
+                        id='justificativa_os'
+                        label="Justificativa"
+                        defaultValue={defaultValue?.justificativa_os ?? ""}
+                        //required
+                    />
+                    :<></>
+                }
 
                 <TextField
                     select

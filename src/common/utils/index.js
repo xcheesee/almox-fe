@@ -5,7 +5,7 @@ export function errorBuilder(res, text) {
   error.message = text
   error.status = res.status
   error.ok = false
-  error.errors = res?.errors ?? "" 
+  error.errors = Object.values(res?.errors)?.reduce((prev, curr) => prev + `${curr}\n`, "") ?? "" 
   return error
 }
 
@@ -159,7 +159,7 @@ export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais,
   return await res.json()
 }
 
-export async function enviaNovaSaida({ formData }) { 
+export async function enviaNovaSaida({ formData, materiais, profissionais }) { 
   const url = `${process.env.REACT_APP_API_URL}/saida`;
   const options = {
     method: 'POST',
@@ -617,7 +617,12 @@ export async function editaSaida({id, formData}) {
     },
     body: formData,
   })
-  if(!res.ok) throw errorBuilder(res, "Nao foi possivel enviar edicao!"); 
+  const json = await res.json()
+  
+  if(!res.ok) {
+    throw errorBuilder(json, json.message)
+  }
+
 
   return await res.json()
 } 
