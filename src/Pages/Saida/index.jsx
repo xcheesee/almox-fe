@@ -38,7 +38,7 @@ const Saida = () => {
             ])
             setOrdemServico(registroData)
             setMateriais(matsData)
-            setProfissionais(profsData)
+            setProfissionais(profsData?.data)
             setOpenDetalhes(true)
             break;
         case 'editar':

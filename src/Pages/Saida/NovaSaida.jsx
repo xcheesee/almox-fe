@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NovaSaidaContainer from '../../components/Saida/NovaSaida';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 import { FormNovaSaida } from '../../components/Saida/FormSaida';
+import { useSetAtom } from 'jotai';
+import { profissionaisAtom } from '../../atomStore';
 
 const NovaSaida = () => {
 
@@ -11,7 +13,12 @@ const NovaSaida = () => {
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
     const [errors, setErrors] = useState({});
+    const setProfissionais = useSetAtom(profissionaisAtom);
     //const [baseSelecionada, setBaseSelecionada] = useState('');
+
+    useEffect(() => {
+        setProfissionais([]);
+    }, [])
 
     //const navigate = useNavigate();
     const formId="nova_saida"
