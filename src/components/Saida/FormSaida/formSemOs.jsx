@@ -80,7 +80,6 @@ export default function FormSemOs ({
                 tipo="base"
                 depto={deptoSelecionado}
                 onChange={(e) => setBaseSelecionada(e.target.value)}
-                //defaultValue={defaultValue?.origem_id}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors?.origem_id ?? ""}
                 //required
@@ -96,7 +95,6 @@ export default function FormSemOs ({
                     const res = await getProfissionais(e.target.value, deptoSelecionado)
                     if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
                 }}
-                //defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
                 //required
@@ -113,7 +111,6 @@ export default function FormSemOs ({
             />
         
             <TextField 
-                //defaultValue={defaultValue?.especificacao}
                 name="especificacao"
                 label="Especificação"
                 multiline
@@ -124,7 +121,6 @@ export default function FormSemOs ({
             />
         
             <TextField 
-                //defaultValue={defaultValue?.observacoes}
                 name="observacoes"
                 label="Serviços extras/obervações"
                 multiline

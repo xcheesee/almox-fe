@@ -7,8 +7,8 @@ import {
 } from '@mui/material';
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
-import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar, errorBuilder } from '../../../common/utils';
-import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
+import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar } from '../../../common/utils';
+import { deptoAtom, matTipoListAtom, profissionaisAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../SaidaOSCard';
@@ -38,18 +38,18 @@ export default function FormNovaSaida ({
     const [ordemProfs, setOrdemProfs] = useState()
     const [isLoadingDados, setIsLoadingDados] = useState(false)
     const [baseSelecionada, setBaseSelecionada] = useState()
-    const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
-    const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
-        nome: '',
-        id: '',
-        ["data_inicio"]: '',
-        ["horas_empregadas"]: '',
-    }])
+    //const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
+    //const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
+    //    nome: '',
+    //    id: '',
+    //    ["data_inicio"]: '',
+    //    ["horas_empregadas"]: '',
+    //}])
 
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
-    //const [tipoServicoSelecionado, setTipoServicoSelecionado] = useAtom(tipoServicoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
     const materiaisInterno = useAtomValue(matTipoListAtom)
+    const profissionais = useAtomValue(profissionaisAtom)
 
     async function clearForm () {
         setOrdemServico()
@@ -70,7 +70,7 @@ export default function FormNovaSaida ({
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
         if(!profRes || profRes.length === 0) {
             const profsDispRes = await getProfissionais(value.local_servico_id, value.departamento_id)
-            setProfissionaisDisponiveis(profsDispRes.data.data)
+            //setProfissionaisDisponiveis(profsDispRes.data.data)
         }
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
@@ -145,7 +145,7 @@ export default function FormNovaSaida ({
             formData.append("almoxarife_nome", localStorage.getItem("username"))
             formData.append("almoxarife_email", localStorage.getItem("usermail"))
             formData.append("saida_items",  JSON.stringify(saidaItens))
-            formData.append("saida_profissionais", JSON.stringify(profissionaisEmpregados))
+            formData.append("saida_profissionais", JSON.stringify(profissionais))
 
             return addMutation.mutate({formData: formData}) 
         }
@@ -205,7 +205,7 @@ export default function FormNovaSaida ({
                             baseSelecionada={baseSelecionada}
                             setLocal={setLocal}
                             setBaseSelecionada={setBaseSelecionada}
-                            setProfissionaisDisponiveis={setProfissionaisDisponiveis}
+                            //setProfissionaisDisponiveis={setProfissionaisDisponiveis}
                             errors={errors}
                             setErrors={setErrors}
                     />
@@ -231,11 +231,6 @@ export default function FormNovaSaida ({
                         label= "Profissionais empregados"
                         // baseSelecionada={baseSelecionada}
                         // deptoSelecionado={deptoSelecionado}
-                        //profissionaisDisponiveis={profissionaisDisponiveis}
-                        //profissionaisEmpregados={profissionaisEmpregados}
-                        //setProfissionaisEmpregados={setProfissionaisEmpregados}
-                        //departamento={deptoSelecionado}
-                        //local={local}
                     />
 
                     <BoxMateriais
@@ -259,11 +254,6 @@ export default function FormNovaSaida ({
                         label= "Profissionais empregados"
                         // baseSelecionada={baseSelecionada}
                         // deptoSelecionado={deptoSelecionado}
-                        profissionaisDisponiveis={profissionaisDisponiveis}
-                        profissionaisEmpregados={profissionaisEmpregados}
-                        setProfissionaisEmpregados={setProfissionaisEmpregados}
-                        departamento={deptoSelecionado}
-                        local={local}
                     />
                 </>
                 :<>

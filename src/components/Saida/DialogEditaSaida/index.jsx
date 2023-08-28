@@ -28,6 +28,12 @@ export default function DialogEditaSaida({
         >
             <FormContainer
                 id={formId}
+                onSubmit={(e) => {
+                    e.preventDefault()
+
+                    const formData = new FormData(e.target)
+                    console.log(formData)
+                }}
             >
                 { children }
             </FormContainer>

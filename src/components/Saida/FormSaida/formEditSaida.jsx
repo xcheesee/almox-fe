@@ -14,8 +14,6 @@ export default function FormEditSaida({
             <OSAutocomplete 
                 disabled={defaultValue?.ordem_servico_id}
                 defaultValue={defaultValue?.ordem_servico_id ?? ""}
-                //setOrdemServico={setOrdemFromOptions}
-                //clearForm={clearForm}
             />
 
             <TextField 
@@ -27,28 +25,6 @@ export default function FormEditSaida({
                 defaultValue={defaultValue?.justificativa_os ?? ""}
                 //required
             />
-            {/* Campo Temporario, utilizado para testes */}
-            {/*<TextField
-                select
-                label="Departamento"
-                name="departamento_id"
-                onChange={async (e) => {
-                    setDeptoSelecionado(e.target.value)
-                    const res = await getProfissionais(localServico, e.target.value)
-                    if(localServico) setProfissionaisDisponiveis(res.data) 
-                }}
-                value={deptoSelecionado ?? ""}
-                //defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
-                error={errors.hasOwnProperty('departamento_id')}
-                helperText={errors?.departamento_id ?? ""}
-                //required
-            >
-                {Object.entries(departamentos).map(departamento => (
-                    <MenuItem key={departamento[0]} value={departamento[0]}>
-                        {departamento[1]}
-                    </MenuItem>
-                ))}
-            </TextField>*/}
 
             <TextField
                 select
@@ -75,18 +51,6 @@ export default function FormEditSaida({
                 defaultValue={defaultValue.profissionais}
             />
     
-            {/*<CampoLocais
-                label="Base de origem dos materiais"
-                name="origem_id"
-                tipo="base"
-                depto={deptoSelecionado}
-                onChange={(e) => setBaseSelecionada(e.target.value)}
-                defaultValue={defaultValue?.origem_id ?? ""}
-                error={errors.hasOwnProperty('origem_id')}
-                helperText={errors?.origem_id ?? ""}
-                //required
-            />*/}
-
             <CampoLocais 
                 label="Local de serviço"
                 name="local_servico_id"
