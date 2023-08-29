@@ -42,11 +42,17 @@ export default function BoxProfissionais ({
 
     const [currProfissional, setCurrProfissional] = useState({
         id: "",
-        nome: "",
         data_inicio: "",
         horas_empregadas: ""
-
     })
+
+    const inputTags = {
+        id: "id",
+        data_inicio: "data_inicio",
+        horas_empregadas: "horas_empregadas"
+    }
+
+    const [inputErrors, setInputErrors] = useState({ });
 
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
@@ -60,11 +66,20 @@ export default function BoxProfissionais ({
         })
     }
 
-    function adicionaProfissional (profissional) {
-         setProfissionais(prev => {
-            const newArr = [...prev, {...profissional}]
-            return [...newArr]
-        })
+    function isBlankField (profissional) {
+        const entries = Object.entries(profissional)
+        let errors = {}
+
+        for(let keyValue of entries) {
+            if(!keyValue[1] || keyValue[1] == "") {
+                errors[keyValue[0]] = true
+            }
+        }
+
+        setInputErrors(errors)
+        if(Object.keys(errors).length !== 0) return true
+
+        return false
     }
 
     const modProfissional = (profissionaisEmpregados, formIndex, values) => {
@@ -80,7 +95,6 @@ export default function BoxProfissionais ({
     const removeProfissional = (index) => {
         let tempArr = profissionais
         tempArr.splice(index, 1);
-        //setProfissionaisEmpregados([...tempArr])
         setProfissionais([...tempArr])
     } 
 
@@ -96,11 +110,13 @@ export default function BoxProfissionais ({
                         <TextField
                             select
                             label="Nome"
-                            name="id"
+                            name={inputTags.id}
                             size="small"
                             onChange={e => setCurrProfissional( prev => ({...prev, id:e.target.value}) )}
                             disabled={!profissionaisDisponiveis?.data}
                             value={currProfissional.id}
+                            error={inputErrors[inputTags.id]}
+                            helperText={inputErrors[inputTags.id] ? "Selecione um profissional" : ""}
                             className="col-span-2"
                             fullWidth
                         >
@@ -118,22 +134,26 @@ export default function BoxProfissionais ({
                         <Box className='grid grid-cols-[max-content_max-content] gap-4'>
                             <TextField
                                 type='date'
-                                name="data_inicio"
+                                name={inputTags.data_inicio}
                                 label="Data de Inicio"
                                 InputLabelProps={{ shrink: true }}
                                 value={currProfissional.data_inicio}
                                 onChange={e => setCurrProfissional(prev => ({...prev, data_inicio:e.target.value}) )}
+                                error={inputErrors[inputTags.data_inicio]}
+                                helperText={inputErrors[inputTags.data_inicio] ? "Defina a data de inicio" : ""}
                                 fullWidth
                                 size="small"
                             />
 
                             <TextField
-                                name="horas_empregadas"
+                                name={inputTags.horas_empregadas}
                                 label="Horas Empregadas"
                                 value={currProfissional.horas_empregadas}
                                 onChange={e => setCurrProfissional( prev => ({...prev, horas_empregadas:e.target.value}) )}
                                 fullWidth
                                 size="small"
+                                error={inputErrors[inputTags.horas_empregadas]}
+                                helperText={inputErrors[inputTags.horas_empregadas] ? "Defina as horas empregadas" : ""}
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">h</InputAdornment>,
                                 }}
@@ -143,6 +163,9 @@ export default function BoxProfissionais ({
                 </Fade>
                 <Box className="self-end">
                     <Button onClick={() => {
+                        console.log(isBlankField(currProfissional))
+                        if(isBlankField(currProfissional)) return;
+
                         setProfissionais(prev => {
                             const newArr = [...prev, {...currProfissional}]
                             return [...newArr]
@@ -150,7 +173,6 @@ export default function BoxProfissionais ({
 
                         setCurrProfissional({
                             id: "",
-                            nome: "",
                             horas_empregadas: "",
                             data_inicio: ""
                         })
@@ -159,7 +181,9 @@ export default function BoxProfissionais ({
                         Adicionar Profissional
                     </Button>
                 </Box>
-                <Typography className='pb-4'>Empregados</Typography>
+
+                <Typography className='pb-4'>{profissionais.length} Empregado(s)</Typography>
+
                 {profissionais?.map((profissional, index) => {
                     return (
                         <Fade in={true} key={index} >
