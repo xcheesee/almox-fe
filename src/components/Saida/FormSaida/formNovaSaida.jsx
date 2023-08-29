@@ -38,13 +38,6 @@ export default function FormNovaSaida ({
     const [ordemProfs, setOrdemProfs] = useState()
     const [isLoadingDados, setIsLoadingDados] = useState(false)
     const [baseSelecionada, setBaseSelecionada] = useState()
-    //const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
-    //const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
-    //    nome: '',
-    //    id: '',
-    //    ["data_inicio"]: '',
-    //    ["horas_empregadas"]: '',
-    //}])
 
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -68,10 +61,9 @@ export default function FormNovaSaida ({
         setDeptoSelecionado(value.departamento_id)
         setLocal(value.local_servico_id)
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
-        if(!profRes || profRes.length === 0) {
-            const profsDispRes = await getProfissionais(value.local_servico_id, value.departamento_id)
-            //setProfissionaisDisponiveis(profsDispRes.data.data)
-        }
+        //if(!profRes || profRes.length === 0) {
+        //    const profsDispRes = await getProfissionais(value.local_servico_id, value.departamento_id)
+        //}
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
         setProfissionais(formatProfissional(profRes))
@@ -85,6 +77,7 @@ export default function FormNovaSaida ({
             && (!ordemProfs || ordemProfs.length === 0)
             && (!ordemMats || ordemMats.length === 0)
             && !isLoadingDados
+            && ordemServico
         )
     }
 

@@ -15,7 +15,7 @@ import CampoLocais from '../../CampoLocais';
 import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
 import { enviaEdicao, enviaNovoForm, getProfissionais, getStatusEnum, setFormSnackbar } from '../../../common/utils';
-import { deptoAtom, matTipoListAtom, snackbarAtom } from '../../../atomStore';
+import { deptoAtom, matTipoListAtom, profissionaisAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../../TituloTexto';
@@ -34,7 +34,7 @@ const FormOrdemServico = (props) => {
         navigate, 
         acao, 
         materiais,
-        profissionais,
+        //profissionais,
         errors,
         setErrors,
         baseSelecionada,
@@ -46,23 +46,25 @@ const FormOrdemServico = (props) => {
     const [localServico, setLocalServico] = useState()
     const [status, setStatus] = useState(defaultValue?.status ?? "A iniciar")
     const [profissionaisDisponiveis, setProfissionaisDisponiveis] = useState('')
-    const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
-        nome: '',
-        id: '',
-        ["data_inicio"]: '',
-        ["horas_empregadas"]: '',
-    }])
-    const [isNoOSForm, setIsNoOSForm] = useState(false);
+    //const [profissionaisEmpregados, setProfissionaisEmpregados] = useState([{
+    //    nome: '',
+    //    id: '',
+    //    ["data_inicio"]: '',
+    //    ["horas_empregadas"]: '',
+    //}])
+    //const [isNoOSForm, setIsNoOSForm] = useState(false);
     
     const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
     const materiaisInterno = useAtomValue(matTipoListAtom)
+    const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
     
     useEffect(() => {
         setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
+        setProfissionais([])
         if(acao === 'editar') {
             setDeptoSelecionado(defaultValue?.departamento_id)
         } else if (departamentoKeys.length === 1) {
@@ -103,7 +105,7 @@ const FormOrdemServico = (props) => {
             'ordem_servico', 
             materiaisInterno,
             'ordem_servico_items',
-            profissionaisEmpregados,
+            profissionais,
             "ordem_servico_profissionais"
         )
     }, { onSuccess: async (res) => {
@@ -173,7 +175,7 @@ const FormOrdemServico = (props) => {
                 name="departamento_id"
                 onChange={async (e) => {
                     setDeptoSelecionado(e.target.value)
-                    if(localServico) setProfissionaisDisponiveis(await getProfissionais(localServico, e.target.value)) 
+                    //if(localServico) setProfissionaisDisponiveis(await getProfissionais(localServico, e.target.value)) 
                 }}
                 defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
@@ -210,7 +212,7 @@ const FormOrdemServico = (props) => {
                     setLocalServico(e.target.value)
                     if(deptoSelecionado) {
                         const res = await getProfissionais(e.target.value, deptoSelecionado)
-                        setProfissionaisDisponiveis(res.data)
+                        //setProfissionaisDisponiveis(res.data)
                     } 
                 }}
                 defaultValue={defaultValue?.local_servico_id}
@@ -315,9 +317,9 @@ const FormOrdemServico = (props) => {
                     label= "Profissionais empregados"
                     // baseSelecionada={baseSelecionada}
                     // deptoSelecionado={deptoSelecionado}
-                    profissionaisDisponiveis={profissionaisDisponiveis}
-                    profissionaisEmpregados={profissionaisEmpregados}
-                    setProfissionaisEmpregados={setProfissionaisEmpregados}
+                    //profissionaisDisponiveis={profissionaisDisponiveis}
+                    //profissionaisEmpregados={profissionaisEmpregados}
+                    //setProfissionaisEmpregados={setProfissionaisEmpregados}
                 />
 
                 <BoxMateriais

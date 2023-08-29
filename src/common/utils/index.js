@@ -127,12 +127,7 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
   } 
 
   if (profissionais) {
-    profissionais?.forEach((profissional, index) => {
-      const entries = Object.entries(profissional);
-      entries.forEach(keyValue => {
-        formData.append(`${campoProfs}[${index}][${keyValue[0]}]`, keyValue[1]);
-      });
-    });
+    formData.append(campoProfs, JSON.stringify(profissionais))
   }
   return formData;
 }
