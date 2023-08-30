@@ -52,18 +52,20 @@ const TabelaSaida = ({ saidas, carregando, cursor, getSelectedOrdemInfo }) => {
                                 <ManageSearchIcon fontSize="small" />
                             </TabelaAcaoBtn>
 
-                            <TabelaAcaoBtn
-                                display={ authEditOrdem(localStorage.getItem('perfil')) }
-                                title="Editar"
-                                placement="right"
-                                disabled={cursor === 'progress'}
-                                onClick={ () => getSelectedOrdemInfo(saida.id, 'editar') }
-                            >
-                                <EditIcon fontSize="small" />
-                            </TabelaAcaoBtn>
 
                             {saida.flg_baixa === 0
                                 ?
+                                <>
+                                    <TabelaAcaoBtn
+                                        display={ authEditOrdem(localStorage.getItem('perfil')) }
+                                        title="Editar"
+                                        placement="right"
+                                        disabled={cursor === 'progress'}
+                                        onClick={ () => getSelectedOrdemInfo(saida.id, 'editar') }
+                                    >
+                                        <EditIcon fontSize="small" />
+                                    </TabelaAcaoBtn>
+
                                     <TabelaAcaoBtn 
                                         display={ authEditOrdem(localStorage.getItem('perfil')) }
                                         title="Baixa"
@@ -73,9 +75,11 @@ const TabelaSaida = ({ saidas, carregando, cursor, getSelectedOrdemInfo }) => {
                                     >
                                         <GradingIcon fontSize="small" />
                                     </TabelaAcaoBtn>
+                                </>                                 
                                 :
                                     <TabelaAcaoBtn 
                                         title="Visualizar Baixa"
+                                        className={"col-start-3"}
                                         placement={authEditOrdem(perfil) === 'none' ? 'right' : 'left'}
                                         onClick={ () => getSelectedOrdemInfo(saida.id, 'baixa') }
                                         disabled={cursor === 'progress'}
