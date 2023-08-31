@@ -30,7 +30,7 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
             >
                 Detalhes
             </Typography>
-            {saida?.justificativa_os
+            {!saida?.ordem_servico_id
                 ?<Box className='text-red-500'>Sem O.S</Box>
                 :<></>}
 
