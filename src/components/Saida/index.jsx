@@ -48,9 +48,7 @@ const SaidaTable = (props) => {
                 cursor={cursor}
             />
 
-            <Paginacao 
-                count={pageCountRef.current}
-            />
+            <Paginacao count={pageCountRef.current} />
         </ContainerPrincipal>
     );
 }

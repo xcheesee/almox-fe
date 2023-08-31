@@ -51,6 +51,7 @@ export default function FormNovaSaida ({
         setLocal()
         setBaseSelecionada()
         setDeptoSelecionado()
+        setProfissionais([])
     }
 
     async function setOrdemFromOptions (value) {
@@ -110,7 +111,7 @@ export default function FormNovaSaida ({
         setOpenConfirmar(false)
         setCarregando(true)
         try {
-            await enviaNovaSaida({formData: data, materiais: materiaisInterno, profissionais})
+            await enviaNovaSaida({formData: data, materiais: materiaisInterno, profissionais: profissionais})
         } catch(e) {
             throw e
         }
@@ -139,6 +140,7 @@ export default function FormNovaSaida ({
             formData.append("almoxarife_nome", localStorage.getItem("username"))
             formData.append("almoxarife_email", localStorage.getItem("usermail"))
             formData.append("saida_items",  JSON.stringify(saidaItens))
+            formData.append("saida_profissionais", JSON.stringify(profissionais))
 
             return addMutation.mutate({formData: formData}) 
         }
