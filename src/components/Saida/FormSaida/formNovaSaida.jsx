@@ -132,31 +132,29 @@ export default function FormNovaSaida ({
         }
     })
 
-    async function sendSaida(e) {
-        if(isNoOSForm) {
-            const formData = new FormData(e.target)
-            const itens = objToArr(materiaisInterno);
+    function formataSaida({formData, mats, profs, formSemOs}) {
+
+        if(formSemOs) {
+            const itens = objToArr(mats);
             const saidaItens = formatItemForSaida(itens)
             formData.append("almoxarife_nome", localStorage.getItem("username"))
             formData.append("almoxarife_email", localStorage.getItem("usermail"))
             formData.append("saida_items",  JSON.stringify(saidaItens))
-            formData.append("saida_profissionais", JSON.stringify(profissionais))
+            formData.append("saida_profissionais", JSON.stringify(profs))
 
-            return addMutation.mutate({formData: formData}) 
+            return formData
         }
 
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
         saida.almoxarife_email = localStorage.getItem('usermail')
 
-        let formData = new FormData(e.target)
-
         Object.entries(saida).forEach( keyVal => {
             formData.append(keyVal[0], keyVal[1])
         })
         formData.append("saida_profissionais", JSON.stringify(profissionais))
 
-        return addMutation.mutate({ formData: formData })
+        return formData
     }
 
     return (
@@ -165,7 +163,16 @@ export default function FormNovaSaida ({
                 id={formId}
                 onSubmit={(e) => { 
                     e.preventDefault()
-                    sendSaida(e)
+                    const formData = new FormData(e.target)
+
+                    const formFormatado = formataSaida({
+                        formData: formData, 
+                        mats: materiaisInterno, 
+                        profs: profissionais, 
+                        formSemOs: isNoOSForm
+                    })
+
+                    return addMutation.mutate({formData: formFormatado})
                 }}
             >
                 <Box className='flex flex-col pt-8'>

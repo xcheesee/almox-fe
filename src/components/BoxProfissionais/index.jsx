@@ -41,13 +41,13 @@ export default function BoxProfissionais ({
     })
 
     const [currProfissional, setCurrProfissional] = useState({
-        id: "",
+        nome: "",
         data_inicio: "",
         horas_empregadas: ""
     })
 
     const inputTags = {
-        id: "id",
+        nome: "nome",
         data_inicio: "data_inicio",
         horas_empregadas: "horas_empregadas"
     }
@@ -108,19 +108,19 @@ export default function BoxProfissionais ({
                 <Fade in={true}>
                     <Paper className='p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]'>
                         <TextField
-                            select
+                            //select
                             label="Nome"
-                            name={inputTags.id}
+                            name={inputTags.nome}
                             size="small"
-                            onChange={e => setCurrProfissional( prev => ({...prev, id:e.target.value}) )}
+                            onChange={e => setCurrProfissional( prev => ({...prev, nome:e.target.value}) )}
                             disabled={!profissionaisDisponiveis?.data}
-                            value={currProfissional.id}
-                            error={inputErrors[inputTags.id]}
-                            helperText={inputErrors[inputTags.id] ? "Selecione um profissional" : ""}
+                            value={currProfissional.nome}
+                            error={inputErrors[inputTags.nome]}
+                            helperText={inputErrors[inputTags.nome] ? "Defina um profissional" : ""}
                             className="col-span-2"
                             fullWidth
-                        >
-                            {
+                        />
+                            {/*
                                 profissionaisDisponiveis?.data?.data ?
                                 profissionaisDisponiveis?.data?.data
                                     ?.map((val, i) => 
@@ -128,9 +128,9 @@ export default function BoxProfissionais ({
                                             {val.nome}
                                         </MenuItem>)
                                 : <MenuItem></MenuItem>
-                            }
 
-                        </TextField>
+                            </TextField>
+                            */}
                         <Box className='grid grid-cols-[max-content_max-content] gap-4'>
                             <TextField
                                 type='date'
@@ -172,7 +172,7 @@ export default function BoxProfissionais ({
                         })
 
                         setCurrProfissional({
-                            id: "",
+                            nome: "",
                             horas_empregadas: "",
                             data_inicio: ""
                         })
@@ -189,17 +189,17 @@ export default function BoxProfissionais ({
                         <Fade in={true} key={index} >
                             <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
                                 <TextField
-                                    select
+                                    //select
                                     label="Nome"
-                                    name="id"
+                                    name="nome"
                                     size="small"
                                     onChange={(e) => handleChange(e, index)}
-                                    disabled={!profissionaisDisponiveis?.data}
-                                    value={profissional.id}
+                                    //disabled={!profissionaisDisponiveis?.data}
+                                    value={profissional.nome}
                                     className="col-span-2"
                                     fullWidth
-                                >
-                                    {
+                                />
+                                    {/*
                                         profissionaisDisponiveis?.data?.data 
                                         ?profissionaisDisponiveis?.data?.data
                                             ?.map((val, i) => 
@@ -207,8 +207,8 @@ export default function BoxProfissionais ({
                                                     {val.nome}
                                                 </MenuItem>)
                                         : <MenuItem></MenuItem>
-                                    }
-                                </TextField>
+                                    </TextField>
+                                    */}
 
                                 <Fade in={true} key={`${index}a`} >
                                     <Box className='grid grid-cols-[max-content_max-content] gap-4'>
