@@ -221,8 +221,6 @@ const FormOrdemServico = (props) => {
                 required
             />
 
-            <TipoServicoInput defaultValue={defaultValue?.tipo_servico_id ?? ""} deptoSelecionado={deptoSelecionado} />
-        
             <TextField 
                 defaultValue={defaultValue?.especificacao}
                 name="especificacao"

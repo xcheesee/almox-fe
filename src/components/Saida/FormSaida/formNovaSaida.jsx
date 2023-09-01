@@ -148,9 +148,8 @@ export default function FormNovaSaida ({
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
         saida.almoxarife_email = localStorage.getItem('usermail')
-        //saida.tipo_servico_id = tipoServicoSelecionado
 
-        let formData = new FormData()
+        let formData = new FormData(e.target)
 
         Object.entries(saida).forEach( keyVal => {
             formData.append(keyVal[0], keyVal[1])
@@ -209,8 +208,8 @@ export default function FormNovaSaida ({
                     <>
                         <CampoTipoServicos 
                             label="Tipo de Serviço"
-                            name="tipo_servico"
-                            id="tipo_servico"
+                            name="tipo_servico_id"
+                            id="tipo_servico_id"
                             deptoSelecionado={deptoSelecionado}
                             error={errors.hasOwnProperty('tipo_servico_id')}
                             helperText={errors.tipo_servico_id || ""}
