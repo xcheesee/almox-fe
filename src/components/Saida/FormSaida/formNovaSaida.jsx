@@ -74,11 +74,11 @@ export default function FormNovaSaida ({
     //confere se a o.s. nao possui tanto profissionais quanto materiais,
     //nao eh uma saida sem ordem e nao esta em carregamento
     function isBasicOS() {
-        return (!isNoOSForm 
-            && (!ordemProfs || ordemProfs.length === 0)
+        return (isNoOSForm 
+            || ((!ordemProfs || ordemProfs.length === 0)
             && (!ordemMats || ordemMats.length === 0)
             && !isLoadingDados
-            && ordemServico
+            && ordemServico)
         )
     }
 
@@ -96,6 +96,7 @@ export default function FormNovaSaida ({
     }
     
     function formatOrdemForSaida(ordem) {
+        if(!ordem) return {}
         const saida = {}
         saida.departamento_id = ordem.departamento_id
         saida.origem_id = ordem.origem_id
@@ -134,15 +135,16 @@ export default function FormNovaSaida ({
 
     function formataSaida({formData, mats, profs, formSemOs}) {
 
-        if(formSemOs) {
+
+
+        if(isBasicOS()) {
             const itens = objToArr(mats);
             const saidaItens = formatItemForSaida(itens)
-            formData.append("almoxarife_nome", localStorage.getItem("username"))
-            formData.append("almoxarife_email", localStorage.getItem("usermail"))
+            //formData.append("almoxarife_nome", localStorage.getItem("username"))
+            //formData.append("almoxarife_email", localStorage.getItem("usermail"))
+            formData.append("saida_profissionais", JSON.stringify(profissionais))
             formData.append("saida_items",  JSON.stringify(saidaItens))
-            formData.append("saida_profissionais", JSON.stringify(profs))
-
-            return formData
+            //return formData
         }
 
         let saida = formatOrdemForSaida(ordemServico)
@@ -152,7 +154,6 @@ export default function FormNovaSaida ({
         Object.entries(saida).forEach( keyVal => {
             formData.append(keyVal[0], keyVal[1])
         })
-        formData.append("saida_profissionais", JSON.stringify(profissionais))
 
         return formData
     }
@@ -169,7 +170,7 @@ export default function FormNovaSaida ({
                         formData: formData, 
                         mats: materiaisInterno, 
                         profs: profissionais, 
-                        formSemOs: isNoOSForm
+                        formSemOs: isBasicOS()
                     })
 
                     return addMutation.mutate({formData: formFormatado})
@@ -227,7 +228,7 @@ export default function FormNovaSaida ({
                 }
             </FormContainer>
 
-            {isNoOSForm
+            {/*isNoOSForm
                 ?<>
                     <BoxProfissionais
                         label= "Profissionais empregados"
@@ -242,7 +243,7 @@ export default function FormNovaSaida ({
                     />
                 </>
                 :<></>
-            }
+            */}
 
             {isBasicOS()
                 ?<>

@@ -9,7 +9,8 @@ import {
     Tooltip,
     Box,
     Button,
-    FormGroup
+    FormGroup,
+    CircularProgress
 } from '@mui/material';
 import style from './style';
 import AddIcon from '@mui/icons-material/Add';
@@ -90,7 +91,17 @@ const BoxMateriais = (props) => {
         return await getMatItens(tipoId, true, baseSelecionada, deptoSelecionado)
     }
 
-    if(tiposMats.isFetching) return <></>
+    if(tiposMats.isLoading) return (
+        <Box className='mx-8 mb-12'>
+
+            <Typography sx={style.label} >
+                {label}
+            </Typography>
+            <Box className='flex justify-center'>
+                <CircularProgress size={32} />
+            </Box>
+        </Box>
+        )
 
     return (
         <Box className="mx-8 mb-12">
@@ -120,7 +131,7 @@ const BoxMateriais = (props) => {
             >
                 <Paper sx={style.container} elevation={8}>
                     <Fade in={true} >
-                        <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" >
+                        <Paper className="p-4 mb-4 gap-4 grid grid-cols-[2fr_1fr_max-content]" >
                             <Tooltip title={`${(deptoSelecionado === "" && baseSelecionada === "") ? tooltipText : ""}`} >
                                 <FormGroup>
                                     <TextField

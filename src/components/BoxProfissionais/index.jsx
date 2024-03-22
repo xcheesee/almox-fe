@@ -106,7 +106,7 @@ export default function BoxProfissionais ({
 
             <Paper sx={style.container} >
                 <Fade in={true}>
-                    <Paper className='p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]'>
+                    <Paper className='p-4 mb-4 gap-4 grid grid-cols-[2fr_1fr_max-content]'>
                         <TextField
                             //select
                             label="Nome"
@@ -187,7 +187,7 @@ export default function BoxProfissionais ({
                 {profissionais?.map((profissional, index) => {
                     return (
                         <Fade in={true} key={index} >
-                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
+                            <Paper className="p-4 mb-4 gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
                                 <TextField
                                     //select
                                     label="Nome"
