@@ -267,6 +267,7 @@ export const getBaixa = async (baixaId) => {
   };
 
   const [res, itensRes] = await Promise.all([fetch(url, options), fetch(urlItems, options)])
+  if(res.status === 401 || itensRes.status === 401) throw res
   if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar a baixa!")
   if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperar os itens da baixa!")
 
@@ -282,9 +283,11 @@ export async function getLocais (depto, tipo) {
   };
 
   const res = await fetch(url, options)
-  if(!res.ok) {
+  if(res.status === 401) 
+    throw res 
+  else if(!res.ok) 
     throw errorBuilder(res, "Nao foi possivel recuperar os locais")
-  }
+  
   return (await res.json()).data
 }
 
@@ -293,13 +296,14 @@ export async function getDados(rota) {
   const options = { headers: headerBuilder() };
 
   try{
-    const res = await fetch(url, options)
-    if(res.status === 404) {
-      throw errorBuilder(res, "Nao encontrado")
-    }
-    return await res.json()
+    const res = await fetch(url, options);
+    if(!res.ok) throw res; 
+    return await res.json();
   } catch(e) {
-    throw errorBuilder(e, e.message)
+    if(e.status === 401) {
+        throw e;
+    }
+    throw errorBuilder(e, e.message);
   }
 }
 
@@ -315,12 +319,16 @@ export async function getTabela (rota, page="", filtros="", sort="") {
     const json = await res.json()
     if(res.status === 404) {
       throw errorBuilder(res, "Nao encontrado")
-    }
-    if(!res.ok) {
+    } else if(res.status === 401) {
+        throw res
+    } else if(!res.ok) {
       throw errorBuilder(res, json.message)
     }
     return await new Promise(res => setTimeout(() => res(json), 250))
   } catch(e) {
+    if(e.status === 401) {
+        throw e
+    }
     throw errorBuilder(e, e.message)
   }
 }

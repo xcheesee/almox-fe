@@ -13,6 +13,7 @@ import DialogDetalhesTransferencia from "../../components/Transferencia/DialogDe
 import { useState } from "react";
 import DialogConfirmarTransferencia from "../../components/Transferencia/DialogConfirmarTransferencia";
 import { useRef } from "react";
+import { useAuthenticatedQuery } from "../../common/utils/hooks";
 
 export default function Transferencia () {
 
@@ -27,14 +28,14 @@ export default function Transferencia () {
     const [transfItensData, setTransfItensData] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
-    const transferenciasQuery = useQuery({
+    const transferenciasQuery = useAuthenticatedQuery({
         queryKey: ['transferencias', page, filtros, sort],
         queryFn: async () => await getTabela("transferencia", page, filtros, sort),
         onSuccess: (res) => pageCountRef.current = res.meta.last_page,
         onError: error => setSnackbar({
             open: true,
             severity: "error",
-            message: `Nao foi possivel recuperar os dados de transferencia: ${error.status} (${error.message})`
+            message: `Nao foi possivel recuperar os dados de transferencia: ${error.status} (${error.message ?? error.statusText})`
         })
     })
 

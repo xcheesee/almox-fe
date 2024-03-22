@@ -12,21 +12,24 @@ import MenuItemsAcabando from '../MenuItemsAcabando';
 import DialogLogout from '../DialogLogout';
 import DialogAltSenh  from '../DialogAltSenh';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../common/utils/hooks';
 
 const Header = () => {
     const [openLogout, setOpenLogout] = useState(false);
+    const { 
+        username 
+    } = useAuth()
 
-    const username = localStorage.getItem('username');
+
+    //const username = localStorage.getItem('username');
     const location = useLocation();
     const navigate = useNavigate();
     const [openAltSenha, setOpenAltSenha] = useState(false);
 
+    const { log_out } = useAuth()
+
     const logout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('departamentos');
-        localStorage.removeItem('username');
-        localStorage.removeItem('usermail')
-        navigate('/', { replace: true });
+        log_out()
     }
 
     const showSenhaForm = () => setOpenAltSenha(true)

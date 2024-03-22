@@ -3,25 +3,17 @@ import BoxLogin from '../components/BoxLogin';
 import { useNavigate } from 'react-router';
 import { loginRequest } from '../common/utils';
 import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '../common/utils/hooks';
 
 const Login = () => {
     const [visibilidade, setVisibilidade] = useState(false);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const { log_in } = useAuth();
 
     const loginMutation = useMutation((data) => loginRequest(data) , {
         onSuccess: (data) => {
-            localStorage.setItem('usermail', data.email)
-            localStorage.setItem('access_token', `${data.token_type} ${data.access_token}`);
-            localStorage.setItem('username', data.username);
-            localStorage.setItem('departamentos', JSON.stringify(data.departamentos));
-            localStorage.setItem('user_id', data.id);
-            localStorage.setItem('perfil', data.perfil);
-            localStorage.setItem('local', data?.local_id ?? "")
-            if (data.perfil === 'encarregado')
-                navigate('/ordemservico', { replace: true });
-            else
-                navigate('/principal', { replace: true });
+            log_in(data)
         }, onError: (data) => {
             setErrors(data)
         }

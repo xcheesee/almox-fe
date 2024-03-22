@@ -14,9 +14,14 @@ import {
 import PersonIcon from '@mui/icons-material/Person';
 import { getDados } from '../../common/utils';
 import { useQuery } from '@tanstack/react-query'
+import { useAuth, useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const MenuItemsAcabando = ({ username, style }) => {
-    const itemsAcabando = useQuery(['itemsAcabando'], async () => await getDados('items_acabando'))
+    const { log_out } = useAuth()
+    const itemsAcabando = useAuthenticatedQuery({
+        queryKey: ['itemsAcabando'], 
+        queryFn: async () => await getDados('items_acabando'),
+    })
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

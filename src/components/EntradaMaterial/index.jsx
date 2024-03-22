@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
 import { useRef } from 'react';
+import { useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const EntradaMaterial = (props) => {
     const {
@@ -21,7 +22,7 @@ const EntradaMaterial = (props) => {
     const page = useAtomValue(pageAtom);
     const filtros = useAtomValue(filtrosAtom);
 
-    const entradas = useQuery({
+    const entradas = useAuthenticatedQuery({
         queryKey: ['entradaItens', page, filtros, sort],
         queryFn: () => getTabela('entradas', page, filtros, sort),
         onSuccess: res => pageCountRef.current = res.meta.last_page

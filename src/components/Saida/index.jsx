@@ -7,9 +7,9 @@ import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
 import { getTabela } from '../../common/utils';
 import { useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
+import { useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const SaidaTable = (props) => {
     const {
@@ -21,7 +21,7 @@ const SaidaTable = (props) => {
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
 
-    const saidas = useQuery({
+    const saidas = useAuthenticatedQuery({
         queryKey: ['saidas', page, filtros, sort],
         queryFn: () => getTabela('saidas', page, filtros, sort),
         onSuccess: res => {

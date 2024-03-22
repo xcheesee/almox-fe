@@ -10,6 +10,7 @@ import { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from '../../atomStore';
+import { useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const OrdemServico = (props) => {
     const {
@@ -22,7 +23,7 @@ const OrdemServico = (props) => {
     const page = useAtomValue(pageAtom);
     const setSnackbar = useSetAtom(snackbarAtom)
 
-    const ordens = useQuery({
+    const ordens = useAuthenticatedQuery({
         queryKey: ['ordemItens', page, filtros, sort],
         queryFn: () => getTabela('ordem_servicos', page, filtros, sort),
         onSuccess: res => pageCountRef.current = res.meta.last_page,
@@ -30,7 +31,7 @@ const OrdemServico = (props) => {
             setSnackbar({
                 open: true,
                 severity: 'error',
-                message: res.message
+                message: res.message ?? res.statusText
             })
         }
     });
