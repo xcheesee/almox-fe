@@ -21,16 +21,10 @@ const Header = () => {
     } = useAuth()
 
 
-    //const username = localStorage.getItem('username');
     const location = useLocation();
-    const navigate = useNavigate();
     const [openAltSenha, setOpenAltSenha] = useState(false);
 
     const { log_out } = useAuth()
-
-    const logout = () => {
-        log_out()
-    }
 
     const showSenhaForm = () => setOpenAltSenha(true)
 
@@ -72,7 +66,7 @@ const Header = () => {
             </Box>
 
             <DialogLogout 
-                fnLogout={logout}
+                fnLogout={log_out}
                 openLogout={openLogout}
                 setOpenLogout={setOpenLogout}
             />

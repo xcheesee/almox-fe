@@ -18,7 +18,7 @@ export const useLocalStorage = (key, defaultVal) => {
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useLocalStorage('access_token', "")
     const [perfil, setPerfil] = useLocalStorage('perfil', "")
-    const [username, setUsername] = useLocalStorage('username', "")
+    const [username, setUsername] = useLocalStorage('username', "Convidado")
     const [usermail, setUsermail] = useLocalStorage('usermail', "")
     const [departamentos, setDepartamentos] = useLocalStorage('departamentos', "")
     const [userId, setUserId] = useLocalStorage('user_id', "")
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
         setToken("")
         setPerfil("")
         setUsermail("")
-        setUsername("")
+        setUsername("Convidado")
         setDepartamentos("")
         setUserId("")
         setLocal("")
@@ -76,22 +76,33 @@ export const useAuth = () => {
 export const useAuthenticatedQuery = ({
     queryKey,
     queryFn,
+    cacheTime=5*60*1000,
+    enabled=true,
+    networkMode='online',
     onSuccess=()=>{},
     onError=()=>{},
+    onSettled=()=>{}
 }) => {
     const { log_out } = useAuth()
 
     const query = useQuery({
         queryFn: async () => await queryFn(),
         queryKey: queryKey,
+        cacheTime: cacheTime,
+        enabled: enabled,
+        networkMode: networkMode,
         onSuccess: onSuccess,
-        retry: false,
         onError: (res) => {
             onError(res)
             if(res.status === 401) {
                 log_out()
             }
-        }
+        },
+        onSettled: onSettled,
+        retry: (failureCount, error) => {
+            if(error.status !== 401 && failureCount <4) return true
+            return false
+        },
     })
 
     return query
