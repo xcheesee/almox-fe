@@ -33,7 +33,7 @@ const FormOrdemServico = (props) => {
         setOpenConfirmar, 
         navigate, 
         acao, 
-        materiais,
+        //materiais,
         //profissionais,
         errors,
         setErrors,
@@ -273,7 +273,7 @@ const FormOrdemServico = (props) => {
                 :
                     ""
             }
-                {materiais && materiais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
+                {/*materiais && materiais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
                 ?
                     <>
                         <Typography sx={{
@@ -301,15 +301,11 @@ const FormOrdemServico = (props) => {
                     </>
                 :
                     ""
-            }
+                            */}
 
             </Box>
         </FormContainer>
         
-        {acao === 'editar'
-        ?
-            ""
-        :
             <>
                 <BoxProfissionais
                     label= "Profissionais empregados"
@@ -327,7 +323,6 @@ const FormOrdemServico = (props) => {
                     required={false}
                 />
             </>
-        }
         </>
     );
 }

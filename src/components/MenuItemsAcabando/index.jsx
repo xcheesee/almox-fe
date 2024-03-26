@@ -17,7 +17,6 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuth, useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const MenuItemsAcabando = ({ username, style }) => {
-    const { log_out } = useAuth()
     const itemsAcabando = useAuthenticatedQuery({
         queryKey: ['itemsAcabando'], 
         queryFn: async () => await getDados('items_acabando'),

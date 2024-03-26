@@ -14,6 +14,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { deptoAtom, snackbarAtom, matTipoListAtom } from '../../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import BoxMateriaisEntrada from '../../BoxMateriaisEntrada';
+import MateriaisBox from '../../MateriaisBox';
 
 const FormEntradaMaterial = (props) => {
     const { 
@@ -25,6 +26,7 @@ const FormEntradaMaterial = (props) => {
         setCarregando,
         errors,
         setErrors,
+        materiais,
     } = props;
 
     const queryClient = useQueryClient()
@@ -183,15 +185,12 @@ const FormEntradaMaterial = (props) => {
                 />
             </FormContainer>
 
-            {acao === 'editar'
-                ?
-                ""
-                :
                 <BoxMateriaisEntrada 
                     label="Materiais"
                     deptoSelecionado={deptoSelecionado}
+                    defaultValue={materiais}
                 />
-            }
+                <MateriaisBox deptoSelecionado={deptoSelecionado} />
         </>
     );
 }

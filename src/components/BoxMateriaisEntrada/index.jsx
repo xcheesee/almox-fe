@@ -27,6 +27,7 @@ const BoxMateriaisEntrada = (props) => {
         deptoSelecionado = "",
         tooltipText="Selecione um departamento antes de adicionar materiais!",
         errors={},
+        defaultValue=[],
     } = props;
 
     const [newMats, setNewMats] = useAtom(matTipoListAtom)
@@ -41,29 +42,38 @@ const BoxMateriaisEntrada = (props) => {
     const firstLoad = useRef(true)
 
     useEffect(() => { 
-        if(firstLoad.current) {
-            setNewMats({})
-            firstLoad.current = false
-        }
+        const formattedMateriais = {}
+        defaultValue.forEach( mat => {
+            mat.id = mat.item_id
+            formattedMateriais[mat.tipo_item_id] 
+                ? formattedMateriais[mat.tipo_item_id].push(mat) 
+                : formattedMateriais[mat.tipo_item_id] = [mat]
+        })
+        console.log(formattedMateriais)
+        setNewMats(formattedMateriais)
     }, [])
 
     useEffect (() => {
         setCurrMat("")
         setAllMats([])
         setTipo("")
-        setNewMats( prev => {
-            const clearObj = {}
-            for (const val in prev) {
-                clearObj[val] = []
-            }
-            return clearObj
-        })
+        if(firstLoad.current) {
+            firstLoad.current = false
+            return
+        }
+        //setNewMats( prev => {
+        //    const clearObj = {}
+        //    for (const val in prev) {
+        //        clearObj[val] = []
+        //    }
+        //    return clearObj
+        //})
     }, [deptoSelecionado, baseSelecionada])
 
     const tiposMats = useQuery(['tiposMateriais'], getMatTipos, {
-        onSuccess: res => {
-            res.data.forEach( tipo => setNewMats(prev => ({...prev, [tipo.id]: []})) )
-        }
+        //onSuccess: res => {
+        //    res.data.forEach( tipo => setNewMats(prev => ({...prev, [tipo.id]: []})) )
+        //}
     });
 
     function delSelectedMat (tipoId, matIndex) {
@@ -120,12 +130,13 @@ const BoxMateriaisEntrada = (props) => {
 
                     //if(qtd > currMat.quantidade) return setIsQtdError(true)
 
-                    let mats = [...newMats[currMat.tipo_item_id]]
+                    let mats = newMats[currMat?.tipo_item_id] ?? []
 
                     if(mats.find(ele => ele.id === currMat.id)) return setIsInListError(true)
+                    console.log(currMat)
 
                     mats.push({...currMat, qtd: qtd})
-                    setNewMats({...newMats, [currMat.tipo_item_id]: [...mats]})
+                    setNewMats(prev => ( {...prev, [currMat.tipo_item_id]: [...mats]} ))
                 }}
             >
                 <Paper sx={style.container} elevation={8}>
@@ -235,7 +246,7 @@ const BoxMateriaisEntrada = (props) => {
                                 delSelectedMat={delSelectedMat}
                             />
                         })
-                        : <></> 
+                        : <CircularProgress size={34}/> 
                     }
                 </Paper>
             </Box>

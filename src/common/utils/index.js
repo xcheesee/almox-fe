@@ -110,6 +110,7 @@ export function formatProfissional(profissionais) {
 
 export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) => {
   e.preventDefault();
+  console.log(materiais)
 
   const formData = new FormData(e.target);
   formData.append('user_id', localStorage.getItem('user_id'));
