@@ -31,9 +31,9 @@ const FormEntradaMaterial = (props) => {
 
     const queryClient = useQueryClient()
 
-    const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
+    const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const setSnackbar = useSetAtom(snackbarAtom)
-    const materiaisInterno = useAtomValue(matTipoListAtom)
+    //const materiaisInterno = useAtomValue(matTipoListAtom)
 
     const editMutation = useMutation(async (data) => {
         setOpenConfirmar(false)
@@ -42,8 +42,8 @@ const FormEntradaMaterial = (props) => {
             data, 
             'entrada', 
             defaultValue.id, 
-            materiaisInterno,
-            'entrada_items'
+            //materiaisInterno,
+            //'entrada_items'
         )
     }, {
             onSuccess: async (res) => {
@@ -64,8 +64,8 @@ const FormEntradaMaterial = (props) => {
         return await enviaNovoForm(
             data, 
             'entrada', 
-            materiaisInterno,
-            'entrada_items'
+            //materiaisInterno,
+            //'entrada_items'
         )
     }, {
             onSuccess: async (res) => {
@@ -93,10 +93,11 @@ const FormEntradaMaterial = (props) => {
     }, [])
 
     return (
-        <>
             <FormContainer
                 id="nova-entrada"
                 onSubmit={(e) => {
+                    e.preventDefault()
+                    //const formData = new FormData(e.target)
                     acao === 'editar'
                         ? editMutation.mutate(e)
                         : addMutation.mutate(e)
@@ -183,15 +184,14 @@ const FormEntradaMaterial = (props) => {
                     helperText={errors.arquivo_nota_fiscal || ""}
                     fullWidth
                 />
-            </FormContainer>
 
-                <BoxMateriaisEntrada 
-                    label="Materiais"
-                    deptoSelecionado={deptoSelecionado}
-                    defaultValue={materiais}
+                <MateriaisBox 
+                    deptoSelecionado={deptoSelecionado} 
+                    defaultValue={materiais} 
+                    inputName='entrada_items' 
+                    entrada 
                 />
-                <MateriaisBox deptoSelecionado={deptoSelecionado} />
-        </>
+            </FormContainer>
     );
 }
 

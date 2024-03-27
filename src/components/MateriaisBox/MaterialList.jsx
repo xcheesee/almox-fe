@@ -2,7 +2,9 @@ import { Box, Checkbox, CircularProgress, Paper, TextField, Typography } from "@
 import { useState } from "react";
 import { primeiraLetraMaiuscula } from "../../common/utils";
 
-function SelectedMaterialList({selectedMaterials}) {
+function SelectedMaterialList({
+    selectedMaterials
+}) {
 
     const materialByTipos = {}; 
     selectedMaterials?.forEach((material) => {
@@ -16,7 +18,7 @@ function SelectedMaterialList({selectedMaterials}) {
             <Box className="pt-2">
                 <Typography className="!text-2xl !text-primary-700">{primeiraLetraMaiuscula(val.nome)}</Typography>
                 {val.mats.map( item =>  <Box className="px-4 text-lg font-thin text-primary-600 font-[Roboto]">
-                        {item.nome} - <span className="font-bold">{item.qtd}</span> {item.medida}
+                        {item.nome} - <span className="font-bold">{item.quantidade}</span> {item.medida}
                     </Box>
                 )}
             </Box>
@@ -25,13 +27,34 @@ function SelectedMaterialList({selectedMaterials}) {
     
 }
 
-export default function MaterialList({materiais, isLoading, enabled}) {
-    const [checkedItems, setCheckedItems] = useState([])
+export default function MaterialList({
+    materiais, 
+    isLoading, 
+    enabled,
+    defaultValue,
+    inputName,
+}) {
+    //formata valores recebido de um get de materiais pertencentes a um determinado item, para utilizacao do componente
+    console.log(defaultValue)
+    const formattedDefault = defaultValue?.map((item) => ({
+            id: item.item_id,
+            nome: item.item,
+            medida: item.medida,
+            medida_id: item.medida_id,
+            tipo_item_id: item.tipo_item_id,
+            tipo_item: item.tipo_item,
+            quantidade: item.quantidade,
+        })
+    )
+    console.log(formattedDefault)
+    const [checkedItems, setCheckedItems] = useState(formattedDefault ?? [])
+    //transforma o objeto em string para enviar os valores dos itens selecionados caso utilizado dentro de um form que envia dados por meio de onSubmit 
+    const inputData = JSON.stringify(checkedItems)
 
     let displayVal;
-    if(!enabled) return <></>;
-
-    if(isLoading) 
+    if(!enabled) 
+        displayVal = <></>;
+    else if(isLoading) 
         displayVal = <Box className="w-full flex justify-center"><CircularProgress size={32}/></Box>;
     else if(materiais?.data?.data?.length === 0)  
         displayVal = <Typography className="text-red-500 pl-4">Nao ha materias desse tipo na base!</Typography>;
@@ -49,7 +72,7 @@ export default function MaterialList({materiais, isLoading, enabled}) {
                         checked={onList}
                         onChange={(e) => {
                             if(e.target.checked) {
-                                setCheckedItems( prev => [...prev, {...val, qtd:0} ] )
+                                setCheckedItems( prev => [...prev, {...val, quantidade:0} ] )
                             } else {
                                 setCheckedItems( prev => prev.filter(item => item.id != val.id) )
                             }
@@ -63,9 +86,9 @@ export default function MaterialList({materiais, isLoading, enabled}) {
                     &&<TextField
                         label="Qtd" 
                         className="w-20" 
-                        value={item?.qtd} 
+                        value={item?.quantidade} 
                         onChange={(e) => {
-                            item.qtd = e.target.value
+                            item.quantidade = e.target.value
                             setCheckedItems(prev => {
                                 const filtered = prev.filter(item => item.id !== val.id)
                                 filtered.push(item)
@@ -79,6 +102,8 @@ export default function MaterialList({materiais, isLoading, enabled}) {
 
         return (
             <Box className="px-8 flex flex-col gap-2">
+                {/** input escondido que mantem os itens selecionados pelo usuario */}
+                <input value={inputData} className="hidden" name={inputName} />
                 <Box className="flex flex-col gap-2 max-h-80 py-2 overflow-y-auto">
                     {displayVal}
                 </Box>

@@ -46,7 +46,6 @@ const Entrada = () => {
             case 'editar':
                 setEntradaMaterial(registroData)
                 setMateriais(matsData)
-                console.log(matsData)
                 setOpenEditar(true)
                 break;
             default:

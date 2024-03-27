@@ -5,35 +5,20 @@ import DialogEnviar from '../../components/DialogEnviar';
 import { useNavigate } from 'react-router';
 
 const NovaOrdem = () => {
-    const [materiais, setMateriais] = useState([{ 
-        id: '',
-        tipo: '', 
-        matDesabilitado: true,
-        mats:[],
-        currMat: '',
-        qtdDesabilitado: true,
-        quantidade: '',
-        medida: '',
-    }]);
+    //const [materiais, setMateriais] = useState([]);
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [baseSelecionada, setBaseSelecionada] = useState('');
-
-    const navigate = useNavigate();
 
     return (
         <>
             <NovaOrdemServico 
-                materiais={materiais}
-                setMateriais={setMateriais}
+                //materiais={materiais}
+                //setMateriais={setMateriais}
                 setOpenCancelar={setOpenCancelar}
                 setOpenConfirmar={setOpenConfirmar}
                 carregando={carregando}
                 setCarregando={setCarregando}
-                navigate={navigate}
-                baseSelecionada={baseSelecionada}
-                setBaseSelecionada={setBaseSelecionada}
             />
             <DialogCancelar
                 paginaAnterior="ordem de serviço"

@@ -10,20 +10,21 @@ import { deptoAtom } from '../../../atomStore';
 import { useAtom } from 'jotai';
 
 export default function FormSemOs ({
+    baseSelecionada,
     setBaseSelecionada,
+    deptoSelecionado,
+    setDeptoSelecionado,
     setProfissionaisDisponiveis,
     errors={},
 }) {
 
     const [localServico, setLocalServico] = useState()
 
-    const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
-
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
 
     useEffect(() => {
-        setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
+        //setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if (departamentoKeys.length === 1) { setDeptoSelecionado(departamentoKeys[0]) }
     }, [])
     
@@ -80,6 +81,10 @@ export default function FormSemOs ({
                 tipo="base"
                 depto={deptoSelecionado}
                 onChange={(e) => setBaseSelecionada(e.target.value)}
+                onLocaisQuery={(res) => setBaseSelecionada(prev => {
+                    return prev === "" ? (res.length === 1 ? res[0].id : "") : prev
+                })}
+                value={baseSelecionada}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors?.origem_id ?? ""}
                 //required
@@ -92,8 +97,8 @@ export default function FormSemOs ({
                 depto={deptoSelecionado}
                 onChange={ async e => {
                     setLocalServico(e.target.value)
-                    const res = await getProfissionais(e.target.value, deptoSelecionado)
-                    if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
+                    //const res = await getProfissionais(e.target.value, deptoSelecionado)
+                    //if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
                 }}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}

@@ -90,10 +90,11 @@ const Saida = () => {
                 setOpenExcluir={setOpenExcluir}
             >
                 <FormEditSaida
-                    defaultValue={{...ordemServico, profissionais: profissionais}}
+                    defaultValue={{...ordemServico, profissionais, materiais}}
                     formId="edit_saida"
                     setCarregando={setCarregandoEdicao}
                     setOpen={setOpenEditar}
+                    materi
                 />
             </DialogEditaSaida >
 

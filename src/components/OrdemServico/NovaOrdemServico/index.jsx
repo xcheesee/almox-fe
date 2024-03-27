@@ -10,15 +10,12 @@ import FormOrdemServico from '../FormOrdemServico';
 
 const NovaOrdemServico = (props) => {
     const {
-        materiais,
-        setMateriais,
+        //materiais,
+        //setMateriais,
         setOpenCancelar,
         setOpenConfirmar,
         carregando,
         setCarregando,
-        navigate,
-        baseSelecionada,
-        setBaseSelecionada,
     } = props;
 
     const [errors, setErrors] = useState({});
@@ -31,15 +28,12 @@ const NovaOrdemServico = (props) => {
 
             <FormOrdemServico 
                 acao='cadastrar' 
-                navigate={navigate} 
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando} 
-                materiais={materiais}
-                setMateriais={setMateriais}
+                //materiais={materiais}
+                //setMateriais={setMateriais}
                 errors={errors}
                 setErrors={setErrors}
-                baseSelecionada={baseSelecionada}
-                setBaseSelecionada={setBaseSelecionada}
             />
 
             <Box className="flex justify-end gap-4">

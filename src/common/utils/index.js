@@ -108,9 +108,8 @@ export function formatProfissional(profissionais) {
 /*                                       Create                                                       */
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 
-export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) => {
+export const enviaForm = (e, profissionais, campoProfs) => {
   e.preventDefault();
-  console.log(materiais)
 
   const formData = new FormData(e.target);
   formData.append('user_id', localStorage.getItem('user_id'));
@@ -121,11 +120,11 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
   if (formData.get('processo_sei') !== null) 
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
-  if (materiais) {
-    const materiaisArray = objToArr(materiais)
-    materiaisArray.forEach( material => material.quantidade = material.qtd)
-    formData.append(campoMats, JSON.stringify(materiaisArray))
-  } 
+  //if (materiais) {
+  //  const materiaisArray = objToArr(materiais)
+  //  materiaisArray.forEach( material => material.quantidade = material.qtd)
+  //  formData.append(campoMats, JSON.stringify(materiaisArray))
+  //} 
 
   if (profissionais) {
     formData.append(campoProfs, JSON.stringify(profissionais))
@@ -133,8 +132,8 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
   return formData;
 }
 
-export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais, campoProfs) => {
-  enviaForm(e, materiais, campoMats, profissionais, campoProfs)
+export const enviaNovoForm = async (e, url, profissionais, campoProfs) => {
+  //enviaForm(e, profissionais, campoProfs)
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
@@ -142,7 +141,7 @@ export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais,
         'Accept': 'application/json',
         'Authorization': localStorage.getItem('access_token')
       },
-      body: enviaForm(e, materiais, campoMats, profissionais, campoProfs)
+      body: enviaForm(e, profissionais, campoProfs)
   };
 
   const res = await fetch(urlCompleta, options)
@@ -155,7 +154,7 @@ export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais,
   return await res.json()
 }
 
-export async function enviaNovaSaida({ formData, materiais, profissionais }) { 
+export async function enviaNovaSaida({ formData }) { 
   const url = `${process.env.REACT_APP_API_URL}/saida`;
   const options = {
     method: 'POST',
@@ -545,12 +544,12 @@ export const enviaBaixa = async (items, baixaId) => {
   }
 }
 
-export const enviaEdicao = async (e, url, id, materiais, campo) => {
+export const enviaEdicao = async (e, url, id)  => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
     headers: headerBuilder() ,
-    body: enviaForm(e, materiais, campo) // TODO: implementar edicao de profissionais
+    body: enviaForm(e) // TODO: implementar edicao de profissionais
   };
   
   const res = await fetch(urlCompleta, options)

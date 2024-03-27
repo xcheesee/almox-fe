@@ -8,6 +8,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { profissionaisAtom, snackbarAtom } from "../../../atomStore";
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import { editaSaida } from "../../../common/utils";
+import MateriaisBox from "../../MateriaisBox";
 
 export default function FormEditSaida({ 
     defaultValue, 
@@ -23,7 +24,7 @@ export default function FormEditSaida({
 
     const editSaidaMutation = useMutation({
         mutationFn: editaSaida,
-        onSuccess: (res) => {
+        onSuccess: () => {
             query.invalidateQueries(['saidas']) 
             setSnackbar({
                 open: true,
@@ -33,7 +34,6 @@ export default function FormEditSaida({
             setOpen(false)
         }, 
         onError: (err) => {
-            console.log(err)
             setSnackbar({
                 open: true,
                 severity: 'error',
@@ -44,7 +44,6 @@ export default function FormEditSaida({
     })
 
     return(
-        <>
             <FormContainer
                 id={formId}
                 onSubmit={(e) => {
@@ -148,14 +147,20 @@ export default function FormEditSaida({
                     helperText={errors.observacoes || ""}
                     fullWidth
                 />
-            </FormContainer>
-            <BoxProfissionais
-                label={"Profissionais"}
-                baseSelecionada={defaultValue.origem_id}
-                deptoSelecionado={defaultValue.departamento_id}
-                defaultValue={defaultValue.profissionais}
-            />
-        </>
 
+                <MateriaisBox 
+                    deptoSelecionado={defaultValue.departamento_id} 
+                    baseSelecionada={defaultValue.origem_id}
+                    defaultValue={defaultValue.materiais} 
+                    inputName="saida_items" 
+                />
+
+                <BoxProfissionais
+                    label={"Profissionais"}
+                    baseSelecionada={defaultValue.origem_id}
+                    deptoSelecionado={defaultValue.departamento_id}
+                    defaultValue={defaultValue.profissionais}
+                />
+            </FormContainer>
     )
 }

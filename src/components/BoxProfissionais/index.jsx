@@ -163,7 +163,6 @@ export default function BoxProfissionais ({
                 </Fade>
                 <Box className="self-end">
                     <Button onClick={() => {
-                        console.log(isBlankField(currProfissional))
                         if(isBlankField(currProfissional)) return;
 
                         setProfissionais(prev => {

@@ -6,24 +6,28 @@ import { getLocais } from '../../common/utils';
 const CampoLocais = ({
     name, 
     label, 
-    defaultValue, 
+    defaultValue="", 
+    value="",
     tipo, 
     depto="", 
     getAllBases=false, 
+    disabled,
     onChange=() => {}, 
+    onLocaisQuery=() => {},
     ...props
 }) => {
 
-    const [local, setLocal] = useState(0)
+    //const [local, setLocal] = useState(value)
 
     const locais = useQuery({
         queryKey: ['locais', depto, tipo], 
         queryFn: () => getLocais(depto, tipo), 
-        //enabled: !(depto === ''),
+        enabled: !!depto,
         onSuccess: (res) => {
-            setLocal(defaultValue ?? (res.length === 1 ? res[0].id : ""))}
+            onLocaisQuery(res, defaultValue) 
+        }
+            //setLocal(defaultValue ?? (res.length === 1 ? res[0].id : ""))}
     })
-
 
     return (
         <>
@@ -37,16 +41,18 @@ const CampoLocais = ({
                 </TextField>
                 :<TextField
                     select
-                    SelectProps={{ 
-                        value: local, 
-                        onChange: (e) => {
-                            onChange(e)
-                            setLocal(e.target.value)
-                        }
-                    }}
+                    //SelectProps={{ 
+                    //    value: value, 
+                    //    onChange: (e) => {
+                    //        onChange(e)
+                    //        //setLocal(e.target.value)
+                    //    }
+                    //}}
+                    onChange={onChange}
+                    value={value}
                     name={name}
                     label={label}
-                    disabled={locais.isLoading || (!getAllBases && depto==="")}
+                    disabled={disabled}
                     fullWidth
                     required
                     {...props}
