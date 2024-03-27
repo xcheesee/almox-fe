@@ -2,7 +2,6 @@ import { TextField, Box, MenuItem, Button, CircularProgress } from "@mui/materia
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
-import BoxMateriais from "../../components/BoxMateriais";
 import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
 import { enviaNovaOcorrencia, getLocais } from "../../common/utils";
@@ -10,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 import { matTipoListAtom, snackbarAtom } from "../../atomStore";
 import { useNavigate } from "react-router-dom";
+import MateriaisBox from "../../components/MateriaisBox";
 
 export default function NovaOcorrencia () {
 
@@ -39,7 +39,7 @@ export default function NovaOcorrencia () {
         setIsLoading(true)
         const formData = new FormData(e.target)
         try {
-            await enviaNovaOcorrencia(formData, materiais)
+            await enviaNovaOcorrencia(formData)
             setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
             navigate("/ocorrencia")
         } catch(e){
@@ -137,13 +137,14 @@ export default function NovaOcorrencia () {
                     />
                     : <></>
                 }
+
+                <MateriaisBox 
+                    baseSelecionada={baseOrigem}
+                    inputName='itens' 
+                    entrada 
+                />
             </FormContainer>
 
-            <BoxMateriais 
-                label="Materiais envolvidos"
-                baseSelecionada={baseOrigem}
-                tooltipText="Selecione uma base antes de adicionar materiais!"
-            />
 
             <Box className="flex gap justify-end items-center">
                 { isLoading

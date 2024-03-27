@@ -120,12 +120,6 @@ export const enviaForm = (e, profissionais, campoProfs) => {
   if (formData.get('processo_sei') !== null) 
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
-  //if (materiais) {
-  //  const materiaisArray = objToArr(materiais)
-  //  materiaisArray.forEach( material => material.quantidade = material.qtd)
-  //  formData.append(campoMats, JSON.stringify(materiaisArray))
-  //} 
-
   if (profissionais) {
     formData.append(campoProfs, JSON.stringify(profissionais))
   }
@@ -133,7 +127,6 @@ export const enviaForm = (e, profissionais, campoProfs) => {
 }
 
 export const enviaNovoForm = async (e, url, profissionais, campoProfs) => {
-  //enviaForm(e, profissionais, campoProfs)
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
@@ -173,10 +166,7 @@ export async function enviaNovaSaida({ formData }) {
   }
 }
 
-export async function enviaNovaOcorrencia(formData, materiais) {
-  const materiaisArray = objToArr(materiais)
-  formData.append("itens", JSON.stringify(materiaisArray))
-
+export async function enviaNovaOcorrencia(formData) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
 
   const res = await fetch(url, {
@@ -194,17 +184,15 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   throw error
 }
 
-export async function enviaNovaTransferencia(formData, materiais) {
+export async function enviaNovaTransferencia(formData) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-
-  const materiaisArray = objToArr(materiais)
-  formData.append("itens", JSON.stringify(materiaisArray))
 
   const res = await fetch(url, {
     method: "POST",
     headers: headerBuilder(), 
     body: formData,
   })
+
   if(res.ok) return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
   
   const json = await res.json()
@@ -655,7 +643,6 @@ export async function excluiRegistro ( rota, id ) {
 export const authCreateEntrada = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return 'flex';
     case 'almoxarife':
       return 'flex';
     default:
@@ -666,7 +653,6 @@ export const authCreateEntrada = (perfil) => {
 export const authCreateOrdem = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return 'flex';
     case 'gestao_dgpu':
       return 'flex';
     default:
@@ -677,22 +663,22 @@ export const authCreateOrdem = (perfil) => {
 export const authCreateTransf = (perfil) => {
   switch (perfil) {
     case 'almoxarife':
-      return true;
     case 'encarregado':
-      return true;
+    case 'admin': //perfil adicionado para fins de teste
+        return true;
     default:
-      return false;
+        return false;
   }
 }
 
 export const authCreateOcorrencia = (perfil) => {
   switch (perfil) {
     case 'almoxarife':
-      return true;
     case 'encarregado':
-      return true;
+    case 'admin': //perfil adicionado para fins de teste
+        return true;
     default:
-      return false;
+        return false;
   }
 }
 
@@ -700,8 +686,8 @@ export function isAllowedTransf() {
   const perfil = localStorage.getItem("perfil");
   switch(perfil) {
     case 'almoxarife':
-      return true;
     case 'encarregado':
+    case 'admin': //perfil adicionado para fins de teste
       return true;
     default:
       return false;
@@ -712,7 +698,6 @@ export function isAllowedTransf() {
 export const authEditEntrada = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return '';
     case 'almoxarife':
       return '';
     default:
@@ -723,7 +708,6 @@ export const authEditEntrada = (perfil) => {
 export const authEditOrdem = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return '';
     case 'gestao_dgpu':
       return '';
     default:
