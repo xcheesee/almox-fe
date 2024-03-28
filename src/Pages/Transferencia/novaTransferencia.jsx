@@ -27,7 +27,7 @@ export default function NovaTransferencia () {
         queryFn: () => getLocais("", ""), 
         //enabled: !(depto === ''),
         onSuccess: (res) => { 
-            setBaseOrigem((res.find(local => local.id === +localStorage.getItem("local"))).id ?? "");
+            setBaseOrigem((res?.find(local => local.id === +localStorage.getItem("local")))?.id ?? "");
             //setBaseOrigem(res.length === 1 ? res[0].id : "");
         }
 
@@ -39,12 +39,12 @@ export default function NovaTransferencia () {
         setErrors({})
         const formData = new FormData(e.target)
         try{
-            await enviaNovaTransferencia(formData, materiais)
+            await enviaNovaTransferencia(formData)
             setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success"})
             navigate("/transferencia")
         } catch(e) {
-            setErrors(e.errors)
-            setSnackbar({...snackbar, open: true, message: "Nao foi possivel enviar a transferencia", severity: "error"})
+            setErrors(e?.errors ?? "")
+            setSnackbar({...snackbar, open: true, message: `Não foi possivel enviar a transferência: ${e?.mensagem}`, severity: "error"})
         }
         setIsLoading(false)
     }

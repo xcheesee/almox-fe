@@ -28,7 +28,7 @@ export default function NovaOcorrencia () {
         queryFn: () => getLocais("", "base"), 
         //enabled: !(depto === ''),
         onSuccess: (res) => {
-            setBaseOrigem((res.find(local => local.id === +localStorage.getItem("local"))).id ?? "");
+            setBaseOrigem((res?.find(local => local.id === +localStorage.getItem("local")))?.id ?? "");
             //setBaseOrigem(res.length === 1 ? res[0].id : "")
         }
     })
@@ -42,8 +42,8 @@ export default function NovaOcorrencia () {
             setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
             navigate("/ocorrencia")
         } catch(e){
-            setErrors(e.errors)
-            setSnackbar({...snackbar, open: true, message: e?.text ?? "Ocorreu um erro.", severity: "error"})
+            setErrors(e?.errors ?? {})
+            setSnackbar({...snackbar, open: true, message: e?.text ?? `Ocorreu um erro: ${e.mensagem}`, severity: "error"})
         }
         setIsLoading(false)
     }

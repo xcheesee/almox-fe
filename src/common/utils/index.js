@@ -5,7 +5,7 @@ export function errorBuilder(res, text) {
   error.message = text
   error.status = res.status
   error.ok = false
-  error.errors = Object.values(res?.errors)?.reduce((prev, curr) => prev + `${curr}\n`, "") ?? "" 
+  error.errors = Object?.values(res?.errors ?? {})?.reduce((prev, curr) => prev + `${curr}\n`, "") ?? "" 
   return error
 }
 
@@ -175,10 +175,10 @@ export async function enviaNovaOcorrencia(formData) {
   if(res.ok) return res
 
   const json = await res.json()
-  const error = errorBuilder(res, json.mensagem)
-  error.errors = json.errors
+  //const error = errorBuilder(res, json.mensagem)
+  //error.errors = json.errors
   
-  throw error
+  throw json;
 }
 
 export async function enviaNovaTransferencia(formData) {
@@ -193,9 +193,7 @@ export async function enviaNovaTransferencia(formData) {
   if(res.ok) return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
   
   const json = await res.json()
-  const error = errorBuilder(res, "Nao foi possivel enviar a transferencia")
-  error.errors = json.errors
-  throw error
+  throw json
 }
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   

@@ -13,13 +13,14 @@ import { useSetAtom } from 'jotai';
 import { snackbarAtom } from '../../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import MateriaisBox from '../../MateriaisBox';
+import { useNavigate } from 'react-router-dom';
 
 const FormEntradaMaterial = (props) => {
     const { 
         defaultValue, 
         setOpenEditar, 
         setOpenConfirmar, 
-        navigate, 
+        //navigate, 
         acao,
         setCarregando,
         errors,
@@ -27,6 +28,7 @@ const FormEntradaMaterial = (props) => {
         materiais,
     } = props;
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
 
     const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const [baseSelecionada, setBaseSelecionada] = useState(defaultValue?.local_id ?? "")
