@@ -23,7 +23,7 @@ export default function NovaTransferencia () {
     const navigate = useNavigate()
 
     const locais = useQuery({
-        queryKey: ['locais', "", "base"], 
+        queryKey: ['locais'], 
         queryFn: () => getLocais("", ""), 
         //enabled: !(depto === ''),
         onSuccess: (res) => { 
@@ -118,10 +118,7 @@ export default function NovaTransferencia () {
             </FormContainer>
 
             <Box className="flex gap justify-end items-center">
-                    { isLoading
-                        ? <CircularProgress size={24}/>
-                        : <></>
-                    }
+                { isLoading && <CircularProgress size={24}/> }
                 <Button onClick={() => setOpenConfirmar(true)}>
                     Enviar
                 </Button>
@@ -133,7 +130,6 @@ export default function NovaTransferencia () {
                 texto="transferência"
                 form="nova-transferencia"
             />
-
         </ContainerPrincipal>
     )
 }

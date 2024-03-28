@@ -108,10 +108,7 @@ export function formatProfissional(profissionais) {
 /*                                       Create                                                       */
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 
-export const enviaForm = (e, profissionais, campoProfs) => {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
+export const enviaForm = (formData, profissionais, campoProfs) => {
   formData.append('user_id', localStorage.getItem('user_id'));
   
   if (formData.get('numero_contrato') !== null) 
@@ -126,7 +123,7 @@ export const enviaForm = (e, profissionais, campoProfs) => {
   return formData;
 }
 
-export const enviaNovoForm = async (e, url, profissionais, campoProfs) => {
+export const enviaNovoForm = async (formData, url, profissionais, campoProfs) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
@@ -134,7 +131,7 @@ export const enviaNovoForm = async (e, url, profissionais, campoProfs) => {
         'Accept': 'application/json',
         'Authorization': localStorage.getItem('access_token')
       },
-      body: enviaForm(e, profissionais, campoProfs)
+      body: enviaForm(formData, profissionais, campoProfs)
   };
 
   const res = await fetch(urlCompleta, options)
@@ -532,12 +529,12 @@ export const enviaBaixa = async (items, baixaId) => {
   }
 }
 
-export const enviaEdicao = async (e, url, id)  => {
+export const enviaEdicao = async (formData, url, id)  => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
     headers: headerBuilder() ,
-    body: enviaForm(e) // TODO: implementar edicao de profissionais
+    body: enviaForm(formData) // TODO: implementar edicao de profissionais
   };
   
   const res = await fetch(urlCompleta, options)

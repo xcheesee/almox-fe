@@ -6,15 +6,14 @@ import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
 import { enviaNovaOcorrencia, getLocais } from "../../common/utils";
 import { useQuery } from "@tanstack/react-query";
-import { useAtom, useAtomValue } from "jotai";
-import { matTipoListAtom, snackbarAtom } from "../../atomStore";
+import { useAtom } from "jotai";
+import { snackbarAtom } from "../../atomStore";
 import { useNavigate } from "react-router-dom";
 import MateriaisBox from "../../components/MateriaisBox";
 
 export default function NovaOcorrencia () {
 
     const [snackbar, setSnackbar] = useAtom(snackbarAtom)
-    const materiais = useAtomValue(matTipoListAtom)
 
     const [tipoOcorrencia, setTipoOcorrencia] = useState("")
     const [openConfirmar, setOpenConfirmar] = useState(false)
@@ -51,9 +50,7 @@ export default function NovaOcorrencia () {
 
     return(
         <ContainerPrincipal>
-            <Titulo
-                voltaPara="/ocorrencia"
-            >
+            <Titulo voltaPara="/ocorrencia" >
                 Nova Ocorrência
             </Titulo>
 
@@ -82,7 +79,6 @@ export default function NovaOcorrencia () {
                     helperText={errors?.local_id ?? ""}
                     SelectProps={{ value: baseOrigem, onChange: (e) => {
                         if(localStorage.getItem("local") !== "") return
-
                         setBaseOrigem(e.target.value)
                     }}}
                     fullWidth
@@ -123,8 +119,9 @@ export default function NovaOcorrencia () {
                     label="Justificativa"
                 />
 
-                {tipoOcorrencia === "furto" || tipoOcorrencia === "extravio"
-                    ?<TextField 
+                {   
+                    (tipoOcorrencia === "furto" || tipoOcorrencia === "extravio") && 
+                    <TextField 
                         name="boletim_ocorrencia"
                         label="Boletim de Ocorrência"
                         type="file"
@@ -135,7 +132,6 @@ export default function NovaOcorrencia () {
                         //helperText={errors.boletim_ocorrencia || ""}
                         fullWidth
                     />
-                    : <></>
                 }
 
                 <MateriaisBox 

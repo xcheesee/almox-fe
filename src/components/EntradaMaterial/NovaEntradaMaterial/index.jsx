@@ -46,12 +46,7 @@ const NovaEntradaMaterial = (props) => {
                     onClick={() => setOpenConfirmar(true)}
                     variant="contained"
                 >
-                    {
-                        carregando
-                        ? <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} />
-                        : null
-                    }
-
+                    { carregando && <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} /> }
                     Enviar
                 </Button>
             </Box>

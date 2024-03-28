@@ -10,8 +10,6 @@ import FormOrdemServico from '../FormOrdemServico';
 
 const NovaOrdemServico = (props) => {
     const {
-        //materiais,
-        //setMateriais,
         setOpenCancelar,
         setOpenConfirmar,
         carregando,
@@ -30,8 +28,6 @@ const NovaOrdemServico = (props) => {
                 acao='cadastrar' 
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando} 
-                //materiais={materiais}
-                //setMateriais={setMateriais}
                 errors={errors}
                 setErrors={setErrors}
             />
@@ -44,12 +40,7 @@ const NovaOrdemServico = (props) => {
                     onClick={() => setOpenConfirmar(true)}
                     variant="contained"
                 >
-                    {
-                        carregando
-                        ? <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} />
-                        : null
-                    }
-
+                    { carregando && <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} /> }
                     Enviar
                 </Button>
             </Box>

@@ -11,7 +11,7 @@ import Selecao from '../../Selecao';
 import CampoLocais from '../../CampoLocais';
 import BoxProfissionais from '../../BoxProfissionais';
 import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../../common/utils';
-import { deptoAtom, profissionaisAtom, snackbarAtom } from '../../../atomStore';
+import { profissionaisAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useSetAtom } from 'jotai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../../TituloTexto';
@@ -41,7 +41,7 @@ const FormOrdemServico = ({
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-    const departamentoKeys = Object.keys(departamentos)
+    //const departamentoKeys = Object.keys(departamentos)
     
     useEffect(() => {
         //setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
@@ -54,11 +54,11 @@ const FormOrdemServico = ({
     }, [])
 
     const editMutation = useMutation({
-        mutationFn: async (data) => {
+        mutationFn: async (formData) => {
             setOpenConfirmar(false)
             setCarregando(true)
             return await enviaEdicao(
-                data,
+                formData,
                 'ordem_servico', 
                 defaultValue.id, 
             )
@@ -76,11 +76,11 @@ const FormOrdemServico = ({
     })
 
     const addMutation = useMutation({
-        mutationFn: async (data) => {
+        mutationFn: async (formData) => {
             setOpenConfirmar(false)
             setCarregando(true)
             return await enviaNovoForm(
-                data, 
+                formData, 
                 'ordem_servico', 
                 profissionais,
                 "ordem_servico_profissionais"
@@ -102,9 +102,12 @@ const FormOrdemServico = ({
         <FormContainer
             id="nova-ordem"
             onSubmit={(e) => {
+                e.preventDefault()
+                const formData = new FormData(e.target)
+                defaultValue?.departamento_id && formData.append("departamento_id", defaultValue?.departamento_id)
                 acao === 'editar'
-                    ? editMutation.mutate(e)
-                    : addMutation.mutate(e)
+                    ? editMutation.mutate(formData)
+                    : addMutation.mutate(formData)
             }}
         >
             <Selecao
@@ -156,7 +159,6 @@ const FormOrdemServico = ({
                     //    setProfissionaisDisponiveis(res.data)
                     //} 
                 }}
-                //defaultValue={defaultValue?.local_servico_id}
                 error={errors.hasOwnProperty('local_servico_id')}
                 helperText={errors.local_servico_id || ""}
                 required
@@ -185,8 +187,10 @@ const FormOrdemServico = ({
             />
         
             <Box>
-                {profissionais && profissionais.length > 0 && location.pathname !== '/ordemservico/nova-ordem'
-                ?
+                {profissionais 
+                && profissionais.length > 0 
+                && location.pathname !== '/ordemservico/nova-ordem'
+                &&
                     <Box className='my-10'>
                         <Typography sx={{
                             color: (theme) => theme.palette.color.bg,
@@ -211,8 +215,6 @@ const FormOrdemServico = ({
                             ))}
                         </Paper>
                     </Box>
-                :
-                    ""
             }
             </Box>
 

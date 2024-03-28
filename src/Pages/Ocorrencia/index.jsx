@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Paginacao from "../../components/Paginacao";
@@ -40,9 +39,8 @@ export default function Ocorrencia () {
 
             <FiltrosOcorrencia />
 
-            {authCreateOcorrencia(localStorage.getItem("perfil"))
-                ?<BotaoNovo caminho="/ocorrencia/nova-ocorrencia" > Nova Ocorrencia </BotaoNovo>
-                :<></>
+            {authCreateOcorrencia(localStorage.getItem("perfil")) 
+            && <BotaoNovo caminho="/ocorrencia/nova-ocorrencia" > Nova Ocorrencia </BotaoNovo>
             }
 
             <TabelaOcorrencia 

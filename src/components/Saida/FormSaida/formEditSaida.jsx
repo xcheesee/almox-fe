@@ -4,9 +4,9 @@ import BoxProfissionais from "../../BoxProfissionais";
 import CampoLocais from "../../CampoLocais";
 import OSAutocomplete from "../../OSAutocomplete";
 import FormContainer from "../../FormContainer";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { profissionaisAtom, snackbarAtom } from "../../../atomStore";
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editaSaida } from "../../../common/utils";
 import MateriaisBox from "../../MateriaisBox";
 
@@ -18,6 +18,7 @@ export default function FormEditSaida({
     setOpen
 }) {
     const query = useQueryClient()
+
 
     const profissionais = useAtomValue(profissionaisAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -68,17 +69,16 @@ export default function FormEditSaida({
                     defaultValue={defaultValue?.ordem_servico_id ?? ""}
                 />
 
-                {!defaultValue.ordem_servico_id
-                    ?<TextField 
+                {!defaultValue.ordem_servico_id && 
+                    <TextField 
                         multiline
                         rows={4}
                         name='justificativa_os'
                         id='justificativa_os'
                         label="Justificativa"
                         defaultValue={defaultValue?.justificativa_os ?? ""}
-                        //required
+                        required
                     />
-                    :<></>
                 }
 
                 <TextField
@@ -105,15 +105,10 @@ export default function FormEditSaida({
                     name="local_servico_id"
                     tipo="parque"
                     depto={defaultValue.departamento_id}
-                    //onChange={ async e => {
-                    //    setLocalServico(e.target.value)
-                    //    const res = await getProfissionais(e.target.value, deptoSelecionado)
-                    //    if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
-                    //}}
                     defaultValue={defaultValue?.local_servico_id ?? ""}
                     error={errors.hasOwnProperty('local_servico_id')}
                     helperText={errors.local_servico_id || ""}
-                    //required
+                    required
                 />
 
                 <CampoTipoServicos 

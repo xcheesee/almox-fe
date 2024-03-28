@@ -8,7 +8,6 @@ import Selecao from '../../Selecao';
 import CampoLocais from '../../CampoLocais';
 import CampoProcessoSei from '../../CampoProcessoSei';
 import CampoNumContrato from '../../CampoNumContrato';
-//import BoxMateriais from '../BoxMateriais';
 import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../../common/utils';
 import { useSetAtom } from 'jotai';
 import { snackbarAtom } from '../../../atomStore';
@@ -27,22 +26,19 @@ const FormEntradaMaterial = (props) => {
         setErrors,
         materiais,
     } = props;
-
     const queryClient = useQueryClient()
 
     const [deptoSelecionado, setDeptoSelecionado] = useState("")
+    const [baseSelecionada, setBaseSelecionada] = useState(defaultValue?.local_id ?? "")
     const setSnackbar = useSetAtom(snackbarAtom)
-    //const materiaisInterno = useAtomValue(matTipoListAtom)
 
-    const editMutation = useMutation(async (data) => {
+    const editMutation = useMutation(async (formData) => {
         setOpenConfirmar(false)
         setCarregando(true)
         return await enviaEdicao(
-            data, 
+            formData, 
             'entrada', 
             defaultValue.id, 
-            //materiaisInterno,
-            //'entrada_items'
         )
     }, {
             onSuccess: async (res) => {
@@ -57,14 +53,12 @@ const FormEntradaMaterial = (props) => {
                 setFormSnackbar(setSnackbar, "", { error: true, status: res.status, edit: true })
             }})
 
-    const addMutation = useMutation(async (data) => {
+    const addMutation = useMutation(async (formData) => {
         setOpenConfirmar(false)
         setCarregando(true)
         return await enviaNovoForm(
-            data, 
+            formData, 
             'entrada', 
-            //materiaisInterno,
-            //'entrada_items'
         )
     }, {
             onSuccess: async (res) => {
@@ -83,7 +77,6 @@ const FormEntradaMaterial = (props) => {
     const departamentoKeys = Object.keys(departamentos)
 
     useEffect(() => {
-        setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if(acao === 'editar') {
             setDeptoSelecionado(defaultValue?.departamento_id)
         } else if (departamentoKeys.length === 1) {
@@ -96,17 +89,16 @@ const FormEntradaMaterial = (props) => {
                 id="nova-entrada"
                 onSubmit={(e) => {
                     e.preventDefault()
-                    //const formData = new FormData(e.target)
+                    const formData = new FormData(e.target)
                     acao === 'editar'
-                        ? editMutation.mutate(e)
-                        : addMutation.mutate(e)
+                        ? editMutation.mutate(formData)
+                        : addMutation.mutate(formData)
                 }}
             >
                 <Selecao
                     label="Departamento"
                     name="departamento_id"
                     defaultValue={  departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id }
-                    //defaultValue={ defaultValue?.departamento_id }
                     onChange={ e => {
                         setDeptoSelecionado(e.target.value)
                     }}
@@ -137,7 +129,8 @@ const FormEntradaMaterial = (props) => {
                     label="Local de destino dos materiais"
                     tipo="base"
                     depto={deptoSelecionado}
-                    defaultValue={defaultValue?.local_id}
+                    onChange={(e) => setBaseSelecionada(e.target.value)}
+                    value={baseSelecionada}
                     error={errors.hasOwnProperty('local_id')}
                     helperText={errors.local_id || ""}
                     required

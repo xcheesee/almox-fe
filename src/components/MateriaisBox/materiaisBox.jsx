@@ -20,7 +20,6 @@ export default function MateriaisBox({
     inputName="",
     entrada=false
 }) {
-
     const [selectedTipo, setSelectedTipo] = useState("")
     const tipos = useQuery({
         queryKey: ['tiposMats'], 
@@ -61,6 +60,7 @@ export default function MateriaisBox({
                     enabled={!!selectedTipo} 
                     defaultValue={defaultValue} 
                     inputName={inputName}
+                    entrada={entrada}
                 />
             </Box>
         </Box>);
