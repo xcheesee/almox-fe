@@ -124,6 +124,7 @@ const FormEntradaMaterial = (props) => {
                     error={errors.hasOwnProperty('data_entrada')}
                     helperText={errors.data_entrada || ""}
                     fullWidth
+                    required
                 />
 
                 <CampoLocais 

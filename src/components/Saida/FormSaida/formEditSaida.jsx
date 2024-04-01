@@ -18,7 +18,6 @@ export default function FormEditSaida({
     setOpen
 }) {
     const query = useQueryClient()
-    console.log(defaultValue)
 
     const profissionais = useAtomValue(profissionaisAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -43,8 +42,6 @@ export default function FormEditSaida({
             })
         },
         onSettled: () => setCarregando(false)
-
-
     })
 
     return(
@@ -64,12 +61,11 @@ export default function FormEditSaida({
                     const id = defaultValue.id
                     editSaidaMutation.mutate({id, formData})
                     setCarregando(false)
-
                 }}
             >
                 {!defaultValue.ordem_servico_id && <Box className="font-thin text-red-500">Sem O.S</Box>}
                 <OSAutocomplete 
-                    disabled={!!defaultValue?.ordem_servico_id}
+                    disabled={ !!defaultValue?.ordem_servico_id }
                     defaultValue={defaultValue?.ordem_servico_id ?? ""}
                 />
 

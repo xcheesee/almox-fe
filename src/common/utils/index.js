@@ -383,7 +383,7 @@ export const getTipoServicos = async ({depto}) => {
   throw errorBuilder(res, "Nao foi possivel recuperar os tipos de serviço")
 }
 
-export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
+export const getMatItens = async (tipoRota, ordemServico=false, baseSelecionada, deptoSelecionado) => {
   const url = 
     ordemServico
       ? `${process.env.REACT_APP_API_URL}/base/items?base=${baseSelecionada}&depto=${deptoSelecionado}&tipo=${tipoRota}`

@@ -29,7 +29,13 @@ export default function MateriaisBox({
     const materiais = useQuery({
         queryKey: ['matsByTipo', selectedTipo, deptoSelecionado, baseSelecionada],
         queryFn: () => getMatItens(selectedTipo, true, baseSelecionada, deptoSelecionado),
-        enabled: !!selectedTipo,
+        enabled: !!selectedTipo && !entrada,
+    })
+
+    const materiaisEntrada = useQuery({
+        queryKey: ['matsEntrada', selectedTipo, deptoSelecionado, baseSelecionada],
+        queryFn: () => getMatItens(selectedTipo, false, baseSelecionada, deptoSelecionado),
+        enabled: entrada,
     })
 
     if(tipos.isLoading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
@@ -55,8 +61,8 @@ export default function MateriaisBox({
             </ConditionalTooltipWrapper>
             <Box className="col-span-3">
                 <MaterialList 
-                    materiais={materiais} 
-                    isLoading={materiais.isLoading} 
+                    materiais={entrada ? materiaisEntrada : materiais} 
+                    isLoading={entrada ? materiaisEntrada.isLoading : materiais.isLoading} 
                     enabled={!!selectedTipo} 
                     defaultValue={defaultValue} 
                     inputName={inputName}
