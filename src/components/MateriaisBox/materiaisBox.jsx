@@ -22,8 +22,9 @@ export default function MateriaisBox({
 }) {
     const [selectedTipo, setSelectedTipo] = useState("")
     const tipos = useQuery({
-        queryKey: ['tiposMats'], 
-        queryFn: getMatTipos,
+        queryKey: ['tiposMats', deptoSelecionado], 
+        queryFn: () => getMatTipos(deptoSelecionado),
+        enabled: !!deptoSelecionado
     });
 
     const materiais = useQuery({
@@ -35,7 +36,7 @@ export default function MateriaisBox({
     const materiaisEntrada = useQuery({
         queryKey: ['matsEntrada', selectedTipo, deptoSelecionado, baseSelecionada],
         queryFn: () => getMatItens(selectedTipo, false, baseSelecionada, deptoSelecionado),
-        enabled: entrada,
+        enabled: entrada && !!selectedTipo,
     })
 
     if(tipos.isLoading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
