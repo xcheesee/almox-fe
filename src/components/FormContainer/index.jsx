@@ -10,7 +10,7 @@ const FormContainer = (props) => {
 
     return (
         <Box
-            className="flex flex-col gap-10 p-8 mt-4"
+            className="flex flex-col gap-10 py-2 px-4 mt-4"
         >
             <Box
                 component="form" 

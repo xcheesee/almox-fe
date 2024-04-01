@@ -1,4 +1,4 @@
-import { MenuItem, TextField } from "@mui/material"
+import { Box, MenuItem, TextField } from "@mui/material"
 import CampoTipoServicos from '../../CampoTipoServicos';
 import BoxProfissionais from "../../BoxProfissionais";
 import CampoLocais from "../../CampoLocais";
@@ -18,13 +18,14 @@ export default function FormEditSaida({
     setOpen
 }) {
     const query = useQueryClient()
-
+    console.log(defaultValue)
 
     const profissionais = useAtomValue(profissionaisAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
 
     const editSaidaMutation = useMutation({
         mutationFn: editaSaida,
+        onMutate: () => setCarregando(true),
         onSuccess: () => {
             query.invalidateQueries(['saidas']) 
             setSnackbar({
@@ -40,7 +41,9 @@ export default function FormEditSaida({
                 severity: 'error',
                 message: `${err.errors}`
             })
-        }
+        },
+        onSettled: () => setCarregando(false)
+
 
     })
 
@@ -64,8 +67,9 @@ export default function FormEditSaida({
 
                 }}
             >
+                {!defaultValue.ordem_servico_id && <Box className="font-thin text-red-500">Sem O.S</Box>}
                 <OSAutocomplete 
-                    disabled={defaultValue?.ordem_servico_id}
+                    disabled={!!defaultValue?.ordem_servico_id}
                     defaultValue={defaultValue?.ordem_servico_id ?? ""}
                 />
 
@@ -104,10 +108,10 @@ export default function FormEditSaida({
                     label="Local de serviço"
                     name="local_servico_id"
                     tipo="parque"
-                    depto={defaultValue.departamento_id}
+                    depto={defaultValue?.departamento_id}
                     defaultValue={defaultValue?.local_servico_id ?? ""}
                     error={errors.hasOwnProperty('local_servico_id')}
-                    helperText={errors.local_servico_id || ""}
+                    helperText={errors?.local_servico_id ?? ""}
                     required
                 />
 

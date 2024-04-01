@@ -48,10 +48,7 @@ const DialogEditar = ({
                         variant="contained" sx={{ gap: '0.5rem' }}
                         onClick={() => setOpenConfirmar(true)}
                     >
-                        {carregando
-                            ? <CircularProgress color="color" size="1rem" />
-                            : ''
-                        }
+                        { carregando && <CircularProgress color="color" size="1rem" /> }
                         Editar
                     </Button>
                 </Box>
