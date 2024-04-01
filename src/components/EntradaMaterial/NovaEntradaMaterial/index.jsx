@@ -14,7 +14,6 @@ const NovaEntradaMaterial = (props) => {
         setOpenConfirmar,
         carregando,
         setCarregando,
-        //navigate,
         deptoSelecionado,
         setDeptoSelecionado
     } = props;
@@ -29,7 +28,6 @@ const NovaEntradaMaterial = (props) => {
             
             <FormEntradaMaterial
                 acao='cadastrar'
-                //navigate={navigate}
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando}
                 deptoSelecionado={deptoSelecionado}

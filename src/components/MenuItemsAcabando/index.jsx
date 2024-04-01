@@ -36,7 +36,7 @@ const MenuItemsAcabando = ({ username, style }) => {
     return (
         <>
             <Badge
-                badgeContent={itemsAcabando?.data?.length}
+                badgeContent={itemsAcabando?.data?.data?.length}
                 variant="dot"
                 color="error"
                 anchorOrigin={{
@@ -48,7 +48,7 @@ const MenuItemsAcabando = ({ username, style }) => {
                     className="flex items-center gap-1" 
                     sx={style.iconButton}
                     onClick={handleClick}
-                    disabled={itemsAcabando?.data?.length === 0}
+                    disabled={itemsAcabando?.data?.data?.length === 0}
                 >
                     <PersonIcon fontSize="small" sx={{ color: (theme) => theme.palette.color.bg }} />
                     <Typography>Olá, {username}</Typography>

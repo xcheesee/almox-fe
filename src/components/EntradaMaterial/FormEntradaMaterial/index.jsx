@@ -20,7 +20,6 @@ const FormEntradaMaterial = (props) => {
         defaultValue, 
         setOpenEditar, 
         setOpenConfirmar, 
-        //navigate, 
         acao,
         setCarregando,
         errors,
