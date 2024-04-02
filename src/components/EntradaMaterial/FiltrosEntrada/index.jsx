@@ -4,7 +4,6 @@ import Filtros from '../../Filtros';
 import CampoDataRange from '../../CampoDataRange';
 import { getMatTipos } from '../../../common/utils';
 import { useQuery } from '@tanstack/react-query'
-import { useAuth } from '../../../common/utils/hooks';
 
 const FiltrosEntrada = () => {
     const tipos = useQuery({

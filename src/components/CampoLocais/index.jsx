@@ -1,20 +1,23 @@
 import { MenuItem, TextField } from '@mui/material';
 import { useQuery } from "@tanstack/react-query"
 import { getLocais } from '../../common/utils';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-const CampoLocais = ({
-    name, 
-    label, 
-    defaultValue=null, 
-    value=null,
-    tipo, 
-    depto="", 
-    getAllBases=false, 
-    disabled=false,
-    onChange=() => {}, 
-    onLocaisQuery=() => {},
-}) => {
+const CampoLocais = React.forwardRef(({
+        name, 
+        label, 
+        defaultValue=null, 
+        value=null,
+        tipo, 
+        depto="", 
+        getAllBases=false, 
+        disabled=false,
+        onChange=() => {}, 
+        onLocaisQuery=() => {},
+        ...other
+    }, 
+    ref
+    ) => {
     const [filteredLocais, setFilteredLocais] = useState([])
     const [dftVal, setDftVal] = useState(defaultValue)
     const locais = useQuery({
@@ -32,6 +35,8 @@ const CampoLocais = ({
             select
             value={0}
             disabled
+            ref={ref}
+            {...other}
         >
             <MenuItem value={0}>Carregando...</MenuItem>
         </TextField>
@@ -47,6 +52,8 @@ const CampoLocais = ({
             disabled={disabled}
             fullWidth
             required
+            ref={ref}
+            {...other}
         >
             {filteredLocais?.map((local, i) => (
                     <MenuItem value={local.id} key={`local-${i}`}>
@@ -68,6 +75,8 @@ const CampoLocais = ({
             disabled={disabled}
             fullWidth
             required
+            ref={ref}
+            {...other}
         >
             {filteredLocais?.map(local => (
                 <MenuItem key={local.id} value={local.id}>
@@ -76,6 +85,6 @@ const CampoLocais = ({
                 ))
             ?? <MenuItem></MenuItem>}
         </TextField>
-)};
+)});
 
 export default CampoLocais;

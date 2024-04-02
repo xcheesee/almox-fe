@@ -7,10 +7,11 @@ const CampoProcessoSei = ({ defaultValue, ...props }) => (
         mask="9999.9999/9999999-9"
         maskChar=" "
         defaultValue={defaultValue}
+        {...props}
     >
-        {() => 
+        {(inputProps) => 
             <TextField 
-                {...props}
+                {...inputProps}
             />
         }
     </InputMask>

@@ -7,7 +7,6 @@ import {
     Paper,
 } from '@mui/material';
 import FormContainer from '../../FormContainer';
-import Selecao from '../../Selecao';
 import CampoLocais from '../../CampoLocais';
 import BoxProfissionais from '../../BoxProfissionais';
 import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../../common/utils';
@@ -17,6 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../../TituloTexto';
 import { useLocation, useNavigate } from 'react-router-dom';
 import MateriaisBox from '../../MateriaisBox';
+import ConditionalTooltip from '../../ConditionalTooltip';
 
 const FormOrdemServico = ({
     defaultValue, 
@@ -110,7 +110,8 @@ const FormOrdemServico = ({
                     : addMutation.mutate(formData)
             }}
         >
-            <Selecao
+            <TextField
+                select
                 label="Departamento"
                 name="departamento_id"
                 onChange={async (e) => { 
@@ -120,49 +121,62 @@ const FormOrdemServico = ({
                 value={deptoSelecionado}
                 error={errors?.hasOwnProperty('departamento_id')}
                 helperText={errors?.departamento_id ?? " "}
-                disabled={defaultValue?.departamento_id ?? false}
+                disabled={ !!defaultValue?.departamento_id || false }
                 required
             >
+                <MenuItem value={99999999999}></MenuItem>
                 {Object.entries(departamentos).map(departamento => (
                     <MenuItem key={departamento[0]} value={departamento[0]}>
                         {departamento[1]}
                     </MenuItem>
-                ))}
-            </Selecao>
+                )) }
+            </TextField>
 
-            <CampoLocais
-                label="Base de origem dos materiais"
-                name="origem_id"
-                tipo="base"
-                depto={deptoSelecionado}
-                onChange={(e) => setBaseSelecionada(e.target.value)}
-                onLocaisQuery={(res) => setBaseSelecionada(prev => {
-                    return prev === "" ? (res.length === 1 ? res[0].id : "") : prev
-                })}
-                value={baseSelecionada}
-                error={errors.hasOwnProperty('origem_id')}
-                helperText={errors.origem_id || ""}
-                disabled={!deptoSelecionado}
-                required
-            />
 
-            <CampoLocais 
-                label="Local de Serviço"
-                name="local_servico_id"
-                tipo="parque"
-                depto={deptoSelecionado}
-                value={localServico}
-                onChange={ async e => {
-                    setLocalServico(e.target.value)
-                    //if(deptoSelecionado) {
-                    //    const res = await getProfissionais(e.target.value, deptoSelecionado)
-                    //    setProfissionaisDisponiveis(res.data)
-                    //} 
-                }}
-                error={errors.hasOwnProperty('local_servico_id')}
-                helperText={errors.local_servico_id || ""}
-                required
-            />
+            <ConditionalTooltip 
+                enabled={!deptoSelecionado}
+                texto={"Selecione um Departamento!"}
+            >
+                <CampoLocais
+                    label="Base de origem dos materiais"
+                    name="origem_id"
+                    tipo="base"
+                    depto={deptoSelecionado}
+                    onChange={(e) => setBaseSelecionada(e.target.value)}
+                    onLocaisQuery={(res) => setBaseSelecionada(prev => {
+                        return prev === "" ? (res.length === 1 ? res[0].id : "") : prev
+                    })}
+                    value={baseSelecionada}
+                    error={errors.hasOwnProperty('origem_id')}
+                    helperText={errors.origem_id || ""}
+                    disabled={!deptoSelecionado}
+                    required
+                />
+            </ConditionalTooltip>
+
+            <ConditionalTooltip 
+                enabled={!deptoSelecionado}
+                texto={"Selecione um Departamento!"}
+            >
+                <CampoLocais 
+                    label="Local de Serviço"
+                    name="local_servico_id"
+                    tipo="parque"
+                    depto={deptoSelecionado}
+                    value={localServico}
+                    onChange={ async e => {
+                        setLocalServico(e.target.value)
+                        //if(deptoSelecionado) {
+                        //    const res = await getProfissionais(e.target.value, deptoSelecionado)
+                        //    setProfissionaisDisponiveis(res.data)
+                        //} 
+                    }}
+                    error={errors.hasOwnProperty('local_servico_id')}
+                    helperText={errors.local_servico_id || ""}
+                    disabled={!deptoSelecionado}
+                    required
+                />
+            </ConditionalTooltip>
 
             <TextField 
                 defaultValue={defaultValue?.especificacao}

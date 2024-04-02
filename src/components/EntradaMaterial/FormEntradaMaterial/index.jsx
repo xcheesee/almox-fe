@@ -4,7 +4,6 @@ import {
     TextField,
 } from '@mui/material';
 import FormContainer from '../../FormContainer';
-import Selecao from '../../Selecao';
 import CampoLocais from '../../CampoLocais';
 import CampoProcessoSei from '../../CampoProcessoSei';
 import CampoNumContrato from '../../CampoNumContrato';
@@ -14,6 +13,7 @@ import { snackbarAtom } from '../../../atomStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import MateriaisBox from '../../MateriaisBox';
 import { useNavigate } from 'react-router-dom';
+import ConditionalTooltip from '../../ConditionalTooltip';
 
 const FormEntradaMaterial = (props) => {
     const { 
@@ -96,7 +96,8 @@ const FormEntradaMaterial = (props) => {
                         : addMutation.mutate(formData)
                 }}
             >
-                <Selecao
+                <TextField
+                    select
                     label="Departamento"
                     name="departamento_id"
                     defaultValue={  departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id }
@@ -104,15 +105,15 @@ const FormEntradaMaterial = (props) => {
                         setDeptoSelecionado(e.target.value)
                     }}
                     error={ errors.hasOwnProperty('departamento_id') }
-                    helperText={ errors.departamento_id || "" }
+                    helperText={ errors?.departamento_id ?? " " }
                     required
                 >
                     {Object.entries(departamentos).map(departamento => (
-                        <MenuItem key={departamento[0]} value={departamento[0]}>
+                        <MenuItem key={`depto-${departamento[0]}`} value={departamento[0]}>
                             {departamento[1]}
                         </MenuItem>
                     ))}
-                </Selecao>
+                </TextField>
 
                 <TextField 
                     defaultValue={defaultValue?.data_entrada}
@@ -126,17 +127,24 @@ const FormEntradaMaterial = (props) => {
                     required
                 />
 
-                <CampoLocais 
-                    name="local_id"
-                    label="Local de destino dos materiais"
-                    tipo="base"
-                    depto={deptoSelecionado}
-                    onChange={(e) => setBaseSelecionada(e.target.value)}
-                    value={baseSelecionada}
-                    error={errors.hasOwnProperty('local_id')}
-                    helperText={errors.local_id || ""}
-                    required
-                />
+
+                <ConditionalTooltip 
+                    enabled={!deptoSelecionado}
+                    texto={"Selecione um Departamento!"}
+                >
+                    <CampoLocais 
+                        name="local_id"
+                        label="Local de destino dos materiais"
+                        tipo="base"
+                        depto={deptoSelecionado}
+                        onChange={(e) => setBaseSelecionada(e.target.value)}
+                        value={baseSelecionada}
+                        error={errors.hasOwnProperty('local_id')}
+                        helperText={errors.local_id || ""}
+                        disabled={!deptoSelecionado}
+                        required
+                    />
+                </ConditionalTooltip>
 
                 <CampoProcessoSei 
                     name="processo_sei"

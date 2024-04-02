@@ -3,15 +3,16 @@ import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from "../../common/u
 import { Box, CircularProgress, MenuItem, TextField, Tooltip, Typography } from "@mui/material";
 import { useState } from "react";
 import MaterialList from "./MaterialList";
+import ConditionalTooltip from "../ConditionalTooltip";
 
-function ConditionalTooltipWrapper({enabled, texto, children}) {
-    if(!enabled) return children
-    return (
-        <Tooltip title={texto}>
-            {children}
-        </Tooltip>
-    )
-}
+//function ConditionalTooltipWrapper({enabled, texto, children}) {
+//    if(!enabled) return children
+//    return (
+//        <Tooltip title={texto}>
+//            {children}
+//        </Tooltip>
+//    )
+//}
 
 export default function MateriaisBox({
     baseSelecionada="",
@@ -24,7 +25,7 @@ export default function MateriaisBox({
     const tipos = useQuery({
         queryKey: ['tiposMats', deptoSelecionado], 
         queryFn: () => getMatTipos({depto: deptoSelecionado}),
-        enabled: !!deptoSelecionado
+        enabled: !!deptoSelecionado || entrada
     });
 
     const materiais = useQuery({
@@ -39,32 +40,34 @@ export default function MateriaisBox({
         enabled: entrada && !!selectedTipo,
     })
 
-    if(tipos.isLoading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
+    if(tipos.isLoading && !!deptoSelecionado) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
 
     return ( 
         <Box className="grid grid-cols-3 gap-4 w-full py-4">
             <Typography className="col-span-3 !text-3xl !font-thin">Materiais</Typography>
-            <ConditionalTooltipWrapper enabled={baseSelecionada==="" && !entrada} texto="Selecione uma base">
+            <ConditionalTooltip enabled={deptoSelecionado === "" || (baseSelecionada==="" && !entrada)} texto={deptoSelecionado === "" ? "Selecione um Departamento!" : "Selecione uma base"}>
                 <TextField
                     select
                     label="Tipo de material"
                     value={selectedTipo}
                     onChange={(e) => setSelectedTipo(e.target.value)}
                     className="col-span-2"
-                    disabled={baseSelecionada === "" && !entrada}
+                    disabled={deptoSelecionado === "" || (baseSelecionada === "" && !entrada)}
                 >
                     {tipos?.data?.data?.map((val, i) => 
                         <MenuItem value={val.id} key={`m-item-${i}`} >
                             {primeiraLetraMaiuscula(val.nome)}
-                        </MenuItem>)
+                        </MenuItem>
+                        ) 
+                    ?? <MenuItem></MenuItem>
                     }
                 </TextField>
-            </ConditionalTooltipWrapper>
+            </ConditionalTooltip>
             <Box className="col-span-3">
                 <MaterialList 
                     materiais={entrada ? materiaisEntrada : materiais} 
                     isLoading={entrada ? materiaisEntrada.isLoading : materiais.isLoading} 
-                    enabled={!!selectedTipo} 
+                    enabled={ !!selectedTipo } 
                     defaultValue={defaultValue} 
                     inputName={inputName}
                     entrada={entrada}

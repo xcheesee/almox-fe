@@ -14,11 +14,11 @@ function SelectedMaterialList({
             : materialByTipos[material.tipo_item_id] = {nome: material.tipo_item, mats: [material]}
     })
 
-    return Object.values(materialByTipos)?.map( val => {
+    return Object.values(materialByTipos)?.map( (val, i) => {
         return (
-            <Box className="pt-2">
+            <Box className="pt-2" key={`material-${i}`}>
                 <Typography className="!text-2xl !text-primary-700">{primeiraLetraMaiuscula(val.nome)}</Typography>
-                {val.mats.map( item =>  <Box className="px-4 text-lg font-thin text-primary-600 font-[Roboto]">
+                {val.mats.map( (item, i) =>  <Box className="px-4 text-lg font-thin text-primary-600 font-[Roboto]" key={`item-${i}`}>
                         {item.nome} - <span className="font-bold">{item.quantidade}</span> {item.medida}
                     </Box>
                 )}
@@ -111,7 +111,7 @@ export default function MaterialList({
         return (
             <Box className="px-8 flex flex-col gap-4">
                 {/** input escondido que mantem os itens selecionados pelo usuario */}
-                <input value={inputData} className="hidden" name={inputName} />
+                <input value={inputData} readOnly className="hidden" name={inputName} />
                 <Box className="flex flex-col max-h-80 py-2 overflow-y-auto">
                     <Box>
                         {displayVal}
