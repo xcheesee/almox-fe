@@ -365,7 +365,9 @@ export const getMateriais = async (rota, id) => {
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais!")
 }
 
-export const getMatTipos = async (depto) => {
+export const getMatTipos = async ({
+    depto=""
+}) => {
   const url = `${process.env.REACT_APP_API_URL}/tipo_items/${depto}`;
   const options = {
       method: 'GET',
@@ -381,7 +383,9 @@ export const getMatTipos = async (depto) => {
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais")
 }
 
-export const getTipoServicos = async ({depto}) => {
+export const getTipoServicos = async ({
+    depto=""
+}) => {
   const url = `${process.env.REACT_APP_API_URL}/tipo_servicos/${depto}`;
   const options = {
       method: 'GET',

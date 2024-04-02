@@ -4,11 +4,12 @@ import Filtros from '../../Filtros';
 import CampoDataRange from '../../CampoDataRange';
 import { getMatTipos } from '../../../common/utils';
 import { useQuery } from '@tanstack/react-query'
+import { useAuth } from '../../../common/utils/hooks';
 
 const FiltrosEntrada = () => {
-    const tipos = useQuery(['tiposMateriais'], getMatTipos, {
-        staleTime: 120000,
-        cacheTime: 120000,
+    const tipos = useQuery({
+        queryKey: ['tiposMateriais'], 
+        queryFn: () => getMatTipos({}),
     });
 
     const [datas, setDatas] = useState(['']);

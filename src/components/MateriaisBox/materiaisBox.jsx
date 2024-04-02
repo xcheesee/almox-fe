@@ -23,7 +23,7 @@ export default function MateriaisBox({
     const [selectedTipo, setSelectedTipo] = useState("")
     const tipos = useQuery({
         queryKey: ['tiposMats', deptoSelecionado], 
-        queryFn: () => getMatTipos(deptoSelecionado),
+        queryFn: () => getMatTipos({depto: deptoSelecionado}),
         enabled: !!deptoSelecionado
     });
 
