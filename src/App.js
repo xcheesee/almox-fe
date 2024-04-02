@@ -26,6 +26,8 @@ import Saida from './Pages/Saida';
 import { AuthProvider } from './common/utils/hooks';
 import ProtectedRoute from './components/ProtectedRoute';
 import Margens from './components/Margens';
+import { useQuery } from '@tanstack/react-query';
+import { AuthRequest } from './common/utils';
 
 //Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
 

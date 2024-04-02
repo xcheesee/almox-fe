@@ -200,6 +200,20 @@ export async function enviaNovaTransferencia(formData) {
 /*                                       Read                                                         */
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 
+export async function AuthRequest() {
+  const url = `${process.env.REACT_APP_API_URL}/perfil`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      ...headerBuilder()
+    },
+  }
+  const res = await fetch(url, options)
+  if(res.status === 401) throw res
+  return await res.json()
+}
+
 export const loginRequest = async (inputObject) => {
   const url = `${process.env.REACT_APP_API_URL}/login`;
   const options = {

@@ -1,15 +1,30 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../common/utils/hooks";
-import { authCreateEntrada, authCreateOrdem } from "../../common/utils";
+import { useAuth, useAuthenticatedQuery } from "../../common/utils/hooks";
+import { AuthRequest, authCreateEntrada, authCreateOrdem } from "../../common/utils";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ProtectedRoute({children}) {
+    const queryClient = useQueryClient()
     const location = useLocation()
     const { 
         token,
         perfil,
      } = useAuth()
-    if(!token) return <Navigate to="/" />;
-    if(location.pathname === '/entrada/nova-entrada' && authCreateEntrada(perfil) === 'none') return <Navigate to="/entrada" />
-    if(location.pathname === '/ordemservico/nova-ordem' && authCreateOrdem(perfil) === 'none') return <Navigate to="/ordemservico" />
+
+    const authQuery = useAuthenticatedQuery({
+        queryFn: () => AuthRequest(),
+        queryKey: ['auth'],
+    })
+    //refetch a query toda vez que houver uma mudanca de pagina
+    //useEffect(() => {
+    //    queryClient.invalidateQueries({
+    //        queryKey: ['auth']
+    //    })
+    //}, [location.pathname])
+
+    if(!token && !authQuery.isLoading) return <Navigate to="/" />;
+    else if(location.pathname === '/entrada/nova-entrada' && authCreateEntrada(perfil) === 'none') return <Navigate to="/entrada" />;
+    else if(location.pathname === '/ordemservico/nova-ordem' && authCreateOrdem(perfil) === 'none') return <Navigate to="/ordemservico" />;
     return children;
 }
