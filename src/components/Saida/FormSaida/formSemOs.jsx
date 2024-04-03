@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { 
     MenuItem,
     TextField,
 } from '@mui/material';
 import CampoLocais from '../../CampoLocais';
 import CampoTipoServicos from '../../CampoTipoServicos';
-import { getProfissionais } from '../../../common/utils';
+//import { getProfissionais } from '../../../common/utils';
+import ConditionalTooltip from '../../ConditionalTooltip';
 
 export default function FormSemOs ({
     baseSelecionada,
     setBaseSelecionada,
     deptoSelecionado,
     setDeptoSelecionado,
-    setProfissionaisDisponiveis,
+    //setProfissionaisDisponiveis,
     errors={},
 }) {
 
-    const [localServico, setLocalServico] = useState()
+    //const [localServico, setLocalServico] = useState()
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
@@ -42,8 +43,8 @@ export default function FormSemOs ({
                 name="departamento_id"
                 onChange={async (e) => {
                     setDeptoSelecionado(e.target.value)
-                    const res = await getProfissionais(localServico, e.target.value)
-                    if(localServico) setProfissionaisDisponiveis(res.data) 
+                    //const res = await getProfissionais(localServico, e.target.value)
+                    //if(localServico) setProfissionaisDisponiveis(res.data) 
                 }}
                 value={deptoSelecionado ?? ""}
                 //defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
@@ -71,7 +72,7 @@ export default function FormSemOs ({
                         A Iniciar
                     </MenuItem>
             </TextField>
-    
+            <ConditionalTooltip enabled={!deptoSelecionado} texto="Selecione um departamento!">
             <CampoLocais
                 label="Base de origem dos materiais"
                 name="origem_id"
@@ -81,26 +82,31 @@ export default function FormSemOs ({
                 onLocaisQuery={(res) => setBaseSelecionada(prev => {
                     return prev === "" ? (res.length === 1 ? res[0].id : "") : prev
                 })}
-                value={baseSelecionada}
+                value={baseSelecionada ?? ""}
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors?.origem_id ?? ""}
+                disabled={!deptoSelecionado}
                 //required
             />
+            </ConditionalTooltip>
 
-            <CampoLocais 
-                label="Local de serviço"
-                name="local_servico_id"
-                tipo="parque"
-                depto={deptoSelecionado}
-                onChange={ async e => {
-                    setLocalServico(e.target.value)
-                    //const res = await getProfissionais(e.target.value, deptoSelecionado)
-                    //if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
-                }}
-                error={errors.hasOwnProperty('local_servico_id')}
-                helperText={errors.local_servico_id || ""}
-                //required
-            />
+            <ConditionalTooltip enabled={!deptoSelecionado} texto="Selecione um departamento!">
+                <CampoLocais 
+                    label="Local de serviço"
+                    name="local_servico_id"
+                    tipo="parque"
+                    depto={deptoSelecionado}
+                    //onChange={ async e => {
+                    //    //setLocalServico(e.target.value)
+                    //    //const res = await getProfissionais(e.target.value, deptoSelecionado)
+                    //    //if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
+                    //}}
+                    error={errors.hasOwnProperty('local_servico_id')}
+                    helperText={errors.local_servico_id || ""}
+                    disabled={!deptoSelecionado}
+                    //required
+                />
+            </ConditionalTooltip>
 
             <CampoTipoServicos 
                 label="Tipo de Serviço"

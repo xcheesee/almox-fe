@@ -116,7 +116,7 @@ export default function FormEditSaida({
                     name="tipo_servico_id"
                     id="tipo_servico_id"
                     deptoSelecionado={defaultValue?.departamento_id}
-                    defaultValue={defaultValue?.tipo_servico_id}
+                    defaultValue={defaultValue?.tipo_servico_id ?? ""}
                     error={errors.hasOwnProperty('local_servico_id')}
                     helperText={errors.tipo_servico_id || ""}
                 />
@@ -154,7 +154,7 @@ export default function FormEditSaida({
                     label={"Profissionais"}
                     baseSelecionada={defaultValue.origem_id}
                     deptoSelecionado={defaultValue.departamento_id}
-                    defaultValue={defaultValue.profissionais}
+                    defaultValue={defaultValue?.profissionais ?? ""}
                 />
             </FormContainer>
     )

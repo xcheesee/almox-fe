@@ -51,7 +51,7 @@ export default function BoxProfissionais ({
         horas_empregadas: "horas_empregadas"
     }
 
-    const [inputErrors, setInputErrors] = useState({ });
+    const [inputErrors, setInputErrors] = useState({});
 
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
@@ -113,7 +113,7 @@ export default function BoxProfissionais ({
                             size="small"
                             onChange={e => setCurrProfissional( prev => ({...prev, nome:e.target.value}) )}
                             disabled={!profissionaisDisponiveis?.data}
-                            value={currProfissional.nome}
+                            value={currProfissional?.nome ?? ""}
                             error={inputErrors[inputTags.nome]}
                             helperText={inputErrors[inputTags.nome] ? "Defina um profissional" : ""}
                             className="col-span-2"
@@ -136,7 +136,7 @@ export default function BoxProfissionais ({
                                 name={inputTags.data_inicio}
                                 label="Data de Inicio"
                                 InputLabelProps={{ shrink: true }}
-                                value={currProfissional.data_inicio}
+                                value={currProfissional?.data_inicio ?? ""}
                                 onChange={e => setCurrProfissional(prev => ({...prev, data_inicio:e.target.value}) )}
                                 error={inputErrors[inputTags.data_inicio]}
                                 helperText={inputErrors[inputTags.data_inicio] ? "Defina a data de inicio" : ""}
@@ -147,7 +147,7 @@ export default function BoxProfissionais ({
                             <TextField
                                 name={inputTags.horas_empregadas}
                                 label="Horas Empregadas"
-                                value={currProfissional.horas_empregadas}
+                                value={currProfissional?.horas_empregadas ?? ""}
                                 onChange={e => setCurrProfissional( prev => ({...prev, horas_empregadas:e.target.value}) )}
                                 fullWidth
                                 size="small"
@@ -193,7 +193,7 @@ export default function BoxProfissionais ({
                                     size="small"
                                     onChange={(e) => handleChange(e, index)}
                                     //disabled={!profissionaisDisponiveis?.data}
-                                    value={profissional.nome}
+                                    value={profissional?.nome ?? ""}
                                     className="col-span-2"
                                     fullWidth
                                 />
@@ -215,7 +215,7 @@ export default function BoxProfissionais ({
                                             name="data_inicio"
                                             label="Data de Inicio"
                                             InputLabelProps={{ shrink: true }}
-                                            value={profissional.data_inicio}
+                                            value={profissional?.data_inicio ?? ""}
                                             onChange={e => handleChange(e, index)}
                                             fullWidth
                                             size="small"
@@ -224,7 +224,7 @@ export default function BoxProfissionais ({
                                         <TextField
                                             name="horas_empregadas"
                                             label="Horas Empregadas"
-                                            value={profissional.horas_empregadas}
+                                            value={profissional?.horas_empregadas ?? ""}
                                             onChange={e => handleChange(e, index)}
                                             fullWidth
                                             size="small"

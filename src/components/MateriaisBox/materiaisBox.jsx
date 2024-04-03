@@ -36,7 +36,10 @@ export default function MateriaisBox({
     return ( 
         <Box className="grid grid-cols-3 gap-4 w-full py-4">
             <Typography className="col-span-3 !text-3xl !font-thin">Materiais</Typography>
-            <ConditionalTooltip enabled={deptoSelecionado === "" || (baseSelecionada==="" && !entrada)} texto={deptoSelecionado === "" ? "Selecione um Departamento!" : "Selecione uma base"}>
+            <ConditionalTooltip 
+                enabled={deptoSelecionado === "" || (baseSelecionada==="" && !entrada)} 
+                texto={deptoSelecionado === "" ? "Selecione um Departamento!" : "Selecione uma base"}
+            >
                 <TextField
                     select
                     label="Tipo de material"

@@ -19,7 +19,7 @@ const CampoLocais = React.forwardRef(({
     ref
     ) => {
     const [filteredLocais, setFilteredLocais] = useState([])
-    const [dftVal, setDftVal] = useState(defaultValue)
+    const [dftVal, setDftVal] = useState(defaultValue ?? "")
     const locais = useQuery({
         queryKey: ['locais', depto, tipo], 
         queryFn: () => getLocais(depto, tipo), 
@@ -46,7 +46,10 @@ const CampoLocais = React.forwardRef(({
         <TextField
             select
             value={dftVal}
-            onChange={(e) => setDftVal(e.target.value)}
+            onChange={(e) => {
+                setDftVal(e.target.value)
+                onChange(e)
+            }}
             name={name}
             label={label}
             disabled={disabled}
