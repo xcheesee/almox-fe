@@ -3,7 +3,6 @@ import {
     Typography,
     Paper,
     Fade,
-    MenuItem,
     TextField,
     InputAdornment,
     Tooltip,
@@ -16,7 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { useQuery } from '@tanstack/react-query';
 import { getProfissionais } from '../../common/utils';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { profissionaisAtom } from '../../atomStore';
 
 export default function BoxProfissionais ({
@@ -71,7 +70,7 @@ export default function BoxProfissionais ({
         let errors = {}
 
         for(let keyValue of entries) {
-            if(!keyValue[1] || keyValue[1] == "") {
+            if(!keyValue[1] || keyValue[1] === "") {
                 errors[keyValue[0]] = true
             }
         }

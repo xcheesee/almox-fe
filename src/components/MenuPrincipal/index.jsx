@@ -16,7 +16,6 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
 import { filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
-import { useState } from 'react';
 
 const MenuPrincipal = () => {
     const setSort = useSetAtom(sortAtom)

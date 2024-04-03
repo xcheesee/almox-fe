@@ -200,10 +200,7 @@ const BaixaSaidaMaterial = ({
           form="baixa-items"
           disabled={error}
         >
-          {carregandoBaixa
-            ? <CircularProgress color="color" size="1rem" className='mr-2' />
-            : ""
-          }
+          { carregandoBaixa && <CircularProgress color="color" size="1rem" className='mr-2' /> }
           Enviar
         </Button>
       </Box>

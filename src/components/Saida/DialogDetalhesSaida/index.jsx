@@ -30,9 +30,8 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
             >
                 Detalhes
             </Typography>
-            {!saida?.ordem_servico_id
-                ?<Box className='text-red-500'>Sem O.S</Box>
-                :<></>}
+
+            { !saida?.ordem_servico_id && <Box className='text-red-500'>Sem O.S</Box> }
 
             <Box className="mx-4 my-5 grid grid-cols-2 gap-8">
                 <TituloTexto 
@@ -76,7 +75,7 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                     texto={saida.almoxarife_email || "---"}
                 />*/}
                 {saida?.justificativa_os
-                    ?<TituloTexto
+                    &&<TituloTexto
                         titulo="Justificativa"
                         texto={saida.justificativa_os || "---"}
                         className="col-span-2"
@@ -84,7 +83,7 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                         childComponent="pre"
                         childStyle={{ whiteSpace: 'pre-wrap' }}
                     />
-                    :<></>} 
+                } 
                 {/*<TituloTexto
                     titulo="Especificações"
                     texto={saida.especificacao || "---"}
@@ -120,7 +119,7 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                 /> */}
             </Box>
             {profissionais && profissionais.length > 0
-                ?
+                &&
                     <Box className='my-10'>
                         <Typography sx={{
                             color: (theme) => theme.palette.color.bg,
@@ -136,7 +135,7 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                             elevation={3}
                         >
                             {profissionais?.map(profissional => (
-                                <Paper className="p-3" key={profissional.profissional_id}>
+                                <Paper className="p-3" key={`profissional-${profissional.profissional_id}`}>
                                     <TituloTexto 
                                         titulo={profissional.profissional}
                                         texto={`${profissional.data_inicio_formatada} -  ${profissional.horas_empregadas}h`}
@@ -145,11 +144,9 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                             ))}
                         </Paper>
                     </Box>
-                :
-                    ""
             }
             {materiais && materiais.length > 0
-                ?
+                &&
                     <>
                         <Typography sx={{
                             color: (theme) => theme.palette.color.bg,
@@ -165,7 +162,7 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                             elevation={3}
                         >
                             {materiais.map(material => (
-                                <Paper className="p-3" key={material.id}>
+                                <Paper className="p-3" key={`material-${material.id}`}>
                                     <TituloTexto 
                                         titulo={material.item}
                                         texto={`${material.quantidade} ${material.medida}`}
@@ -174,8 +171,6 @@ export default function DialogDetalhesSaida ({ openDetalhes, setOpenDetalhes, sa
                             ))}
                         </Paper>
                     </>
-                :
-                    ""
             }
         </DialogContent>
 

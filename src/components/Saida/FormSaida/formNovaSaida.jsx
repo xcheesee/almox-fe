@@ -6,8 +6,8 @@ import {
     FormControlLabel
 } from '@mui/material';
 import BoxProfissionais from '../../BoxProfissionais';
-import { enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar, formatProfissional } from '../../../common/utils';
-import { deptoAtom, matTipoListAtom, profissionaisAtom, snackbarAtom } from '../../../atomStore';
+import { enviaNovaSaida, getOrdemDados, setFormSnackbar, formatProfissional } from '../../../common/utils';
+import { profissionaisAtom, snackbarAtom } from '../../../atomStore';
 import { useAtom, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../SaidaOSCard';
@@ -31,7 +31,7 @@ export default function FormNovaSaida ({
     const queryClient = useQueryClient()
     const navigate = useNavigate()
 
-    const [local, setLocal] = useState()
+    const [_, setLocal] = useState()
     const [isNoOSForm, setIsNoOSForm] = useState(false);
     const [ordemServico, setOrdemServico] = useState()
     const [ordemMats, setOrdemMats] = useState()
@@ -81,17 +81,6 @@ export default function FormNovaSaida ({
         )
     }
 
-    //function formatItemForSaida(itemObjArr) {
-    //    const saidaItens = itemObjArr.map(itemObj => {
-    //        const saidaItem = {}
-    //        saidaItem.id = itemObj.id
-    //        //valores duplicados para conformidade entre envio de saida com e sem ordem de servico
-    //        saidaItem.enviado = itemObj.quantidade
-    //        return saidaItem
-    //    })
-    //    return saidaItens
-    //}
-    
     function formatOrdemForSaida(ordem) {
         if(!ordem) return {}
         const saida = {}

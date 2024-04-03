@@ -6,8 +6,6 @@ import {
 import CampoLocais from '../../CampoLocais';
 import CampoTipoServicos from '../../CampoTipoServicos';
 import { getProfissionais } from '../../../common/utils';
-import { deptoAtom } from '../../../atomStore';
-import { useAtom } from 'jotai';
 
 export default function FormSemOs ({
     baseSelecionada,
@@ -24,7 +22,6 @@ export default function FormSemOs ({
     const departamentoKeys = Object.keys(departamentos)
 
     useEffect(() => {
-        //setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
         if (departamentoKeys.length === 1) { setDeptoSelecionado(departamentoKeys[0]) }
     }, [])
     

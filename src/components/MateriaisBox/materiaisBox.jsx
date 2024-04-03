@@ -1,18 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMatItens, getMatTipos, primeiraLetraMaiuscula } from "../../common/utils";
-import { Box, CircularProgress, MenuItem, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, CircularProgress, MenuItem, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import MaterialList from "./MaterialList";
 import ConditionalTooltip from "../ConditionalTooltip";
-
-//function ConditionalTooltipWrapper({enabled, texto, children}) {
-//    if(!enabled) return children
-//    return (
-//        <Tooltip title={texto}>
-//            {children}
-//        </Tooltip>
-//    )
-//}
 
 export default function MateriaisBox({
     baseSelecionada="",

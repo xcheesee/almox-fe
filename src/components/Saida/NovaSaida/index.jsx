@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
     Box,
     Button,
@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import ContainerPrincipal from '../../ContainerPrincipal';
 import Titulo from '../../Titulo';
-import { FormNovaSaida } from '../FormSaida';
 import DialogEnviar from '../../DialogEnviar';
 
 const NovaSaidaContainer = (props) => {
@@ -15,12 +14,12 @@ const NovaSaidaContainer = (props) => {
         openConfirmar,
         setOpenConfirmar,
         carregando,
-        setCarregando,
+        //setCarregando,
         formId,
         children
     } = props;
 
-    const [errors, setErrors] = useState({});
+    //const [errors, setErrors] = useState({});
     
     return (
         <>
@@ -30,13 +29,6 @@ const NovaSaidaContainer = (props) => {
                 </Titulo>
 
                 {children}
-                {/*<FormNovaSaida 
-                    formId={formId}
-                    setOpenConfirmar={setOpenConfirmar}
-                    setCarregando={setCarregando} 
-                    errors={errors}
-                    setErrors={setErrors}
-                />*/}
 
                 <Box className="flex justify-end gap-4">
                     <Button onClick={() => setOpenCancelar(true)}>

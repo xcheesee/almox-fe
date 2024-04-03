@@ -6,7 +6,6 @@ import TabelaEntrada from './TabelaEntrada';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
 import { authCreateEntrada, getTabela } from '../../common/utils';
-import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
 import { useRef } from 'react';

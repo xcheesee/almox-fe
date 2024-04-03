@@ -5,7 +5,7 @@ import FormContainer from "../../components/FormContainer";
 import { useState } from "react";
 import DialogEnviar from "../../components/DialogEnviar";
 import { useNavigate, useParams } from "react-router-dom";
-import { getRegistro, getTransferencia, recusaTransferencia } from "../../common/utils";
+import { recusaTransferencia } from "../../common/utils";
 import { useSetAtom } from "jotai";
 import { snackbarAtom } from "../../atomStore";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ export default function RecusaTranferencia() {
     async function enviaRecusaForm(e) {
         e.preventDefault()
         setIsLoading(true)
-        const transferData = await getRegistro("transferencia", params.id)
+        //const transferData = await getRegistro("transferencia", params.id)
         //const formData = new FormData(e.target)
 
         //formData.append("base_origem_id", transferData.data.base_origem_id)

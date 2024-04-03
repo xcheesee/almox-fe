@@ -1,11 +1,9 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth, useAuthenticatedQuery } from "../../common/utils/hooks";
 import { AuthRequest, authCreateEntrada, authCreateOrdem } from "../../common/utils";
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function ProtectedRoute({children}) {
-    const queryClient = useQueryClient()
+    //const queryClient = useQueryClient()
     const location = useLocation()
     const { 
         token,

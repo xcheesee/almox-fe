@@ -1,4 +1,4 @@
-import { Box, Checkbox, CircularProgress, Paper, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, CircularProgress, Paper, Typography } from "@mui/material";
 import { useState } from "react";
 import { primeiraLetraMaiuscula } from "../../common/utils";
 import CampoNumero from "../CampoNumero";

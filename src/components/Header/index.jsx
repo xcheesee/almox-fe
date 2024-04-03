@@ -11,7 +11,7 @@ import LockIcon from '@mui/icons-material/Lock'
 import MenuItemsAcabando from '../MenuItemsAcabando';
 import DialogLogout from '../DialogLogout';
 import DialogAltSenh  from '../DialogAltSenh';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../common/utils/hooks';
 
 const Header = () => {

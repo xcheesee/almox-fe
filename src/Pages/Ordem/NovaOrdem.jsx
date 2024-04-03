@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import NovaOrdemServico from '../../components/OrdemServico/NovaOrdemServico';
 import DialogCancelar from '../../components/DialogCancelar';
 import DialogEnviar from '../../components/DialogEnviar';
-import { useNavigate } from 'react-router';
 
 const NovaOrdem = () => {
-    //const [materiais, setMateriais] = useState([]);
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
@@ -13,8 +11,6 @@ const NovaOrdem = () => {
     return (
         <>
             <NovaOrdemServico 
-                //materiais={materiais}
-                //setMateriais={setMateriais}
                 setOpenCancelar={setOpenCancelar}
                 setOpenConfirmar={setOpenConfirmar}
                 carregando={carregando}

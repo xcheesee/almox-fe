@@ -10,7 +10,6 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import PrintIcon from '@mui/icons-material/Print';
 import { useNavigate } from 'react-router-dom';
 import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 

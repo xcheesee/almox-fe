@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { getMateriais, getRegistro, getTabela } from '../../common/utils';
+import { getMateriais, getRegistro } from '../../common/utils';
 import EntradaMaterial from '../../components/EntradaMaterial';
 import DialogEditar from '../../components/DialogEditar';
 import DialogDetalhesEntrada from '../../components/EntradaMaterial/DialogDetalhesEntrada';
