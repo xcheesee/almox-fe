@@ -6,9 +6,9 @@ import {
     FormControlLabel
 } from '@mui/material';
 import BoxProfissionais from '../../BoxProfissionais';
-import { enviaNovaSaida, getOrdemDados, setFormSnackbar, formatProfissional } from '../../../common/utils';
+import { enviaNovaSaida, getOrdemDados, setFormSnackbar } from '../../../common/utils';
 import { snackbarAtom } from '../../../atomStore';
-import { useAtom, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../SaidaOSCard';
 import { FormSemOs } from '.';
@@ -23,8 +23,6 @@ import MateriaisBox from '../../MateriaisBox';
 export default function FormNovaSaida ({ 
     setCarregando, 
     setOpenConfirmar, 
-    //errors,
-    //setErrors,
     formId,
 }) {
 
@@ -61,12 +59,8 @@ export default function FormNovaSaida ({
         setDeptoSelecionado(value.departamento_id)
         setLocal(value.local_servico_id)
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
-        //if(!profRes || profRes.length === 0) {
-        //    const profsDispRes = await getProfissionais(value.local_servico_id, value.departamento_id)
-        //}
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
-        //setProfissionais(formatProfissional(profRes))
         setIsLoadingDados(false)
     }
 

@@ -55,7 +55,7 @@ export default function BoxProfissionais ({
     }
 
     function handleChange (element, formIndex) {
-        const mod = { [element.target.fieldname]: element.target.value }
+        const mod = { [element.currentTarget.dataset.field]: element.target.value }
 
         return setProfissionais(prev => modProfissional(prev, formIndex, mod))
     }
@@ -76,7 +76,7 @@ export default function BoxProfissionais ({
     }
 
     const modProfissional = (profissionaisEmpregados, formIndex, values) => {
-        let profs = profissionaisEmpregados
+        let profs = [...profissionaisEmpregados]
         let prof = {
             ...profs[formIndex],
             ...values,
@@ -86,9 +86,9 @@ export default function BoxProfissionais ({
     }
 
     const removeProfissional = (index) => {
-        let tempArr = profissionais
+        let tempArr = [...profissionais]
         tempArr.splice(index, 1);
-        setProfissionais(tempArr)
+        setProfissionais(tempArr);
     } 
 
     return (
@@ -150,7 +150,8 @@ export default function BoxProfissionais ({
                         <Paper className="p-4 mb-4 gap-4 grid grid-cols-[2fr_1fr_max-content]" >
                             <TextField
                                 label="Nome"
-                                fieldname={inputTags.nome}
+                                data-field={inputTags.nome}
+                                inputProps={{'data-field': inputTags.nome}}
                                 size="small"
                                 onChange={(e) => handleChange(e, index)}
                                 value={profissional?.nome ?? ""}
@@ -161,7 +162,7 @@ export default function BoxProfissionais ({
                             <Box className='grid grid-cols-[max-content_max-content] gap-4'>
                                 <TextField
                                     type='date'
-                                    fieldname={inputTags.data_inicio}
+                                    inputProps={{'data-field': inputTags.data_inicio}}
                                     label="Data de Inicio"
                                     InputLabelProps={{ shrink: true }}
                                     value={profissional?.data_inicio ?? ""}
@@ -171,15 +172,13 @@ export default function BoxProfissionais ({
                                 />
 
                                 <TextField
-                                    fieldname={inputTags.horas_empregadas}
+                                    inputProps={{'data-field': inputTags.horas_empregadas}}
                                     label="Horas Empregadas"
                                     value={profissional?.horas_empregadas ?? ""}
                                     onChange={e => handleChange(e, index)}
                                     fullWidth
                                     size="small"
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="end">h</InputAdornment>,
-                                    }}
+                                    InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }}
                                 />
                             </Box>
 

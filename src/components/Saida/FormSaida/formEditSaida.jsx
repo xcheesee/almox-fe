@@ -19,7 +19,6 @@ export default function FormEditSaida({
 }) {
     const query = useQueryClient()
 
-    //const profissionais = useAtomValue(profissionaisAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
 
     const [errors, setErrors] = useState({})
