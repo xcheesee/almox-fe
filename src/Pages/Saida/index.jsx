@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { formatProfissional, getDados, getMateriais, getRegistro } from '../../common/utils';
+import { getDados, getMateriais, getRegistro } from '../../common/utils';
 import SaidaTable from '../../components/Saida';
 import DialogExcluir from '../../components/DialogExcluir';
 import DialogDetalhesBaixa from '../../components/DialogDetalhesBaixa';
-import { useAtom, useSetAtom } from 'jotai';
-import { excluirAtom, matsAtom, profissionaisAtom, snackbarAtom } from '../../atomStore';
+import { useSetAtom } from 'jotai';
+import { excluirAtom, snackbarAtom } from '../../atomStore';
 import DialogDetalhesSaida from '../../components/Saida/DialogDetalhesSaida';
 import DialogEditaSaida from '../../components/Saida/DialogEditaSaida';
 import { FormEditSaida } from '../../components/Saida/FormSaida';
@@ -14,18 +14,17 @@ const Saida = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [openEditar, setOpenEditar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [ordemServico, setOrdemServico] = useState({});
+    const [saida, setSaida] = useState({});
     const [baixa, setBaixa] = useState({});
     const [cursor, setCursor] = useState('auto');
     //const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
     const [openBaixa, setOpenBaixa] = useState(false);
+    const [materiais, setMateriais] = useState([]);
+    const [profissionais, setProfissionais] = useState([]);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
     const setSnackbar = useSetAtom(snackbarAtom)
-
-    const [materiais, setMateriais] = useAtom(matsAtom);
-    const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
 
     const getSelectedOrdemInfo = async (id, command) => {
         setCursor('progress')
@@ -36,7 +35,7 @@ const Saida = () => {
                 getMateriais('saida', id),
                 getDados(`saida/${id}/profissionais`)
             ])
-            setOrdemServico(registroData)
+            setSaida(registroData)
             setMateriais(matsData)
             setProfissionais(profsData?.data)
             setOpenDetalhes(true)
@@ -47,9 +46,9 @@ const Saida = () => {
                 getMateriais('saida', id),
                 getDados(`saida/${id}/profissionais`)
             ])
-            setOrdemServico(registroEditData);
+            setSaida(registroEditData);
             setMateriais(matsEditData)
-            setProfissionais(formatProfissional(profsEditData?.data))
+            setProfissionais(profsEditData?.data)
             setOpenEditar(true)
             break;
         case 'baixa':
@@ -83,14 +82,14 @@ const Saida = () => {
                 formId="edit_saida"
                 open={openEditar}
                 setOpen={setOpenEditar}
-                defaultValue={ordemServico}
+                defaultValue={saida}
                 carregando={carregandoEdicao}
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 setOpenExcluir={setOpenExcluir}
             >
                 <FormEditSaida
-                    defaultValue={{...ordemServico, profissionais, materiais}}
+                    defaultValue={{...saida, profissionais, materiais}}
                     formId="edit_saida"
                     setCarregando={setCarregandoEdicao}
                     setOpen={setOpenEditar}
@@ -101,7 +100,7 @@ const Saida = () => {
             <DialogExcluir 
                 rota="saida"
                 texto="Saida de Materiais"
-                id={ordemServico.id}
+                id={saida.id}
                 setOpenEditar={setOpenEditar}
                 setCarregando={setCarregandoEdicao}
                 tabelaOrigem="ordemItens"
@@ -109,10 +108,10 @@ const Saida = () => {
 
             <DialogDetalhesSaida 
                 openDetalhes={openDetalhes}
-                profissionais={profissionais}
                 setOpenDetalhes={setOpenDetalhes}
-                saida={ordemServico}
+                saida={saida}
                 materiais={materiais}
+                profissionais={profissionais}
             />
 
             <DialogDetalhesBaixa 

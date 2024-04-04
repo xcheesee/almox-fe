@@ -70,8 +70,6 @@ const FormOrdemServico = ({
             return await enviaNovoForm(
                 formData, 
                 'ordem_servico', 
-                profissionais,
-                "ordem_servico_profissionais"
             )
         },
         onSuccess: async (res) => {
@@ -229,11 +227,8 @@ const FormOrdemServico = ({
 
                 <BoxProfissionais
                     label= "Profissionais empregados"
-                    // baseSelecionada={baseSelecionada}
-                    // deptoSelecionado={deptoSelecionado}
-                    //profissionaisDisponiveis={profissionaisDisponiveis}
-                    //profissionaisEmpregados={profissionaisEmpregados}
-                    //setProfissionaisEmpregados={setProfissionaisEmpregados}
+                    name="ordem_servico_profissionais"
+                    defaultValue={profissionais}
                 />
         </FormContainer>
     );

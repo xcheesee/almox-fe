@@ -4,8 +4,8 @@ import BoxProfissionais from "../../BoxProfissionais";
 import CampoLocais from "../../CampoLocais";
 import OSAutocomplete from "../../OSAutocomplete";
 import FormContainer from "../../FormContainer";
-import { useAtomValue, useSetAtom } from "jotai";
-import { profissionaisAtom, snackbarAtom } from "../../../atomStore";
+import { useSetAtom } from "jotai";
+import { snackbarAtom } from "../../../atomStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editaSaida } from "../../../common/utils";
 import MateriaisBox from "../../MateriaisBox";
@@ -19,7 +19,7 @@ export default function FormEditSaida({
 }) {
     const query = useQueryClient()
 
-    const profissionais = useAtomValue(profissionaisAtom)
+    //const profissionais = useAtomValue(profissionaisAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
 
     const [errors, setErrors] = useState({})
@@ -59,7 +59,6 @@ export default function FormEditSaida({
                     if(autoComplete.disabled){
                         formData.append('ordem_servico_id', defaultValue.ordem_servico_id)
                     }
-                    formData.append('saida_profissionais', JSON.stringify(profissionais))
                     const id = defaultValue.id
                     editSaidaMutation.mutate({id, formData})
                 }}
@@ -156,6 +155,7 @@ export default function FormEditSaida({
                     baseSelecionada={defaultValue.origem_id}
                     deptoSelecionado={defaultValue.departamento_id}
                     defaultValue={defaultValue?.profissionais ?? ""}
+                    name="saida_profissionais"
                 />
             </FormContainer>
     )

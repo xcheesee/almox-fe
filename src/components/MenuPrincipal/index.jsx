@@ -21,7 +21,7 @@ const MenuPrincipal = () => {
     const setSort = useSetAtom(sortAtom)
     const setFiltros = useSetAtom(filtrosAtom)
     const setPage = useSetAtom(pageAtom)
-    const setMats = useSetAtom(matsAtom)
+    //const setMats = useSetAtom(matsAtom)
     const perfil = localStorage.getItem('perfil')
 
 
@@ -30,7 +30,7 @@ const MenuPrincipal = () => {
         setSort('')
         setPage(1)
         setFiltros('')
-        setMats([])
+        //setMats([])
     }, [])
     
     return (

@@ -7,14 +7,13 @@ import FormContainer from "../../components/FormContainer";
 import { useQuery } from "@tanstack/react-query";
 import { enviaNovaTransferencia, getLocais } from "../../common/utils";
 import { useNavigate } from "react-router-dom";
-import { useAtom, useAtomValue } from "jotai";
-import { matTipoListAtom, snackbarAtom } from "../../atomStore";
+import { useAtom } from "jotai";
+import { snackbarAtom } from "../../atomStore";
 import MateriaisBox from "../../components/MateriaisBox";
 
 export default function NovaTransferencia () {
 
     const [snackbar, setSnackbar] = useAtom(snackbarAtom)
-    const materiais = useAtomValue(matTipoListAtom)
 
     const [openConfirmar, setOpenConfirmar] = useState(false)
     const [baseOrigem, setBaseOrigem] = useState("")

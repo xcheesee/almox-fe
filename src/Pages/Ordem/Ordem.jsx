@@ -7,8 +7,8 @@ import DialogExcluir from '../../components/DialogExcluir';
 import FormOrdemServico from '../../components/OrdemServico/FormOrdemServico';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogDetalhesOrdem from '../../components/OrdemServico/DialogDetalhesOrdem';
-import { useAtom, useSetAtom } from 'jotai';
-import { excluirAtom, profissionaisAtom } from '../../atomStore';
+import { useSetAtom } from 'jotai';
+import { excluirAtom } from '../../atomStore';
 
 const Ordem = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
@@ -19,10 +19,10 @@ const Ordem = () => {
     const [cursor, setCursor] = useState('auto');
     const [openDetalhes, setOpenDetalhes] = useState(false);
     const [materiais, setMateriais] = useState([]);
+    const [profissionais, setProfissionais] = useState([]);
     //const [openBaixa, setOpenBaixa] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
-    const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
 
     const getSelectedOrdemInfo = async (id, command) => {
         setCursor('progress')

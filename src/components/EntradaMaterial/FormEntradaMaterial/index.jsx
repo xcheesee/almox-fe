@@ -124,7 +124,6 @@ const FormEntradaMaterial = ({
                     required
                 />
 
-
                 <ConditionalTooltip 
                     enabled={!deptoSelecionado}
                     texto={"Selecione um Departamento!"}

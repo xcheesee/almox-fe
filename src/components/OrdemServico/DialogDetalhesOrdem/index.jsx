@@ -94,86 +94,65 @@ const DialogDetalhesOrdem = ({ openDetalhes, setOpenDetalhes, ordem, materiais, 
                     childStyle={{ whiteSpace: 'pre-wrap' }}
                 />
 
-                {/* <TituloTexto 
-                    titulo="Profissional"
-                    texto={ordem.profissional || "---"}
-                /> */}
-
-                {/* <TituloTexto 
-                    titulo="Horas de execução"
-                    texto={`
-                        ${ordem.horas_execucao || "---"} 
-                        ${ordem.horas_execucao 
-                            ? ordem.horas_execucao > 1 ? "horas" : "hora" 
-                            : ""
-                        }`
-                    }
-                /> */}
             </Box>
+            
             {profissionais && profissionais.length > 0
-                ?
-                    <Box className='my-10'>
-                        <Typography sx={{
-                            color: (theme) => theme.palette.color.bg,
-                            fontSize: '1.3rem',
-                            fontWeight: 'light',
-                            mb: '0.5rem'
-                        }}>
-                            Profissionais
-                        </Typography>
-                        <Paper 
-                            className="flex flex-col gap-4 px-4 py-5" 
-                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
-                            elevation={3}
-                        >
-                            {profissionais?.map(profissional => (
-                                <Paper className="p-3" key={profissional.profissional_id}>
-                                    <TituloTexto 
-                                        titulo={profissional.profissional}
-                                        texto={`${profissional.data_inicio_formatada} -  ${profissional.horas_empregadas}h`}
-                                    />
-                                </Paper>
-                            ))}
-                        </Paper>
-                    </Box>
-                :
-                    ""
+                &&<Box className='my-10'>
+                    <Typography sx={{
+                        color: (theme) => theme.palette.color.bg,
+                        fontSize: '1.3rem',
+                        fontWeight: 'light',
+                        mb: '0.5rem'
+                    }}>
+                        Profissionais
+                    </Typography>
+                    <Paper 
+                        className="flex flex-col gap-4 px-4 py-5" 
+                        sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
+                        elevation={3}
+                    >
+                        {profissionais?.map(profissional => (
+                            <Paper className="p-3" key={`prof-${profissional.profissional_id}`}>
+                                <TituloTexto 
+                                    titulo={profissional.nome}
+                                    texto={`${profissional.data_inicio_formatada} -  ${profissional.horas_empregadas}h`}
+                                />
+                            </Paper>
+                        ))}
+                    </Paper>
+                </Box>
             }
+
             {materiais && materiais.length > 0
-                ?
-                    <>
-                        <Typography sx={{
-                            color: (theme) => theme.palette.color.bg,
-                            fontSize: '1.3rem',
-                            fontWeight: 'light',
-                            mb: '0.5rem'
-                        }}>
-                            Materiais
-                        </Typography>
-                        <Paper 
-                            className="flex flex-col gap-4 px-4 py-5" 
-                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
-                            elevation={3}
-                        >
-                            {materiais.map(material => (
-                                <Paper className="p-3" key={material.id}>
-                                    <TituloTexto 
-                                        titulo={material.item}
-                                        texto={`${material.quantidade} ${material.medida}`}
-                                    />
-                                </Paper>
-                            ))}
+                && <>
+                <Typography sx={{
+                    color: (theme) => theme.palette.color.bg,
+                    fontSize: '1.3rem',
+                    fontWeight: 'light',
+                    mb: '0.5rem'
+                }}>
+                    Materiais
+                </Typography>
+                <Paper 
+                    className="flex flex-col gap-4 px-4 py-5" 
+                    sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
+                    elevation={3}
+                >
+                    {materiais.map(material => (
+                        <Paper className="p-3" key={`mat-${material.id}`}>
+                            <TituloTexto 
+                                titulo={material.item}
+                                texto={`${material.quantidade} ${material.medida}`}
+                            />
                         </Paper>
-                    </>
-                :
-                    ""
+                    ))}
+                </Paper>
+                </>
             }
         </DialogContent>
 
         <DialogActions>
-            <Button
-                onClick={() => setOpenDetalhes(false)}
-            >
+            <Button onClick={() => setOpenDetalhes(false)} >
                 OK
             </Button>
         </DialogActions>

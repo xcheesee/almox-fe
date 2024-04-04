@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import BoxProfissionais from '../../BoxProfissionais';
 import { enviaNovaSaida, getOrdemDados, setFormSnackbar, formatProfissional } from '../../../common/utils';
-import { profissionaisAtom, snackbarAtom } from '../../../atomStore';
+import { snackbarAtom } from '../../../atomStore';
 import { useAtom, useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../SaidaOSCard';
@@ -42,7 +42,7 @@ export default function FormNovaSaida ({
 
     const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const setSnackbar = useSetAtom(snackbarAtom)
-    const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
+    //const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
     async function clearForm () {
         setOrdemServico()
@@ -51,7 +51,7 @@ export default function FormNovaSaida ({
         setLocal("")
         setBaseSelecionada("")
         setDeptoSelecionado("")
-        setProfissionais([])
+        //setProfissionais([])
     }
 
     async function setOrdemFromOptions (value) {
@@ -67,7 +67,7 @@ export default function FormNovaSaida ({
         //}
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
-        setProfissionais(formatProfissional(profRes))
+        //setProfissionais(formatProfissional(profRes))
         setIsLoadingDados(false)
     }
 
@@ -120,9 +120,9 @@ export default function FormNovaSaida ({
 
     function formataSaida({formData}) {
 
-        if(isBasicOS()) {
-            formData.append("saida_profissionais", JSON.stringify(profissionais))
-        }
+        //if(isBasicOS()) {
+        //    formData.append("saida_profissionais", JSON.stringify(profissionais))
+        //}
 
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
@@ -211,6 +211,7 @@ export default function FormNovaSaida ({
                         <BoxProfissionais
                             label= "Profissionais empregados"
                             errors={errors}
+                            name="saida_profissionais"
                             // baseSelecionada={baseSelecionada}
                             // deptoSelecionado={deptoSelecionado}
                         />
