@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { 
     MenuItem,
     TextField,
-    Box,
-    Typography, 
-    Paper,
 } from '@mui/material';
 import FormContainer from '../../FormContainer';
 import CampoLocais from '../../CampoLocais';
@@ -13,8 +10,7 @@ import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../../common/uti
 import { snackbarAtom } from '../../../atomStore';
 import { useSetAtom } from 'jotai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import TituloTexto from '../../TituloTexto';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MateriaisBox from '../../MateriaisBox';
 import ConditionalTooltip from '../../ConditionalTooltip';
 
@@ -28,7 +24,6 @@ const FormOrdemServico = ({
     profissionais=[],
 }) => {
     const queryClient = useQueryClient()
-    const location = useLocation();
 
     const navigate = useNavigate()
 
@@ -186,50 +181,18 @@ const FormOrdemServico = ({
                 fullWidth
             />
         
-            <Box>
-                {profissionais 
-                && profissionais.length > 0 
-                && location.pathname !== '/ordemservico/nova-ordem'
-                &&
-                    <Box className='my-10'>
-                        <Typography sx={{
-                            color: (theme) => theme.palette.color.bg,
-                            fontSize: '1.3rem',
-                            fontWeight: 'light',
-                            mb: '0.5rem'
-                        }}>
-                            Profissionais
-                        </Typography>
-                        <Paper 
-                            className="flex flex-col gap-4 px-4 py-5" 
-                            sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
-                            elevation={3}
-                        >
-                            {profissionais?.map(profissional => (
-                                <Paper className="p-3" key={profissional.profissional_id}>
-                                    <TituloTexto 
-                                        titulo={profissional.profissional}
-                                        texto={`${profissional.data_inicio_formatada} -  ${profissional.horas_empregadas}h`}
-                                    />
-                                </Paper>
-                            ))}
-                        </Paper>
-                    </Box>
-            }
-            </Box>
+            <MateriaisBox 
+                deptoSelecionado={deptoSelecionado} 
+                baseSelecionada={baseSelecionada} 
+                defaultValue={materiais} 
+                inputName='ordem_servico_items'
+            />
 
-                <MateriaisBox 
-                    deptoSelecionado={deptoSelecionado} 
-                    baseSelecionada={baseSelecionada} 
-                    defaultValue={materiais} 
-                    inputName='ordem_servico_items'
-                />
-
-                <BoxProfissionais
-                    label= "Profissionais empregados"
-                    name="ordem_servico_profissionais"
-                    defaultValue={profissionais}
-                />
+            <BoxProfissionais
+                label= "Profissionais empregados"
+                name="ordem_servico_profissionais"
+                defaultValue={profissionais}
+            />
         </FormContainer>
     );
 }

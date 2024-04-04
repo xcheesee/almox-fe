@@ -28,7 +28,7 @@ export default function OrdemProfsCard ({profissionais, isLoading}) {
                 {profissionais?.map(profissional => (
                     <Paper className="p-3" key={profissional.profissional_id}>
                         <TituloTexto 
-                            titulo={profissional.profissional}
+                            titulo={profissional.nome}
                             texto={`${profissional.data_inicio_formatada} - ${profissional.horas_empregadas}h`}
                         />
                     </Paper>
