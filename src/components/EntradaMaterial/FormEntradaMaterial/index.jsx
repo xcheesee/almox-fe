@@ -43,15 +43,15 @@ const FormEntradaMaterial = ({
     }, {
             onSuccess: async (res) => {
                 setOpenEditar(false)
-                setCarregando(false)
                 queryClient.invalidateQueries(['entradaItens'])
                 setFormSnackbar(setSnackbar, "Entrada de material", { edit: true })
             }, 
             onError: async (res) => {
-                setCarregando(false)
                 setFormSnackbar(setSnackbar, "", { error: true, status: res.status, edit: true })
                 setErrors(res?.errors)
-            }})
+            },
+            onSettled: () => setCarregando(false)
+        })
 
     const addMutation = useMutation(async (formData) => {
         setOpenConfirmar(false)

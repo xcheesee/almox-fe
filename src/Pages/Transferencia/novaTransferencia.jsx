@@ -64,7 +64,7 @@ export default function NovaTransferencia () {
                     label="Data de Transferência"
                     name="data_transferencia"
                     error={errors.hasOwnProperty("data_transferencia")}
-                    helperText = {errors.hasOwnProperty("data_transferencia") ? errors.data_transferencia : "" }
+                    helperText = {errors?.data_transferencia ?? "" }
                     id="data_transferencia"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
@@ -77,7 +77,7 @@ export default function NovaTransferencia () {
                     name="base_origem_id"
                     id="base_origem_id"
                     error={errors.hasOwnProperty("base_origem_id")}
-                    helperText = {errors.hasOwnProperty("base_origem_id") ? errors.base_origem_id : "" }
+                    helperText = {errors?.base_origem_id ?? "" }
                     value={baseOrigem}
                     onChange={e => {
                         if(localStorage.getItem("local") !== "") return
@@ -99,7 +99,7 @@ export default function NovaTransferencia () {
                     name="base_destino_id"
                     id="base_destino_id"
                     error={errors.hasOwnProperty("base_destino_id")}
-                    helperText = {errors.hasOwnProperty("base_destino_id") ? errors.base_destino_id : "" }
+                    helperText={errors?.base_destino_id ?? "" }
                     defaultValue=""
                     fullWidth
                     required
@@ -114,6 +114,7 @@ export default function NovaTransferencia () {
                     baseSelecionada={baseOrigem}
                     inputName='itens' 
                     entrada 
+                    errors={errors}
                 />
             </FormContainer>
 

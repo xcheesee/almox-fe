@@ -128,8 +128,8 @@ export default function NovaOcorrencia () {
                         inputProps={{ accept: "image/*, application/pdf" }}
                         InputLabelProps={{ shrink: true }}
                         required={tipoOcorrencia === "furto" || tipoOcorrencia === "extravio"}
-                        //error={errors.hasOwnProperty('boletim_ocorrencia')}
-                        //helperText={errors.boletim_ocorrencia || ""}
+                        error={errors.hasOwnProperty('boletim_ocorrencia')}
+                        helperText={errors?.boletim_ocorrencia || ""}
                         fullWidth
                     />
                 }
@@ -138,15 +138,13 @@ export default function NovaOcorrencia () {
                     baseSelecionada={baseOrigem}
                     inputName='itens' 
                     entrada 
+                    errors={errors}
                 />
             </FormContainer>
 
 
             <Box className="flex gap justify-end items-center">
-                { isLoading
-                    ? <CircularProgress size={24}/>
-                    : <></>
-                }
+                { isLoading && <CircularProgress size={24}/> }
                 <Button onClick={() => setOpenConfirmar(true)}>
                     Enviar
                 </Button>
