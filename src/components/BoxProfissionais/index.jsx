@@ -23,6 +23,7 @@ export default function BoxProfissionais ({
     defaultValue=null,
     baseSelecionada="",
     deptoSelecionado="",
+    errors={}
 }) {
     const profissionaisDisponiveis = useQuery({
         queryFn: () => getProfissionais(baseSelecionada, deptoSelecionado),

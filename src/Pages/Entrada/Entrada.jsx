@@ -7,8 +7,8 @@ import DialogDetalhesEntrada from '../../components/EntradaMaterial/DialogDetalh
 import FormEntradaMaterial from '../../components/EntradaMaterial/FormEntradaMaterial';
 import DialogConfirmaEdicao from '../../components/DialogConfirmaEdicao';
 import DialogExcluir from '../../components/DialogExcluir';
-import { excluirAtom, matsAtom, snackbarAtom } from '../../atomStore';
-import { useAtom, useSetAtom } from 'jotai';
+import { excluirAtom, snackbarAtom } from '../../atomStore';
+import { useSetAtom } from 'jotai';
 
 const Entrada = () => {
     const [openEditar, setOpenEditar] = useState(false);
@@ -16,12 +16,11 @@ const Entrada = () => {
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [entradaMaterial, setEntradaMaterial] = useState({});
     const [cursor, setCursor] = useState('auto');
-    const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
+    const [materiais, setMateriais] = useState([]);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
     const setSnackbar = useSetAtom(snackbarAtom);
-    const [materiais, setMateriais] = useAtom(matsAtom);
 
     const getSelectedEntradaInfo = async (id, command) => {
         setCursor('progress')
@@ -76,8 +75,6 @@ const Entrada = () => {
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregandoEdicao}
                     acao="editar"
-                    errors={errors}
-                    setErrors={setErrors}
                     materiais={materiais}
                 />
             </DialogEditar>

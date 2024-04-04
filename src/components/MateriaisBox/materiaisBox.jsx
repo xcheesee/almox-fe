@@ -10,7 +10,8 @@ export default function MateriaisBox({
     deptoSelecionado="",
     defaultValue=[],
     inputName="",
-    entrada=false
+    entrada=false,
+    errors={}
 }) {
     const [selectedTipo, setSelectedTipo] = useState("")
     const tipos = useQuery({

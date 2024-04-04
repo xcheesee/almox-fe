@@ -16,7 +16,6 @@ const NovaOrdemServico = (props) => {
         setCarregando,
     } = props;
 
-    const [errors, setErrors] = useState({});
     
     return (
         <ContainerPrincipal>
@@ -28,8 +27,6 @@ const NovaOrdemServico = (props) => {
                 acao='cadastrar' 
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando} 
-                errors={errors}
-                setErrors={setErrors}
             />
 
             <Box className="flex justify-end gap-4">

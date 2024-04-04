@@ -15,22 +15,21 @@ import MateriaisBox from '../../MateriaisBox';
 import { useNavigate } from 'react-router-dom';
 import ConditionalTooltip from '../../ConditionalTooltip';
 
-const FormEntradaMaterial = (props) => {
-    const { 
-        defaultValue, 
-        setOpenEditar, 
-        setOpenConfirmar, 
-        acao,
-        setCarregando,
-        errors,
-        setErrors,
-        materiais,
-    } = props;
+const FormEntradaMaterial = ({
+    defaultValue={}, 
+    setOpenEditar=()=>{}, 
+    setOpenConfirmar, 
+    acao,
+    setCarregando,
+    materiais=[],
+}) => {
     const queryClient = useQueryClient()
     const navigate = useNavigate()
 
     const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const [baseSelecionada, setBaseSelecionada] = useState(defaultValue?.local_id ?? "")
+    const [errors, setErrors] = useState({});
+
     const setSnackbar = useSetAtom(snackbarAtom)
 
     const editMutation = useMutation(async (formData) => {
@@ -50,8 +49,8 @@ const FormEntradaMaterial = (props) => {
             }, 
             onError: async (res) => {
                 setCarregando(false)
-                if(res.status === 422) { /* setErrors(res?.errors) */ }
                 setFormSnackbar(setSnackbar, "", { error: true, status: res.status, edit: true })
+                setErrors(res?.errors)
             }})
 
     const addMutation = useMutation(async (formData) => {
@@ -63,15 +62,13 @@ const FormEntradaMaterial = (props) => {
         )
     }, {
             onSuccess: async (res) => {
-                setCarregando(false)
                 queryClient.invalidateQueries(['entradaItens'])
                 setFormSnackbar(setSnackbar, "Entrada de material")
                 navigate(`/entrada`, { replace: true });
             }, onError: async (res) => {
-                setCarregando(false)
-                if(res.status === 422) { setErrors(res?.errors) }
                 setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
-            }
+                setErrors(res?.errors)
+            }, onSettled: () => setCarregando(false)
         })
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
@@ -122,7 +119,7 @@ const FormEntradaMaterial = (props) => {
                     label="Data de entrada dos materiais"
                     InputLabelProps={{ shrink: true }}
                     error={errors.hasOwnProperty('data_entrada')}
-                    helperText={errors.data_entrada || ""}
+                    helperText={errors?.data_entrada || ""}
                     fullWidth
                     required
                 />
@@ -140,7 +137,7 @@ const FormEntradaMaterial = (props) => {
                         onChange={(e) => setBaseSelecionada(e.target.value)}
                         value={baseSelecionada}
                         error={errors.hasOwnProperty('local_id')}
-                        helperText={errors.local_id || ""}
+                        helperText={errors?.local_id || ""}
                         disabled={!deptoSelecionado}
                         required
                     />
@@ -151,7 +148,7 @@ const FormEntradaMaterial = (props) => {
                     label="Processo SEI"
                     defaultValue={defaultValue?.processo_sei}
                     error={errors.hasOwnProperty('processo_sei')}
-                    helperText={errors.processo_sei || ""}
+                    helperText={errors?.processo_sei || ""}
                     required
                     fullWidth
                 />
@@ -161,7 +158,7 @@ const FormEntradaMaterial = (props) => {
                     label="Número do contrato"
                     defaultValue={defaultValue?.numero_contrato}
                     error={errors.hasOwnProperty('numero_contrato')}
-                    helperText={errors.numero_contrato || ""}
+                    helperText={errors?.numero_contrato || ""}
                     required
                     fullWidth
                 />
@@ -171,7 +168,7 @@ const FormEntradaMaterial = (props) => {
                     name="numero_nota_fiscal"
                     label="Número da nota fiscal"
                     error={errors.hasOwnProperty('numero_nota_fiscal')}
-                    helperText={errors.numero_nota_fiscal || ""}
+                    helperText={errors?.numero_nota_fiscal || ""}
                     required
                     fullWidth
                 />
@@ -183,7 +180,7 @@ const FormEntradaMaterial = (props) => {
                     inputProps={{ accept: "image/*, application/pdf" }}
                     InputLabelProps={{ shrink: true }}
                     error={errors.hasOwnProperty('arquivo_nota_fiscal')}
-                    helperText={errors.arquivo_nota_fiscal || ""}
+                    helperText={errors?.arquivo_nota_fiscal || ""}
                     fullWidth
                 />
 
@@ -192,6 +189,7 @@ const FormEntradaMaterial = (props) => {
                     defaultValue={materiais} 
                     inputName='entrada_items' 
                     entrada 
+                    errors={errors}
                 />
             </FormContainer>
     );

@@ -17,13 +17,11 @@ const Ordem = () => {
     const [ordemServico, setOrdemServico] = useState({});
     //const [baixa, setBaixa] = useState({});
     const [cursor, setCursor] = useState('auto');
-    const [errors, setErrors] = useState({});
     const [openDetalhes, setOpenDetalhes] = useState(false);
+    const [materiais, setMateriais] = useState([]);
     //const [openBaixa, setOpenBaixa] = useState(false);
     
     const setOpenExcluir = useSetAtom(excluirAtom);
-    //const setSnackbar = useSetAtom(snackbarAtom)
-    const [materiais, setMateriais] = useState([]);
     const [profissionais, setProfissionais] = useAtom(profissionaisAtom);
 
     const getSelectedOrdemInfo = async (id, command) => {
@@ -92,10 +90,8 @@ const Ordem = () => {
                     setOpenEditar={setOpenEditar}
                     setOpenConfirmar={setOpenConfirmar}
                     materiais={materiais}
-                    //profissionais={profissionais}
+                    profissionais={profissionais}
                     acao="editar"
-                    errors={errors}
-                    setErrors={setErrors}
                 />
             </DialogEditar>
 

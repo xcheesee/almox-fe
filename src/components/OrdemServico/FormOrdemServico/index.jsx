@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { 
     MenuItem,
     TextField,
@@ -10,8 +10,8 @@ import FormContainer from '../../FormContainer';
 import CampoLocais from '../../CampoLocais';
 import BoxProfissionais from '../../BoxProfissionais';
 import { enviaEdicao, enviaNovoForm, setFormSnackbar } from '../../../common/utils';
-import { profissionaisAtom, snackbarAtom } from '../../../atomStore';
-import { useAtom, useSetAtom } from 'jotai';
+import { snackbarAtom } from '../../../atomStore';
+import { useSetAtom } from 'jotai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import TituloTexto from '../../TituloTexto';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -25,9 +25,7 @@ const FormOrdemServico = ({
     setOpenConfirmar, 
     acao, 
     materiais=[],
-    //profissionais,
-    errors,
-    setErrors,
+    profissionais=[],
 }) => {
     const queryClient = useQueryClient()
     const location = useLocation();
@@ -37,22 +35,12 @@ const FormOrdemServico = ({
     const [localServico, setLocalServico] = useState(defaultValue?.local_servico_id ?? "")
     const [baseSelecionada, setBaseSelecionada] = useState(defaultValue?.origem_id ?? "")
     const [deptoSelecionado, setDeptoSelecionado] = useState(defaultValue?.departamento_id ?? "")
+    const [errors, setErrors] = useState({});
+
     const setSnackbar = useSetAtom(snackbarAtom)
-    const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-    //const departamentoKeys = Object.keys(departamentos)
     
-    useEffect(() => {
-        //setDeptoSelecionado('')//reseta o atom toda vez que o componente eh renderizado pela primeira vez
-        setProfissionais([])
-        //if(acao === 'editar') {
-        //    //setDeptoSelecionado(defaultValue?.departamento_id)
-        //} else if (departamentoKeys.length === 1) {
-        //    setDeptoSelecionado(departamentoKeys[0])
-        //}
-    }, [])
-
     const editMutation = useMutation({
         mutationFn: async (formData) => {
             setOpenConfirmar(false)
@@ -69,8 +57,8 @@ const FormOrdemServico = ({
             setFormSnackbar(setSnackbar, "Ordem de serviço", { edit: true })
         },
         onError: async (res) => {
-            if(res.status === 422) { /* setErrors(res?.errors) */ }
             setFormSnackbar(setSnackbar, "", { error: true , status: res.status, edit: true })
+            setErrors(res?.errors)
         },
         onSettled: () => setCarregando(false)
     })
@@ -92,8 +80,8 @@ const FormOrdemServico = ({
             navigate(`/ordemservico`, { replace: true });
         }, 
         onError: async (res) => {
-            if(res.status === 422) { setErrors(res?.errors) }
             setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
+            setErrors(res?.errors)
         },
         onSettled: () => setCarregando(false)
     })
@@ -124,12 +112,12 @@ const FormOrdemServico = ({
                 disabled={ !!defaultValue?.departamento_id || false }
                 required
             >
-                <MenuItem value={99999999999}></MenuItem>
                 {Object.entries(departamentos).map(departamento => (
                     <MenuItem key={departamento[0]} value={departamento[0]}>
                         {departamento[1]}
                     </MenuItem>
-                )) }
+                )) ??  <MenuItem value={99999999999}></MenuItem> 
+                }
             </TextField>
 
 

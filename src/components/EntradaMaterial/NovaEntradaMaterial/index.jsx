@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
     Box, 
     Button,
@@ -14,11 +14,7 @@ const NovaEntradaMaterial = (props) => {
         setOpenConfirmar,
         carregando,
         setCarregando,
-        deptoSelecionado,
-        setDeptoSelecionado
     } = props;
-
-    const [errors, setErrors] = useState({});
 
     return (
         <ContainerPrincipal>
@@ -30,10 +26,6 @@ const NovaEntradaMaterial = (props) => {
                 acao='cadastrar'
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando}
-                deptoSelecionado={deptoSelecionado}
-                setDeptoSelecionado={setDeptoSelecionado}
-                errors={errors}
-                setErrors={setErrors}
             />
             
             <Box className="flex justify-end gap-4">

@@ -102,7 +102,7 @@ export default function FormSemOs ({
                     //    //if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
                     //}}
                     error={errors.hasOwnProperty('local_servico_id')}
-                    helperText={errors.local_servico_id || ""}
+                    helperText={errors?.local_servico_id || ""}
                     disabled={!deptoSelecionado}
                     //required
                 />
@@ -114,7 +114,7 @@ export default function FormSemOs ({
                 id="tipo_servico_id"
                 deptoSelecionado={deptoSelecionado}
                 error={errors.hasOwnProperty('tipo_servico_id')}
-                helperText={errors.tipo_servico_id || ""}
+                helperText={errors?.tipo_servico_id || ""}
                 //required
             />
         
@@ -124,7 +124,7 @@ export default function FormSemOs ({
                 multiline
                 minRows={4}
                 error={errors.hasOwnProperty('especificacao')}
-                helperText={errors.especificacao || ""}
+                helperText={errors?.especificacao || ""}
                 fullWidth
             />
         
@@ -134,7 +134,7 @@ export default function FormSemOs ({
                 multiline
                 minRows={4}
                 error={errors.hasOwnProperty('observacoes')}
-                helperText={errors.observacoes || ""}
+                helperText={errors?.observacoes || ""}
                 fullWidth
             />
         </>

@@ -10,7 +10,6 @@ const NovaSaida = () => {
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [errors, setErrors] = useState({});
     const setProfissionais = useSetAtom(profissionaisAtom);
     //const [baseSelecionada, setBaseSelecionada] = useState('');
 
@@ -34,8 +33,8 @@ const NovaSaida = () => {
                     formId={formId}
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregando} 
-                    errors={errors}
-                    setErrors={setErrors}
+                    //errors={errors}
+                    //setErrors={setErrors}
                 />
             </NovaSaidaContainer>
 

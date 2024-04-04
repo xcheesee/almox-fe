@@ -9,11 +9,11 @@ import { profissionaisAtom, snackbarAtom } from "../../../atomStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editaSaida } from "../../../common/utils";
 import MateriaisBox from "../../MateriaisBox";
+import { useState } from "react";
 
 export default function FormEditSaida({ 
     defaultValue, 
     formId,
-    errors={}, 
     setCarregando,
     setOpen
 }) {
@@ -21,6 +21,8 @@ export default function FormEditSaida({
 
     const profissionais = useAtomValue(profissionaisAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
+
+    const [errors, setErrors] = useState({})
 
     const editSaidaMutation = useMutation({
         mutationFn: editaSaida,
@@ -38,8 +40,9 @@ export default function FormEditSaida({
             setSnackbar({
                 open: true,
                 severity: 'error',
-                message: `${err.errors}`
+                message: `${err?.errors}`
             })
+            setErrors(err?.errros)
         },
         onSettled: () => setCarregando(false)
     })
@@ -52,7 +55,6 @@ export default function FormEditSaida({
 
                     const autoComplete = document.getElementById('ordem_servico')
 
-                    setCarregando(true)
                     const formData = new FormData(e.target)
                     if(autoComplete.disabled){
                         formData.append('ordem_servico_id', defaultValue.ordem_servico_id)
@@ -60,7 +62,6 @@ export default function FormEditSaida({
                     formData.append('saida_profissionais', JSON.stringify(profissionais))
                     const id = defaultValue.id
                     editSaidaMutation.mutate({id, formData})
-                    setCarregando(false)
                 }}
             >
                 {!defaultValue.ordem_servico_id && <Box className="font-thin text-red-500">Sem O.S</Box>}
@@ -118,7 +119,7 @@ export default function FormEditSaida({
                     deptoSelecionado={defaultValue?.departamento_id}
                     defaultValue={defaultValue?.tipo_servico_id ?? ""}
                     error={errors.hasOwnProperty('local_servico_id')}
-                    helperText={errors.tipo_servico_id || ""}
+                    helperText={errors?.tipo_servico_id || ""}
                 />
         
                 <TextField 
@@ -129,7 +130,7 @@ export default function FormEditSaida({
                     label="Especificação"
                     defaultValue={defaultValue?.especificacao ?? ""}
                     error={errors.hasOwnProperty('especificacao')}
-                    helperText={errors.especificacao || ""}
+                    helperText={errors?.especificacao || ""}
                 />
         
                 <TextField 
@@ -139,7 +140,7 @@ export default function FormEditSaida({
                     multiline
                     minRows={4}
                     error={errors.hasOwnProperty('observacoes')}
-                    helperText={errors.observacoes || ""}
+                    helperText={errors?.observacoes || ""}
                     fullWidth
                 />
 

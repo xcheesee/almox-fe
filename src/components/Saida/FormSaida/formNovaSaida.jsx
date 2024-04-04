@@ -23,8 +23,8 @@ import MateriaisBox from '../../MateriaisBox';
 export default function FormNovaSaida ({ 
     setCarregando, 
     setOpenConfirmar, 
-    errors,
-    setErrors,
+    //errors,
+    //setErrors,
     formId,
 }) {
 
@@ -38,6 +38,7 @@ export default function FormNovaSaida ({
     const [ordemProfs, setOrdemProfs] = useState()
     const [isLoadingDados, setIsLoadingDados] = useState(false)
     const [baseSelecionada, setBaseSelecionada] = useState("")
+    const [errors, setErrors] = useState({});
 
     const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const setSnackbar = useSetAtom(snackbarAtom)
@@ -102,20 +103,19 @@ export default function FormNovaSaida ({
         } catch(e) {
             throw e
         }
-    }, { onSuccess: async () => {
-            setCarregando(false)
+    }, {  onSuccess: async () => {
             queryClient.invalidateQueries(['saidas'])
             setFormSnackbar(setSnackbar, "Saida de Materiais")
             navigate(`/saida`, { replace: true });
         }, onError: async (res) => {
-            setCarregando(false)
-            if(res.status === 422) { setErrors(res?.errors) }
+            //if(res.status === 422) { setErrors(res?.errors) }
             setSnackbar({
                 open: true,
                 severity: "error",
                 message: res.message
             })
-        }
+            setErrors(res?.errors ?? {})
+        }, onSettled: () => setCarregando(false)
     })
 
     function formataSaida({formData}) {
@@ -174,16 +174,16 @@ export default function FormNovaSaida ({
 
                 {isNoOSForm
                     ?<FormSemOs 
-                            setOpenConfirmar={setOpenConfirmar}
-                            setCarregando={setCarregando}
+                            //setOpenConfirmar={setOpenConfirmar}
+                            //setCarregando={setCarregando}
                             baseSelecionada={baseSelecionada}
                             deptoSelecionado={deptoSelecionado}
                             setDeptoSelecionado={setDeptoSelecionado}
-                            setLocal={setLocal}
+                            //setLocal={setLocal}
                             setBaseSelecionada={setBaseSelecionada}
                             //setProfissionaisDisponiveis={setProfissionaisDisponiveis}
                             errors={errors}
-                            setErrors={setErrors}
+                            //setErrors={setErrors}
                     />
                     :
                     <>
@@ -193,7 +193,7 @@ export default function FormNovaSaida ({
                             id="tipo_servico_id"
                             deptoSelecionado={deptoSelecionado}
                             error={errors.hasOwnProperty('tipo_servico_id')}
-                            helperText={errors.tipo_servico_id || ""}
+                            helperText={errors?.tipo_servico_id || ""}
                         />
 
                         <SaidaOSCard ordemServico={ordemServico} />
@@ -205,10 +205,12 @@ export default function FormNovaSaida ({
                             deptoSelecionado={deptoSelecionado} 
                             baseSelecionada={baseSelecionada}
                             inputName="saida_items" 
+                            errors={errors}
                         />
 
                         <BoxProfissionais
                             label= "Profissionais empregados"
+                            errors={errors}
                             // baseSelecionada={baseSelecionada}
                             // deptoSelecionado={deptoSelecionado}
                         />
