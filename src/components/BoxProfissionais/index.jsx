@@ -92,14 +92,14 @@ export default function BoxProfissionais ({
     } 
 
     return (
-        <Box className="mx-8 mb-12">
+        <Box className="lg:mx-8 mb-12">
             <Typography sx={style.label} >
                 {label}
             </Typography>
 
             <Paper sx={style.container} >
                 <Fade in={true}>
-                    <Paper className='p-4 mb-4 gap-4 grid grid-cols-[3fr_1fr_2fr]' id="profs-container">
+                    <Paper className='p-4 mb-4 gap-4 grid lg:grid-cols-[3fr_2fr_1fr]' id="profs-container">
                         {/** Campo utilizado para manter a lista de profissionais e disponibiliza-la quando chamada pelo metodo onSubmit */}
                         <input type="text" name={name} hidden readOnly value={inputData} />
 
@@ -109,6 +109,7 @@ export default function BoxProfissionais ({
                             size="small"
                             error={inputErrors[inputTags.nome]}
                             helperText={inputErrors[inputTags.nome] ? "Defina um profissional" : ""}
+                            InputLabelProps={{ shrink: true }}
                             className=""
                             fullWidth
                         />
@@ -131,7 +132,10 @@ export default function BoxProfissionais ({
                             size="small"
                             error={inputErrors[inputTags.horas_empregadas]}
                             helperText={inputErrors[inputTags.horas_empregadas] ? "Defina as horas empregadas" : ""}
-                            InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }}
+                            InputProps={{ 
+                                endAdornment: <InputAdornment position="end">h</InputAdornment>,
+                            }}
+                            InputLabelProps={{ shrink: true }}
                         />
                     </Paper>
                 </Fade>
@@ -147,19 +151,19 @@ export default function BoxProfissionais ({
 
                 {profissionais?.map((profissional, index) => (
                     <Fade in={true} key={`prof-${index}`} >
-                        <Paper className="p-4 mb-4 gap-4 grid grid-cols-[2fr_1fr_max-content]" >
+                        <Paper className="p-4 mb-4 gap-4 grid lg:grid-cols-[3fr_2fr_1fr_max-content]" >
                             <TextField
                                 label="Nome"
                                 data-field={inputTags.nome}
                                 inputProps={{'data-field': inputTags.nome}}
                                 size="small"
+                                InputLabelProps={{ shrink: true }}
                                 onChange={(e) => handleChange(e, index)}
                                 value={profissional?.nome ?? ""}
-                                className="col-span-2"
+                                className=""
                                 fullWidth
                             />
 
-                            <Box className='grid grid-cols-[max-content_max-content] gap-4'>
                                 <TextField
                                     type='date'
                                     inputProps={{'data-field': inputTags.data_inicio}}
@@ -176,16 +180,16 @@ export default function BoxProfissionais ({
                                     label="Horas Empregadas"
                                     value={profissional?.horas_empregadas ?? ""}
                                     onChange={e => handleChange(e, index)}
+                                    InputLabelProps={{ shrink: true }}
                                     fullWidth
                                     size="small"
                                     InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }}
                                 />
-                            </Box>
 
                             <Tooltip title="Remover" placement="right">
-                                <Box className='col-start-4 row-span-full self-center'>
-                                    <IconButton onClick={() => removeProfissional(index)}>
-                                        <CloseIcon />
+                                <Box className='self-center flex max-lg:justify-center max-lg:rounded'>
+                                    <IconButton onClick={() => removeProfissional(index)} className='w-full !rounded  max-lg:!bg-red-500 max-lg:hover:!bg-red-700'>
+                                        <CloseIcon className='max-lg:text-white' />
                                     </IconButton>
                                 </Box>
                             </Tooltip>

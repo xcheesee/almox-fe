@@ -1,4 +1,6 @@
 import React from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material/styles'
 import { 
     Dialog,
     DialogTitle,
@@ -21,9 +23,11 @@ const DialogEditar = ({
     carregando, 
     ...other 
 }) => {
+    const theme = useTheme()
+    const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
 
     return (
-        <Dialog open={openEditar} fullWidth maxWidth="md">
+        <Dialog open={openEditar} fullWidth fullScreen={fullScreen} maxWidth="md">
             <DialogTitle>{titulo} #{defaultValue.id}</DialogTitle>
             <DialogContent>
                 {other.children}

@@ -38,7 +38,7 @@ const MenuPrincipal = () => {
             <Titulo>
                 Menu principal
             </Titulo>
-            <Box className="grid gap-6 grid-cols-6 grid-rows-2 my-8 px-10">
+            <Box className="grid gap-6 lg:grid-cols-6 grid-cols-2 my-8 px-10">
                 <Link to="/entrada" className="col-span-2" >
                     <Button sx={style.button} variant="outlined">
                         <ArchiveIcon fontSize='large'/>
@@ -80,7 +80,7 @@ const MenuPrincipal = () => {
                 </Link>
                 <Link 
                     to="/historico" 
-                    className={`${perfil === "admin" || perfil === "gestao_dgpu" ? "col-span-6" : "col-span-2"}`} 
+                    className={`${perfil === "admin" || perfil === "gestao_dgpu" ? "lg:col-span-6 col-span-2" : "col-span-2"}`} 
                 >
                     <Button sx={style.button} variant="outlined">
                         <AccessTimeIcon fontSize='large'/>

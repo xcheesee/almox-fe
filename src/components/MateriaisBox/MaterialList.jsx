@@ -18,10 +18,14 @@ function SelectedMaterialList({
         return (
             <Box className="pt-2" key={`material-${i}`}>
                 <Typography className="!text-2xl !text-primary-700">{primeiraLetraMaiuscula(val.nome)}</Typography>
-                {val.mats.map( (item, i) =>  <Box className="px-4 text-lg font-thin text-primary-600 font-[Roboto]" key={`item-${i}`}>
-                        {item.nome} - <span className="font-bold">{item.quantidade}</span> {item.medida}
-                    </Box>
-                )}
+                <Box className="divide-y-2 divide-primary-300">
+                    {val.mats.map( (item, i) =>
+                        <Box className="px-4 text-lg font-thin text-primary-600 font-[Roboto] flex justify-between gap-4" key={`item-${i}`}>
+                            <span>{item.nome}</span>  <span><span className="font-bold">{item.quantidade}</span> {item.medida}</span>
+                        </Box>
+                    )}
+
+                </Box>
             </Box>
         )
     })
@@ -68,7 +72,7 @@ export default function MaterialList({
 
             return (
                 <Box 
-                    className="grid grid-cols-[min-content_1fr_min-content_120px] h-16 justify-center items-center" 
+                    className="grid lg:grid-cols-[min-content_1fr_min-content_8rem] grid-cols-[min-content_1fr_1fr] gap-y-4 min-h-20 pt-4 pb-2 justify-center items-center" 
                     key={`idc-${index}`}
                 >
                     <Checkbox 
@@ -82,7 +86,7 @@ export default function MaterialList({
 
                         }}
                     />
-                    <Typography className="flex justify-between items-center">
+                    <Typography className="flex justify-between items-center max-lg:col-span-2">
                         {val.nome}
                     </Typography>
                     {onList
@@ -91,7 +95,7 @@ export default function MaterialList({
                             label="Qtd" 
                             mask="9999999"
                             maskChar=""
-                            className="w-20" 
+                            className="w-20 max-lg:col-start-2 max-lg:w-full" 
                             value={item?.quantidade} 
                             onChange={(e) => {
                                 item.quantidade = e.target.value
@@ -109,11 +113,11 @@ export default function MaterialList({
         });
 
         return (
-            <Box className="px-8 flex flex-col gap-4">
+            <Box className="lg:px-8 flex flex-col gap-4">
                 {/** input escondido que mantem os itens selecionados pelo usuario */}
                 <input value={inputData} readOnly className="hidden" name={inputName} />
                 <Box className="flex flex-col max-h-80 py-2 overflow-y-auto">
-                    <Box>
+                    <Box className="flex flex-col gap-2 divide-y-2">
                         {displayVal}
                     </Box>
                 </Box>
