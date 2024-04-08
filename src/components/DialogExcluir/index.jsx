@@ -9,7 +9,7 @@ import {
 import { excluiRegistro, primeiraLetraMaiuscula } from '../../common/utils';
 import { useAtom, useSetAtom } from 'jotai';
 import { excluirAtom, snackbarAtom } from '../../atomStore';
-import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const DialogExcluir = ({ rota, texto, id, setOpenEditar, setCarregando, tabelaOrigem }) => {
     const QueryClient = useQueryClient()

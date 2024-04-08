@@ -10,7 +10,6 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import PrintIcon from '@mui/icons-material/Print';
 import { useNavigate } from 'react-router-dom';
 import TabelaAcaoBtn from '../../TabelaAcaoBtn';
 
@@ -42,7 +41,7 @@ const TabelaSaida = ({ saidas, carregando, cursor, getSelectedOrdemInfo }) => {
                     <TableCell align="center">{saida.origem}</TableCell>
                     <TableCell align="center">{saida.local_servico}</TableCell>
                     <TableCell align="center">
-                        <Box className="grid grid-cols-3">
+                        <Box className="grid lg:grid-cols-3 gap-2">
                             <TabelaAcaoBtn
                                 title="Visualizar Saída"
                                 placement="left"

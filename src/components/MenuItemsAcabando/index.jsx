@@ -13,10 +13,13 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { getDados } from '../../common/utils';
-import { useQuery } from '@tanstack/react-query'
+import { useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const MenuItemsAcabando = ({ username, style }) => {
-    const itemsAcabando = useQuery(['itemsAcabando'], async () => await getDados('items_acabando'))
+    const itemsAcabando = useAuthenticatedQuery({
+        queryKey: ['itemsAcabando'], 
+        queryFn: async () => await getDados('items_acabando'),
+    })
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -32,7 +35,7 @@ const MenuItemsAcabando = ({ username, style }) => {
     return (
         <>
             <Badge
-                badgeContent={itemsAcabando?.data?.length}
+                badgeContent={itemsAcabando?.data?.data?.length}
                 variant="dot"
                 color="error"
                 anchorOrigin={{
@@ -44,7 +47,7 @@ const MenuItemsAcabando = ({ username, style }) => {
                     className="flex items-center gap-1" 
                     sx={style.iconButton}
                     onClick={handleClick}
-                    disabled={itemsAcabando?.data?.length === 0}
+                    disabled={itemsAcabando?.data?.data?.length === 0}
                 >
                     <PersonIcon fontSize="small" sx={{ color: (theme) => theme.palette.color.bg }} />
                     <Typography>Olá, {username}</Typography>

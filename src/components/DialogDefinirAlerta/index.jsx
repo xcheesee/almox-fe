@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  alertClasses
 } from '@mui/material';
 import { snackbarAtom } from '../../atomStore';
 import { useSetAtom } from 'jotai';
@@ -91,10 +90,7 @@ const DialogDefinirAlerta = (props) => {
           Cancelar
         </Button>
         <Button type="submit" form="quantidade-alerta" disabled={mutation.isLoading}>
-          {mutation.isLoading
-            ? <CircularProgress size="1rem" className="mr-2" />
-            : ""
-          }
+          { mutation.isLoading && <CircularProgress size="1rem" className="mr-2" /> }
           Enviar
         </Button>
       </DialogActions>

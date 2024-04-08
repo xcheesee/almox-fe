@@ -10,18 +10,12 @@ import FormOrdemServico from '../FormOrdemServico';
 
 const NovaOrdemServico = (props) => {
     const {
-        materiais,
-        setMateriais,
         setOpenCancelar,
         setOpenConfirmar,
         carregando,
         setCarregando,
-        navigate,
-        baseSelecionada,
-        setBaseSelecionada,
     } = props;
 
-    const [errors, setErrors] = useState({});
     
     return (
         <ContainerPrincipal>
@@ -31,15 +25,8 @@ const NovaOrdemServico = (props) => {
 
             <FormOrdemServico 
                 acao='cadastrar' 
-                navigate={navigate} 
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando} 
-                materiais={materiais}
-                setMateriais={setMateriais}
-                errors={errors}
-                setErrors={setErrors}
-                baseSelecionada={baseSelecionada}
-                setBaseSelecionada={setBaseSelecionada}
             />
 
             <Box className="flex justify-end gap-4">
@@ -50,12 +37,7 @@ const NovaOrdemServico = (props) => {
                     onClick={() => setOpenConfirmar(true)}
                     variant="contained"
                 >
-                    {
-                        carregando
-                        ? <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} />
-                        : null
-                    }
-
+                    { carregando && <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} /> }
                     Enviar
                 </Button>
             </Box>

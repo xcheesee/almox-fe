@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
 import BoxLogin from '../components/BoxLogin';
-import { useNavigate } from 'react-router';
-import { loginRequest } from '../common/utils';
+import { AuthRequest, loginRequest } from '../common/utils';
 import { useMutation } from '@tanstack/react-query';
+import { useAuth, useAuthenticatedQuery } from '../common/utils/hooks';
+import { Navigate } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
 
 const Login = () => {
     const [visibilidade, setVisibilidade] = useState(false);
     const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
+    const { log_in, token } = useAuth();
 
     const loginMutation = useMutation((data) => loginRequest(data) , {
         onSuccess: (data) => {
-            localStorage.setItem('usermail', data.email)
-            localStorage.setItem('access_token', `${data.token_type} ${data.access_token}`);
-            localStorage.setItem('username', data.username);
-            localStorage.setItem('departamentos', JSON.stringify(data.departamentos));
-            localStorage.setItem('user_id', data.id);
-            localStorage.setItem('perfil', data.perfil);
-            localStorage.setItem('local', data?.local_id ?? "")
-            if (data.perfil === 'encarregado')
-                navigate('/ordemservico', { replace: true });
-            else
-                navigate('/principal', { replace: true });
+            log_in(data)
         }, onError: (data) => {
             setErrors(data)
         }
@@ -35,6 +27,15 @@ const Login = () => {
         const inputObject = Object.fromEntries(formData);
         loginMutation.mutate(inputObject)
     }
+
+    const authQuery = useAuthenticatedQuery({
+        queryFn: () => AuthRequest(),
+        queryKey: ['auth']
+    })
+
+    if(!!token && !authQuery.isLoading && !authQuery.isError ) return <Navigate to="/principal"/>
+
+    if(authQuery.isLoading) return <Box className='grid w-full h-screen justify-center items-center'><CircularProgress size={60}/></Box>
 
     return (
         <BoxLogin 

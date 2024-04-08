@@ -2,19 +2,18 @@ import { TextField, Box, MenuItem, Button, CircularProgress } from "@mui/materia
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
-import BoxMateriais from "../../components/BoxMateriais";
 import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
 import { enviaNovaOcorrencia, getLocais } from "../../common/utils";
 import { useQuery } from "@tanstack/react-query";
-import { useAtom, useAtomValue } from "jotai";
-import { matTipoListAtom, snackbarAtom } from "../../atomStore";
+import { useAtom } from "jotai";
+import { snackbarAtom } from "../../atomStore";
 import { useNavigate } from "react-router-dom";
+import MateriaisBox from "../../components/MateriaisBox";
 
 export default function NovaOcorrencia () {
 
     const [snackbar, setSnackbar] = useAtom(snackbarAtom)
-    const materiais = useAtomValue(matTipoListAtom)
 
     const [tipoOcorrencia, setTipoOcorrencia] = useState("")
     const [openConfirmar, setOpenConfirmar] = useState(false)
@@ -29,7 +28,7 @@ export default function NovaOcorrencia () {
         queryFn: () => getLocais("", "base"), 
         //enabled: !(depto === ''),
         onSuccess: (res) => {
-            setBaseOrigem((res.find(local => local.id === +localStorage.getItem("local"))).id ?? "");
+            setBaseOrigem((res?.find(local => local.id === +localStorage.getItem("local")))?.id ?? "");
             //setBaseOrigem(res.length === 1 ? res[0].id : "")
         }
     })
@@ -39,21 +38,19 @@ export default function NovaOcorrencia () {
         setIsLoading(true)
         const formData = new FormData(e.target)
         try {
-            await enviaNovaOcorrencia(formData, materiais)
+            await enviaNovaOcorrencia(formData)
             setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
             navigate("/ocorrencia")
         } catch(e){
-            setErrors(e.errors)
-            setSnackbar({...snackbar, open: true, message: e?.text ?? "Ocorreu um erro.", severity: "error"})
+            setErrors(e?.errors ?? {})
+            setSnackbar({...snackbar, open: true, message: e?.text ?? `Ocorreu um erro: ${e.mensagem}`, severity: "error"})
         }
         setIsLoading(false)
     }
 
     return(
         <ContainerPrincipal>
-            <Titulo
-                voltaPara="/ocorrencia"
-            >
+            <Titulo voltaPara="/ocorrencia" >
                 Nova Ocorrência
             </Titulo>
 
@@ -82,7 +79,6 @@ export default function NovaOcorrencia () {
                     helperText={errors?.local_id ?? ""}
                     SelectProps={{ value: baseOrigem, onChange: (e) => {
                         if(localStorage.getItem("local") !== "") return
-
                         setBaseOrigem(e.target.value)
                     }}}
                     fullWidth
@@ -123,33 +119,32 @@ export default function NovaOcorrencia () {
                     label="Justificativa"
                 />
 
-                {tipoOcorrencia === "furto" || tipoOcorrencia === "extravio"
-                    ?<TextField 
+                {   
+                    (tipoOcorrencia === "furto" || tipoOcorrencia === "extravio") && 
+                    <TextField 
                         name="boletim_ocorrencia"
                         label="Boletim de Ocorrência"
                         type="file"
                         inputProps={{ accept: "image/*, application/pdf" }}
                         InputLabelProps={{ shrink: true }}
                         required={tipoOcorrencia === "furto" || tipoOcorrencia === "extravio"}
-                        //error={errors.hasOwnProperty('boletim_ocorrencia')}
-                        //helperText={errors.boletim_ocorrencia || ""}
+                        error={errors.hasOwnProperty('boletim_ocorrencia')}
+                        helperText={errors?.boletim_ocorrencia || ""}
                         fullWidth
                     />
-                    : <></>
                 }
+
+                <MateriaisBox 
+                    baseSelecionada={baseOrigem}
+                    inputName='itens' 
+                    entrada 
+                    errors={errors}
+                />
             </FormContainer>
 
-            <BoxMateriais 
-                label="Materiais envolvidos"
-                baseSelecionada={baseOrigem}
-                tooltipText="Selecione uma base antes de adicionar materiais!"
-            />
 
             <Box className="flex gap justify-end items-center">
-                { isLoading
-                    ? <CircularProgress size={24}/>
-                    : <></>
-                }
+                { isLoading && <CircularProgress size={24}/> }
                 <Button onClick={() => setOpenConfirmar(true)}>
                     Enviar
                 </Button>

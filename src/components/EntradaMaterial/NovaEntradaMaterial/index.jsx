@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
     Box, 
     Button,
@@ -14,12 +14,7 @@ const NovaEntradaMaterial = (props) => {
         setOpenConfirmar,
         carregando,
         setCarregando,
-        navigate,
-        deptoSelecionado,
-        setDeptoSelecionado
     } = props;
-
-    const [errors, setErrors] = useState({});
 
     return (
         <ContainerPrincipal>
@@ -29,13 +24,8 @@ const NovaEntradaMaterial = (props) => {
             
             <FormEntradaMaterial
                 acao='cadastrar'
-                navigate={navigate}
                 setOpenConfirmar={setOpenConfirmar}
                 setCarregando={setCarregando}
-                deptoSelecionado={deptoSelecionado}
-                setDeptoSelecionado={setDeptoSelecionado}
-                errors={errors}
-                setErrors={setErrors}
             />
             
             <Box className="flex justify-end gap-4">
@@ -46,12 +36,7 @@ const NovaEntradaMaterial = (props) => {
                     onClick={() => setOpenConfirmar(true)}
                     variant="contained"
                 >
-                    {
-                        carregando
-                        ? <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} />
-                        : null
-                    }
-
+                    { carregando && <CircularProgress color="color" size='1rem' sx={{ mr: '0.5rem' }} /> }
                     Enviar
                 </Button>
             </Box>

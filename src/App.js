@@ -3,7 +3,6 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import Auth from './components/Auth';
 import Login from './Pages/Login';
 import Principal from './Pages/Principal';
 import Entrada from './Pages/Entrada/Entrada';
@@ -24,6 +23,9 @@ import NovaTransferencia from './Pages/Transferencia/novaTransferencia';
 import RecusaTranferencia from './Pages/Transferencia/recusaTransferencia';
 import NovaSaida from './Pages/Saida/NovaSaida';
 import Saida from './Pages/Saida';
+import { AuthProvider } from './common/utils/hooks';
+import ProtectedRoute from './components/ProtectedRoute';
+import Margens from './components/Margens';
 
 //Hooks de query, cache, fetching/refetching, etc => https://tanstack.com/query/v4/
 
@@ -31,37 +33,38 @@ function App() {
   const [snackbar, setSnackbar] = useAtom(snackbarAtom);
 
   return (
-    <Auth >
+    <AuthProvider>
+        <Margens>
       <Routes>
         <Route path="/" element={ <Login /> } />
 
-        <Route path="/principal" element={ <Principal /> } />
+        <Route path="/principal" element={ <ProtectedRoute><Principal /></ProtectedRoute> } />
 
-        <Route path="/entrada" element={ <Entrada /> } />
+        <Route path="/entrada" element={ <ProtectedRoute><Entrada /></ProtectedRoute> } />
 
-        <Route path="/entrada/nova-entrada" element={ <NovaEntrada /> } />
+        <Route path="/entrada/nova-entrada" element={ <ProtectedRoute><NovaEntrada /></ProtectedRoute> } />
 
-        <Route path="/ordemservico" element={ <Ordem /> } />
+        <Route path="/ordemservico" element={ <ProtectedRoute><Ordem /></ProtectedRoute> } />
 
-        <Route path="/ordemservico/nova-ordem" element={ <NovaOrdem /> } />
+        <Route path="/ordemservico/nova-ordem" element={ <ProtectedRoute><NovaOrdem /></ProtectedRoute> } />
 
-        <Route path="/saida" element={ <Saida /> } />
+        <Route path="/saida" element={ <ProtectedRoute><Saida /></ProtectedRoute> } />
 
-        <Route path="/saida/nova-saida" element={ <NovaSaida /> } />
+        <Route path="/saida/nova-saida" element={ <ProtectedRoute><NovaSaida /></ProtectedRoute> } />
 
-        <Route path="/saida/:id/baixa" element={ <Baixa setSnackbar={setSnackbar} /> } />
+        <Route path="/saida/:id/baixa" element={ <ProtectedRoute><Baixa setSnackbar={setSnackbar} /></ProtectedRoute> } />
 
-        <Route path="/inventario" element={ <PaginaInventario /> } />
+        <Route path="/inventario" element={ <ProtectedRoute><PaginaInventario /></ProtectedRoute> } />
 
-        <Route path="/transferencia" element={ <Transferencia />} />
+        <Route path="/transferencia" element={ <ProtectedRoute><Transferencia /></ProtectedRoute>} />
 
-        <Route path="/transferencia/nova-tranferencia" element={ <NovaTransferencia />} />
+        <Route path="/transferencia/nova-tranferencia" element={ <ProtectedRoute><NovaTransferencia /></ProtectedRoute>} />
 
-        <Route path="/transferencia/recusa-transferencia/:id" element={ <RecusaTranferencia />} />
+        <Route path="/transferencia/recusa-transferencia/:id" element={ <ProtectedRoute><RecusaTranferencia /></ProtectedRoute>} />
 
-        <Route path="/ocorrencia" element={ <Ocorrencia />} />
+        <Route path="/ocorrencia" element={ <ProtectedRoute><Ocorrencia /></ProtectedRoute>} />
 
-        <Route path="/ocorrencia/nova-ocorrencia" element={ <NovaOcorrencia />} />
+        <Route path="/ocorrencia/nova-ocorrencia" element={ <ProtectedRoute><NovaOcorrencia /></ProtectedRoute>} />
 
         <Route path="*" element={ <Pagina404 /> } />
       </Routes>
@@ -70,7 +73,8 @@ function App() {
         snackbar={snackbar}
         setSnackbar={setSnackbar}
       />
-    </Auth >
+        </Margens>
+    </AuthProvider>
   );
 }
 

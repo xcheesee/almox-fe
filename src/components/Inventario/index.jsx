@@ -7,8 +7,8 @@ import Paginacao from '../Paginacao';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from '../../atomStore';
 import { useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { getTabela } from '../../common/utils';
+import { useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const Inventario = (props) => {
     const { 
@@ -21,14 +21,14 @@ const Inventario = (props) => {
     const filtros = useAtomValue(filtrosAtom);
     const setSnackbar = useSetAtom(snackbarAtom)
 
-    const itens = useQuery({
+    const itens = useAuthenticatedQuery({
         queryKey: ['inventarioItens', page, filtros, sort],
         queryFn: () => getTabela('inventarios', page, filtros, sort),
         onSuccess: res => pageCountRef.current = res.meta.last_page,
         onError: error => setSnackbar({
             open: true,
             severity: 'error',
-            message: `Nao foi possivel recuperar os dados do inventario: ${error.status} (${error.message})`
+            message: `Nao foi possivel recuperar os dados do inventario: ${error.status} (${error.message ?? error.statusText})`
         })
         
     })

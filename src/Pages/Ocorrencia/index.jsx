@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import BotaoNovo from "../../components/BotaoNovo";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Paginacao from "../../components/Paginacao";
@@ -9,6 +8,7 @@ import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from "../../atomStore";
 import FiltrosOcorrencia from "../../components/Ocorrencia/FiltrosOcorrencia";
 import TabelaOcorrencia from "../../components/Ocorrencia/TabelaOcorrencia";
 import { useRef } from "react";
+import { useAuthenticatedQuery } from "../../common/utils/hooks";
 
 export default function Ocorrencia () {
     const sort = useAtomValue(sortAtom)
@@ -16,7 +16,7 @@ export default function Ocorrencia () {
     const filtros = useAtomValue(filtrosAtom)
     const setSnackbar = useSetAtom(snackbarAtom)
 
-    const ocorrenciaQuery = useQuery({
+    const ocorrenciaQuery = useAuthenticatedQuery({
         queryKey: ["ocorrencias", page, filtros, sort],
         queryFn: async () => await getTabela("ocorrencia", page, filtros, sort),
         onSuccess: res => pageCountRef.current = res.meta.last_page,
@@ -24,7 +24,7 @@ export default function Ocorrencia () {
             setSnackbar({
                 open: true,
                 severity: 'error',
-                message: `Nao foi possiver recuperar a lista de ocorrencias: ${error.status} (${error.message})`
+                message: `Nao foi possiver recuperar a lista de ocorrencias: ${error.status} (${error.message ?? error.statusText})`
             })
         }
     })
@@ -39,9 +39,8 @@ export default function Ocorrencia () {
 
             <FiltrosOcorrencia />
 
-            {authCreateOcorrencia(localStorage.getItem("perfil"))
-                ?<BotaoNovo caminho="/ocorrencia/nova-ocorrencia" > Nova Ocorrencia </BotaoNovo>
-                :<></>
+            {authCreateOcorrencia(localStorage.getItem("perfil")) 
+            && <BotaoNovo caminho="/ocorrencia/nova-ocorrencia" > Nova Ocorrencia </BotaoNovo>
             }
 
             <TabelaOcorrencia 

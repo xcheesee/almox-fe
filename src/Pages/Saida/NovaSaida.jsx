@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import NovaSaidaContainer from '../../components/Saida/NovaSaida';
 import DialogCancelar from '../../components/DialogCancelar';
-import DialogEnviar from '../../components/DialogEnviar';
-import { useNavigate } from 'react-router';
 import { FormNovaSaida } from '../../components/Saida/FormSaida';
-import { useSetAtom } from 'jotai';
-import { profissionaisAtom } from '../../atomStore';
+//import { useSetAtom } from 'jotai';
+//import { profissionaisAtom } from '../../atomStore';
 
 const NovaSaida = () => {
 
     const [carregando, setCarregando] = useState(false);
     const [openCancelar, setOpenCancelar] = useState(false);
     const [openConfirmar, setOpenConfirmar] = useState(false);
-    const [errors, setErrors] = useState({});
-    const setProfissionais = useSetAtom(profissionaisAtom);
+    //const setProfissionais = useSetAtom(profissionaisAtom);
     //const [baseSelecionada, setBaseSelecionada] = useState('');
 
-    useEffect(() => {
-        setProfissionais([]);
-    }, [])
+    //useEffect(() => {
+    //    setProfissionais([]);
+    //}, [])
 
-    //const navigate = useNavigate();
     const formId="nova_saida"
 
     return (
@@ -37,8 +33,8 @@ const NovaSaida = () => {
                     formId={formId}
                     setOpenConfirmar={setOpenConfirmar}
                     setCarregando={setCarregando} 
-                    errors={errors}
-                    setErrors={setErrors}
+                    //errors={errors}
+                    //setErrors={setErrors}
                 />
             </NovaSaidaContainer>
 

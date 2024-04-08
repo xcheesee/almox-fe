@@ -34,7 +34,8 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                     <TableCell align="center">{ordem.origem}</TableCell>
                     <TableCell align="center">{ordem.local_servico}</TableCell>
                     <TableCell align="center">
-                        <Box className="grid grid-cols-3">
+                        <Box className='flex justify-center'>
+                        <Box className="grid lg:grid-cols-3 gap-2">
                             <TabelaAcaoBtn
                                 title="Visualizar Ordem"
                                 placement="left"
@@ -63,6 +64,8 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                             >
                                 <PrintIcon fontSize="small" />
                             </TabelaAcaoBtn>
+                        </Box>
+
                         </Box>
                     </TableCell>
                 </TableRow>

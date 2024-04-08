@@ -1,69 +1,93 @@
-import React, { useState } from 'react';
 import { MenuItem, TextField } from '@mui/material';
 import { useQuery } from "@tanstack/react-query"
 import { getLocais } from '../../common/utils';
+import React, { useState } from 'react';
 
-const CampoLocais = ({
-    name, 
-    label, 
-    defaultValue, 
-    tipo, 
-    depto="", 
-    getAllBases=false, 
-    onChange=() => {}, 
-    ...props
-}) => {
-
-    const [local, setLocal] = useState(0)
-
+const CampoLocais = React.forwardRef(({
+        name, 
+        label, 
+        defaultValue=null, 
+        value=null,
+        tipo, 
+        depto="", 
+        getAllBases=false, 
+        disabled=false,
+        onChange=() => {}, 
+        onLocaisQuery=() => {},
+        ...other
+    }, 
+    ref
+    ) => {
+    const [filteredLocais, setFilteredLocais] = useState([])
+    const [dftVal, setDftVal] = useState(defaultValue ?? "")
     const locais = useQuery({
         queryKey: ['locais', depto, tipo], 
         queryFn: () => getLocais(depto, tipo), 
-        //enabled: !(depto === ''),
+        enabled: !!depto,
         onSuccess: (res) => {
-            setLocal(defaultValue ?? (res.length === 1 ? res[0].id : ""))}
+            onLocaisQuery(res, defaultValue) 
+            setFilteredLocais(res?.filter( local => local.tipo === tipo ))
+        }
     })
+
+    if(locais.isFetching) return (
+        <TextField
+            select
+            value={0}
+            disabled
+            ref={ref}
+            {...other}
+        >
+            <MenuItem value={0}>Carregando...</MenuItem>
+        </TextField>
+    );
+
+    if(value === null) return (
+        <TextField
+            select
+            value={dftVal}
+            onChange={(e) => {
+                setDftVal(e.target.value)
+                onChange(e)
+            }}
+            name={name}
+            label={label}
+            disabled={disabled}
+            fullWidth
+            required
+            ref={ref}
+            {...other}
+        >
+            {filteredLocais?.map((local, i) => (
+                    <MenuItem value={local.id} key={`local-${i}`}>
+                        {local.nome}
+                    </MenuItem>
+                ))
+            ?? <MenuItem></MenuItem>}
+        </TextField>
+    );
 
 
     return (
-        <>
-            {locais.isFetching
-                ?<TextField
-                    select
-                    disabled
-                    SelectProps={{ value: 0}}
-                >
-                    <MenuItem value={0}>Carregando...</MenuItem>
-                </TextField>
-                :<TextField
-                    select
-                    SelectProps={{ 
-                        value: local, 
-                        onChange: (e) => {
-                            onChange(e)
-                            setLocal(e.target.value)
-                        }
-                    }}
-                    name={name}
-                    label={label}
-                    disabled={locais.isLoading || (!getAllBases && depto==="")}
-                    fullWidth
-                    required
-                    {...props}
-                >
-                    {locais.data ? locais?.data
-                        ?.filter( local => local.tipo === tipo )
-                        ?.map(local => (
-                            <MenuItem key={local.id} value={local.id}>
-                                {local.nome}
-                            </MenuItem>
-                        ))
-                    : <MenuItem></MenuItem>}
-                </TextField>
-            }
-            
-        </>
-        
-)};
+        <TextField
+            select
+            onChange={onChange}
+            value={value}
+            name={name}
+            label={label}
+            disabled={disabled}
+            fullWidth
+            required
+            ref={ref}
+            {...other}
+        >
+            {filteredLocais?.map(local => (
+                <MenuItem key={local.id} value={local.id}>
+                    {local.nome}
+                </MenuItem>
+                ))
+            ?? <MenuItem></MenuItem>}
+        </TextField>
+)});
 
 export default CampoLocais;

@@ -5,7 +5,7 @@ export function errorBuilder(res, text) {
   error.message = text
   error.status = res.status
   error.ok = false
-  error.errors = Object.values(res?.errors)?.reduce((prev, curr) => prev + `${curr}\n`, "") ?? "" 
+  error.errors = Object?.values(res?.errors ?? {})?.reduce((prev, curr) => prev + `${curr}\n`, "") ?? "" 
   return error
 }
 
@@ -108,10 +108,7 @@ export function formatProfissional(profissionais) {
 /*                                       Create                                                       */
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 
-export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) => {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
+export const enviaForm = (formData) => {
   formData.append('user_id', localStorage.getItem('user_id'));
   
   if (formData.get('numero_contrato') !== null) 
@@ -120,20 +117,10 @@ export const enviaForm = (e, materiais, campoMats, profissionais, campoProfs) =>
   if (formData.get('processo_sei') !== null) 
     formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
   
-  if (materiais) {
-    const materiaisArray = objToArr(materiais)
-    materiaisArray.forEach( material => material.quantidade = material.qtd)
-    formData.append(campoMats, JSON.stringify(materiaisArray))
-  } 
-
-  if (profissionais) {
-    formData.append(campoProfs, JSON.stringify(profissionais))
-  }
   return formData;
 }
 
-export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais, campoProfs) => {
-  enviaForm(e, materiais, campoMats, profissionais, campoProfs)
+export const enviaNovoForm = async (formData, url) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
       method: 'POST',
@@ -141,7 +128,7 @@ export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais,
         'Accept': 'application/json',
         'Authorization': localStorage.getItem('access_token')
       },
-      body: enviaForm(e, materiais, campoMats, profissionais, campoProfs)
+      body: enviaForm(formData)
   };
 
   const res = await fetch(urlCompleta, options)
@@ -154,7 +141,7 @@ export const enviaNovoForm = async (e, url, materiais, campoMats, profissionais,
   return await res.json()
 }
 
-export async function enviaNovaSaida({ formData, materiais, profissionais }) { 
+export async function enviaNovaSaida({ formData }) { 
   const url = `${process.env.REACT_APP_API_URL}/saida`;
   const options = {
     method: 'POST',
@@ -173,10 +160,7 @@ export async function enviaNovaSaida({ formData, materiais, profissionais }) {
   }
 }
 
-export async function enviaNovaOcorrencia(formData, materiais) {
-  const materiaisArray = objToArr(materiais)
-  formData.append("itens", JSON.stringify(materiaisArray))
-
+export async function enviaNovaOcorrencia(formData) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
 
   const res = await fetch(url, {
@@ -188,34 +172,44 @@ export async function enviaNovaOcorrencia(formData, materiais) {
   if(res.ok) return res
 
   const json = await res.json()
-  const error = errorBuilder(res, json.mensagem)
-  error.errors = json.errors
+  //const error = errorBuilder(res, json.mensagem)
+  //error.errors = json.errors
   
-  throw error
+  throw json;
 }
 
-export async function enviaNovaTransferencia(formData, materiais) {
+export async function enviaNovaTransferencia(formData) {
   const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
-
-  const materiaisArray = objToArr(materiais)
-  formData.append("itens", JSON.stringify(materiaisArray))
 
   const res = await fetch(url, {
     method: "POST",
     headers: headerBuilder(), 
     body: formData,
   })
+
   if(res.ok) return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
   
   const json = await res.json()
-  const error = errorBuilder(res, "Nao foi possivel enviar a transferencia")
-  error.errors = json.errors
-  throw error
+  throw json
 }
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
 /*                                       Read                                                         */
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+
+export async function AuthRequest() {
+  const url = `${process.env.REACT_APP_API_URL}/perfil`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      ...headerBuilder()
+    },
+  }
+  const res = await fetch(url, options)
+  if(res.status === 401) throw res
+  return await res.json()
+}
 
 export const loginRequest = async (inputObject) => {
   const url = `${process.env.REACT_APP_API_URL}/login`;
@@ -267,6 +261,7 @@ export const getBaixa = async (baixaId) => {
   };
 
   const [res, itensRes] = await Promise.all([fetch(url, options), fetch(urlItems, options)])
+  if(res.status === 401 || itensRes.status === 401) throw res
   if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar a baixa!")
   if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperar os itens da baixa!")
 
@@ -282,9 +277,11 @@ export async function getLocais (depto, tipo) {
   };
 
   const res = await fetch(url, options)
-  if(!res.ok) {
+  if(res.status === 401) 
+    throw res 
+  else if(!res.ok) 
     throw errorBuilder(res, "Nao foi possivel recuperar os locais")
-  }
+  
   return (await res.json()).data
 }
 
@@ -293,13 +290,14 @@ export async function getDados(rota) {
   const options = { headers: headerBuilder() };
 
   try{
-    const res = await fetch(url, options)
-    if(res.status === 404) {
-      throw errorBuilder(res, "Nao encontrado")
-    }
-    return await res.json()
+    const res = await fetch(url, options);
+    if(!res.ok) throw res; 
+    return await res.json();
   } catch(e) {
-    throw errorBuilder(e, e.message)
+    if(e.status === 401) {
+        throw e;
+    }
+    throw errorBuilder(e, e.message);
   }
 }
 
@@ -315,12 +313,16 @@ export async function getTabela (rota, page="", filtros="", sort="") {
     const json = await res.json()
     if(res.status === 404) {
       throw errorBuilder(res, "Nao encontrado")
-    }
-    if(!res.ok) {
+    } else if(res.status === 401) {
+        throw res
+    } else if(!res.ok) {
       throw errorBuilder(res, json.message)
     }
     return await new Promise(res => setTimeout(() => res(json), 250))
   } catch(e) {
+    if(e.status === 401) {
+        throw e
+    }
     throw errorBuilder(e, e.message)
   }
 }
@@ -360,8 +362,10 @@ export const getMateriais = async (rota, id) => {
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais!")
 }
 
-export const getMatTipos = async () => {
-  const url = `${process.env.REACT_APP_API_URL}/tipo_items`;
+export const getMatTipos = async ({
+    depto=""
+}) => {
+  const url = `${process.env.REACT_APP_API_URL}/tipo_items/${depto}`;
   const options = {
       method: 'GET',
       headers: {
@@ -376,7 +380,9 @@ export const getMatTipos = async () => {
   throw errorBuilder(res, "Nao foi possivel recuperar os materiais")
 }
 
-export const getTipoServicos = async ({depto}) => {
+export const getTipoServicos = async ({
+    depto=""
+}) => {
   const url = `${process.env.REACT_APP_API_URL}/tipo_servicos/${depto}`;
   const options = {
       method: 'GET',
@@ -392,7 +398,7 @@ export const getTipoServicos = async ({depto}) => {
   throw errorBuilder(res, "Nao foi possivel recuperar os tipos de serviço")
 }
 
-export const getMatItens = async (tipoRota, ordemServico = false, baseSelecionada, deptoSelecionado) => {
+export const getMatItens = async (tipoRota, ordemServico=false, baseSelecionada, deptoSelecionado) => {
   const url = 
     ordemServico
       ? `${process.env.REACT_APP_API_URL}/base/items?base=${baseSelecionada}&depto=${deptoSelecionado}&tipo=${tipoRota}`
@@ -536,12 +542,12 @@ export const enviaBaixa = async (items, baixaId) => {
   }
 }
 
-export const enviaEdicao = async (e, url, id, materiais, campo) => {
+export const enviaEdicao = async (formData, url, id)  => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
     method: 'POST',
     headers: headerBuilder() ,
-    body: enviaForm(e, materiais, campo) // TODO: implementar edicao de profissionais
+    body: enviaForm(formData)
   };
   
   const res = await fetch(urlCompleta, options)
@@ -647,7 +653,6 @@ export async function excluiRegistro ( rota, id ) {
 export const authCreateEntrada = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return 'flex';
     case 'almoxarife':
       return 'flex';
     default:
@@ -658,7 +663,6 @@ export const authCreateEntrada = (perfil) => {
 export const authCreateOrdem = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return 'flex';
     case 'gestao_dgpu':
       return 'flex';
     default:
@@ -671,11 +675,11 @@ export const authCreateTransf = (perfil) => {
     case 'admin':
       return true;
     case 'almoxarife':
-      return true;
     case 'encarregado':
-      return true;
+    case 'admin': //perfil adicionado para fins de teste
+        return true;
     default:
-      return false;
+        return false;
   }
 }
 
@@ -684,11 +688,11 @@ export const authCreateOcorrencia = (perfil) => {
     case 'admin':
       return true;
     case 'almoxarife':
-      return true;
     case 'encarregado':
-      return true;
+    case 'admin': //perfil adicionado para fins de teste
+        return true;
     default:
-      return false;
+        return false;
   }
 }
 
@@ -698,8 +702,8 @@ export function isAllowedTransf() {
     case 'admin':
       return true;
     case 'almoxarife':
-      return true;
     case 'encarregado':
+    case 'admin': //perfil adicionado para fins de teste
       return true;
     default:
       return false;
@@ -710,7 +714,6 @@ export function isAllowedTransf() {
 export const authEditEntrada = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return '';
     case 'almoxarife':
       return '';
     default:
@@ -721,7 +724,6 @@ export const authEditEntrada = (perfil) => {
 export const authEditOrdem = (perfil) => {
   switch (perfil) {
     case 'admin':
-      return '';
     case 'gestao_dgpu':
       return '';
     default:

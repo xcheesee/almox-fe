@@ -26,7 +26,7 @@ export default function OSAutocomplete ({
 
     return (
         <Autocomplete
-            disabled={disabled || defaultValue != ""}
+            disabled={disabled || defaultValue !== ""}
             id="ordem_servico"
             loading={ordensQuery.isFetching}
             getOptionLabel={(option) => `${option.id}`}

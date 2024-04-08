@@ -5,12 +5,12 @@ const FormContainer = (props) => {
     const { 
         id, 
         onSubmit, 
-        ...other 
+        children, 
     } = props;
 
     return (
         <Box
-            className="flex flex-col gap-10 p-8 mt-4"
+            className="flex flex-col gap-10 py-2 px-4 mt-4"
         >
             <Box
                 component="form" 
@@ -19,7 +19,7 @@ const FormContainer = (props) => {
                 className="flex flex-col gap-10"
                 encType="multipart/form-data"
             >
-                {other.children}
+                {children}
             </Box>
         </Box>
     );

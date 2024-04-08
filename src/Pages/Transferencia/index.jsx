@@ -5,7 +5,6 @@ import Titulo from "../../components/Titulo";
 import TabelaTransferencia from "../../components/Transferencia/TabelaTransferencia";
 import FiltrosTransferencia from "../../components/Transferencia/FiltrosTransferencia";
 import Paginacao from "../../components/Paginacao";
-import { useQuery } from "@tanstack/react-query";
 import { authCreateTransf, getMateriais, getRegistro, getTabela } from "../../common/utils";
 import { useAtomValue, useSetAtom } from "jotai";
 import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from "../../atomStore";
@@ -13,6 +12,7 @@ import DialogDetalhesTransferencia from "../../components/Transferencia/DialogDe
 import { useState } from "react";
 import DialogConfirmarTransferencia from "../../components/Transferencia/DialogConfirmarTransferencia";
 import { useRef } from "react";
+import { useAuthenticatedQuery } from "../../common/utils/hooks";
 
 export default function Transferencia () {
 
@@ -27,14 +27,14 @@ export default function Transferencia () {
     const [transfItensData, setTransfItensData] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
-    const transferenciasQuery = useQuery({
+    const transferenciasQuery = useAuthenticatedQuery({
         queryKey: ['transferencias', page, filtros, sort],
         queryFn: async () => await getTabela("transferencia", page, filtros, sort),
         onSuccess: (res) => pageCountRef.current = res.meta.last_page,
         onError: error => setSnackbar({
             open: true,
             severity: "error",
-            message: `Nao foi possivel recuperar os dados de transferencia: ${error.status} (${error.message})`
+            message: `Nao foi possivel recuperar os dados de transferencia: ${error.status} (${error.message ?? error.statusText})`
         })
     })
 
@@ -80,11 +80,11 @@ export default function Transferencia () {
                 </Titulo>
 
                 <FiltrosTransferencia />
-                { authCreateTransf(localStorage.getItem("perfil"))
-                    ?<Box className="flex gap-4 justify-end">
+                {   
+                    authCreateTransf(localStorage.getItem("perfil")) 
+                    &&<Box className="flex gap-4 justify-end">
                         <BotaoNovo caminho="/transferencia/nova-tranferencia" > Nova Transferencia </BotaoNovo>
                     </Box>
-                    :<></>
                 }
 
                 <TabelaTransferencia 

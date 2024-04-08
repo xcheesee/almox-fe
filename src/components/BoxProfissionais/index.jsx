@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Typography,
     Paper,
     Fade,
-    MenuItem,
     TextField,
     InputAdornment,
     Tooltip,
@@ -14,37 +13,15 @@ import {
 import style from './style';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { useQuery } from '@tanstack/react-query';
-import { getProfissionais } from '../../common/utils';
-import { useAtom, useSetAtom } from 'jotai';
-import { profissionaisAtom } from '../../atomStore';
 
 export default function BoxProfissionais ({
     label,
-    defaultValue=null,
-    baseSelecionada="",
-    deptoSelecionado="",
+    //baseSelecionada="",
+    //deptoSelecionado="",
+    //errors={},
+    defaultValue=[],
+    name="",
 }) {
-    const profissionaisDisponiveis = useQuery({
-        queryFn: () => getProfissionais(baseSelecionada, deptoSelecionado),
-        queryKey: ['profissinaisDisponiveis', baseSelecionada, deptoSelecionado]
-    })
-
-    //reseta o valor do store de profissionais caso for a primeira renderizacao e nao houver valores previos 
-    const firstLoad = useRef(true)
-
-    useEffect(() => {
-        if(firstLoad.current && !defaultValue) {
-            firstLoad.current = false
-            setProfissionais([])
-        }
-    })
-
-    const [currProfissional, setCurrProfissional] = useState({
-        nome: "",
-        data_inicio: "",
-        horas_empregadas: ""
-    })
 
     const inputTags = {
         nome: "nome",
@@ -52,18 +29,35 @@ export default function BoxProfissionais ({
         horas_empregadas: "horas_empregadas"
     }
 
-    const [inputErrors, setInputErrors] = useState({ });
+    const [inputErrors, setInputErrors] = useState({});
 
-    const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
+    const [profissionais, setProfissionais] = useState(defaultValue ?? [])
+    const inputData = JSON.stringify(profissionais)
+
+    function cadastraProfissional() {
+        const nomeNode = document.getElementById(inputTags.nome);
+        const dataNode = document.getElementById(inputTags.data_inicio);
+        const horaNode = document.getElementById(inputTags.horas_empregadas);
+
+        const profissional = {
+            nome: nomeNode.value,
+            data_inicio: dataNode.value,
+            horas_empregadas: horaNode.value
+        };
+
+        if(isBlankField(profissional)) return;
+
+        setProfissionais( prev => ([...prev, profissional]) );
+
+        nomeNode.value = "";
+        dataNode.value = "";
+        horaNode.value = "";
+    }
 
     function handleChange (element, formIndex) {
-        const mod = {
-            [element.target.name]: element.target.value
-        }
-        return setProfissionais(prev => {
-            const newArr = modProfissional(prev, formIndex, mod)
-            return [...newArr]
-        })
+        const mod = { [element.currentTarget.dataset.field]: element.target.value }
+
+        return setProfissionais(prev => modProfissional(prev, formIndex, mod))
     }
 
     function isBlankField (profissional) {
@@ -71,112 +65,83 @@ export default function BoxProfissionais ({
         let errors = {}
 
         for(let keyValue of entries) {
-            if(!keyValue[1] || keyValue[1] == "") {
+            if(!keyValue[1] || keyValue[1] === "") {
                 errors[keyValue[0]] = true
             }
         }
 
         setInputErrors(errors)
-        if(Object.keys(errors).length !== 0) return true
 
-        return false
+        return Object.keys(errors).length !== 0
     }
 
     const modProfissional = (profissionaisEmpregados, formIndex, values) => {
         let profs = [...profissionaisEmpregados]
         let prof = {
-            ...profissionaisEmpregados[formIndex],
+            ...profs[formIndex],
             ...values,
         }
-        profs[formIndex] = {...prof}
-        return [...profs]
+        profs[formIndex] = prof
+        return profs
     }
 
     const removeProfissional = (index) => {
-        let tempArr = profissionais
+        let tempArr = [...profissionais]
         tempArr.splice(index, 1);
-        setProfissionais([...tempArr])
+        setProfissionais(tempArr);
     } 
 
     return (
-        <Box className="mx-8 mb-12">
+        <Box className="lg:mx-8 mb-12">
             <Typography sx={style.label} >
                 {label}
             </Typography>
 
             <Paper sx={style.container} >
                 <Fade in={true}>
-                    <Paper className='p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]'>
+                    <Paper className='p-4 mb-4 gap-4 grid lg:grid-cols-[3fr_2fr_1fr]' id="profs-container">
+                        {/** Campo utilizado para manter a lista de profissionais e disponibiliza-la quando chamada pelo metodo onSubmit */}
+                        <input type="text" name={name} hidden readOnly value={inputData} />
+
                         <TextField
-                            //select
                             label="Nome"
-                            name={inputTags.nome}
+                            id={inputTags.nome}
                             size="small"
-                            onChange={e => setCurrProfissional( prev => ({...prev, nome:e.target.value}) )}
-                            disabled={!profissionaisDisponiveis?.data}
-                            value={currProfissional.nome}
                             error={inputErrors[inputTags.nome]}
                             helperText={inputErrors[inputTags.nome] ? "Defina um profissional" : ""}
-                            className="col-span-2"
+                            InputLabelProps={{ shrink: true }}
+                            className=""
                             fullWidth
                         />
-                            {/*
-                                profissionaisDisponiveis?.data?.data ?
-                                profissionaisDisponiveis?.data?.data
-                                    ?.map((val, i) => 
-                                        <MenuItem value={val.id} prof-index={val.id} key={i} >
-                                            {val.nome}
-                                        </MenuItem>)
-                                : <MenuItem></MenuItem>
 
-                            </TextField>
-                            */}
-                        <Box className='grid grid-cols-[max-content_max-content] gap-4'>
-                            <TextField
-                                type='date'
-                                name={inputTags.data_inicio}
-                                label="Data de Inicio"
-                                InputLabelProps={{ shrink: true }}
-                                value={currProfissional.data_inicio}
-                                onChange={e => setCurrProfissional(prev => ({...prev, data_inicio:e.target.value}) )}
-                                error={inputErrors[inputTags.data_inicio]}
-                                helperText={inputErrors[inputTags.data_inicio] ? "Defina a data de inicio" : ""}
-                                fullWidth
-                                size="small"
-                            />
+                        <TextField
+                            type='date'
+                            id={inputTags.data_inicio}
+                            label="Data de Inicio"
+                            InputLabelProps={{ shrink: true }}
+                            error={inputErrors[inputTags.data_inicio]}
+                            helperText={inputErrors[inputTags.data_inicio] ? "Defina a data de inicio" : ""}
+                            fullWidth
+                            size="small"
+                        />
 
-                            <TextField
-                                name={inputTags.horas_empregadas}
-                                label="Horas Empregadas"
-                                value={currProfissional.horas_empregadas}
-                                onChange={e => setCurrProfissional( prev => ({...prev, horas_empregadas:e.target.value}) )}
-                                fullWidth
-                                size="small"
-                                error={inputErrors[inputTags.horas_empregadas]}
-                                helperText={inputErrors[inputTags.horas_empregadas] ? "Defina as horas empregadas" : ""}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">h</InputAdornment>,
-                                }}
-                            />
-                        </Box>
+                        <TextField
+                            id={inputTags.horas_empregadas}
+                            label="Horas Empregadas"
+                            fullWidth
+                            size="small"
+                            error={inputErrors[inputTags.horas_empregadas]}
+                            helperText={inputErrors[inputTags.horas_empregadas] ? "Defina as horas empregadas" : ""}
+                            InputProps={{ 
+                                endAdornment: <InputAdornment position="end">h</InputAdornment>,
+                            }}
+                            InputLabelProps={{ shrink: true }}
+                        />
                     </Paper>
                 </Fade>
+
                 <Box className="self-end">
-                    <Button onClick={() => {
-                        console.log(isBlankField(currProfissional))
-                        if(isBlankField(currProfissional)) return;
-
-                        setProfissionais(prev => {
-                            const newArr = [...prev, {...currProfissional}]
-                            return [...newArr]
-                        })
-
-                        setCurrProfissional({
-                            nome: "",
-                            horas_empregadas: "",
-                            data_inicio: ""
-                        })
-                    }}>
+                    <Button onClick={cadastraProfissional}>
                         <AddIcon fontSize="small" />
                         Adicionar Profissional
                     </Button>
@@ -184,70 +149,54 @@ export default function BoxProfissionais ({
 
                 <Typography className='pb-4'>{profissionais.length} Empregado(s)</Typography>
 
-                {profissionais?.map((profissional, index) => {
-                    return (
-                        <Fade in={true} key={index} >
-                            <Paper className="p-4 mb-4 flex gap-4 grid grid-cols-[2fr_1fr_max-content]" key={`${index}paper`}>
+                {profissionais?.map((profissional, index) => (
+                    <Fade in={true} key={`prof-${index}`} >
+                        <Paper className="p-4 mb-4 gap-4 grid lg:grid-cols-[3fr_2fr_1fr_max-content]" >
+                            <TextField
+                                label="Nome"
+                                data-field={inputTags.nome}
+                                inputProps={{'data-field': inputTags.nome}}
+                                size="small"
+                                InputLabelProps={{ shrink: true }}
+                                onChange={(e) => handleChange(e, index)}
+                                value={profissional?.nome ?? ""}
+                                className=""
+                                fullWidth
+                            />
+
                                 <TextField
-                                    //select
-                                    label="Nome"
-                                    name="nome"
-                                    size="small"
-                                    onChange={(e) => handleChange(e, index)}
-                                    //disabled={!profissionaisDisponiveis?.data}
-                                    value={profissional.nome}
-                                    className="col-span-2"
+                                    type='date'
+                                    inputProps={{'data-field': inputTags.data_inicio}}
+                                    label="Data de Inicio"
+                                    InputLabelProps={{ shrink: true }}
+                                    value={profissional?.data_inicio ?? ""}
+                                    onChange={e => handleChange(e, index)}
                                     fullWidth
+                                    size="small"
                                 />
-                                    {/*
-                                        profissionaisDisponiveis?.data?.data 
-                                        ?profissionaisDisponiveis?.data?.data
-                                            ?.map((val, i) => 
-                                                <MenuItem value={val.id} prof-index={val.id} key={i} >
-                                                    {val.nome}
-                                                </MenuItem>)
-                                        : <MenuItem></MenuItem>
-                                    </TextField>
-                                    */}
 
-                                <Fade in={true} key={`${index}a`} >
-                                    <Box className='grid grid-cols-[max-content_max-content] gap-4'>
-                                        <TextField
-                                            type='date'
-                                            name="data_inicio"
-                                            label="Data de Inicio"
-                                            InputLabelProps={{ shrink: true }}
-                                            value={profissional.data_inicio}
-                                            onChange={e => handleChange(e, index)}
-                                            fullWidth
-                                            size="small"
-                                        />
+                                <TextField
+                                    inputProps={{'data-field': inputTags.horas_empregadas}}
+                                    label="Horas Empregadas"
+                                    value={profissional?.horas_empregadas ?? ""}
+                                    onChange={e => handleChange(e, index)}
+                                    InputLabelProps={{ shrink: true }}
+                                    fullWidth
+                                    size="small"
+                                    InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }}
+                                />
 
-                                        <TextField
-                                            name="horas_empregadas"
-                                            label="Horas Empregadas"
-                                            value={profissional.horas_empregadas}
-                                            onChange={e => handleChange(e, index)}
-                                            fullWidth
-                                            size="small"
-                                            InputProps={{
-                                                endAdornment: <InputAdornment position="end">h</InputAdornment>,
-                                            }}
-                                        />
-                                    </Box>
-                                </Fade>
-
-                                <Tooltip title="Remover" placement="right">
-                                    <Box className='col-start-4 row-span-full self-center'>
-                                        <IconButton onClick={() => removeProfissional(index)}>
-                                            <CloseIcon />
-                                        </IconButton>
-                                    </Box>
-                                </Tooltip>
-                            </Paper>
-                        </Fade>
-                    );
-                })}
+                            <Tooltip title="Remover" placement="right">
+                                <Box className='self-center flex max-lg:justify-center max-lg:rounded'>
+                                    <IconButton onClick={() => removeProfissional(index)} className='w-full !rounded  max-lg:!bg-red-500 max-lg:hover:!bg-red-700'>
+                                        <CloseIcon className='max-lg:text-white' />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                        </Paper>
+                    </Fade>
+                    )
+                )}
             </Paper>
         </Box>
     );

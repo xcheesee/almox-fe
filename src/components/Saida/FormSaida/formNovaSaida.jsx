@@ -5,11 +5,10 @@ import {
     FormGroup,
     FormControlLabel
 } from '@mui/material';
-import BoxMateriais from '../../BoxMateriais';
 import BoxProfissionais from '../../BoxProfissionais';
-import { objToArr, enviaNovaSaida, getOrdemDados, getProfissionais, setFormSnackbar, formatProfissional } from '../../../common/utils';
-import { deptoAtom, matTipoListAtom, profissionaisAtom, snackbarAtom } from '../../../atomStore';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { enviaNovaSaida, getOrdemDados, setFormSnackbar } from '../../../common/utils';
+import { snackbarAtom } from '../../../atomStore';
+import { useSetAtom } from 'jotai';
 import OSAutocomplete from '../../OSAutocomplete';
 import SaidaOSCard from '../SaidaOSCard';
 import { FormSemOs } from '.';
@@ -19,39 +18,37 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FormContainer from '../../FormContainer';
 import { useNavigate } from 'react-router-dom';
 import CampoTipoServicos from '../../CampoTipoServicos';
+import MateriaisBox from '../../MateriaisBox';
 
 export default function FormNovaSaida ({ 
     setCarregando, 
     setOpenConfirmar, 
-    errors,
-    setErrors,
     formId,
 }) {
 
     const queryClient = useQueryClient()
     const navigate = useNavigate()
 
-    const [local, setLocal] = useState()
+    const [_, setLocal] = useState()
     const [isNoOSForm, setIsNoOSForm] = useState(false);
     const [ordemServico, setOrdemServico] = useState()
     const [ordemMats, setOrdemMats] = useState()
     const [ordemProfs, setOrdemProfs] = useState()
     const [isLoadingDados, setIsLoadingDados] = useState(false)
-    const [baseSelecionada, setBaseSelecionada] = useState()
+    const [baseSelecionada, setBaseSelecionada] = useState("")
+    const [errors, setErrors] = useState({});
 
-    const [deptoSelecionado, setDeptoSelecionado] = useAtom(deptoAtom)
+    const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const setSnackbar = useSetAtom(snackbarAtom)
-    const materiaisInterno = useAtomValue(matTipoListAtom)
-    const [profissionais, setProfissionais] = useAtom(profissionaisAtom)
 
     async function clearForm () {
         setOrdemServico()
         setOrdemMats()
         setOrdemProfs()
-        setLocal()
-        setBaseSelecionada()
-        setDeptoSelecionado()
-        setProfissionais([])
+        setLocal("")
+        setBaseSelecionada("")
+        setDeptoSelecionado("")
+        //setProfissionais([])
     }
 
     async function setOrdemFromOptions (value) {
@@ -62,40 +59,23 @@ export default function FormNovaSaida ({
         setDeptoSelecionado(value.departamento_id)
         setLocal(value.local_servico_id)
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
-        //if(!profRes || profRes.length === 0) {
-        //    const profsDispRes = await getProfissionais(value.local_servico_id, value.departamento_id)
-        //}
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
-        setProfissionais(formatProfissional(profRes))
         setIsLoadingDados(false)
     }
 
-    //confere se a o.s. nao possui tanto profissionais quanto materiais,
-    //nao eh uma saida sem ordem e nao esta em carregamento
-    function isBasicOS() {
-        return (!isNoOSForm 
-            && (!ordemProfs || ordemProfs.length === 0)
-            && (!ordemMats || ordemMats.length === 0)
-            && !isLoadingDados
-            && ordemServico
-        )
+    //confere se a o.s. nao possui tanto profissionais quanto materiais
+    function noProfs() {
+        return isNoOSForm || ((!ordemProfs || ordemProfs.length === 0) && !isLoadingDados)
+        
     }
 
-    function formatItemForSaida(itemObjArr) {
-        const saidaItens = itemObjArr.map(itemObj => {
-            const saidaItem = {}
-            saidaItem.id = itemObj.id
-            //valores duplicados para conformidade entre envio de saida com e sem ordem de servico
-            //TODO: implementar solucao sem o uso de duplicatas
-            saidaItem.quantidade = itemObj.qtd
-            saidaItem.enviado = itemObj.qtd
-            return saidaItem
-        })
-        return saidaItens
+    function noMats() {
+        return isNoOSForm || ((!ordemMats || ordemMats.length === 0) && !isLoadingDados)
     }
-    
+
     function formatOrdemForSaida(ordem) {
+        if(!ordem) return {}
         const saida = {}
         saida.departamento_id = ordem.departamento_id
         saida.origem_id = ordem.origem_id
@@ -107,43 +87,34 @@ export default function FormNovaSaida ({
         return saida
     }
 
-    const addMutation = useMutation( async ({formData: data, materiais: materiaisInterno, profissionais: profissionais}) => {
+    const addMutation = useMutation( async ({ formData }) => {
         setOpenConfirmar(false)
         setCarregando(true)
         try {
-            await enviaNovaSaida({formData: data, materiais: materiaisInterno, profissionais: profissionais})
+            await enviaNovaSaida({ formData })
         } catch(e) {
             throw e
         }
-    }, { onSuccess: async (res) => {
-            setCarregando(false)
+    }, {  onSuccess: async () => {
             queryClient.invalidateQueries(['saidas'])
             setFormSnackbar(setSnackbar, "Saida de Materiais")
             navigate(`/saida`, { replace: true });
         }, onError: async (res) => {
-            setCarregando(false)
-            if(res.status === 422) { setErrors(res?.errors) }
+            //if(res.status === 422) { setErrors(res?.errors) }
             setSnackbar({
                 open: true,
                 severity: "error",
                 message: res.message
             })
-            //setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
-        }
+            setErrors(res?.errors ?? {})
+        }, onSettled: () => setCarregando(false)
     })
 
-    function formataSaida({formData, mats, profs, formSemOs}) {
+    function formataSaida({formData}) {
 
-        if(formSemOs) {
-            const itens = objToArr(mats);
-            const saidaItens = formatItemForSaida(itens)
-            formData.append("almoxarife_nome", localStorage.getItem("username"))
-            formData.append("almoxarife_email", localStorage.getItem("usermail"))
-            formData.append("saida_items",  JSON.stringify(saidaItens))
-            formData.append("saida_profissionais", JSON.stringify(profs))
-
-            return formData
-        }
+        //if(isBasicOS()) {
+        //    formData.append("saida_profissionais", JSON.stringify(profissionais))
+        //}
 
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
@@ -152,25 +123,18 @@ export default function FormNovaSaida ({
         Object.entries(saida).forEach( keyVal => {
             formData.append(keyVal[0], keyVal[1])
         })
-        formData.append("saida_profissionais", JSON.stringify(profissionais))
 
         return formData
     }
 
     return (
-        <>
             <FormContainer
                 id={formId}
                 onSubmit={(e) => { 
                     e.preventDefault()
                     const formData = new FormData(e.target)
 
-                    const formFormatado = formataSaida({
-                        formData: formData, 
-                        mats: materiaisInterno, 
-                        profs: profissionais, 
-                        formSemOs: isNoOSForm
-                    })
+                    const formFormatado = formataSaida({ formData })
 
                     return addMutation.mutate({formData: formFormatado})
                 }}
@@ -202,14 +166,16 @@ export default function FormNovaSaida ({
 
                 {isNoOSForm
                     ?<FormSemOs 
-                            setOpenConfirmar={setOpenConfirmar}
-                            setCarregando={setCarregando}
+                            //setOpenConfirmar={setOpenConfirmar}
+                            //setCarregando={setCarregando}
                             baseSelecionada={baseSelecionada}
-                            setLocal={setLocal}
+                            deptoSelecionado={deptoSelecionado}
+                            setDeptoSelecionado={setDeptoSelecionado}
+                            //setLocal={setLocal}
                             setBaseSelecionada={setBaseSelecionada}
                             //setProfissionaisDisponiveis={setProfissionaisDisponiveis}
                             errors={errors}
-                            setErrors={setErrors}
+                            //setErrors={setErrors}
                     />
                     :
                     <>
@@ -219,57 +185,37 @@ export default function FormNovaSaida ({
                             id="tipo_servico_id"
                             deptoSelecionado={deptoSelecionado}
                             error={errors.hasOwnProperty('tipo_servico_id')}
-                            helperText={errors.tipo_servico_id || ""}
+                            helperText={errors?.tipo_servico_id || ""}
                         />
 
                         <SaidaOSCard ordemServico={ordemServico} />
                     </>
                 }
-            </FormContainer>
-
-            {isNoOSForm
-                ?<>
-                    <BoxProfissionais
+                {noProfs()
+                    ?<BoxProfissionais
                         label= "Profissionais empregados"
+                        errors={errors}
+                        name="saida_profissionais"
                         // baseSelecionada={baseSelecionada}
                         // deptoSelecionado={deptoSelecionado}
                     />
-
-                    <BoxMateriais
-                        label="Material utilizado"
-                        baseSelecionada={baseSelecionada}
-                        deptoSelecionado={deptoSelecionado}
-                    />
-                </>
-                :<></>
-            }
-
-            {isBasicOS()
-                ?<>
-                    <BoxMateriais
-                        label="Material utilizado"
-                        baseSelecionada={baseSelecionada}
-                        deptoSelecionado={deptoSelecionado}
-                    />
-
-                    <BoxProfissionais
-                        label= "Profissionais empregados"
-                        // baseSelecionada={baseSelecionada}
-                        // deptoSelecionado={deptoSelecionado}
-                    />
-                </>
-                :<>
-                    <OrdemMatsCard 
-                        materiais={ordemMats} 
-                        isLoading={isLoadingDados}
-                    />
-
-                    <OrdemProfsCard 
+                    :<OrdemProfsCard 
                         profissionais={ordemProfs}
                         isLoading={isLoadingDados}
                     />
-                </>
-            }
-        </>
+                }
+                {noMats()
+                    ?<MateriaisBox 
+                        deptoSelecionado={deptoSelecionado} 
+                        baseSelecionada={baseSelecionada}
+                        inputName="saida_items" 
+                        errors={errors}
+                    />
+                    :<OrdemMatsCard 
+                        materiais={ordemMats} 
+                        isLoading={isLoadingDados}
+                    />
+                }
+            </FormContainer>
     );
 }

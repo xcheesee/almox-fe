@@ -5,7 +5,7 @@ import FormContainer from "../../components/FormContainer";
 import { useState } from "react";
 import DialogEnviar from "../../components/DialogEnviar";
 import { useNavigate, useParams } from "react-router-dom";
-import { getRegistro, getTransferencia, recusaTransferencia } from "../../common/utils";
+import { recusaTransferencia } from "../../common/utils";
 import { useSetAtom } from "jotai";
 import { snackbarAtom } from "../../atomStore";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ export default function RecusaTranferencia() {
     async function enviaRecusaForm(e) {
         e.preventDefault()
         setIsLoading(true)
-        const transferData = await getRegistro("transferencia", params.id)
+        //const transferData = await getRegistro("transferencia", params.id)
         //const formData = new FormData(e.target)
 
         //formData.append("base_origem_id", transferData.data.base_origem_id)
@@ -57,7 +57,13 @@ export default function RecusaTranferencia() {
 
             <FormContainer 
                 id="recusa-transferencia"
-                onSubmit={async (e) => await enviaRecusaForm(e)}
+                onSubmit={async (e) => {
+                    try {
+                        await enviaRecusaForm(e)
+                    } catch(e) {
+                        setErrors(e.errors ?? {})
+                    }
+                }}
             >
                 <TextField 
                     select
@@ -65,8 +71,9 @@ export default function RecusaTranferencia() {
                     name="observacao_motivo"
                     id="observacao_motivo"
                     error={errors.hasOwnProperty("observacao_motivo")}
-                    helperText={errors.hasOwnProperty("observacao_motivo") ? errors.observacao_motivo : ""}
-                    SelectProps={{ defaultValue: ""}}
+                    helperText={errors?.observacao_motivo ?? " "}
+                    //SelectProps={{ defaultValue: ""}}
+                    defaultValue=""
                     required
                 >
                     <MenuItem value="nao_enviado">Não Enviado</MenuItem>
@@ -82,15 +89,12 @@ export default function RecusaTranferencia() {
                     rows={4}
                     name="observacao"
                     error={errors.hasOwnProperty("observacao")}
-                    helperText={errors.hasOwnProperty("observacao") ? errors.observacao : ""}
+                    helperText={ errors?.observacao ?? " " }
                     id="observacao"
                 />
             </FormContainer>
             <Box className="flex gap-2 justify-end items-center">
-                { isLoading
-                    ?<CircularProgress size={24} />
-                    :<></>
-                }
+                { isLoading && <CircularProgress size={24} /> }
                 <Button onClick={() => setOpenConfirmar(true)}>Enviar</Button>
             </Box>
 

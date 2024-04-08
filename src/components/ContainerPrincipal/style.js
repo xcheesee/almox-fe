@@ -3,7 +3,6 @@ const style = {
         margin: 'auto',
         maxWidth: '80rem',
         width: '100%',
-        padding: '1rem'
     },
     paper: { 
         padding: '1rem',
