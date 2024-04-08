@@ -2,6 +2,7 @@
   "name": "almoxarifado",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://svmagbs10.rede.sp/almoxarifado",
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
