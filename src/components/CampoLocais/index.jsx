@@ -8,25 +8,27 @@ const CampoLocais = React.forwardRef(({
         label, 
         defaultValue=null, 
         value=null,
-        tipo, 
+        tipo="", 
         depto="", 
-        getAllBases=false, 
+        getAll=false, 
         disabled=false,
         onChange=() => {}, 
         onLocaisQuery=() => {},
+        restrito=false,
+        required=false,
         ...other
     }, 
     ref
     ) => {
-    const [filteredLocais, setFilteredLocais] = useState([])
+    //const [filteredLocais, setFilteredLocais] = useState([])
     const [dftVal, setDftVal] = useState(defaultValue ?? "")
     const locais = useQuery({
-        queryKey: ['locais', depto, tipo], 
-        queryFn: () => getLocais(depto, tipo), 
-        enabled: !!depto,
+        queryKey: ['locais', depto, tipo, restrito], 
+        queryFn: () => getLocais(depto, tipo, restrito), 
+        enabled: !!depto || getAll,
         onSuccess: (res) => {
             onLocaisQuery(res, defaultValue) 
-            setFilteredLocais(res?.filter( local => local.tipo === tipo ))
+            //setFilteredLocais(res?.filter( local => local.tipo === tipo ))
         }
     })
 
@@ -54,11 +56,11 @@ const CampoLocais = React.forwardRef(({
             label={label}
             disabled={disabled}
             fullWidth
-            required
+            required={required}
             ref={ref}
             {...other}
         >
-            {filteredLocais?.map((local, i) => (
+            {locais.data?.map((local, i) => (
                     <MenuItem value={local.id} key={`local-${i}`}>
                         {local.nome}
                     </MenuItem>
@@ -77,11 +79,11 @@ const CampoLocais = React.forwardRef(({
             label={label}
             disabled={disabled}
             fullWidth
-            required
+            required={required}
             ref={ref}
             {...other}
         >
-            {filteredLocais?.map(local => (
+            {locais.data?.map(local => (
                 <MenuItem key={local.id} value={local.id}>
                     {local.nome}
                 </MenuItem>

@@ -35,8 +35,9 @@ export default function MateriaisBox({
     if(tipos.isLoading && !!deptoSelecionado) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
 
     return ( 
-        <Box className="grid grid-cols-3 gap-4 w-full py-4">
-            <Typography className="col-span-3 !text-3xl !font-thin">Materiais</Typography>
+        <Box className="grid gap-4 w-full py-4">
+            <Typography className="!text-3xl !font-thin">Materiais</Typography>
+
             <ConditionalTooltip 
                 enabled={deptoSelecionado === "" || (baseSelecionada==="" && !entrada)} 
                 texto={deptoSelecionado === "" ? "Selecione um Departamento!" : "Selecione uma base"}
@@ -46,7 +47,6 @@ export default function MateriaisBox({
                     label="Tipo de material"
                     value={selectedTipo}
                     onChange={(e) => setSelectedTipo(e.target.value)}
-                    className="col-span-2"
                     disabled={deptoSelecionado === "" || (baseSelecionada === "" && !entrada)}
                 >
                     {tipos?.data?.data?.map((val, i) => 
@@ -58,15 +58,14 @@ export default function MateriaisBox({
                     }
                 </TextField>
             </ConditionalTooltip>
-            <Box className="col-span-3">
-                <MaterialList 
-                    materiais={entrada ? materiaisEntrada : materiais} 
-                    isLoading={entrada ? materiaisEntrada.isLoading : materiais.isLoading} 
-                    enabled={ !!selectedTipo } 
-                    defaultValue={defaultValue} 
-                    inputName={inputName}
-                    entrada={entrada}
-                />
-            </Box>
+
+            <MaterialList 
+                materiais={entrada ? materiaisEntrada : materiais} 
+                isLoading={entrada ? materiaisEntrada.isLoading : materiais.isLoading} 
+                enabled={ !!selectedTipo } 
+                defaultValue={defaultValue} 
+                inputName={inputName}
+                entrada={entrada}
+            />
         </Box>);
 }

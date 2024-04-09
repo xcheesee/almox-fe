@@ -1,15 +1,15 @@
-import { TextField, Box, MenuItem, Button, CircularProgress } from "@mui/material";
+import { TextField, Box, Button, CircularProgress } from "@mui/material";
 import ContainerPrincipal from "../../components/ContainerPrincipal";
 import Titulo from "../../components/Titulo";
 import { useState } from "react";
 import DialogEnviar from "../../components/DialogEnviar";
 import FormContainer from "../../components/FormContainer";
-import { useQuery } from "@tanstack/react-query";
-import { enviaNovaTransferencia, getLocais } from "../../common/utils";
+import { enviaNovaTransferencia } from "../../common/utils";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { snackbarAtom } from "../../atomStore";
 import MateriaisBox from "../../components/MateriaisBox";
+import CampoLocais from "../../components/CampoLocais";
 
 export default function NovaTransferencia () {
 
@@ -20,17 +20,6 @@ export default function NovaTransferencia () {
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
-
-    const locais = useQuery({
-        queryKey: ['locais'], 
-        queryFn: () => getLocais("", ""), 
-        //enabled: !(depto === ''),
-        onSuccess: (res) => { 
-            setBaseOrigem((res?.find(local => local.id === +localStorage.getItem("local")))?.id ?? "");
-            //setBaseOrigem(res.length === 1 ? res[0].id : "");
-        }
-
-    })
 
     async function enviaTransferenciaForm(e) {
         e.preventDefault()
@@ -70,44 +59,28 @@ export default function NovaTransferencia () {
                     required
                 />
 
-                <TextField
-                    select
+                <CampoLocais 
                     label="Base de Origem"
                     name="base_origem_id"
-                    id="base_origem_id"
-                    error={errors.hasOwnProperty("base_origem_id")}
-                    helperText = {errors?.base_origem_id ?? "" }
+                    tipo="base"
                     value={baseOrigem}
-                    onChange={e => {
-                        if(localStorage.getItem("local") !== "") return
-                        setBaseOrigem(e.target.value)
-                    }} 
-                    fullWidth
-                    //disabled
+                    onChange={(e) => setBaseOrigem(e.target.value)}
+                    error={errors.hasOwnProperty('base_origem_id')}
+                    helperText={errors?.base_origem_id || ""}
+                    restrito
+                    getAll
                     required
-                >
-                    {locais.isLoading
-                        ?<MenuItem value={0}>Carregando...</MenuItem>
-                        :locais.data?.map((local, index) => <MenuItem value={local.id} key={`local${index}`}>{local.nome}</MenuItem>)
-                    }
-                </TextField>
+                />
 
-                <TextField
-                    select
+                <CampoLocais 
                     label="Base de Destino"
                     name="base_destino_id"
-                    id="base_destino_id"
-                    error={errors.hasOwnProperty("base_destino_id")}
-                    helperText={errors?.base_destino_id ?? "" }
-                    defaultValue=""
-                    fullWidth
+                    tipo="base"
+                    error={errors.hasOwnProperty('base_destino_id')}
+                    helperText={errors?.base_destino_id || ""}
+                    getAll
                     required
-                >
-                    {locais.isLoading
-                        ?<MenuItem value={0}>Carregando...</MenuItem>
-                        :locais.data?.map((local, index) => <MenuItem value={local.id} key={`destino${index}`}>{local.nome}</MenuItem>)
-                    }
-                </TextField>
+                />
 
                 <MateriaisBox 
                     baseSelecionada={baseOrigem}

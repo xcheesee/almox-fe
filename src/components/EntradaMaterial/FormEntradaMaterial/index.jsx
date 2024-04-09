@@ -139,6 +139,7 @@ const FormEntradaMaterial = ({
                         helperText={errors?.local_id || ""}
                         disabled={!deptoSelecionado}
                         required
+                        restrito
                     />
                 </ConditionalTooltip>
 
