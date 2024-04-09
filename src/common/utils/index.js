@@ -672,6 +672,8 @@ export const authCreateOrdem = (perfil) => {
 
 export const authCreateTransf = (perfil) => {
   switch (perfil) {
+    case 'admin':
+      return true;
     case 'almoxarife':
     case 'encarregado':
     case 'admin': //perfil adicionado para fins de teste
@@ -683,6 +685,8 @@ export const authCreateTransf = (perfil) => {
 
 export const authCreateOcorrencia = (perfil) => {
   switch (perfil) {
+    case 'admin':
+      return true;
     case 'almoxarife':
     case 'encarregado':
     case 'admin': //perfil adicionado para fins de teste
@@ -695,6 +699,8 @@ export const authCreateOcorrencia = (perfil) => {
 export function isAllowedTransf() {
   const perfil = localStorage.getItem("perfil");
   switch(perfil) {
+    case 'admin':
+      return true;
     case 'almoxarife':
     case 'encarregado':
     case 'admin': //perfil adicionado para fins de teste

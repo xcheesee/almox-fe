@@ -56,7 +56,7 @@ root.render(
 
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename="/almoxarifado">
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>

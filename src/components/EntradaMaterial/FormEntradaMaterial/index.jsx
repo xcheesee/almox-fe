@@ -149,7 +149,6 @@ const FormEntradaMaterial = ({
                     defaultValue={defaultValue?.processo_sei}
                     error={errors.hasOwnProperty('processo_sei')}
                     helperText={errors?.processo_sei || ""}
-                    required
                     fullWidth
                 />
 
@@ -159,7 +158,6 @@ const FormEntradaMaterial = ({
                     defaultValue={defaultValue?.numero_contrato}
                     error={errors.hasOwnProperty('numero_contrato')}
                     helperText={errors?.numero_contrato || ""}
-                    required
                     fullWidth
                 />
 
