@@ -5,11 +5,11 @@ import FiltrosOrdem from './FiltrosOrdem';
 import TabelaOrdem from './TabelaOrdem';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
-import { authCreateOrdem, getTabela } from '../../common/utils';
+import { authCreateOrdem, getDados, getTabela } from '../../common/utils';
 import { useRef } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from '../../atomStore';
-import { useAuthenticatedQuery } from '../../common/utils/hooks';
+import { useAuth, useAuthenticatedQuery } from '../../common/utils/hooks';
 
 const OrdemServico = (props) => {
     const {
@@ -20,7 +20,7 @@ const OrdemServico = (props) => {
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
-    const setSnackbar = useSetAtom(snackbarAtom)
+    const setSnackbar = useSetAtom(snackbarAtom);
 
     const ordens = useAuthenticatedQuery({
         queryKey: ['ordemItens', page, filtros, sort],

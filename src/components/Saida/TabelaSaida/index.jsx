@@ -2,16 +2,19 @@ import React from 'react';
 import {
     TableRow,
     TableCell,
-    Box
+    Box,
+    CircularProgress
 } from '@mui/material';
 import Tabela from '../../Tabela';
-import { authEditOrdem, formataDateTime } from '../../../common/utils';
+import { authEditOrdem, formataDateTime, getDados, isPermittedEdit } from '../../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import GradingIcon from '@mui/icons-material/Grading';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import { useNavigate } from 'react-router-dom';
 import TabelaAcaoBtn from '../../TabelaAcaoBtn';
+import { useAuth } from '../../../common/utils/hooks';
+import { useQuery } from '@tanstack/react-query'
 
 const cabecalhos = {
     "ID": "id",
@@ -23,8 +26,17 @@ const cabecalhos = {
 };
 
 const TabelaSaida = ({ saidas, carregando, cursor, getSelectedOrdemInfo }) => {
-    const perfil =  localStorage.getItem('perfil');
     const navigate = useNavigate()
+
+    const { userId, perfil } = useAuth()
+
+    const locaisUsers = useQuery({
+        queryFn: () => getDados('local_users/'+userId),
+        queryKey: ['locaisUser', userId],
+    })
+
+    if(locaisUsers.isLoading) 
+        return<Box className="w-full flex justify-center"><CircularProgress size={32}/></Box>;
 
     return (
         <Tabela 
@@ -59,7 +71,7 @@ const TabelaSaida = ({ saidas, carregando, cursor, getSelectedOrdemInfo }) => {
                                         display={ authEditOrdem(localStorage.getItem('perfil')) }
                                         title="Editar"
                                         placement="right"
-                                        disabled={cursor === 'progress'}
+                                        disabled={cursor === 'progress' || !isPermittedEdit(locaisUsers.data?.data, saida.origem_id)}
                                         onClick={ () => getSelectedOrdemInfo(saida.id, 'editar') }
                                     >
                                         <EditIcon fontSize="small" />

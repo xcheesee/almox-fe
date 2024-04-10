@@ -2,14 +2,17 @@ import React from 'react';
 import {
     TableRow,
     TableCell,
-    Box
+    Box,
+    CircularProgress
 } from '@mui/material';
 import Tabela from '../../Tabela';
-import { authEditOrdem, formataDateTime } from '../../../common/utils';
+import { authEditOrdem, formataDateTime, getDados, isPermittedEdit } from '../../../common/utils';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import PrintIcon from '@mui/icons-material/Print';
 import TabelaAcaoBtn from '../../TabelaAcaoBtn';
+import { useQuery } from '@tanstack/react-query'
+import { useAuth } from '../../../common/utils/hooks';
 
 const cabecalhos = {
     "ID": "id",
@@ -19,7 +22,19 @@ const cabecalhos = {
     "Ação": null
 };
 
+
 const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
+
+    const { userId } = useAuth()
+
+    const locaisUsers = useQuery({
+        queryFn: () => getDados('local_users/'+userId),
+        queryKey: ['locaisUser', userId],
+    })
+
+    if(locaisUsers.isLoading) 
+        return<Box className="w-full flex justify-center"><CircularProgress size={32}/></Box>;
+
     return (
         <Tabela 
             cabecalhos={cabecalhos} 
@@ -49,7 +64,7 @@ const TabelaOrdem = ({ ordens, carregando, cursor, getSelectedOrdemInfo }) => {
                                 display={ authEditOrdem(localStorage.getItem('perfil')) }
                                 title="Editar"
                                 placement="right"
-                                disabled={cursor === 'progress'}
+                                disabled={cursor === 'progress' || !isPermittedEdit(locaisUsers.data?.data, ordem.origem_id)}
                                 onClick={ () => getSelectedOrdemInfo(ordem.id, 'editar') }
                             >
                                 <EditIcon fontSize="small" />

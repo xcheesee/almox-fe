@@ -45,6 +45,10 @@ export function headerBuilder () {
     'Authorization': localStorage.getItem('access_token')
   }
 }
+
+export function isPermittedEdit(permittedLocais, currLocal) {
+    return !!permittedLocais.find( local => local.local_id === currLocal)
+}
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*                                                formatações                                               */
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////*/
