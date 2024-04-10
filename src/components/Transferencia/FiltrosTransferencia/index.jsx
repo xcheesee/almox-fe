@@ -24,7 +24,7 @@ const FiltrosTransferencia = () => {
                 intervalo={datas}
                 onChange={setDatas}
                 separador={' - '}
-                className={"col-span-2"}
+                className={"lg:col-span-2"}
                 placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
                 size={'lg'}
             />
@@ -50,7 +50,7 @@ const FiltrosTransferencia = () => {
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value)}
                 id="status"
-                className='col-span-2'
+                className='lg:col-span-2'
             >
                 { Object.entries(statusTransferencia).map((keyVal, index) => 
                     (<MenuItem 

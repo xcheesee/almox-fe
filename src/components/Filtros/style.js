@@ -27,7 +27,6 @@ const style = {
         padding: '2rem',
         border: '1px solid #cdcdcd', 
         borderRadius: '3px',
-        width: '80%'
     },
     gridFiltro: { 
         display: 'grid', 

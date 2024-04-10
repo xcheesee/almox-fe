@@ -47,7 +47,7 @@ export function headerBuilder () {
 }
 
 export function isPermittedEdit(permittedLocais, currLocal) {
-    return !!permittedLocais.find( local => local.local_id === currLocal)
+    return permittedLocais.some( local => local.local_id === currLocal)
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*                                                formatações                                               */

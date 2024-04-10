@@ -30,7 +30,7 @@ const FiltrosEntrada = () => {
                 intervalo={datas}
                 onChange={setDatas}
                 separador={' - '}
-                className={"col-span-2"}
+                className={"lg:col-span-2"}
                 placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
                 size={'lg'}
             />
@@ -67,7 +67,7 @@ const FiltrosEntrada = () => {
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value)}
                 disabled={tipos.isLoading}
-                className="col-span-2"
+                className="lg:col-span-2"
             >
                 {tipos.isLoading
                     ?<MenuItem>Carregando...</MenuItem>

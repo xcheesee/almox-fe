@@ -15,7 +15,7 @@ const FiltrosOrdem = () => {
                 label={'Data de Emissão - faixa de pesquisa'}
                 intervalo={datas}
                 onChange={setDatas}
-                className={"col-span-2"}
+                className={"lg:col-span-2"}
                 separador={' - '}
                 placeholder={'dd/mm/aaaa - dd/mm/aaaa'}
                 size={'lg'}

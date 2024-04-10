@@ -136,9 +136,11 @@ const Filtros = (props) => {
             <Collapse in={visibilidade}>
                 <Box 
                     sx={style.containerFiltros}
+                    className='lg:w-[80%] w-full'
                 >
                     <Box 
-                        sx={style.gridFiltro}
+                        //sx={style.gridFiltro}
+                        className='grid lg:grid-cols-2 gap-8'
                         component="form"
                         id="filtros"
                         onSubmit={salvar}

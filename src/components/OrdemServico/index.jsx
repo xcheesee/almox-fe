@@ -5,18 +5,16 @@ import FiltrosOrdem from './FiltrosOrdem';
 import TabelaOrdem from './TabelaOrdem';
 import BotaoNovo from '../BotaoNovo';
 import Paginacao from '../Paginacao';
-import { authCreateOrdem, getDados, getTabela } from '../../common/utils';
+import { authCreateOrdem, getTabela } from '../../common/utils';
 import { useRef } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { filtrosAtom, pageAtom, snackbarAtom, sortAtom } from '../../atomStore';
-import { useAuth, useAuthenticatedQuery } from '../../common/utils/hooks';
+import { useAuthenticatedQuery } from '../../common/utils/hooks';
 
-const OrdemServico = (props) => {
-    const {
+const OrdemServico = ({
         cursor,
         getSelectedOrdemInfo,
-    } = props;
-
+    }) => {
     const sort = useAtomValue(sortAtom);
     const filtros = useAtomValue(filtrosAtom);
     const page = useAtomValue(pageAtom);
