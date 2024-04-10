@@ -78,7 +78,7 @@ const MenuPrincipal = () => {
                         Ocorrências
                     </Button>
                 </Link>
-                <Link 
+                {/* <Link 
                     to="/historico" 
                     className={`${perfil === "admin" || perfil === "gestao_dgpu" ? "lg:col-span-6 col-span-2" : "col-span-2"}`} 
                 >
@@ -86,7 +86,7 @@ const MenuPrincipal = () => {
                         <AccessTimeIcon fontSize='large'/>
                         Histórico
                     </Button>
-                </Link>
+                </Link> */}
             </Box>
         </ContainerPrincipal>
     );
