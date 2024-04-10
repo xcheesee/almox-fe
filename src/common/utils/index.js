@@ -269,8 +269,8 @@ export const getBaixa = async (baixaId) => {
   return {ordem, itens}
 }
 
-export async function getLocais (depto, tipo) {
-  const url = `${process.env.REACT_APP_API_URL}/locais?filter[tipo]=${tipo}&filter[departamento_id]=${depto}`;
+export async function getLocais (depto, tipo, restrito) {
+  const url = `${process.env.REACT_APP_API_URL}/locais?autenticado=${restrito}&filter[tipo]=${tipo}&filter[departamento_id]=${depto}`;
   const options = {
     method: 'GET',
     headers: headerBuilder()

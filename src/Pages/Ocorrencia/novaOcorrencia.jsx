@@ -10,6 +10,7 @@ import { useAtom } from "jotai";
 import { snackbarAtom } from "../../atomStore";
 import { useNavigate } from "react-router-dom";
 import MateriaisBox from "../../components/MateriaisBox";
+import CampoLocais from "../../components/CampoLocais";
 
 export default function NovaOcorrencia () {
 
@@ -70,28 +71,17 @@ export default function NovaOcorrencia () {
                     required
                 />
 
-                <TextField
-                    select
+                <CampoLocais 
                     label="Base envolvida"
                     name="local_id"
-                    id="local_id"
-                    error={errors.hasOwnProperty("local_id")}
-                    helperText={errors?.local_id ?? ""}
-                    SelectProps={{ value: baseOrigem, onChange: (e) => {
-                        if(localStorage.getItem("local") !== "") return
-                        setBaseOrigem(e.target.value)
-                    }}}
-                    fullWidth
-                    required
-                >
-                    {locais.isLoading
-                        ?<MenuItem>Carregando...</MenuItem>
-                        :locais?.data
-                            ?.map( (local, index) => 
-                                <MenuItem value={local.id} key={`base${index}`}>{local.nome}</MenuItem> 
-                            )
-                    }
-                </TextField>
+                    tipo="base"
+                    value={baseOrigem}
+                    onChange={(e) => setBaseOrigem(e.target.value)}
+                    error={errors.hasOwnProperty('local_servico_id')}
+                    helperText={errors?.local_servico_id || ""}
+                    restrito
+                    getAll
+                />
 
                 <TextField
                     select

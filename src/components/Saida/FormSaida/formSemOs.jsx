@@ -86,6 +86,7 @@ export default function FormSemOs ({
                 error={errors.hasOwnProperty('origem_id')}
                 helperText={errors?.origem_id ?? ""}
                 disabled={!deptoSelecionado}
+                restrito
                 //required
             />
             </ConditionalTooltip>
@@ -104,6 +105,7 @@ export default function FormSemOs ({
                     error={errors.hasOwnProperty('local_servico_id')}
                     helperText={errors?.local_servico_id || ""}
                     disabled={!deptoSelecionado}
+                    restrito
                     //required
                 />
             </ConditionalTooltip>

@@ -33,17 +33,6 @@ const FiltrosOrdem = () => {
                 InputLabelProps={{ shrink: true }}
             />
 
-            {/*<TextField 
-                label="Nome almoxarife responsável"
-                name="almoxarife_nome"
-                InputLabelProps={{ shrink: true }}
-            />
-
-            <TextField 
-                label="E-mail almoxarife responsável"
-                name="almoxarife_email"
-                InputLabelProps={{ shrink: true }}
-            />*/}
         </Filtros>
     );
 }

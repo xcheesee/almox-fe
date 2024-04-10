@@ -132,6 +132,7 @@ const FormOrdemServico = ({
                     helperText={errors.origem_id || ""}
                     disabled={!deptoSelecionado}
                     required
+                    restrito
                 />
             </ConditionalTooltip>
 
@@ -156,6 +157,7 @@ const FormOrdemServico = ({
                     helperText={errors.local_servico_id || ""}
                     disabled={!deptoSelecionado}
                     required
+                    restrito
                 />
             </ConditionalTooltip>
 

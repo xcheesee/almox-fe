@@ -15,13 +15,12 @@ import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
-import { filtrosAtom, matsAtom, pageAtom, sortAtom } from '../../atomStore';
+import { filtrosAtom, pageAtom, sortAtom } from '../../atomStore';
 
 const MenuPrincipal = () => {
     const setSort = useSetAtom(sortAtom)
     const setFiltros = useSetAtom(filtrosAtom)
     const setPage = useSetAtom(pageAtom)
-    //const setMats = useSetAtom(matsAtom)
     const perfil = localStorage.getItem('perfil')
 
 
@@ -30,7 +29,6 @@ const MenuPrincipal = () => {
         setSort('')
         setPage(1)
         setFiltros('')
-        //setMats([])
     }, [])
     
     return (
@@ -38,7 +36,7 @@ const MenuPrincipal = () => {
             <Titulo>
                 Menu principal
             </Titulo>
-            <Box className="grid gap-6 lg:grid-cols-6 grid-cols-2 my-8 px-10">
+            <Box className="grid gap-6 lg:grid-cols-6 md:grid-cols-4 grid-cols-2 my-8 px-10">
                 <Link to="/entrada" className="col-span-2" >
                     <Button sx={style.button} variant="outlined">
                         <ArchiveIcon fontSize='large'/>
@@ -51,14 +49,13 @@ const MenuPrincipal = () => {
                         Inventário
                     </Button>
                 </Link>
-                {perfil === "admin" || perfil === "gestao_dgpu"
-                    ?<Link to="/ordemservico" className="col-span-2" >
+                {(perfil === "admin" || perfil === "gestao_dgpu")
+                    &&<Link to="/ordemservico" className="col-span-2" >
                         <Button sx={style.button} variant="outlined">
                             <AssignmentIcon fontSize='large'/>
                             Ordem de serviço
                         </Button>
                     </Link>
-                    :<></>
                 }
                 <Link to="/saida" className="col-span-2" >
                     <Button sx={style.button} variant="outlined">
