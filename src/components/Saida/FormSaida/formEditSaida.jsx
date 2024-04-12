@@ -108,7 +108,7 @@ export default function FormEditSaida({
                     error={errors.hasOwnProperty('local_servico_id')}
                     helperText={errors?.local_servico_id ?? ""}
                     required
-                    restrito
+                    //restrito
                 />
 
                 <CampoTipoServicos 

@@ -105,7 +105,7 @@ export default function FormSemOs ({
                     error={errors.hasOwnProperty('local_servico_id')}
                     helperText={errors?.local_servico_id || ""}
                     disabled={!deptoSelecionado}
-                    restrito
+                    //restrito
                     //required
                 />
             </ConditionalTooltip>

@@ -157,7 +157,7 @@ const FormOrdemServico = ({
                     helperText={errors.local_servico_id || ""}
                     disabled={!deptoSelecionado}
                     required
-                    restrito
+                    //restrito
                 />
             </ConditionalTooltip>
 
