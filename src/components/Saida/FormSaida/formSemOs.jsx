@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import CampoLocais from '../../CampoLocais';
 import CampoTipoServicos from '../../CampoTipoServicos';
-//import { getProfissionais } from '../../../common/utils';
 import ConditionalTooltip from '../../ConditionalTooltip';
 
 export default function FormSemOs ({
@@ -13,12 +12,8 @@ export default function FormSemOs ({
     setBaseSelecionada,
     deptoSelecionado,
     setDeptoSelecionado,
-    //setProfissionaisDisponiveis,
     errors={},
 }) {
-
-    //const [localServico, setLocalServico] = useState()
-
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
     const departamentoKeys = Object.keys(departamentos)
 
@@ -34,7 +29,9 @@ export default function FormSemOs ({
                 name='justificativa_os'
                 id='justificativa_os'
                 label="Justificativa"
-                //required
+                error={errors.hasOwnProperty('justificativa_os')}
+                helperText={errors?.justificativa_os ?? " "}
+                required
             />
             {/* Campo Temporario, utilizado para testes */}
             <TextField
@@ -43,11 +40,8 @@ export default function FormSemOs ({
                 name="departamento_id"
                 onChange={async (e) => {
                     setDeptoSelecionado(e.target.value)
-                    //const res = await getProfissionais(localServico, e.target.value)
-                    //if(localServico) setProfissionaisDisponiveis(res.data) 
                 }}
                 value={deptoSelecionado ?? ""}
-                //defaultValue={departamentoKeys.length === 1 ? departamentoKeys[0] : "" || defaultValue?.departamento_id}
                 error={errors.hasOwnProperty('departamento_id')}
                 helperText={errors?.departamento_id ?? ""}
                 //required
@@ -66,7 +60,7 @@ export default function FormSemOs ({
                 disabled
                 defaultValue="A Iniciar"
                 error={errors.hasOwnProperty('status')}
-                helperText={errors?.status || ""}
+                helperText={errors?.status || " "}
             >
                     <MenuItem value="A Iniciar">
                         A Iniciar
@@ -84,10 +78,10 @@ export default function FormSemOs ({
                 })}
                 value={baseSelecionada ?? ""}
                 error={errors.hasOwnProperty('origem_id')}
-                helperText={errors?.origem_id ?? ""}
+                helperText={errors?.origem_id ?? " "}
                 disabled={!deptoSelecionado}
                 restrito
-                //required
+                required
             />
             </ConditionalTooltip>
 
@@ -97,16 +91,10 @@ export default function FormSemOs ({
                     name="local_servico_id"
                     tipo="parque"
                     depto={deptoSelecionado}
-                    //onChange={ async e => {
-                    //    //setLocalServico(e.target.value)
-                    //    //const res = await getProfissionais(e.target.value, deptoSelecionado)
-                    //    //if(deptoSelecionado) setProfissionaisDisponiveis(res.data) 
-                    //}}
                     error={errors.hasOwnProperty('local_servico_id')}
-                    helperText={errors?.local_servico_id || ""}
+                    helperText={errors?.local_servico_id || " "}
                     disabled={!deptoSelecionado}
-                    //restrito
-                    //required
+                    required
                 />
             </ConditionalTooltip>
 
@@ -116,8 +104,8 @@ export default function FormSemOs ({
                 id="tipo_servico_id"
                 deptoSelecionado={deptoSelecionado}
                 error={errors.hasOwnProperty('tipo_servico_id')}
-                helperText={errors?.tipo_servico_id || ""}
-                //required
+                helperText={errors?.tipo_servico_id || " "}
+                required
             />
         
             <TextField 
@@ -126,7 +114,7 @@ export default function FormSemOs ({
                 multiline
                 minRows={4}
                 error={errors.hasOwnProperty('especificacao')}
-                helperText={errors?.especificacao || ""}
+                helperText={errors?.especificacao || " "}
                 fullWidth
             />
         
@@ -136,7 +124,7 @@ export default function FormSemOs ({
                 multiline
                 minRows={4}
                 error={errors.hasOwnProperty('observacoes')}
-                helperText={errors?.observacoes || ""}
+                helperText={errors?.observacoes || " "}
                 fullWidth
             />
         </>

@@ -9,16 +9,16 @@ export function errorBuilder(res, text) {
   return error
 }
 
-export function formDataToObj(formData, obj) {
-  for (let item of formData.entries()) {
-    obj[item[0]] = item[1]
-  }
-  return obj
-}
+//export function formDataToObj(formData, obj) {
+//  for (let item of formData.entries()) {
+//    obj[item[0]] = item[1]
+//  }
+//  return obj
+//}
 
-export function objToArr(materiaisTipos) {
-  return [].concat(...Object.values(materiaisTipos)) 
-}
+//export function objToArr(materiaisTipos) {
+//  return [].concat(...Object.values(materiaisTipos)) 
+//}
 
 export const setFormSnackbar = (setSnackbar, tipoEnvio, options = {
   error: false,
@@ -39,7 +39,7 @@ export const setFormSnackbar = (setSnackbar, tipoEnvio, options = {
   })
 }
 
-export function headerBuilder () {
+function headerBuilder () {
   return {
     'Accept': 'application/json',
     'Authorization': localStorage.getItem('access_token')
@@ -92,20 +92,20 @@ export const primeiraLetraMaiuscula = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function formatProfissional(profissionais) {
-    let inputFormatado = {}
-    let arr = []
-    for(let profissional of profissionais) {
-        inputFormatado = {
-            nome: profissional.profissional,
-            horas_empregadas: profissional.horas_empregadas,
-            id: profissional.profissional_id,
-            data_inicio: profissional.data_inicio
-        }
-        arr.push(inputFormatado)
-    }
-    return arr
-}
+//export function formatProfissional(profissionais) {
+//    let inputFormatado = {}
+//    let arr = []
+//    for(let profissional of profissionais) {
+//        inputFormatado = {
+//            nome: profissional.profissional,
+//            horas_empregadas: profissional.horas_empregadas,
+//            id: profissional.profissional_id,
+//            data_inicio: profissional.data_inicio
+//        }
+//        arr.push(inputFormatado)
+//    }
+//    return arr
+//}
 
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
@@ -449,33 +449,33 @@ export async function getOrdemDados (id, tipoDados) {
   }
   throw errorBuilder(res, `Nao foi possivel recuperar os ${tipoDados}!`)
 }
-export const getProfissionais = async (base, depto) => {
-  const url = new URL(
-    `${process.env.REACT_APP_API_URL}/profissionais`
-  );
+//export const getProfissionais = async (base, depto) => {
+//  const url = new URL(
+//    `${process.env.REACT_APP_API_URL}/profissionais`
+//  );
+//
+//  const params = {
+//      "local": /* base */"", //argumentos retirados para fins de teste
+//      "depto": /* depto */"",
+//  };
+//  Object.keys(params)
+//      .forEach(key => url.searchParams.append(key, params[key]));
+//
+//  const res = await fetch(url, {
+//      method: "GET",
+//      headers: headerBuilder(),
+//  })
+//
+//  if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar os profissionais!")
+//
+//  return await res.json()
+//}
 
-  const params = {
-      "local": /* base */"", //argumentos retirados para fins de teste
-      "depto": /* depto */"",
-  };
-  Object.keys(params)
-      .forEach(key => url.searchParams.append(key, params[key]));
-
-  const res = await fetch(url, {
-      method: "GET",
-      headers: headerBuilder(),
-  })
-
-  if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar os profissionais!")
-
-  return await res.json()
-}
-
-export const getStatusEnum = async () => {
-  const status = ['A iniciar', 'Iniciada', 'Finalizada']
-  
-  return await status
-}
+//export const getStatusEnum = async () => {
+//  const status = ['A iniciar', 'Iniciada', 'Finalizada']
+//  
+//  return await status
+//}
 
 export async function getTiposServico({depto=""}) {
   const url = new URL(

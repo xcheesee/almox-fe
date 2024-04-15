@@ -52,7 +52,7 @@ export default function NovaTransferencia () {
                     label="Data de Transferência"
                     name="data_transferencia"
                     error={errors.hasOwnProperty("data_transferencia")}
-                    helperText = {errors?.data_transferencia ?? "" }
+                    helperText = {errors?.data_transferencia ?? " " }
                     id="data_transferencia"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
@@ -66,7 +66,7 @@ export default function NovaTransferencia () {
                     value={baseOrigem}
                     onChange={(e) => setBaseOrigem(e.target.value)}
                     error={errors.hasOwnProperty('base_origem_id')}
-                    helperText={errors?.base_origem_id || ""}
+                    helperText={errors?.base_origem_id || " "}
                     restrito
                     getAll
                     required
@@ -77,7 +77,7 @@ export default function NovaTransferencia () {
                     name="base_destino_id"
                     tipo="base"
                     error={errors.hasOwnProperty('base_destino_id')}
-                    helperText={errors?.base_destino_id || ""}
+                    helperText={errors?.base_destino_id || " "}
                     getAll
                     required
                 />

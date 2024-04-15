@@ -65,7 +65,7 @@ export default function NovaOcorrencia () {
                     name="data_ocorrencia"
                     id="data_ocorrencia"
                     error={errors.hasOwnProperty("data_ocorrencia")}
-                    helperText={errors?.data_ocorrencia ?? ""}
+                    helperText={errors?.data_ocorrencia ?? " "}
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                     required
@@ -78,7 +78,7 @@ export default function NovaOcorrencia () {
                     value={baseOrigem}
                     onChange={(e) => setBaseOrigem(e.target.value)}
                     error={errors.hasOwnProperty('local_servico_id')}
-                    helperText={errors?.local_servico_id || ""}
+                    helperText={errors?.local_servico_id || " "}
                     restrito
                     getAll
                 />
@@ -91,7 +91,7 @@ export default function NovaOcorrencia () {
                     value={tipoOcorrencia}
                     onChange={ (e) => setTipoOcorrencia(e.target.value) }
                     error={errors.hasOwnProperty("tipo_ocorrencia")}
-                    helperText={errors?.tipo_ocorrencia ?? ""}
+                    helperText={errors?.tipo_ocorrencia ?? " "}
                     fullWidth
                     required
                 >
@@ -119,7 +119,7 @@ export default function NovaOcorrencia () {
                         InputLabelProps={{ shrink: true }}
                         required={tipoOcorrencia === "furto" || tipoOcorrencia === "extravio"}
                         error={errors.hasOwnProperty('boletim_ocorrencia')}
-                        helperText={errors?.boletim_ocorrencia || ""}
+                        helperText={errors?.boletim_ocorrencia || " "}
                         fullWidth
                     />
                 }

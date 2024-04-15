@@ -29,26 +29,24 @@ export default function FormNovaSaida ({
     const queryClient = useQueryClient()
     const navigate = useNavigate()
 
-    const [_, setLocal] = useState()
     const [isNoOSForm, setIsNoOSForm] = useState(false);
     const [ordemServico, setOrdemServico] = useState()
     const [ordemMats, setOrdemMats] = useState()
     const [ordemProfs, setOrdemProfs] = useState()
     const [isLoadingDados, setIsLoadingDados] = useState(false)
     const [baseSelecionada, setBaseSelecionada] = useState("")
+    const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const [errors, setErrors] = useState({});
 
-    const [deptoSelecionado, setDeptoSelecionado] = useState("")
     const setSnackbar = useSetAtom(snackbarAtom)
 
     async function clearForm () {
         setOrdemServico()
         setOrdemMats()
         setOrdemProfs()
-        setLocal("")
+        //setLocal("")
         setBaseSelecionada("")
         setDeptoSelecionado("")
-        //setProfissionais([])
     }
 
     async function setOrdemFromOptions (value) {
@@ -57,7 +55,6 @@ export default function FormNovaSaida ({
         setOrdemServico(value)
         setBaseSelecionada(value.origem_id)
         setDeptoSelecionado(value.departamento_id)
-        setLocal(value.local_servico_id)
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
         setOrdemMats(matsRes)
         setOrdemProfs(profRes)
@@ -100,7 +97,6 @@ export default function FormNovaSaida ({
             setFormSnackbar(setSnackbar, "Saida de Materiais")
             navigate(`/saida`, { replace: true });
         }, onError: async (res) => {
-            //if(res.status === 422) { setErrors(res?.errors) }
             setSnackbar({
                 open: true,
                 severity: "error",
@@ -111,11 +107,6 @@ export default function FormNovaSaida ({
     })
 
     function formataSaida({formData}) {
-
-        //if(isBasicOS()) {
-        //    formData.append("saida_profissionais", JSON.stringify(profissionais))
-        //}
-
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
         saida.almoxarife_email = localStorage.getItem('usermail')
@@ -166,16 +157,11 @@ export default function FormNovaSaida ({
 
                 {isNoOSForm
                     ?<FormSemOs 
-                            //setOpenConfirmar={setOpenConfirmar}
-                            //setCarregando={setCarregando}
                             baseSelecionada={baseSelecionada}
                             deptoSelecionado={deptoSelecionado}
                             setDeptoSelecionado={setDeptoSelecionado}
-                            //setLocal={setLocal}
                             setBaseSelecionada={setBaseSelecionada}
-                            //setProfissionaisDisponiveis={setProfissionaisDisponiveis}
                             errors={errors}
-                            //setErrors={setErrors}
                     />
                     :
                     <>
@@ -185,7 +171,7 @@ export default function FormNovaSaida ({
                             id="tipo_servico_id"
                             deptoSelecionado={deptoSelecionado}
                             error={errors.hasOwnProperty('tipo_servico_id')}
-                            helperText={errors?.tipo_servico_id || ""}
+                            helperText={errors?.tipo_servico_id ?? ""}
                         />
 
                         <SaidaOSCard ordemServico={ordemServico} />

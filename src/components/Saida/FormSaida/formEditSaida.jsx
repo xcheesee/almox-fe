@@ -106,7 +106,7 @@ export default function FormEditSaida({
                     depto={defaultValue?.departamento_id}
                     defaultValue={defaultValue?.local_servico_id ?? ""}
                     error={errors.hasOwnProperty('local_servico_id')}
-                    helperText={errors?.local_servico_id ?? ""}
+                    helperText={errors?.local_servico_id ?? " "}
                     required
                     //restrito
                 />
@@ -116,7 +116,7 @@ export default function FormEditSaida({
                     name="tipo_servico_id"
                     id="tipo_servico_id"
                     deptoSelecionado={defaultValue?.departamento_id}
-                    defaultValue={defaultValue?.tipo_servico_id ?? ""}
+                    defaultValue={defaultValue?.tipo_servico_id ?? " "}
                     error={errors.hasOwnProperty('local_servico_id')}
                     helperText={errors?.tipo_servico_id || ""}
                 />
@@ -127,19 +127,19 @@ export default function FormEditSaida({
                     name="especificacao"
                     id="especificacao"
                     label="Especificação"
-                    defaultValue={defaultValue?.especificacao ?? ""}
+                    defaultValue={defaultValue?.especificacao ?? " "}
                     error={errors.hasOwnProperty('especificacao')}
                     helperText={errors?.especificacao || ""}
                 />
         
                 <TextField 
-                    defaultValue={defaultValue?.observacoes ?? ""}
+                    defaultValue={defaultValue?.observacoes ?? " "}
                     name="observacoes"
                     label="Serviços extras/obervações"
                     multiline
                     minRows={4}
                     error={errors.hasOwnProperty('observacoes')}
-                    helperText={errors?.observacoes || ""}
+                    helperText={errors?.observacoes || " "}
                     fullWidth
                 />
 

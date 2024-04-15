@@ -154,7 +154,7 @@ const FormOrdemServico = ({
                         //} 
                     }}
                     error={errors.hasOwnProperty('local_servico_id')}
-                    helperText={errors.local_servico_id || ""}
+                    helperText={errors?.local_servico_id || " "}
                     disabled={!deptoSelecionado}
                     required
                     //restrito
@@ -168,7 +168,7 @@ const FormOrdemServico = ({
                 multiline
                 minRows={4}
                 error={errors.hasOwnProperty('especificacao')}
-                helperText={errors.especificacao || ""}
+                helperText={errors?.especificacao || " "}
                 fullWidth
             />
         
@@ -179,7 +179,7 @@ const FormOrdemServico = ({
                 multiline
                 minRows={4}
                 error={errors.hasOwnProperty('observacoes')}
-                helperText={errors.observacoes || ""}
+                helperText={errors?.observacoes || " "}
                 fullWidth
             />
         

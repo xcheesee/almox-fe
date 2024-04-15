@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -14,15 +14,16 @@ import { useSetAtom } from 'jotai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AddAlerta } from '../../common/utils';
 
-const DialogDefinirAlerta = (props) => {
-  const queryClient = useQueryClient()
-  const {
+const DialogDefinirAlerta = ({
     openDefinir,
     setOpenDefinir,
     idAlerta,
     setIdAlerta,
     registro,
-  } = props;
+  }) => {
+  const queryClient = useQueryClient()
+
+  const [errors, setErrors] = useState()
 
   const mutation = useMutation(alertaData => AddAlerta(alertaData, idAlerta),
     { 
@@ -44,6 +45,7 @@ const DialogDefinirAlerta = (props) => {
           severity: 'error', 
           message: `Não foi possível definir o alerta: ${res.status} - ${res.message}`
         });
+        setErrors(res?.errors)
       }
     })
 
@@ -81,6 +83,8 @@ const DialogDefinirAlerta = (props) => {
             defaultValue={registro.qtd_alerta}
             name="qtd_alerta"
             margin="dense"
+            error={errors.hasOwnProperty("qtd_alerta")}
+            helperText={errors?.qtd_alerta ?? " "}
             fullWidth
           />
         </Box>
