@@ -15,22 +15,22 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AddAlerta } from '../../common/utils';
 
 const DialogDefinirAlerta = ({
-    openDefinir,
-    setOpenDefinir,
-    idAlerta,
-    setIdAlerta,
-    registro,
-  }) => {
+  openDefinir,
+  setOpenDefinir,
+  idAlerta,
+  setIdAlerta,
+  registro,
+}) => {
   const queryClient = useQueryClient()
 
   const [errors, setErrors] = useState()
 
   const mutation = useMutation(alertaData => AddAlerta(alertaData, idAlerta),
-    { 
+    {
       onSuccess: async (dataRes) => {
         setSnackbar({
-          open: true, 
-          severity: 'success', 
+          open: true,
+          severity: 'success',
           message: `Alerta definido com sucesso!`
         });
 
@@ -38,11 +38,11 @@ const DialogDefinirAlerta = ({
         return await queryClient.invalidateQueries(['itemsAcabando'], {
           refetchType: 'all'
         })
-      }, 
+      },
       onError: async (res) => {
         setSnackbar({
-          open: true, 
-          severity: 'error', 
+          open: true,
+          severity: 'error',
           message: `Não foi possível definir o alerta: ${res.status} - ${res.message}`
         });
         setErrors(res?.errors)
@@ -60,7 +60,7 @@ const DialogDefinirAlerta = ({
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
 
-    mutation.mutate({...registro, ...inputObject})
+    mutation.mutate({ ...registro, ...inputObject })
   }
 
   return (
@@ -75,7 +75,7 @@ const DialogDefinirAlerta = ({
           onSubmit={(e) => {
             enviar(e)
             queryClient.invalidateQueries(['itemsAcabando'])
-            queryClient.refetchQueries(['itemsAcabando'], {stale: 'true'})
+            queryClient.refetchQueries(['itemsAcabando'], { stale: 'true' })
           }}
         >
           <TextField
@@ -83,7 +83,7 @@ const DialogDefinirAlerta = ({
             defaultValue={registro.qtd_alerta}
             name="qtd_alerta"
             margin="dense"
-            error={errors.hasOwnProperty("qtd_alerta")}
+            error={errors?.hasOwnProperty("qtd_alerta")}
             helperText={errors?.qtd_alerta ?? " "}
             fullWidth
           />
@@ -94,7 +94,7 @@ const DialogDefinirAlerta = ({
           Cancelar
         </Button>
         <Button type="submit" form="quantidade-alerta" disabled={mutation.isLoading}>
-          { mutation.isLoading && <CircularProgress size="1rem" className="mr-2" /> }
+          {mutation.isLoading && <CircularProgress size="1rem" className="mr-2" />}
           Enviar
         </Button>
       </DialogActions>
