@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import MateriaisBox from "../../components/MateriaisBox";
 import CampoLocais from "../../components/CampoLocais";
 
-export default function NovaOcorrencia () {
+export default function NovaOcorrencia() {
 
     const [snackbar, setSnackbar] = useAtom(snackbarAtom)
 
@@ -25,39 +25,39 @@ export default function NovaOcorrencia () {
     const navigate = useNavigate()
 
     const locais = useQuery({
-        queryKey: ['locais', "", "base"], 
-        queryFn: () => getLocais("", "base"), 
+        queryKey: ['locais', "", "base"],
+        queryFn: () => getLocais("", "base"),
         //enabled: !(depto === ''),
         onSuccess: (res) => {
             setBaseOrigem((res?.find(local => local.id === +localStorage.getItem("local")))?.id ?? "");
             //setBaseOrigem(res.length === 1 ? res[0].id : "")
         }
     })
-    
+
     async function enviaOcorrenciaForm(e) {
         e.preventDefault()
         setIsLoading(true)
         const formData = new FormData(e.target)
         try {
             await enviaNovaOcorrencia(formData)
-            setSnackbar({...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success"})
+            setSnackbar({ ...snackbar, open: true, message: "Ocorrencia enviada com sucesso!", severity: "success" })
             navigate("/ocorrencia")
-        } catch(e){
+        } catch (e) {
             setErrors(e?.errors ?? {})
-            setSnackbar({...snackbar, open: true, message: e?.text ?? `Ocorreu um erro: ${e.mensagem}`, severity: "error"})
+            setSnackbar({ ...snackbar, open: true, message: e?.text ?? `Ocorreu um erro: ${e.mensagem}`, severity: "error" })
         }
         setIsLoading(false)
     }
 
-    return(
+    return (
         <ContainerPrincipal>
             <Titulo voltaPara="/ocorrencia" >
                 Nova Ocorrência
             </Titulo>
 
-            <FormContainer 
+            <FormContainer
                 id="nova-ocorrencia"
-                onSubmit={ async (e) => await enviaOcorrenciaForm(e) }
+                onSubmit={async (e) => await enviaOcorrenciaForm(e)}
             >
                 <TextField
                     type="date"
@@ -71,7 +71,7 @@ export default function NovaOcorrencia () {
                     required
                 />
 
-                <CampoLocais 
+                <CampoLocais
                     label="Base envolvida"
                     name="local_id"
                     tipo="base"
@@ -89,7 +89,7 @@ export default function NovaOcorrencia () {
                     name="tipo_ocorrencia"
                     id="tipo_ocorrencia"
                     value={tipoOcorrencia}
-                    onChange={ (e) => setTipoOcorrencia(e.target.value) }
+                    onChange={(e) => setTipoOcorrencia(e.target.value)}
                     error={errors.hasOwnProperty("tipo_ocorrencia")}
                     helperText={errors?.tipo_ocorrencia ?? " "}
                     fullWidth
@@ -109,9 +109,9 @@ export default function NovaOcorrencia () {
                     label="Justificativa"
                 />
 
-                {   
-                    (tipoOcorrencia === "furto" || tipoOcorrencia === "extravio") && 
-                    <TextField 
+                {
+                    (tipoOcorrencia === "furto" || tipoOcorrencia === "extravio") &&
+                    <TextField
                         name="boletim_ocorrencia"
                         label="Boletim de Ocorrência"
                         type="file"
@@ -124,23 +124,23 @@ export default function NovaOcorrencia () {
                     />
                 }
 
-                <MateriaisBox 
+                <MateriaisBox
                     baseSelecionada={baseOrigem}
-                    inputName='itens' 
-                    entrada 
+                    inputName='itens'
+                    entrada
                     errors={errors}
                 />
             </FormContainer>
 
 
             <Box className="flex gap justify-end items-center">
-                { isLoading && <CircularProgress size={24}/> }
+                {isLoading && <CircularProgress size={24} />}
                 <Button onClick={() => setOpenConfirmar(true)}>
                     Enviar
                 </Button>
             </Box>
 
-            <DialogEnviar 
+            <DialogEnviar
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 texto="ocorrência"

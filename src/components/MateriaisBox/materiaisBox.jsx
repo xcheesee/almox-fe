@@ -6,64 +6,66 @@ import MaterialList from "./MaterialList";
 import ConditionalTooltip from "../ConditionalTooltip";
 
 export default function MateriaisBox({
-    baseSelecionada="",
-    deptoSelecionado="",
-    defaultValue=[],
-    inputName="",
-    entrada=false,
-    errors={}
+    baseSelecionada = "",
+    deptoSelecionado = "",
+    defaultValue = [],
+    inputName = "",
+    entrada = false,
+    errors = {}
 }) {
     const [selectedTipo, setSelectedTipo] = useState("")
+    //#TODO Melhorar implementacao de recebimento de tipos de materias em componentes de transferencia e ocorrencia,
+    //que nao selecionam departamentos
     const tipos = useQuery({
-        queryKey: ['tiposMats', deptoSelecionado], 
-        queryFn: () => getMatTipos({depto: deptoSelecionado}),
-        enabled: !!deptoSelecionado || entrada
+        queryKey: ['tiposMats', deptoSelecionado],
+        queryFn: () => getMatTipos({ depto: deptoSelecionado }),
+        enabled: !!baseSelecionada || entrada
     });
 
     const materiais = useQuery({
-        queryKey: ['matsByTipo', selectedTipo, deptoSelecionado, baseSelecionada],
-        queryFn: () => getMatItens(selectedTipo, true, baseSelecionada, deptoSelecionado),
+        queryKey: ['matsByTipo', selectedTipo, baseSelecionada],
+        queryFn: () => getMatItens(selectedTipo, true, baseSelecionada),
         enabled: !!selectedTipo && !entrada,
     })
 
     const materiaisEntrada = useQuery({
-        queryKey: ['matsEntrada', selectedTipo, deptoSelecionado, baseSelecionada],
-        queryFn: () => getMatItens(selectedTipo, false, baseSelecionada, deptoSelecionado),
+        queryKey: ['matsEntrada', selectedTipo, baseSelecionada],
+        queryFn: () => getMatItens(selectedTipo, false, baseSelecionada),
         enabled: entrada && !!selectedTipo,
     })
 
-    if(tipos.isLoading && !!deptoSelecionado) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
+    if (tipos.isLoading && !!deptoSelecionado) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
 
-    return ( 
+    return (
         <Box className="grid gap-4 w-full py-4">
             <Typography className="!text-3xl !font-thin">Materiais</Typography>
 
-            <ConditionalTooltip 
-                enabled={deptoSelecionado === "" || (baseSelecionada==="" && !entrada)} 
-                texto={deptoSelecionado === "" ? "Selecione um Departamento!" : "Selecione uma base"}
+            <ConditionalTooltip
+                enabled={!baseSelecionada && !entrada}
+                texto={"Selecione uma base"}
             >
                 <TextField
                     select
                     label="Tipo de material"
                     value={selectedTipo}
                     onChange={(e) => setSelectedTipo(e.target.value)}
-                    disabled={deptoSelecionado === "" || (baseSelecionada === "" && !entrada)}
+                    disabled={!baseSelecionada && !entrada}
                 >
-                    {tipos?.data?.data?.map((val, i) => 
+                    {tipos?.data?.data?.map((val, i) =>
                         <MenuItem value={val.id} key={`m-item-${i}`} >
                             {primeiraLetraMaiuscula(val.nome)}
                         </MenuItem>
-                        ) 
-                    ?? <MenuItem></MenuItem>
+                    )
+                        ?? <MenuItem></MenuItem>
                     }
                 </TextField>
             </ConditionalTooltip>
 
-            <MaterialList 
-                materiais={entrada ? materiaisEntrada : materiais} 
-                isLoading={entrada ? materiaisEntrada.isLoading : materiais.isLoading} 
-                enabled={ !!selectedTipo } 
-                defaultValue={defaultValue} 
+            <MaterialList
+                materiais={entrada ? materiaisEntrada : materiais}
+                isLoading={entrada ? materiaisEntrada.isLoading : materiais.isLoading}
+                enabled={!!selectedTipo}
+                defaultValue={defaultValue}
                 inputName={inputName}
                 entrada={entrada}
             />

@@ -1,12 +1,16 @@
 import { motivosRecusa } from "./constants";
 
 export function errorBuilder(res, text) {
-  const error = new Error(text)
-  error.message = text
-  error.status = res.status
-  error.ok = false
-  error.errors = Object?.values(res?.errors ?? {})?.reduce((prev, curr) => prev + `${curr}\n`, "") ?? "" 
-  return error
+  const error = new Error(text);
+  error.message = text;
+  error.status = res.status;
+  error.ok = false;
+  error.errors =
+    Object?.values(res?.errors ?? {})?.reduce(
+      (prev, curr) => prev + `${curr}\n`,
+      "",
+    ) ?? "";
+  return error;
 }
 
 //export function formDataToObj(formData, obj) {
@@ -17,37 +21,41 @@ export function errorBuilder(res, text) {
 //}
 
 //export function objToArr(materiaisTipos) {
-//  return [].concat(...Object.values(materiaisTipos)) 
+//  return [].concat(...Object.values(materiaisTipos))
 //}
 
-export const setFormSnackbar = (setSnackbar, tipoEnvio, options = {
-  error: false,
-  edit: false,
-  status: null,
-}) => {
-  if(options.error) {
+export const setFormSnackbar = (
+  setSnackbar,
+  tipoEnvio,
+  options = {
+    error: false,
+    edit: false,
+    status: null,
+  },
+) => {
+  if (options.error) {
     return setSnackbar({
       open: true,
-      severity: 'error',
-      message: `Não foi possível ${ options.edit? 'editar' : 'enviar' } (Erro ${options?.status})`
-  })
+      severity: "error",
+      message: `Não foi possível ${options.edit ? "editar" : "enviar"} (Erro ${options?.status})`,
+    });
   }
   return setSnackbar({
     open: true,
-    severity: 'success',
-    message: `${tipoEnvio} ${options.edit? "editada": "enviada"} com sucesso!`
-  })
-}
+    severity: "success",
+    message: `${tipoEnvio} ${options.edit ? "editada" : "enviada"} com sucesso!`,
+  });
+};
 
-function headerBuilder () {
+function headerBuilder() {
   return {
-    'Accept': 'application/json',
-    'Authorization': localStorage.getItem('access_token')
-  }
+    Accept: "application/json",
+    Authorization: localStorage.getItem("access_token"),
+  };
 }
 
 export function isPermittedEdit(permittedLocais, currLocal) {
-    return permittedLocais.some( local => local.local_id === currLocal)
+  return permittedLocais.some((local) => local.local_id === currLocal);
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*                                                formatações                                               */
@@ -57,21 +65,22 @@ export function isPermittedEdit(permittedLocais, currLocal) {
 //transfere os itens, sequencialmente, na  configuracao: item[posicao][campo]= valor
 
 export const mascaraProcessoSei = (processoSei) => {
-    if (processoSei !== null && processoSei !== "" && processoSei !== undefined)
-      return processoSei.replace(/([\d]{4})([\d]{4})([\d]{7})([\d]{1})/gm, '$1.$2/$3-$4');
-    else
-      return "";
-}
+  if (processoSei !== null && processoSei !== "" && processoSei !== undefined)
+    return processoSei.replace(
+      /([\d]{4})([\d]{4})([\d]{7})([\d]{1})/gm,
+      "$1.$2/$3-$4",
+    );
+  else return "";
+};
 
 export const mascaraContrato = (contrato) => {
-    if (contrato !== null && contrato !== "" && contrato !== undefined) 
-        return contrato.replace(/([\d]{3})([\w]{4})(\d{4})/gm, '$1/$2/$3');
-    else
-        return "";
-}
+  if (contrato !== null && contrato !== "" && contrato !== undefined)
+    return contrato.replace(/([\d]{3})([\w]{4})(\d{4})/gm, "$1/$2/$3");
+  else return "";
+};
 
-export function mascaraMotivoRecusa (motivoRecusa) {
-  return motivosRecusa[motivoRecusa]
+export function mascaraMotivoRecusa(motivoRecusa) {
+  return motivosRecusa[motivoRecusa];
 }
 
 export const formataDateTime = (dateTime) => {
@@ -82,15 +91,14 @@ export const formataDateTime = (dateTime) => {
     day: "2-digit",
   });
 
-  if (dataFormatada === "Invalid Date" || dateTime === null)
-    return "";
+  if (dataFormatada === "Invalid Date" || dateTime === null) return "";
 
   return dataFormatada;
-}
+};
 
 export const primeiraLetraMaiuscula = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 
 //export function formatProfissional(profissionais) {
 //    let inputFormatado = {}
@@ -107,347 +115,359 @@ export const primeiraLetraMaiuscula = (string) => {
 //    return arr
 //}
 
-
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*                                       Create                                                       */
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 export const enviaForm = (formData) => {
-  formData.append('user_id', localStorage.getItem('user_id'));
-  
-  if (formData.get('numero_contrato') !== null) 
-    formData.set('numero_contrato', formData.get('numero_contrato').replace(/\//gm, '').toUpperCase());
-  
-  if (formData.get('processo_sei') !== null) 
-    formData.set('processo_sei', formData.get('processo_sei').replace(/\D/gm, ''));
-  
+  formData.append("user_id", localStorage.getItem("user_id"));
+
+  if (formData.get("numero_contrato") !== null)
+    formData.set(
+      "numero_contrato",
+      formData.get("numero_contrato").replace(/\//gm, "").toUpperCase(),
+    );
+
+  if (formData.get("processo_sei") !== null)
+    formData.set(
+      "processo_sei",
+      formData.get("processo_sei").replace(/\D/gm, ""),
+    );
+
   return formData;
-}
+};
 
 export const enviaNovoForm = async (formData, url) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}`;
   const options = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': localStorage.getItem('access_token')
-      },
-      body: enviaForm(formData)
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: localStorage.getItem("access_token"),
+    },
+    body: enviaForm(formData),
   };
 
-  const res = await fetch(urlCompleta, options)
+  const res = await fetch(urlCompleta, options);
 
   if (res.status === 422) {
-    throw await res.json()
-  } else if(!res.ok) {
-    throw res
+    throw await res.json();
+  } else if (!res.ok) {
+    throw res;
   }
-  return await res.json()
-}
+  return await res.json();
+};
 
-export async function enviaNovaSaida({ formData }) { 
+export async function enviaNovaSaida({ formData }) {
   const url = `${process.env.REACT_APP_API_URL}/saida`;
   const options = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Accept': 'application/json',
-      'Authorization': localStorage.getItem('access_token')
+      Accept: "application/json",
+      Authorization: localStorage.getItem("access_token"),
     },
     body: formData,
-  }
+  };
   try {
-    const res = await fetch(url, options)
-    const json = await res.json()
-    if(!res.ok) throw errorBuilder(res, json.message)
-  } catch(e) {
-    throw errorBuilder(e, e.message)
+    const res = await fetch(url, options);
+    const json = await res.json();
+    if (!res.ok) throw errorBuilder(res, json.message);
+  } catch (e) {
+    throw errorBuilder(e, e.message);
   }
 }
 
 export async function enviaNovaOcorrencia(formData) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia` );
+  const url = new URL(`${process.env.REACT_APP_API_URL}/ocorrencia`);
 
   const res = await fetch(url, {
     method: "POST",
     headers: headerBuilder(),
-    body: formData 
-  })
+    body: formData,
+  });
 
-  if(res.ok) return res
+  if (res.ok) return res;
 
-  const json = await res.json()
+  const json = await res.json();
   //const error = errorBuilder(res, json.mensagem)
   //error.errors = json.errors
-  
+
   throw json;
 }
 
 export async function enviaNovaTransferencia(formData) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia` );
+  const url = new URL(`${process.env.REACT_APP_API_URL}/transferencia`);
 
   const res = await fetch(url, {
     method: "POST",
-    headers: headerBuilder(), 
+    headers: headerBuilder(),
     body: formData,
-  })
+  });
 
-  if(res.ok) return {message: "Transferencia enviada com sucesso", status: res.status, ok: true}
-  
-  const json = await res.json()
-  throw json
+  if (res.ok)
+    return {
+      message: "Transferencia enviada com sucesso",
+      status: res.status,
+      ok: true,
+    };
+
+  const json = await res.json();
+  throw json;
 }
 
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*                                       Read                                                         */
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 export async function AuthRequest() {
   const url = `${process.env.REACT_APP_API_URL}/perfil`;
   const options = {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      ...headerBuilder()
+      "Content-Type": "application/json",
+      ...headerBuilder(),
     },
-  }
-  const res = await fetch(url, options)
-  if(res.status === 401) throw res
-  return await res.json()
+  };
+  const res = await fetch(url, options);
+  if (res.status === 401) throw res;
+  return await res.json();
 }
 
 export const loginRequest = async (inputObject) => {
   const url = `${process.env.REACT_APP_API_URL}/login`;
   const options = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      "Content-Type": "application/json",
+      Accept: "application/json",
     },
-    body: JSON.stringify(inputObject)
+    body: JSON.stringify(inputObject),
   };
 
-  const res = await fetch(url, options)
+  const res = await fetch(url, options);
 
-  if(res.ok) {
-    const data = await res.json()
-    data.email = inputObject.email
-    return data
+  if (res.ok) {
+    const data = await res.json();
+    data.email = inputObject.email;
+    return data;
   }
-  const errData = await res.json()
-  throw errorBuilder(res, errData.message)
-}
+  const errData = await res.json();
+  throw errorBuilder(res, errData.message);
+};
 
 export async function getOcorrenciaPDF(id) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/ocorrencia_pdf/${id}` );
+  const url = new URL(`${process.env.REACT_APP_API_URL}/ocorrencia_pdf/${id}`);
   const headers = {
-      "Accept": "application/pdf",
-      "Authorization": localStorage.getItem('access_token'),
+    Accept: "application/pdf",
+    Authorization: localStorage.getItem("access_token"),
   };
 
   const res = await fetch(url, {
-    headers: headers, 
-  })
+    headers: headers,
+  });
 
-  if(res.ok) return res
-  
-  throw errorBuilder(res, "Nao foi possivel enviar a transferencia")
+  if (res.ok) return res;
+
+  throw errorBuilder(res, "Nao foi possivel enviar a transferencia");
 }
 
 export const getBaixa = async (baixaId) => {
   const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}`;
   const urlItems = `${process.env.REACT_APP_API_URL}/ordem_servico/${baixaId}/items`;
   const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        ...headerBuilder()
-      },
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...headerBuilder(),
+    },
   };
 
-  const [res, itensRes] = await Promise.all([fetch(url, options), fetch(urlItems, options)])
-  if(res.status === 401 || itensRes.status === 401) throw res
-  if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar a baixa!")
-  if(!itensRes.ok) throw errorBuilder(res, "Nao foi possivel recuperar os itens da baixa!")
+  const [res, itensRes] = await Promise.all([
+    fetch(url, options),
+    fetch(urlItems, options),
+  ]);
+  if (res.status === 401 || itensRes.status === 401) throw res;
+  if (!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar a baixa!");
+  if (!itensRes.ok)
+    throw errorBuilder(res, "Nao foi possivel recuperar os itens da baixa!");
 
-  const [ordem, itens] = await Promise.all([res.json(), itensRes.json()])
-  return {ordem, itens}
-}
+  const [ordem, itens] = await Promise.all([res.json(), itensRes.json()]);
+  return { ordem, itens };
+};
 
-export async function getLocais (depto, tipo, restrito) {
+export async function getLocais(depto, tipo, restrito) {
   const url = `${process.env.REACT_APP_API_URL}/locais?autenticado=${restrito}&filter[tipo]=${tipo}&filter[departamento_id]=${depto}`;
   const options = {
-    method: 'GET',
-    headers: headerBuilder()
+    method: "GET",
+    headers: headerBuilder(),
   };
 
-  const res = await fetch(url, options)
-  if(res.status === 401) 
-    throw res 
-  else if(!res.ok) 
-    throw errorBuilder(res, "Nao foi possivel recuperar os locais")
-  
-  return (await res.json()).data
+  const res = await fetch(url, options);
+  if (res.status === 401) throw res;
+  else if (!res.ok)
+    throw errorBuilder(res, "Nao foi possivel recuperar os locais");
+
+  return (await res.json()).data;
 }
 
 export async function getDados(rota) {
-  const url = `${process.env.REACT_APP_API_URL}/${rota}`
+  const url = `${process.env.REACT_APP_API_URL}/${rota}`;
   const options = { headers: headerBuilder() };
 
-  try{
+  try {
     const res = await fetch(url, options);
-    if(!res.ok) throw res; 
+    if (!res.ok) throw res;
     return await res.json();
-  } catch(e) {
-    if(e.status === 401) {
-        throw e;
+  } catch (e) {
+    if (e.status === 401) {
+      throw e;
     }
     throw errorBuilder(e, e.message);
   }
 }
 
-export async function getTabela (rota, page="", filtros="", sort="") {
-  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ''}&sort=${sort || ''}`
+export async function getTabela(rota, page = "", filtros = "", sort = "") {
+  const url = `${process.env.REACT_APP_API_URL}/${rota}?page=${page}${filtros || ""}&sort=${sort || ""}`;
   const options = {
-      method: 'GET',
-      headers: headerBuilder()
+    method: "GET",
+    headers: headerBuilder(),
   };
 
-  try{
-    const res = await fetch(url, options)
-    const json = await res.json()
-    if(res.status === 404) {
-      throw errorBuilder(res, "Nao encontrado")
-    } else if(res.status === 401) {
-        throw res
-    } else if(!res.ok) {
-      throw errorBuilder(res, json.message)
+  try {
+    const res = await fetch(url, options);
+    const json = await res.json();
+    if (res.status === 404) {
+      throw errorBuilder(res, "Nao encontrado");
+    } else if (res.status === 401) {
+      throw res;
+    } else if (!res.ok) {
+      throw errorBuilder(res, json.message);
     }
-    return await new Promise(res => setTimeout(() => res(json), 250))
-  } catch(e) {
-    if(e.status === 401) {
-        throw e
+    return await new Promise((res) => setTimeout(() => res(json), 250));
+  } catch (e) {
+    if (e.status === 401) {
+      throw e;
     }
-    throw errorBuilder(e, e.message)
+    throw errorBuilder(e, e.message);
   }
 }
 
 export const getRegistro = async (rota, id) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
   const options = {
-    method: 'GET',
-    headers: headerBuilder()
+    method: "GET",
+    headers: headerBuilder(),
   };
-  
-  const res = await fetch(url, options)
-  if(res.ok) {
-    const json = await res.json()
-    return json.data
-  } else if(res.status === 404) {
-    throw errorBuilder(res, "Não encontrado")
+
+  const res = await fetch(url, options);
+  if (res.ok) {
+    const json = await res.json();
+    return json.data;
+  } else if (res.status === 404) {
+    throw errorBuilder(res, "Não encontrado");
   }
-  throw errorBuilder(res, res.message)
-}
+  throw errorBuilder(res, res.message);
+};
 
 export const getMateriais = async (rota, id) => {
   const url = `${process.env.REACT_APP_API_URL}/${rota}/${id}/items`;
   const options = {
-    method: 'GET',
+    method: "GET",
     headers: {
       ...headerBuilder(),
-      'Content-Type': 'application/json',
-    }
+      "Content-Type": "application/json",
+    },
   };
 
-  const res = await fetch(url, options)
-  if(res.ok) {
-    const json = await res.json()
-    return json.data
+  const res = await fetch(url, options);
+  if (res.ok) {
+    const json = await res.json();
+    return json.data;
   }
-  throw errorBuilder(res, "Nao foi possivel recuperar os materiais!")
-}
+  throw errorBuilder(res, "Nao foi possivel recuperar os materiais!");
+};
 
-export const getMatTipos = async ({
-    depto=""
-}) => {
+export const getMatTipos = async ({ depto = "" }) => {
   const url = `${process.env.REACT_APP_API_URL}/tipo_items/${depto}`;
   const options = {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-          ...headerBuilder()
-      },
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...headerBuilder(),
+    },
   };
-  
+
   const res = await fetch(url, options);
   if (res.ok) return await res.json();
 
-  throw errorBuilder(res, "Nao foi possivel recuperar os materiais")
-}
+  throw errorBuilder(res, "Nao foi possivel recuperar os materiais");
+};
 
-export const getTipoServicos = async ({
-    depto=""
-}) => {
+export const getTipoServicos = async ({ depto = "" }) => {
   const url = `${process.env.REACT_APP_API_URL}/tipo_servicos/${depto}`;
   const options = {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-          ...headerBuilder()
-      },
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...headerBuilder(),
+    },
   };
-  
+
   const res = await fetch(url, options);
   if (res.ok) return await res.json();
 
-  throw errorBuilder(res, "Nao foi possivel recuperar os tipos de serviço")
-}
+  throw errorBuilder(res, "Nao foi possivel recuperar os tipos de serviço");
+};
 
-export const getMatItens = async (tipoRota, ordemServico=false, baseSelecionada, deptoSelecionado) => {
-  const url = 
-    ordemServico
-      ? `${process.env.REACT_APP_API_URL}/base/items?base=${baseSelecionada}&depto=${deptoSelecionado}&tipo=${tipoRota}`
-      : `${process.env.REACT_APP_API_URL}/items/tipo/${tipoRota}`
+export const getMatItens = async (
+  tipoRota,
+  ordemServico = false,
+  baseSelecionada,
+) => {
+  const url = ordemServico
+    ? `${process.env.REACT_APP_API_URL}/base/items?base=${baseSelecionada}&tipo=${tipoRota}`
+    : `${process.env.REACT_APP_API_URL}/items/tipo/${tipoRota}`;
   const options = {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-          ...headerBuilder()
-      },
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...headerBuilder(),
+    },
   };
-  const res = await fetch(url, options)
-  if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar os Itens!"); 
+  const res = await fetch(url, options);
+  if (!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar os Itens!");
 
-  return await res.json()
-}
+  return await res.json();
+};
 
 export const getOrdemProfissionais = async (id) => {
   const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/profissionais`;
   const options = {
-    method: 'GET',
-    headers: headerBuilder() 
+    method: "GET",
+    headers: headerBuilder(),
   };
 
-  const res = await fetch(url, options)
-  if(res.ok) {
-    const json = await res.json()
-    return json.data
+  const res = await fetch(url, options);
+  if (res.ok) {
+    const json = await res.json();
+    return json.data;
   }
-  throw errorBuilder(res, "Nao foi possivel recuperar os profissionais!")
-}
+  throw errorBuilder(res, "Nao foi possivel recuperar os profissionais!");
+};
 
-export async function getOrdemDados (id, tipoDados) {
+export async function getOrdemDados(id, tipoDados) {
   const url = `${process.env.REACT_APP_API_URL}/ordem_servico/${id}/${tipoDados}`;
   const options = {
-    method: 'GET',
-    headers: headerBuilder() 
+    method: "GET",
+    headers: headerBuilder(),
   };
 
-  const res = await fetch(url, options)
-  if(res.ok) {
-    const json = await res.json()
-    return json.data
+  const res = await fetch(url, options);
+  if (res.ok) {
+    const json = await res.json();
+    return json.data;
   }
-  throw errorBuilder(res, `Nao foi possivel recuperar os ${tipoDados}!`)
+  throw errorBuilder(res, `Nao foi possivel recuperar os ${tipoDados}!`);
 }
 //export const getProfissionais = async (base, depto) => {
 //  const url = new URL(
@@ -473,241 +493,245 @@ export async function getOrdemDados (id, tipoDados) {
 
 //export const getStatusEnum = async () => {
 //  const status = ['A iniciar', 'Iniciada', 'Finalizada']
-//  
+//
 //  return await status
 //}
 
-export async function getTiposServico({depto=""}) {
+export async function getTiposServico({ depto = "" }) {
   const url = new URL(
-    `${process.env.REACT_APP_API_URL}/tipo_servicos/${depto}`
+    `${process.env.REACT_APP_API_URL}/tipo_servicos/${depto}`,
   );
 
   const res = await fetch(url, {
-      method: "GET",
-      headers: headerBuilder(),
-  })
+    method: "GET",
+    headers: headerBuilder(),
+  });
 
-  if(!res.ok) throw errorBuilder(res, "Nao foi possivel recuperar os tipos de servicos!")
+  if (!res.ok)
+    throw errorBuilder(res, "Nao foi possivel recuperar os tipos de servicos!");
 
-  return await res.json()
+  return await res.json();
 }
 
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*                                       Update                                                       */
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 export async function confirmaTransferencia(id_transferencia) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/transferir_itens/${id_transferencia}` );
+  const url = new URL(
+    `${process.env.REACT_APP_API_URL}/transferir_itens/${id_transferencia}`,
+  );
   const res = await fetch(url, {
     method: "POST",
     headers: headerBuilder(),
-    body: JSON.stringify({status: "recebido"})
-  })
+    body: JSON.stringify({ status: "recebido" }),
+  });
 
-  const json = await res.json()
-  if(res.ok) return
+  const json = await res.json();
+  if (res.ok) return;
 
-  throw errorBuilder(res, json.mensagem)
+  throw errorBuilder(res, json.mensagem);
 }
 
 export async function recusaTransferencia(id) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/transferencia/recusar/${id}` );
+  const url = new URL(
+    `${process.env.REACT_APP_API_URL}/transferencia/recusar/${id}`,
+  );
 
   const res = await fetch(url, {
     method: "POST",
     headers: headerBuilder(),
-  })
+  });
 
-  if (res.ok) return res
+  if (res.ok) return res;
 
-  const json = await res.json()
-  const error = errorBuilder(res, json.mensagem)
-  error.errors = json.errors
-  
-  throw error
+  const json = await res.json();
+  const error = errorBuilder(res, json.mensagem);
+  error.errors = json.errors;
+
+  throw error;
 }
 
 export const enviaBaixa = async (items, baixaId) => {
   const url = `${process.env.REACT_APP_API_URL}/saida/${baixaId}/baixa`;
   const options = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      ...headerBuilder()
+      "Content-Type": "application/json",
+      ...headerBuilder(),
     },
-    body: JSON.stringify(items)
+    body: JSON.stringify(items),
   };
 
-  const res = await fetch(url, options)
-  if(res.ok) {
-    return await res.json()
+  const res = await fetch(url, options);
+  if (res.ok) {
+    return await res.json();
   } else {
-    throw res
+    throw res;
   }
-}
+};
 
-export const enviaEdicao = async (formData, url, id)  => {
+export const enviaEdicao = async (formData, url, id) => {
   const urlCompleta = `${process.env.REACT_APP_API_URL}/${url}/${id}`;
   const options = {
-    method: 'POST',
-    headers: headerBuilder() ,
-    body: enviaForm(formData)
+    method: "POST",
+    headers: headerBuilder(),
+    body: enviaForm(formData),
   };
-  
-  const res = await fetch(urlCompleta, options)
+
+  const res = await fetch(urlCompleta, options);
 
   if (res.ok) {
     return await res.json();
   } else if (res.status === 422) {
-    const errData = await res.json()
-    const error = new Error("Erro")
-    error.data = errData
-    error.status = res.status
+    const errData = await res.json();
+    const error = new Error("Erro");
+    error.data = errData;
+    error.status = res.status;
 
-    throw error
+    throw error;
   } else {
-    throw errorBuilder(res, "Nao foi possivel editar o item!")
+    throw errorBuilder(res, "Nao foi possivel editar o item!");
   }
-}
+};
 
 export const AddAlerta = async (alertaData, idAlerta) => {
   const url = `${process.env.REACT_APP_API_URL}/inventario/${idAlerta}`;
   const options = {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
-      header: headerBuilder()
+      "Content-Type": "application/json",
+      header: headerBuilder(),
     },
     body: JSON.stringify({
-      ...alertaData
-    })
+      ...alertaData,
+    }),
   };
 
   try {
-    const res = await fetch(url, options)
-    if(res.status === 404) {
-      throw errorBuilder(res, "Item nao encontrado.")
+    const res = await fetch(url, options);
+    if (res.status === 404) {
+      throw errorBuilder(res, "Item nao encontrado.");
     }
-    return await res.json()
-  } catch(e) {
-    throw errorBuilder(e, e.message)
+    return await res.json();
+  } catch (e) {
+    throw errorBuilder(e, e.message);
   }
-}
+};
 
 export const newPwRequest = async (formData) => {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/alterar_senha` );
-  
-  const data = {...formData, email: localStorage.getItem('usermail')}
+  const url = new URL(`${process.env.REACT_APP_API_URL}/alterar_senha`);
 
-  const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...headerBuilder()
-      },
-      body: JSON.stringify(data),
-  })
-  if(!res.ok) throw errorBuilder(res, "Nao foi possivel redefinir sua senha!"); 
-  
-  return await res.json()
-}
-
-export async function editaSaida({id, formData}) {
-  const url = new URL( `${process.env.REACT_APP_API_URL}/saida/${id}` );
+  const data = { ...formData, email: localStorage.getItem("usermail") };
 
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      ...headerBuilder()
+      "Content-Type": "application/json",
+      ...headerBuilder(),
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw errorBuilder(res, "Nao foi possivel redefinir sua senha!");
+
+  return await res.json();
+};
+
+export async function editaSaida({ id, formData }) {
+  const url = new URL(`${process.env.REACT_APP_API_URL}/saida/${id}`);
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      ...headerBuilder(),
     },
     body: formData,
-  })
-  const json = await res.json()
-  
-  if(!res.ok) {
-    throw errorBuilder(json, json.message)
+  });
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw errorBuilder(json, json.message);
   }
 
-
-  return await json
-} 
-
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
-/*                                       Delete                                                       */
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
-
-export async function excluiRegistro ( rota, id ) {
-  const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
-  const options = {
-    method: 'DELETE',
-    headers: headerBuilder() ,
-  };
-
-  const res = await fetch(urlCompleta, options)
-  if(!res.ok) {
-    throw errorBuilder(res, "Nao foi possivel excluir o registro!")
-  }
-  return res
+  return await json;
 }
 
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*                                       Delete                                                       */
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+export async function excluiRegistro(rota, id) {
+  const urlCompleta = `${process.env.REACT_APP_API_URL}/${rota}/${id}`;
+  const options = {
+    method: "DELETE",
+    headers: headerBuilder(),
+  };
+
+  const res = await fetch(urlCompleta, options);
+  if (!res.ok) {
+    throw errorBuilder(res, "Nao foi possivel excluir o registro!");
+  }
+  return res;
+}
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*                                       Auth                                                         */
-/*////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+/*////////////////////////////////////////////////////////////////////////////////////////////////////*/
 // CREATE
 export const authCreateEntrada = (perfil) => {
   switch (perfil) {
-    case 'admin':
-    case 'almoxarife':
-      return 'flex';
+    case "admin":
+    case "almoxarife":
+      return "flex";
     default:
-      return 'none';
+      return "none";
   }
-}
+};
 
 export const authCreateOrdem = (perfil) => {
   switch (perfil) {
-    case 'admin':
-    case 'gestao_dgpu':
-      return 'flex';
+    case "admin":
+    case "gestao_dgpu":
+      return "flex";
     default:
-      return 'none';
+      return "none";
   }
-}
+};
 
 export const authCreateTransf = (perfil) => {
   switch (perfil) {
-    case 'admin':
+    case "admin":
       return true;
-    case 'almoxarife':
-    case 'encarregado':
-    case 'admin': //perfil adicionado para fins de teste
-        return true;
+    case "almoxarife":
+    case "encarregado":
+    case "admin": //perfil adicionado para fins de teste
+      return true;
     default:
-        return false;
+      return false;
   }
-}
+};
 
 export const authCreateOcorrencia = (perfil) => {
   switch (perfil) {
-    case 'admin':
+    case "admin":
       return true;
-    case 'almoxarife':
-    case 'encarregado':
-    case 'admin': //perfil adicionado para fins de teste
-        return true;
+    case "almoxarife":
+    case "encarregado":
+    case "admin": //perfil adicionado para fins de teste
+      return true;
     default:
-        return false;
+      return false;
   }
-}
+};
 
 export function isAllowedTransf() {
   const perfil = localStorage.getItem("perfil");
-  switch(perfil) {
-    case 'admin':
+  switch (perfil) {
+    case "admin":
       return true;
-    case 'almoxarife':
-    case 'encarregado':
-    case 'admin': //perfil adicionado para fins de teste
+    case "almoxarife":
+    case "encarregado":
+    case "admin": //perfil adicionado para fins de teste
       return true;
     default:
       return false;
@@ -717,20 +741,21 @@ export function isAllowedTransf() {
 // UPDATE
 export const authEditEntrada = (perfil) => {
   switch (perfil) {
-    case 'admin':
-    case 'almoxarife':
-      return '';
+    case "admin":
+    case "almoxarife":
+      return "";
     default:
-      return 'none';
+      return "none";
   }
-}
+};
 
 export const authEditOrdem = (perfil) => {
   switch (perfil) {
-    case 'admin':
-    case 'gestao_dgpu':
-      return '';
+    case "admin":
+    case "gestao_dgpu":
+      return "";
     default:
-      return 'none';
+      return "none";
   }
-}
+};
+

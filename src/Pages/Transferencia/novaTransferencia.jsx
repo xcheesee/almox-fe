@@ -11,7 +11,7 @@ import { snackbarAtom } from "../../atomStore";
 import MateriaisBox from "../../components/MateriaisBox";
 import CampoLocais from "../../components/CampoLocais";
 
-export default function NovaTransferencia () {
+export default function NovaTransferencia() {
 
     const [snackbar, setSnackbar] = useAtom(snackbarAtom)
 
@@ -26,40 +26,40 @@ export default function NovaTransferencia () {
         setIsLoading(true)
         setErrors({})
         const formData = new FormData(e.target)
-        try{
+        try {
             await enviaNovaTransferencia(formData)
-            setSnackbar({...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success"})
+            setSnackbar({ ...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success" })
             navigate("/transferencia")
-        } catch(e) {
+        } catch (e) {
             setErrors(e?.errors ?? "")
-            setSnackbar({...snackbar, open: true, message: `Não foi possivel enviar a transferência: ${e?.mensagem}`, severity: "error"})
+            setSnackbar({ ...snackbar, open: true, message: `Não foi possivel enviar a transferência: ${e?.mensagem}`, severity: "error" })
         }
         setIsLoading(false)
     }
 
-    return(
+    return (
         <ContainerPrincipal>
             <Titulo voltaPara="/transferencia" >
                 Nova Transferência
             </Titulo>
 
-            <FormContainer 
+            <FormContainer
                 id="nova-transferencia"
-                onSubmit={ async (e) => await enviaTransferenciaForm(e) }
+                onSubmit={async (e) => await enviaTransferenciaForm(e)}
             >
                 <TextField
                     type="date"
                     label="Data de Transferência"
                     name="data_transferencia"
                     error={errors.hasOwnProperty("data_transferencia")}
-                    helperText = {errors?.data_transferencia ?? " " }
+                    helperText={errors?.data_transferencia ?? " "}
                     id="data_transferencia"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                     required
                 />
 
-                <CampoLocais 
+                <CampoLocais
                     label="Base de Origem"
                     name="base_origem_id"
                     tipo="base"
@@ -72,7 +72,7 @@ export default function NovaTransferencia () {
                     required
                 />
 
-                <CampoLocais 
+                <CampoLocais
                     label="Base de Destino"
                     name="base_destino_id"
                     tipo="base"
@@ -82,22 +82,21 @@ export default function NovaTransferencia () {
                     required
                 />
 
-                <MateriaisBox 
+                <MateriaisBox
                     baseSelecionada={baseOrigem}
-                    inputName='itens' 
-                    entrada 
+                    inputName='itens'
                     errors={errors}
                 />
             </FormContainer>
 
             <Box className="flex gap justify-end items-center">
-                { isLoading && <CircularProgress size={24}/> }
+                {isLoading && <CircularProgress size={24} />}
                 <Button onClick={() => setOpenConfirmar(true)}>
                     Enviar
                 </Button>
             </Box>
 
-            <DialogEnviar 
+            <DialogEnviar
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
                 texto="transferência"
