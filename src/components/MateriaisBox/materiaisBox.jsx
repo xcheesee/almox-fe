@@ -14,8 +14,6 @@ export default function MateriaisBox({
     errors = {}
 }) {
     const [selectedTipo, setSelectedTipo] = useState("")
-    //#TODO Melhorar implementacao de recebimento de tipos de materias em componentes de transferencia e ocorrencia,
-    //que nao selecionam departamentos
     const tipos = useQuery({
         queryKey: ['tiposMats', deptoSelecionado],
         queryFn: () => getMatTipos({ depto: deptoSelecionado }),

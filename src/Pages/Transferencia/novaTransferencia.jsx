@@ -10,6 +10,7 @@ import { useAtom } from "jotai";
 import { snackbarAtom } from "../../atomStore";
 import MateriaisBox from "../../components/MateriaisBox";
 import CampoLocais from "../../components/CampoLocais";
+import CampoBase from "../../components/CampoBase/CampoBase";
 
 export default function NovaTransferencia() {
 
@@ -26,6 +27,7 @@ export default function NovaTransferencia() {
         setIsLoading(true)
         setErrors({})
         const formData = new FormData(e.target)
+        formData.append('base_origem_id', baseOrigem.id)
         try {
             await enviaNovaTransferencia(formData)
             setSnackbar({ ...snackbar, open: true, message: "Transferencia enviada com sucesso!", severity: "success" })
@@ -59,9 +61,9 @@ export default function NovaTransferencia() {
                     required
                 />
 
-                <CampoLocais
+                <CampoBase
                     label="Base de Origem"
-                    name="base_origem_id"
+                    //name="base_origem_id"
                     tipo="base"
                     value={baseOrigem}
                     onChange={(e) => setBaseOrigem(e.target.value)}
@@ -83,7 +85,8 @@ export default function NovaTransferencia() {
                 />
 
                 <MateriaisBox
-                    baseSelecionada={baseOrigem}
+                    baseSelecionada={baseOrigem.id ?? ""}
+                    deptoSelecionado={baseOrigem.departamento_id ?? ""}
                     inputName='itens'
                     errors={errors}
                 />
