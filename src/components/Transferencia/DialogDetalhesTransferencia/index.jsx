@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
     DialogTitle,
     DialogContent,
     Box,
@@ -15,12 +15,13 @@ import TituloTexto from '../../TituloTexto';
 import { formataDateTime, mascaraMotivoRecusa } from '../../../common/utils';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
+
 const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, materiais, isLoading }) => {
     if (isLoading)
         return (
             <Modal open>
                 <Box className='flex justify-center items-center w-full h-full'>
-                    <CircularProgress size={36} color='color'/>
+                    <CircularProgress size={36} color='color' />
                 </Box>
             </Modal>
         )
@@ -29,7 +30,7 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
         <Dialog open={openDetalhes} fullWidth>
             <DialogTitle>Transferencia #{dados.id}</DialogTitle>
             <DialogContent>
-                <Typography 
+                <Typography
                     sx={{
                         color: (theme) => theme.palette.color.bg,
                         fontSize: '1.3rem',
@@ -39,26 +40,26 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
                 >
                     Detalhes
                 </Typography>
-                
+
                 <Box className="mx-4 my-5 grid grid-cols-[1fr_max_content_1fr] items-center gap-8">
-                    <TituloTexto 
+                    <TituloTexto
                         titulo="Base de Origem"
                         texto={dados.origem || "---"}
                     />
 
                     <ArrowForwardIcon />
 
-                    <TituloTexto 
+                    <TituloTexto
                         titulo="Base de Destino"
                         texto={dados.destino || "---"}
                     />
 
-                    <TituloTexto 
+                    <TituloTexto
                         titulo="Data de Envio"
                         texto={formataDateTime(dados.data_transferencia) || "---"}
                     />
 
-                    <TituloTexto 
+                    <TituloTexto
                         titulo="Status"
                         className="capitalize col-start-3"
                         texto={dados.status || "---"}
@@ -66,25 +67,25 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
 
                     {
                         dados.status === "recusado"
-                            ?<>
-                                <TituloTexto 
+                            ? <>
+                                <TituloTexto
                                     titulo="Motivo da Recusa"
-                                    texto={mascaraMotivoRecusa(dados.observacao_motivo|| "---")}
+                                    texto={mascaraMotivoRecusa(dados.observacao_motivo || "---")}
 
                                 />
 
-                                <TituloTexto 
+                                <TituloTexto
                                     titulo="Observacoes"
                                     className="col-start-3"
                                     texto={dados.observacao || "---"}
                                 />
                             </>
-                            :<></>
+                            : <></>
                     }
                 </Box>
 
                 {materiais && materiais.length > 0
-                    ?<>
+                    ? <>
                         <Typography sx={{
                             color: (theme) => theme.palette.color.bg,
                             fontSize: '1.3rem',
@@ -93,14 +94,14 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
                         }}>
                             Materiais
                         </Typography>
-                        <Paper 
-                            className="flex flex-col gap-4 px-4 py-5" 
+                        <Paper
+                            className="flex flex-col gap-4 px-4 py-5"
                             sx={{ backgroundColor: (theme) => theme.palette.color.bgInterno }}
                             elevation={3}
                         >
                             {materiais.map(material => (
                                 <Paper className="p-3" key={material.id}>
-                                    <TituloTexto 
+                                    <TituloTexto
                                         titulo={material.item}
                                         texto={`${material.quantidade} ${material.medida}`}
                                     />
@@ -108,12 +109,12 @@ const DialogDetalhesTransferencia = ({ openDetalhes, setOpenDetalhes, dados, mat
                             ))}
                         </Paper>
                     </>
-                    :<></> 
+                    : <></>
                 }
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={ () => setOpenDetalhes(false) }>
+                <Button onClick={() => setOpenDetalhes(false)}>
                     OK
                 </Button>
             </DialogActions>

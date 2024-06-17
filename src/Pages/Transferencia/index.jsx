@@ -14,7 +14,7 @@ import DialogConfirmarTransferencia from "../../components/Transferencia/DialogC
 import { useRef } from "react";
 import { useAuthenticatedQuery } from "../../common/utils/hooks";
 
-export default function Transferencia () {
+export default function Transferencia() {
 
     const sort = useAtomValue(sortAtom)
     const page = useAtomValue(pageAtom)
@@ -43,9 +43,9 @@ export default function Transferencia () {
     async function getSelectedTransfInfo(id, operation) {
         setIsLoading(true)
         let dados, itensDados;
-        try{
+        try {
             [dados, itensDados] = await Promise.all([getRegistro('transferencia', id), getMateriais("transferencia", id)])
-        } catch(e) {
+        } catch (e) {
             setSnackbar({
                 open: true,
                 severity: 'error',
@@ -54,11 +54,11 @@ export default function Transferencia () {
             setIsLoading(false)
             return
         }
-        switch(operation) {
+        switch (operation) {
             case "visualizar":
                 setOpenDetalhes(true)
                 setTransfData(dados)
-                setTransfItensData(itensDados?.data)
+                setTransfItensData(itensDados)
                 setIsLoading(false)
                 break;
             case "confirmar":
@@ -72,7 +72,7 @@ export default function Transferencia () {
         }
     }
 
-    return(
+    return (
         <>
             <ContainerPrincipal>
                 <Titulo voltarPara="/principal" >
@@ -80,39 +80,39 @@ export default function Transferencia () {
                 </Titulo>
 
                 <FiltrosTransferencia />
-                {   
-                    authCreateTransf(localStorage.getItem("perfil")) 
-                    &&<Box className="flex gap-4 justify-end">
+                {
+                    authCreateTransf(localStorage.getItem("perfil"))
+                    && <Box className="flex gap-4 justify-end">
                         <BotaoNovo caminho="/transferencia/nova-tranferencia" > Nova Transferencia </BotaoNovo>
                     </Box>
                 }
 
-                <TabelaTransferencia 
-                    itens={transferenciasQuery?.data?.data} 
+                <TabelaTransferencia
+                    itens={transferenciasQuery?.data?.data}
                     carregando={transferenciasQuery.isLoading}
                     getSelectedTransfInfo={getSelectedTransfInfo}
                 />
 
-                <Paginacao 
+                <Paginacao
                     count={pageCountRef.current}
                 />
 
             </ContainerPrincipal>
 
-            <DialogDetalhesTransferencia 
+            <DialogDetalhesTransferencia
                 openDetalhes={openDetalhes}
-                setOpenDetalhes={setOpenDetalhes} 
-                dados={transfData} 
+                setOpenDetalhes={setOpenDetalhes}
+                dados={transfData}
                 isLoading={isLoading}
-                materiais={transfItensData}/>
+                materiais={transfItensData} />
 
-            <DialogConfirmarTransferencia 
+            <DialogConfirmarTransferencia
                 openConfirmar={openConfirmar}
-                setOpenConfirmar={setOpenConfirmar} 
-                dados={transfData} 
+                setOpenConfirmar={setOpenConfirmar}
+                dados={transfData}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                materiais={transfItensData}/>
+                materiais={transfItensData} />
         </>
     )
 }
