@@ -64,7 +64,7 @@ export default function Transferencia() {
             case "confirmar":
                 setOpenConfirmar(true)
                 setTransfData(dados)
-                setTransfItensData(itensDados?.data)
+                setTransfItensData(itensDados)
                 setIsLoading(false)
                 break;
             default:
