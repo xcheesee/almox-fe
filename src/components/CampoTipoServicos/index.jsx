@@ -43,7 +43,6 @@ const CampoTipoServicos = ({
                     id={id}
                     disabled={!deptoSelecionado || tipo_servicos.isLoading}
                     fullWidth
-                    required
                     {...props}
                 >
                     {tipo_servicos?.data?.servicos 

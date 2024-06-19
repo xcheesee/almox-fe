@@ -105,7 +105,6 @@ export default function FormSemOs ({
                 deptoSelecionado={deptoSelecionado}
                 error={errors.hasOwnProperty('tipo_servico_id')}
                 helperText={errors?.tipo_servico_id || " "}
-                required
             />
         
             <TextField 
