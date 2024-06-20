@@ -16,8 +16,8 @@ const Baixa = ({ setSnackbar }) => {
   const baixa = useQuery(['baixaItem', params.id], async () => {
     let dados;
     const [saidaRes, itensRes, profsRes] = await Promise.all([
-      getDados(`saida/${params.id}`), 
-      getDados(`saida/${params.id}/items`), 
+      getDados(`saida/${params.id}`),
+      getDados(`saida/${params.id}/items`),
       getDados(`saida/${params.id}/profissionais`)
     ])
     dados = saidaRes.data;
@@ -45,7 +45,7 @@ const Baixa = ({ setSnackbar }) => {
         })
         navigate('/saida', { replace: true })
       };
-      
+
     }
   })
 
@@ -66,7 +66,7 @@ const Baixa = ({ setSnackbar }) => {
         severity: 'error',
         message: `Não foi possível efetuar a baixa da ordem de serviço (Erro ${res.status})`
       });
-    } 
+    }
   })
 
   const checaErros = (e) => {
@@ -81,7 +81,7 @@ const Baixa = ({ setSnackbar }) => {
       let index = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$1');
       let key = item[0].replace(/.+\[(\d)\]\.(\w+)/gm, '$2');
 
-      arr[index] = { ...arr[index], [`${key}`]: item[1]};
+      arr[index] = { ...arr[index], [`${key}`]: item[1] };
     });
 
     arr.forEach((item, index) => {
@@ -93,12 +93,12 @@ const Baixa = ({ setSnackbar }) => {
     setItems({ saida_items: [...arr] });
     setErrors(objErros);
 
-    if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0 ) {
+    if (Object.keys(objErros).length === 0 && Object.keys(errors).length === 0) {
       setOpenBaixa(true);
     }
   }
 
-  if(baixa.isLoading) {
+  if (baixa.isLoading) {
     return (
       <Box className='flex justify-center'>
         <CircularProgress size={48} />
@@ -108,22 +108,22 @@ const Baixa = ({ setSnackbar }) => {
 
   return (
     <>
-      <BaixaSaidaMaterial 
-      baixa={baixa?.data}
-      carregando={baixa?.isFetching} 
-      id={params.id} 
-      checaErros={checaErros}
-      errors={errors}
-      setErrors={setErrors}
-      setOpenBaixa={setOpenBaixa}
-      carregandoBaixa={enviarBaixa.isLoading}
+      <BaixaSaidaMaterial
+        baixa={baixa?.data}
+        carregando={baixa?.isFetching}
+        id={params.id}
+        checaErros={checaErros}
+        errors={errors}
+        setErrors={setErrors}
+        setOpenBaixa={setOpenBaixa}
+        carregandoBaixa={enviarBaixa.isLoading}
       />
 
-      <DialogConfirmaBaixa 
-      openBaixa={openBaixa}
-      setOpenBaixa={setOpenBaixa}
-      id={params.id}
-      enviaBaixa={() => enviarBaixa.mutate()}
+      <DialogConfirmaBaixa
+        openBaixa={openBaixa}
+        setOpenBaixa={setOpenBaixa}
+        id={params.id}
+        enviaBaixa={() => enviarBaixa.mutate()}
       />
     </>
   );

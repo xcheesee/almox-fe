@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Box,
@@ -16,14 +16,14 @@ import { formataDateTime } from '../../common/utils';
 import { Link } from 'react-router-dom';
 import OrdemProfsCard from '../OrdemProfsCard';
 
-const BaixaSaidaMaterial = ({ 
+const BaixaSaidaMaterial = ({
   baixa,
-  carregando, 
-  id, 
-  checaErros, 
-  errors, 
-  setErrors, 
-  carregandoBaixa 
+  carregando,
+  id,
+  checaErros,
+  errors,
+  setErrors,
+  carregandoBaixa
 }) => {
   const [enviado, setEnviado] = useState([]);
   const [usado, setUsado] = useState([]);
@@ -31,22 +31,29 @@ const BaixaSaidaMaterial = ({
   const [error, setError] = useState(false);
   const [invalidFocus, setInvalidFocus] = useState(false)
 
+  useEffect(() => {
+    const env = baixa.itens.map(material => material.enviado);
+    setEnviado(env);
+    setRetorno(env);
+  }, [])
+
   const handleBlur = (e, index, valor, quantidade) => {
-    let arr = valor;
+    let arr = [...valor];
     arr[index] = e.target.value;
 
-    if (valor === enviado)
-      return
-    else
-      setUsado([...arr]);
+    //if (valor === enviado)
+    //  return
+    //else
 
-    let arrRetorno = retorno;
-    arrRetorno[index] = quantidade - usado[index];
+    let arrRetorno = [...retorno];
+    arrRetorno[index] = enviado[index] - arr[index];
+    setError(arrRetorno[index] < 0);
 
+    setUsado([...arr]);
     setRetorno([...arrRetorno]);
   }
 
-  if (!baixa){
+  if (!baixa) {
     return <></>
   }
 
@@ -59,23 +66,23 @@ const BaixaSaidaMaterial = ({
       <Box sx={style.box}>
         <Typography sx={style.subTitulo} >
           {baixa.ordem_servico_id
-            ?  <span>Ordem de serviço <strong>#{`${baixa.ordem_servico_id}`}</strong></span>
+            ? <span>Ordem de serviço <strong>#{`${baixa.ordem_servico_id}`}</strong></span>
             : <span>Saida de Materiais <strong>#{`${id}`}</strong></span>
           }
         </Typography>
 
         <Collapse in={!carregando}>
           <Box className="p-6 grid grid-cols-3 gap-8">
-            <TituloTexto 
+            <TituloTexto
               titulo="Departamento"
               texto={baixa.departamento}
             />
-            <TituloTexto 
+            <TituloTexto
               titulo="Origem"
               texto={baixa.origem}
             />
 
-            <TituloTexto 
+            <TituloTexto
               titulo="Local de serviço"
               texto={baixa.local_servico}
             />
@@ -88,15 +95,15 @@ const BaixaSaidaMaterial = ({
               childComponent="pre"
               childStyle={{ whiteSpace: 'pre-wrap' }}
             />*/}
-          
-            <TituloTexto 
+
+            <TituloTexto
               titulo="Data de início do serviço"
-              texto={ formataDateTime(baixa.data_inicio_servico) || "Data de início indeterminada" }
+              texto={formataDateTime(baixa.data_inicio_servico) || "Data de início indeterminada"}
             />
 
-            <TituloTexto 
+            <TituloTexto
               titulo="Data de fim do serviço"
-              texto={ formataDateTime(baixa.data_fim_servico) || "Data de fim indeterminada" }
+              texto={formataDateTime(baixa.data_fim_servico) || "Data de fim indeterminada"}
             />
           </Box>
 
@@ -109,59 +116,60 @@ const BaixaSaidaMaterial = ({
           Material utilizado
         </Typography>
 
-        <Collapse 
-          in={baixa?.itens ? baixa.itens.length > 0 : false} 
-          component="form" 
+        <Collapse
+          in={baixa?.itens ? baixa.itens.length > 0 : false}
+          component="form"
           id="baixa-items"
           onSubmit={checaErros}
         >
           <Paper sx={style.paperBg}>
-          {
-            baixa?.itens.length > 0
-            ?
-              baixa?.itens.map((material, index) => (
-                  <Paper className='p-4 grid grid-cols-2 items-center' key={material.id}>
+            {
+              baixa?.itens.length > 0
+                ?
+                baixa?.itens.map((material, index) => (
+                  <Paper className='p-4 grid grid-cols-2 items-center' key={`mat-${material.id}`}>
                     <Typography>{material.item}</Typography>
 
                     <Box className='flex gap-4'>
                       <TextField
                         label="Solicitado"
-                        style={{ display: 'none' }} 
+                        style={{ display: 'none' }}
                         value={material.quantidade}
                         name={`saida_items[${index}].quantidade`}
                         size="small"
                       />
 
                       {/* adiciona o id ao FormData */}
-                      <input 
-                        type="text" 
-                        name={`saida_items[${index}].id`} 
-                        defaultValue={material.item_id} 
-                        style={{ display: 'none' }} 
+                      <input
+                        type="text"
+                        name={`saida_items[${index}].id`}
+                        defaultValue={material.item_id}
+                        style={{ display: 'none' }}
                       />
 
                       <TextField
                         label="Enviado"
                         onFocus={() => setInvalidFocus(true)}
                         value={material.quantidade}
-                        onBlur={(e) => { 
+                        className="cursor-not-allowed"
+                        onBlur={(e) => {
                           setInvalidFocus(false)
-                          handleBlur(e, index, enviado, material.quantidade);
-                          setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade))); 
+                          //handleBlur(e, index, enviado, material.quantidade);
+                          //setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade)));
                         }}
                         name={`saida_items[${index}].enviado`}
                         error={invalidFocus}
-                        helperText={invalidFocus ? "Campo não alteravel!"  : ""}
+                        helperText={invalidFocus ? "Campo não alteravel!" : ""}
                         size="small"
 
                       />
 
                       <TextField
                         label="Usado"
-                        defaultValue={material.usado}
-                        onBlur={(e) => { 
-                          handleBlur(e, index, usado, material.quantidade); 
-                          setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade))); 
+                        defaultValue={material.usado ?? 0}
+                        onBlur={(e) => {
+                          handleBlur(e, index, usado);
+                          //setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade)));
                         }}
                         name={`saida_items[${index}].usado`}
                         error={parseInt(enviado[index]) < parseInt(usado[index])}
@@ -180,10 +188,10 @@ const BaixaSaidaMaterial = ({
                       />
                     </Box>
                   </Paper>
-              ))
-            :
-              <Typography sx={style.span}>Não há materiais a serem exibidos</Typography>
-          }
+                ))
+                :
+                <Typography sx={style.span}>Não há materiais a serem exibidos</Typography>
+            }
           </Paper>
         </Collapse>
       </Box>
@@ -200,7 +208,7 @@ const BaixaSaidaMaterial = ({
           form="baixa-items"
           disabled={error}
         >
-          { carregandoBaixa && <CircularProgress color="color" size="1rem" className='mr-2' /> }
+          {carregandoBaixa && <CircularProgress color="color" size="1rem" className='mr-2' />}
           Enviar
         </Button>
       </Box>
