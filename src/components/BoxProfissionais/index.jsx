@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Typography,
     Paper,
@@ -8,19 +8,21 @@ import {
     Tooltip,
     IconButton,
     Box,
-    Button
+    Button,
+    CircularProgress
 } from '@mui/material';
 import style from './style';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function BoxProfissionais ({
+export default function BoxProfissionais({
     label,
     //baseSelecionada="",
     //deptoSelecionado="",
     //errors={},
-    defaultValue=[],
-    name="",
+    defaultValue = [],
+    name = "",
+    loading = false,
 }) {
 
     const inputTags = {
@@ -30,9 +32,12 @@ export default function BoxProfissionais ({
     }
 
     const [inputErrors, setInputErrors] = useState({});
-
-    const [profissionais, setProfissionais] = useState(defaultValue ?? [])
+    const [profissionais, setProfissionais] = useState(defaultValue)
     const inputData = JSON.stringify(profissionais)
+
+    useEffect(() => {
+        setProfissionais(defaultValue)
+    }, [defaultValue])
 
     function cadastraProfissional() {
         const nomeNode = document.getElementById(inputTags.nome);
@@ -45,27 +50,27 @@ export default function BoxProfissionais ({
             horas_empregadas: horaNode.value
         };
 
-        if(isBlankField(profissional)) return;
+        if (isBlankField(profissional)) return;
 
-        setProfissionais( prev => ([...prev, profissional]) );
+        setProfissionais(prev => ([...prev, profissional]));
 
         nomeNode.value = "";
         dataNode.value = "";
         horaNode.value = "";
     }
 
-    function handleChange (element, formIndex) {
+    function handleChange(element, formIndex) {
         const mod = { [element.currentTarget.dataset.field]: element.target.value }
 
         return setProfissionais(prev => modProfissional(prev, formIndex, mod))
     }
 
-    function isBlankField (profissional) {
+    function isBlankField(profissional) {
         const entries = Object.entries(profissional)
         let errors = {}
 
-        for(let keyValue of entries) {
-            if(!keyValue[1] || keyValue[1] === "") {
+        for (let keyValue of entries) {
+            if (!keyValue[1] || keyValue[1] === "") {
                 errors[keyValue[0]] = true
             }
         }
@@ -89,7 +94,10 @@ export default function BoxProfissionais ({
         let tempArr = [...profissionais]
         tempArr.splice(index, 1);
         setProfissionais(tempArr);
-    } 
+    }
+
+
+    if (loading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
 
     return (
         <Box className="lg:mx-8 mb-12">
@@ -132,7 +140,7 @@ export default function BoxProfissionais ({
                             size="small"
                             error={inputErrors[inputTags.horas_empregadas]}
                             helperText={inputErrors[inputTags.horas_empregadas] ? "Defina as horas empregadas" : ""}
-                            InputProps={{ 
+                            InputProps={{
                                 endAdornment: <InputAdornment position="end">h</InputAdornment>,
                             }}
                             InputLabelProps={{ shrink: true }}
@@ -155,7 +163,7 @@ export default function BoxProfissionais ({
                             <TextField
                                 label="Nome"
                                 data-field={inputTags.nome}
-                                inputProps={{'data-field': inputTags.nome}}
+                                inputProps={{ 'data-field': inputTags.nome }}
                                 size="small"
                                 InputLabelProps={{ shrink: true }}
                                 onChange={(e) => handleChange(e, index)}
@@ -164,27 +172,27 @@ export default function BoxProfissionais ({
                                 fullWidth
                             />
 
-                                <TextField
-                                    type='date'
-                                    inputProps={{'data-field': inputTags.data_inicio}}
-                                    label="Data de Inicio"
-                                    InputLabelProps={{ shrink: true }}
-                                    value={profissional?.data_inicio ?? ""}
-                                    onChange={e => handleChange(e, index)}
-                                    fullWidth
-                                    size="small"
-                                />
+                            <TextField
+                                type='date'
+                                inputProps={{ 'data-field': inputTags.data_inicio }}
+                                label="Data de Inicio"
+                                InputLabelProps={{ shrink: true }}
+                                value={profissional?.data_inicio ?? ""}
+                                onChange={e => handleChange(e, index)}
+                                fullWidth
+                                size="small"
+                            />
 
-                                <TextField
-                                    inputProps={{'data-field': inputTags.horas_empregadas}}
-                                    label="Horas Empregadas"
-                                    value={profissional?.horas_empregadas ?? ""}
-                                    onChange={e => handleChange(e, index)}
-                                    InputLabelProps={{ shrink: true }}
-                                    fullWidth
-                                    size="small"
-                                    InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }}
-                                />
+                            <TextField
+                                inputProps={{ 'data-field': inputTags.horas_empregadas }}
+                                label="Horas Empregadas"
+                                value={profissional?.horas_empregadas ?? ""}
+                                onChange={e => handleChange(e, index)}
+                                InputLabelProps={{ shrink: true }}
+                                fullWidth
+                                size="small"
+                                InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }}
+                            />
 
                             <Tooltip title="Remover" placement="right">
                                 <Box className='self-center flex max-lg:justify-center max-lg:rounded'>
@@ -195,7 +203,7 @@ export default function BoxProfissionais ({
                             </Tooltip>
                         </Paper>
                     </Fade>
-                    )
+                )
                 )}
             </Paper>
         </Box>

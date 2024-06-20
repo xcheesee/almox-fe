@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import {
     Box,
     Switch,
     FormGroup,
@@ -20,9 +20,9 @@ import { useNavigate } from 'react-router-dom';
 import CampoTipoServicos from '../../CampoTipoServicos';
 import MateriaisBox from '../../MateriaisBox';
 
-export default function FormNovaSaida ({ 
-    setCarregando, 
-    setOpenConfirmar, 
+export default function FormNovaSaida({
+    setCarregando,
+    setOpenConfirmar,
     formId,
 }) {
 
@@ -40,7 +40,7 @@ export default function FormNovaSaida ({
 
     const setSnackbar = useSetAtom(snackbarAtom)
 
-    async function clearForm () {
+    async function clearForm() {
         setOrdemServico()
         setOrdemMats()
         setOrdemProfs()
@@ -49,30 +49,30 @@ export default function FormNovaSaida ({
         setDeptoSelecionado("")
     }
 
-    async function setOrdemFromOptions (value) {
+    async function setOrdemFromOptions(value) {
         if (!value) return
         setIsLoadingDados(true)
         setOrdemServico(value)
         setBaseSelecionada(value.origem_id)
         setDeptoSelecionado(value.departamento_id)
         const [profRes, matsRes] = await Promise.all([getOrdemDados(value.id, "profissionais"), getOrdemDados(value.id, "items")])
-        setOrdemMats(matsRes)
         setOrdemProfs(profRes)
+        setOrdemMats(matsRes)
         setIsLoadingDados(false)
     }
 
     //confere se a o.s. nao possui tanto profissionais quanto materiais
     function noProfs() {
         return isNoOSForm || ((!ordemProfs || ordemProfs.length === 0) && !isLoadingDados)
-        
+
     }
 
-    function noMats() {
-        return isNoOSForm || ((!ordemMats || ordemMats.length === 0) && !isLoadingDados)
-    }
+    //function noMats() {
+    //    return isNoOSForm || ((!ordemMats || ordemMats.length === 0) && !isLoadingDados)
+    //}
 
     function formatOrdemForSaida(ordem) {
-        if(!ordem) return {}
+        if (!ordem) return {}
         const saida = {}
         saida.departamento_id = ordem.departamento_id
         saida.origem_id = ordem.origem_id
@@ -84,15 +84,16 @@ export default function FormNovaSaida ({
         return saida
     }
 
-    const addMutation = useMutation( async ({ formData }) => {
+    const addMutation = useMutation(async ({ formData }) => {
         setOpenConfirmar(false)
         setCarregando(true)
         try {
             await enviaNovaSaida({ formData })
-        } catch(e) {
+        } catch (e) {
             throw e
         }
-    }, {  onSuccess: async () => {
+    }, {
+        onSuccess: async () => {
             queryClient.invalidateQueries(['saidas'])
             setFormSnackbar(setSnackbar, "Saida de Materiais")
             navigate(`/saida`, { replace: true });
@@ -106,12 +107,12 @@ export default function FormNovaSaida ({
         }, onSettled: () => setCarregando(false)
     })
 
-    function formataSaida({formData}) {
+    function formataSaida({ formData }) {
         let saida = formatOrdemForSaida(ordemServico)
         saida.almoxarife_nome = localStorage.getItem('username')
         saida.almoxarife_email = localStorage.getItem('usermail')
 
-        Object.entries(saida).forEach( keyVal => {
+        Object.entries(saida).forEach(keyVal => {
             formData.append(keyVal[0], keyVal[1])
         })
 
@@ -119,89 +120,92 @@ export default function FormNovaSaida ({
     }
 
     return (
-            <FormContainer
-                id={formId}
-                onSubmit={(e) => { 
-                    e.preventDefault()
-                    const formData = new FormData(e.target)
+        <FormContainer
+            id={formId}
+            onSubmit={(e) => {
+                e.preventDefault()
+                const formData = new FormData(e.target)
 
-                    const formFormatado = formataSaida({ formData })
+                const formFormatado = formataSaida({ formData })
 
-                    return addMutation.mutate({formData: formFormatado})
-                }}
-            >
-                <Box className='flex flex-col pt-8'>
-                    <OSAutocomplete 
-                        disabled={isNoOSForm}
-                        setOrdemServico={setOrdemFromOptions}
-                        clearForm={clearForm}
-                    />
+                return addMutation.mutate({ formData: formFormatado })
+            }}
+        >
+            <Box className='flex flex-col pt-8'>
+                <OSAutocomplete
+                    disabled={isNoOSForm}
+                    setOrdemServico={setOrdemFromOptions}
+                    clearForm={clearForm}
+                />
 
-                    <Box className='flex'>
-                        <FormGroup>
-                            <FormControlLabel  
-                                control={
-                                    <Switch 
-                                        checked={isNoOSForm} 
-                                        onChange={() => {
-                                            setIsNoOSForm(prev => !prev)
-                                            clearForm()
-                                        }}
-                                    />
-                                } 
-                                label="Saida sem O.S." 
-                            />
-                        </FormGroup>
-                    </Box>
-                </Box>
-
-                {isNoOSForm
-                    ?<FormSemOs 
-                            baseSelecionada={baseSelecionada}
-                            deptoSelecionado={deptoSelecionado}
-                            setDeptoSelecionado={setDeptoSelecionado}
-                            setBaseSelecionada={setBaseSelecionada}
-                            errors={errors}
-                    />
-                    :
-                    <>
-                        <CampoTipoServicos 
-                            label="Tipo de Serviço"
-                            name="tipo_servico_id"
-                            id="tipo_servico_id"
-                            deptoSelecionado={deptoSelecionado}
-                            error={errors.hasOwnProperty('tipo_servico_id')}
-                            helperText={errors?.tipo_servico_id ?? ""}
+                <Box className='flex'>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={isNoOSForm}
+                                    onChange={() => {
+                                        setIsNoOSForm(prev => !prev)
+                                        clearForm()
+                                    }}
+                                />
+                            }
+                            label="Saida sem O.S."
                         />
+                    </FormGroup>
+                </Box>
+            </Box>
 
-                        <SaidaOSCard ordemServico={ordemServico} />
-                    </>
-                }
-                {noProfs()
-                    ?<BoxProfissionais
-                        label= "Profissionais empregados"
-                        errors={errors}
-                        name="saida_profissionais"
-                        // baseSelecionada={baseSelecionada}
-                        // deptoSelecionado={deptoSelecionado}
+            {isNoOSForm
+                ? <FormSemOs
+                    baseSelecionada={baseSelecionada}
+                    deptoSelecionado={deptoSelecionado}
+                    setDeptoSelecionado={setDeptoSelecionado}
+                    setBaseSelecionada={setBaseSelecionada}
+                    errors={errors}
+                />
+                :
+                <>
+                    <CampoTipoServicos
+                        label="Tipo de Serviço"
+                        name="tipo_servico_id"
+                        id="tipo_servico_id"
+                        deptoSelecionado={deptoSelecionado}
+                        error={errors.hasOwnProperty('tipo_servico_id')}
+                        helperText={errors?.tipo_servico_id ?? ""}
                     />
-                    :<OrdemProfsCard 
-                        profissionais={ordemProfs}
-                        isLoading={isLoadingDados}
-                    />
-                }
-                {noMats()
-                    ?<MateriaisBox 
-                        deptoSelecionado={deptoSelecionado} 
-                        baseSelecionada={baseSelecionada}
-                        inputName="saida_items" 
-                        errors={errors}
-                    />
-                    :<OrdemMatsCard 
-                        materiais={ordemMats} 
-                        isLoading={isLoadingDados}
-                    />
-                }
-            </FormContainer>
+
+                    <SaidaOSCard ordemServico={ordemServico} />
+                </>
+            }
+            {/*noProfs()
+                ?*/ <BoxProfissionais
+                    label="Profissionais empregados"
+                    errors={errors}
+                    name="saida_profissionais"
+                    defaultValue={ordemProfs}
+                    loading={isLoadingDados}
+                // baseSelecionada={baseSelecionada}
+                // deptoSelecionado={deptoSelecionado}
+                />
+                /*: <OrdemProfsCard
+                    profissionais={ordemProfs}
+                    isLoading={isLoadingDados}
+                />*/
+            }
+            {/*noMats()
+                    ?*/<MateriaisBox
+                    deptoSelecionado={deptoSelecionado}
+                    baseSelecionada={baseSelecionada}
+                    inputName="saida_items"
+                    defaultValue={ordemMats ?? []}
+                    errors={errors}
+                />
+                /*:<OrdemMatsCard 
+                    materiais={ordemMats} 
+                    isLoading={isLoadingDados}
+                />*/
+            }
+        </FormContainer>
     );
 }
