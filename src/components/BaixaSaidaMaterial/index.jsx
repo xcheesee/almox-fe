@@ -30,9 +30,11 @@ const BaixaSaidaMaterial = ({
   const [retorno, setRetorno] = useState([]);
   const [error, setError] = useState(false);
   const [invalidFocus, setInvalidFocus] = useState(false)
+  const [invalidReturnFocus, setInvalidReturnFocus] = useState(false)
 
   useEffect(() => {
-    const env = baixa.itens.map(material => material.enviado);
+    let env = []
+    env = baixa?.itens?.map(material => material.enviado);
     setEnviado(env);
     setRetorno(env);
   }, [])
@@ -116,15 +118,15 @@ const BaixaSaidaMaterial = ({
           Material utilizado
         </Typography>
 
-        <Collapse
-          in={baixa?.itens ? baixa.itens.length > 0 : false}
+        <Box
+          //in={baixa?.itens ? (baixa?.itens?.length > 0 ?? false) : false}
           component="form"
           id="baixa-items"
           onSubmit={checaErros}
         >
           <Paper sx={style.paperBg}>
             {
-              baixa?.itens.length > 0
+              baixa?.itens && baixa?.itens?.length > 0
                 ?
                 baixa?.itens.map((material, index) => (
                   <Paper className='p-4 grid grid-cols-2 items-center' key={`mat-${material.id}`}>
@@ -151,7 +153,7 @@ const BaixaSaidaMaterial = ({
                         label="Enviado"
                         onFocus={() => setInvalidFocus(true)}
                         value={material.quantidade}
-                        className="cursor-not-allowed"
+                        className="pointer-events-none"
                         onBlur={(e) => {
                           setInvalidFocus(false)
                           //handleBlur(e, index, enviado, material.quantidade);
@@ -180,11 +182,17 @@ const BaixaSaidaMaterial = ({
                       <TextField
                         label="Retorno"
                         value={retorno[index] || 0}
+                        className="pointer-events-none"
                         name={`saida_items[${index}].retorno`}
                         size="small"
-                        onBlur={() => setErrors({})}
-                        error={errors.hasOwnProperty(`retorno[${index}]`)}
-                        helperText={errors[`retorno[${index}]`] || ''}
+                        readOnly
+                        onBlur={() => {
+                          setErrors({})
+                          setInvalidReturnFocus(false)
+                        }}
+                        onFocus={() => setInvalidReturnFocus(true)}
+                        error={errors.hasOwnProperty(`retorno[${index}]`) || invalidReturnFocus}
+                        helperText={invalidReturnFocus ? (errors[`retorno[${index}]`] || "Campo nao alteravel") : " "}
                       />
                     </Box>
                   </Paper>
@@ -193,7 +201,7 @@ const BaixaSaidaMaterial = ({
                 <Typography sx={style.span}>Não há materiais a serem exibidos</Typography>
             }
           </Paper>
-        </Collapse>
+        </Box>
       </Box>
 
       <Box className="flex justify-end gap-4 pt-4">

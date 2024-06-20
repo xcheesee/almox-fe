@@ -3,11 +3,11 @@ import { useState } from "react";
 import { getTabela } from "../../common/utils";
 import { useQuery } from "@tanstack/react-query";
 
-export default function OSAutocomplete ({
-    disabled=false,
-    setOrdemServico=() => null,
-    clearForm=() => null,
-    defaultValue="",
+export default function OSAutocomplete({
+    disabled = false,
+    setOrdemServico = () => null,
+    clearForm = () => null,
+    defaultValue = "",
 }) {
 
     const [ordens, setOrdens] = useState([])
@@ -15,14 +15,20 @@ export default function OSAutocomplete ({
 
     const ordensQuery = useQuery({
         queryKey: ['ordemItens', ordemId],
-        queryFn: async () => await getTabela("ordem_servicos", "" , `&filter[id]=${ordemId}`),
+        queryFn: async () => await getTabela("ordem_servicos", "", `&filter[id]=${ordemId}`),
         onSuccess: (res) => {
             if (res.data.length === 0) {
-                return setOrdens([{id:0}])
-            } 
+                return setOrdens([{ id: 0 }])
+            }
             setOrdens(res.data)
         }
     })
+
+    if (ordensQuery.isLoading) return (
+        <Box className='flex justify-center'>
+            <CircularProgress size={48} />
+        </Box>
+    )
 
     return (
         <Autocomplete
@@ -30,28 +36,28 @@ export default function OSAutocomplete ({
             id="ordem_servico"
             loading={ordensQuery.isFetching}
             getOptionLabel={(option) => `${option.id}`}
-            renderInput={ (params) => <TextField 
-                    {...params} 
-                    name="ordem_servico_id"
-                    value={ordemId}
-                    label="Ordem de Servico" 
-                    onChange={async (e) => { 
-                        setOrdens([])
-                        setOrdemId(e.target.value) 
-                    }}
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <> 
-                                { ordensQuery.isFetching ? <CircularProgress color="inherit" size={24} /> : null }
-                                {params.InputProps.endAdornment}
-                            </> 
-                        )
-                    }}
-                />
+            renderInput={(params) => <TextField
+                {...params}
+                name="ordem_servico_id"
+                value={ordemId}
+                label="Ordem de Servico"
+                onChange={async (e) => {
+                    setOrdens([])
+                    setOrdemId(e.target.value)
+                }}
+                InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                        <>
+                            {ordensQuery.isFetching ? <CircularProgress color="inherit" size={24} /> : null}
+                            {params.InputProps.endAdornment}
+                        </>
+                    )
+                }}
+            />
             }
             renderOption={(props, option) => {
-                if(option.id === 0) {
+                if (option.id === 0) {
                     return (
                         <Box className="w-full justify-center p-4">
                             <Box>Nenhuma O.S Encontrada!</Box>
@@ -64,16 +70,17 @@ export default function OSAutocomplete ({
                     </Box>
                 )
             }}
-            onChange={ async (event, value, reason) => { 
+            onChange={async (event, value, reason) => {
                 if (reason === "clear") {
                     setOrdemId("")
                     return clearForm()
                 }
                 await setOrdemServico(value)
-             }}
+            }}
             options={ordens}
             filterOptions={(x) => x}
-            defaultValue={{id: defaultValue}}
+            defaultValue={{ id: defaultValue }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
         />
     )
 }
