@@ -25,18 +25,16 @@ const BaixaSaidaMaterial = ({
   setErrors,
   carregandoBaixa
 }) => {
-  const [enviado, setEnviado] = useState([]);
+  //const [enviado, setEnviado] = useState([]);
   const [usado, setUsado] = useState([]);
   const [retorno, setRetorno] = useState([]);
   const [error, setError] = useState(false);
   const [invalidFocus, setInvalidFocus] = useState(false)
   const [invalidReturnFocus, setInvalidReturnFocus] = useState(false)
+  const enviado = baixa?.itens?.map(material => material.enviado)
 
   useEffect(() => {
-    let env = []
-    env = baixa?.itens?.map(material => material.enviado);
-    setEnviado(env);
-    setRetorno(env);
+    setRetorno(enviado);
   }, [])
 
   const handleBlur = (e, index, valor, quantidade) => {
@@ -49,11 +47,16 @@ const BaixaSaidaMaterial = ({
 
     let arrRetorno = [...retorno];
     arrRetorno[index] = enviado[index] - arr[index];
-    setError(arrRetorno[index] < 0);
+    //setError(arrRetorno[index] < 0);
 
     setUsado([...arr]);
     setRetorno([...arrRetorno]);
   }
+
+  const handleChange = (e, index) => {
+    return setError(enviado[index] - e.target.value < 0)
+  }
+
 
   if (!baixa) {
     return <></>
@@ -173,6 +176,7 @@ const BaixaSaidaMaterial = ({
                           handleBlur(e, index, usado);
                           //setError((parseInt(enviado[index]) < parseInt(usado[index])) || (parseInt(enviado[index]) > parseInt(material.quantidade)));
                         }}
+                        onChange={(e) => handleChange(e, index)}
                         name={`saida_items[${index}].usado`}
                         error={parseInt(enviado[index]) < parseInt(usado[index])}
                         helperText={parseInt(enviado[index]) < parseInt(usado[index]) ? "O valor de usado não pode ser maior que o valor enviado" : ""}

@@ -9,8 +9,10 @@ export default function MateriaisBox({
     baseSelecionada = "",
     deptoSelecionado = "",
     defaultValue = [],
+    update = false,
     inputName = "",
     entrada = false,
+    loading = false,
     errors = {}
 }) {
     const [selectedTipo, setSelectedTipo] = useState("")
@@ -32,7 +34,7 @@ export default function MateriaisBox({
         enabled: entrada && !!selectedTipo,
     })
 
-    if (tipos.isLoading && !!deptoSelecionado) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
+    if ((tipos.isLoading && !!deptoSelecionado) || loading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
 
     return (
         <Box className="grid gap-4 w-full py-4">
@@ -64,6 +66,7 @@ export default function MateriaisBox({
                 isLoading={entrada ? materiaisEntrada.isLoading : materiais.isLoading}
                 enabled={!!selectedTipo}
                 defaultValue={defaultValue}
+                update={update}
                 inputName={inputName}
                 entrada={entrada}
             />

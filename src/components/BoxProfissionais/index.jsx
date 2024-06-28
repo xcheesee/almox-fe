@@ -23,8 +23,8 @@ export default function BoxProfissionais({
     defaultValue = [],
     name = "",
     loading = false,
+    update = false,
 }) {
-
     const inputTags = {
         nome: "nome",
         data_inicio: "data_inicio",
@@ -32,12 +32,12 @@ export default function BoxProfissionais({
     }
 
     const [inputErrors, setInputErrors] = useState({});
-    const [profissionais, setProfissionais] = useState(defaultValue)
+    const [profissionais, setProfissionais] = useState([...defaultValue])
     const inputData = JSON.stringify(profissionais)
 
     useEffect(() => {
         setProfissionais(defaultValue)
-    }, [defaultValue])
+    }, [update])
 
     function cadastraProfissional() {
         const nomeNode = document.getElementById(inputTags.nome);

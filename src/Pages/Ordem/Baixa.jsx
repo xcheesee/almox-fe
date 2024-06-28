@@ -22,7 +22,7 @@ const Baixa = ({ setSnackbar }) => {
     ])
     dados = saidaRes.data;
     if (dados.flg_baixa) {
-      throw errorBuilder(saidaRes, "Baixa Ja realizada")
+      throw errorBuilder(saidaRes, "Baixa já realizada")
     }
     dados.itens = itensRes.data
     dados.profissionais = profsRes.data

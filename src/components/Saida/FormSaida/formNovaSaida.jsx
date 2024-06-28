@@ -33,6 +33,7 @@ export default function FormNovaSaida({
     const [ordemServico, setOrdemServico] = useState()
     const [ordemMats, setOrdemMats] = useState()
     const [ordemProfs, setOrdemProfs] = useState()
+    const [changedOrdem, setChangedOrdem] = useState(false)
     const [isLoadingDados, setIsLoadingDados] = useState(false)
     const [baseSelecionada, setBaseSelecionada] = useState("")
     const [deptoSelecionado, setDeptoSelecionado] = useState("")
@@ -47,6 +48,7 @@ export default function FormNovaSaida({
         //setLocal("")
         setBaseSelecionada("")
         setDeptoSelecionado("")
+        setChangedOrdem(prev => !prev)
     }
 
     async function setOrdemFromOptions(value) {
@@ -59,6 +61,7 @@ export default function FormNovaSaida({
         setOrdemProfs(profRes)
         setOrdemMats(matsRes)
         setIsLoadingDados(false)
+        setChangedOrdem(prev => !prev)
     }
 
     //confere se a o.s. nao possui tanto profissionais quanto materiais
@@ -178,34 +181,25 @@ export default function FormNovaSaida({
                     <SaidaOSCard ordemServico={ordemServico} />
                 </>
             }
-            {/*noProfs()
-                ?*/ <BoxProfissionais
-                    label="Profissionais empregados"
-                    errors={errors}
-                    name="saida_profissionais"
-                    defaultValue={ordemProfs}
-                    loading={isLoadingDados}
-                // baseSelecionada={baseSelecionada}
-                // deptoSelecionado={deptoSelecionado}
-                />
-                /*: <OrdemProfsCard
-                    profissionais={ordemProfs}
-                    isLoading={isLoadingDados}
-                />*/
-            }
-            {/*noMats()
-                    ?*/<MateriaisBox
-                    deptoSelecionado={deptoSelecionado}
-                    baseSelecionada={baseSelecionada}
-                    inputName="saida_items"
-                    defaultValue={ordemMats ?? []}
-                    errors={errors}
-                />
-                /*:<OrdemMatsCard 
-                    materiais={ordemMats} 
-                    isLoading={isLoadingDados}
-                />*/
-            }
+            <BoxProfissionais
+                label="Profissionais empregados"
+                errors={errors}
+                name="saida_profissionais"
+                defaultValue={ordemProfs}
+                loading={isLoadingDados}
+                update={changedOrdem}
+            // baseSelecionada={baseSelecionada}
+            // deptoSelecionado={deptoSelecionado}
+            />
+            <MateriaisBox
+                deptoSelecionado={deptoSelecionado}
+                baseSelecionada={baseSelecionada}
+                inputName="saida_items"
+                defaultValue={ordemMats}
+                update={changedOrdem}
+                loading={isLoadingDados}
+                errors={errors}
+            />
         </FormContainer>
     );
 }

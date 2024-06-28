@@ -7,6 +7,7 @@ export default function OSAutocomplete({
     disabled = false,
     setOrdemServico = () => null,
     clearForm = () => null,
+    onChange = () => null,
     defaultValue = "",
 }) {
 
@@ -42,8 +43,8 @@ export default function OSAutocomplete({
                 value={ordemId}
                 label="Ordem de Servico"
                 onChange={async (e) => {
-                    setOrdens([])
-                    setOrdemId(e.target.value)
+                    setOrdens([]);
+                    setOrdemId(e.target.value);
                 }}
                 InputProps={{
                     ...params.InputProps,
@@ -75,6 +76,7 @@ export default function OSAutocomplete({
                     setOrdemId("")
                     return clearForm()
                 }
+                onChange()
                 await setOrdemServico(value)
             }}
             options={ordens}

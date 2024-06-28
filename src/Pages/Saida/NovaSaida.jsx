@@ -17,11 +17,11 @@ const NovaSaida = () => {
     //    setProfissionais([]);
     //}, [])
 
-    const formId="nova_saida"
+    const formId = "nova_saida"
 
     return (
         <>
-            <NovaSaidaContainer 
+            <NovaSaidaContainer
                 setOpenCancelar={setOpenCancelar}
                 openConfirmar={openConfirmar}
                 setOpenConfirmar={setOpenConfirmar}
@@ -29,12 +29,12 @@ const NovaSaida = () => {
                 setCarregando={setCarregando}
                 formId={formId}
             >
-                <FormNovaSaida 
+                <FormNovaSaida
                     formId={formId}
                     setOpenConfirmar={setOpenConfirmar}
-                    setCarregando={setCarregando} 
-                    //errors={errors}
-                    //setErrors={setErrors}
+                    setCarregando={setCarregando}
+                //errors={errors}
+                //setErrors={setErrors}
                 />
             </NovaSaidaContainer>
 
