@@ -171,9 +171,9 @@ export async function enviaNovaSaida({ formData }) {
   try {
     const res = await fetch(url, options);
     const json = await res.json();
-    if (!res.ok) throw errorBuilder(res, json.message);
+    if (!res.ok) throw json;
   } catch (e) {
-    throw errorBuilder(e, e.message);
+    throw e;
   }
 }
 
@@ -758,4 +758,3 @@ export const authEditOrdem = (perfil) => {
       return "none";
   }
 };
-

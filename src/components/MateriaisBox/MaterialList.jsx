@@ -1,4 +1,5 @@
 import { Box, Checkbox, CircularProgress, Paper, Typography } from "@mui/material";
+import { useMemo } from "react";
 import { useEffect, useState } from "react";
 import { primeiraLetraMaiuscula } from "../../common/utils";
 import CampoNumero from "../CampoNumero";
@@ -42,27 +43,9 @@ export default function MaterialList({
     entrada,
 }) {
     //formata valores recebido de um get de materiais pertencentes a um determinado item, para utilizacao do componente
-
-    let formattedDefault = defaultValue?.map((item) => ({
-        id: item.item_id,
-        nome: item.item,
-        medida: item.medida,
-        medida_id: item.medida_id,
-        tipo_item_id: item.tipo_item_id,
-        tipo_item: item.tipo_item,
-        //estoque: item.estoque,
-        quantidade: item.quantidade
-    })
-    )
-    const estoqueClassName = entrada ? "hidden" : "";
-    const [checkedItems, setCheckedItems] = useState(formattedDefault ?? [])
-
-    //transforma o objeto em string para enviar os valores dos itens selecionados 
-    //caso utilizado dentro de um form que envia dados por meio de onSubmit 
-    const inputData = JSON.stringify(checkedItems)
-
-    useEffect(() => {
-        let formattedDefault = defaultValue?.map((item) => ({
+    //
+    const formattedDefault = useMemo(
+        () => defaultValue?.map((item) => ({
             id: item.item_id,
             nome: item.item,
             medida: item.medida,
@@ -72,7 +55,18 @@ export default function MaterialList({
             //estoque: item.estoque,
             quantidade: item.quantidade
         })
-        )
+        ),
+        [defaultValue]
+    )
+
+    const estoqueClassName = entrada ? "hidden" : "";
+    const [checkedItems, setCheckedItems] = useState(formattedDefault ?? [])
+
+    //transforma o objeto em string para enviar os valores dos itens selecionados 
+    //caso utilizado dentro de um form que envia dados por meio de onSubmit 
+    const inputData = JSON.stringify(checkedItems)
+
+    useEffect(() => {
         setCheckedItems(formattedDefault ?? [])
     }, [update])
 

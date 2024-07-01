@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import {
     MenuItem,
     TextField,
 } from '@mui/material';
@@ -15,13 +15,13 @@ import MateriaisBox from '../../MateriaisBox';
 import ConditionalTooltip from '../../ConditionalTooltip';
 
 const FormOrdemServico = ({
-    defaultValue, 
-    setCarregando, 
-    setOpenEditar, 
-    setOpenConfirmar, 
-    acao, 
-    materiais=[],
-    profissionais=[],
+    defaultValue,
+    setCarregando,
+    setOpenEditar,
+    setOpenConfirmar,
+    acao,
+    materiais = [],
+    profissionais = [],
 }) => {
     const queryClient = useQueryClient()
 
@@ -35,15 +35,15 @@ const FormOrdemServico = ({
     const setSnackbar = useSetAtom(snackbarAtom)
 
     const departamentos = JSON.parse(localStorage.getItem('departamentos'));
-    
+
     const editMutation = useMutation({
         mutationFn: async (formData) => {
             setOpenConfirmar(false)
             setCarregando(true)
             return await enviaEdicao(
                 formData,
-                'ordem_servico', 
-                defaultValue.id, 
+                'ordem_servico',
+                defaultValue.id,
             )
         },
         onSuccess: async (res) => {
@@ -52,7 +52,7 @@ const FormOrdemServico = ({
             setFormSnackbar(setSnackbar, "Ordem de serviço", { edit: true })
         },
         onError: async (res) => {
-            setFormSnackbar(setSnackbar, "", { error: true , status: res.status, edit: true })
+            setFormSnackbar(setSnackbar, "", { error: true, status: res.status, edit: true })
             setErrors(res?.errors)
         },
         onSettled: () => setCarregando(false)
@@ -63,15 +63,15 @@ const FormOrdemServico = ({
             setOpenConfirmar(false)
             setCarregando(true)
             return await enviaNovoForm(
-                formData, 
-                'ordem_servico', 
+                formData,
+                'ordem_servico',
             )
         },
         onSuccess: async (res) => {
             queryClient.invalidateQueries(['ordemItens'])
             setFormSnackbar(setSnackbar, "Ordem de serviço")
             navigate(`/ordemservico`, { replace: true });
-        }, 
+        },
         onError: async (res) => {
             setFormSnackbar(setSnackbar, "", { error: true, status: res.status })
             setErrors(res?.errors)
@@ -95,26 +95,26 @@ const FormOrdemServico = ({
                 select
                 label="Departamento"
                 name="departamento_id"
-                onChange={async (e) => { 
-                    setDeptoSelecionado(e.target.value) 
+                onChange={async (e) => {
+                    setDeptoSelecionado(e.target.value)
                     setBaseSelecionada("")
                 }}
                 value={deptoSelecionado}
                 error={errors?.hasOwnProperty('departamento_id')}
                 helperText={errors?.departamento_id ?? " "}
-                disabled={ !!defaultValue?.departamento_id || false }
+                disabled={!!defaultValue?.departamento_id || false}
                 required
             >
                 {Object.entries(departamentos).map(departamento => (
                     <MenuItem key={departamento[0]} value={departamento[0]}>
                         {departamento[1]}
                     </MenuItem>
-                )) ??  <MenuItem value={99999999999}></MenuItem> 
+                )) ?? <MenuItem value={99999999999}></MenuItem>
                 }
             </TextField>
 
 
-            <ConditionalTooltip 
+            <ConditionalTooltip
                 enabled={!deptoSelecionado}
                 texto={"Selecione um Departamento!"}
             >
@@ -136,17 +136,17 @@ const FormOrdemServico = ({
                 />
             </ConditionalTooltip>
 
-            <ConditionalTooltip 
+            <ConditionalTooltip
                 enabled={!deptoSelecionado}
                 texto={"Selecione um Departamento!"}
             >
-                <CampoLocais 
+                <CampoLocais
                     label="Local de Serviço"
                     name="local_servico_id"
                     tipo="parque"
                     depto={deptoSelecionado}
                     value={localServico}
-                    onChange={ async e => {
+                    onChange={async e => {
                         setLocalServico(e.target.value)
                         //if(deptoSelecionado) {
                         //    const res = await getProfissionais(e.target.value, deptoSelecionado)
@@ -157,11 +157,11 @@ const FormOrdemServico = ({
                     helperText={errors?.local_servico_id || " "}
                     disabled={!deptoSelecionado}
                     required
-                    //restrito
+                //restrito
                 />
             </ConditionalTooltip>
 
-            <TextField 
+            <TextField
                 defaultValue={defaultValue?.especificacao}
                 name="especificacao"
                 label="Especificação"
@@ -171,8 +171,8 @@ const FormOrdemServico = ({
                 helperText={errors?.especificacao || " "}
                 fullWidth
             />
-        
-            <TextField 
+
+            <TextField
                 defaultValue={defaultValue?.observacoes}
                 name="observacoes"
                 label="Serviços extras/obervações"
@@ -182,22 +182,22 @@ const FormOrdemServico = ({
                 helperText={errors?.observacoes || " "}
                 fullWidth
             />
-        
-            <MateriaisBox 
-                deptoSelecionado={deptoSelecionado} 
-                baseSelecionada={baseSelecionada} 
-                defaultValue={materiais} 
+
+            <MateriaisBox
+                deptoSelecionado={deptoSelecionado}
+                baseSelecionada={baseSelecionada}
+                defaultValue={materiais}
                 inputName='ordem_servico_items'
             />
 
             <BoxProfissionais
-                label= "Profissionais empregados"
+                label="Profissionais empregados"
                 name="ordem_servico_profissionais"
                 defaultValue={profissionais}
             />
         </FormContainer>
     );
 }
-    
+
 
 export default FormOrdemServico;

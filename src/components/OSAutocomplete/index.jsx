@@ -8,6 +8,7 @@ export default function OSAutocomplete({
     setOrdemServico = () => null,
     clearForm = () => null,
     onChange = () => null,
+    error = "",
     defaultValue = "",
 }) {
 
@@ -42,6 +43,8 @@ export default function OSAutocomplete({
                 name="ordem_servico_id"
                 value={ordemId}
                 label="Ordem de Servico"
+                error={!!error}
+                helperText={error}
                 onChange={async (e) => {
                     setOrdens([]);
                     setOrdemId(e.target.value);

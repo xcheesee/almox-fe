@@ -64,16 +64,6 @@ export default function FormNovaSaida({
         setChangedOrdem(prev => !prev)
     }
 
-    //confere se a o.s. nao possui tanto profissionais quanto materiais
-    function noProfs() {
-        return isNoOSForm || ((!ordemProfs || ordemProfs.length === 0) && !isLoadingDados)
-
-    }
-
-    //function noMats() {
-    //    return isNoOSForm || ((!ordemMats || ordemMats.length === 0) && !isLoadingDados)
-    //}
-
     function formatOrdemForSaida(ordem) {
         if (!ordem) return {}
         const saida = {}
@@ -97,14 +87,17 @@ export default function FormNovaSaida({
         }
     }, {
         onSuccess: async () => {
+            setErrors({})
             queryClient.invalidateQueries(['saidas'])
             setFormSnackbar(setSnackbar, "Saida de Materiais")
             navigate(`/saida`, { replace: true });
         }, onError: async (res) => {
+            const osError = res?.errors?.ordem_servico_id
+            const osErrorString = osError.reduce((acc, curr) => acc + curr + "\n")
             setSnackbar({
                 open: true,
                 severity: "error",
-                message: res.message
+                message: <span>{res.message} <br /> {!!osError ? osErrorString : ""}</span>
             })
             setErrors(res?.errors ?? {})
         }, onSettled: () => setCarregando(false)
@@ -139,6 +132,7 @@ export default function FormNovaSaida({
                     disabled={isNoOSForm}
                     setOrdemServico={setOrdemFromOptions}
                     clearForm={clearForm}
+                    error={errors?.ordem_servico_id?.reduce((acc, curr) => acc + curr + "\n") ?? ""}
                 />
 
                 <Box className='flex'>

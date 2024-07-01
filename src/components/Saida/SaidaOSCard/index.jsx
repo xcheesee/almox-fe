@@ -1,6 +1,7 @@
 import { Box, Paper } from "@mui/material"
+import { formataDateTime } from "../../../common/utils"
 
-export default function SaidaOSCard ({ordemServico}) {
+export default function SaidaOSCard({ ordemServico }) {
     if (!ordemServico) return <></>
 
     return (
@@ -9,7 +10,7 @@ export default function SaidaOSCard ({ordemServico}) {
                 <Box className="p-4 grid grid-cols-2 gap-4 justify-center">
                     <Box className="font-bold text-xl">Ordem de Servico Nº {ordemServico.id}</Box>
                     <Box className="text-gray-400 justify-self-end">
-                        Inicio: {ordemServico.data_inicio_servico} - Fim: {ordemServico.data_fim_servico ?? "N/A"}
+                        Inicio: {formataDateTime(ordemServico.data_inicio_servico)} - Fim: {formataDateTime(ordemServico.data_fim_servico) == "" ? "N/A" : formataDateTime(ordemServico.data_fim_servico)}
                     </Box>
                     <Box className="font-bold col-span-2 justify-self-center py-2">
                         {ordemServico.departamento}
@@ -19,7 +20,7 @@ export default function SaidaOSCard ({ordemServico}) {
                         <span className="pl-4">{ordemServico.origem} </span>
                     </Box>
                     <Box>
-                        <span className="font-bold flex flex-col">Local de Servico:</span> 
+                        <span className="font-bold flex flex-col">Local de Servico:</span>
                         <span className="pl-4">{ordemServico.local_servico}</span>
                     </Box>
                     <Box className="col-span-2 flex flex-col">

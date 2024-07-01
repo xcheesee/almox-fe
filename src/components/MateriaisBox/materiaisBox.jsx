@@ -34,7 +34,7 @@ export default function MateriaisBox({
         enabled: entrada && !!selectedTipo,
     })
 
-    if ((tipos.isLoading && !!deptoSelecionado) || loading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
+    if ((baseSelecionada && tipos.isLoading) || loading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
 
     return (
         <Box className="grid gap-4 w-full py-4">
