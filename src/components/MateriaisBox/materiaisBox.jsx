@@ -36,20 +36,30 @@ export default function MateriaisBox({
 
     if ((baseSelecionada && tipos.isLoading) || loading) return <Box className="w-full flex justify-center"><CircularProgress size={32} /></Box>
 
+    const noTipos = tipos?.data?.data.length == 0 ?? true;
+    const getTooltipText = () => {
+        if (!baseSelecionada) {
+            return "Selecione uma base"
+        } else if (noTipos) {
+            return "Nao ha tipos cadastrados nessa base"
+        }
+        return ""
+    }
+
     return (
         <Box className="grid gap-4 w-full py-4">
             <Typography className="!text-3xl !font-thin">Materiais</Typography>
 
             <ConditionalTooltip
-                enabled={!baseSelecionada && !entrada}
-                texto={"Selecione uma base"}
+                enabled={!baseSelecionada || noTipos}
+                texto={getTooltipText()}
             >
                 <TextField
                     select
                     label="Tipo de material"
                     value={selectedTipo}
                     onChange={(e) => setSelectedTipo(e.target.value)}
-                    disabled={!baseSelecionada && !entrada}
+                    disabled={!baseSelecionada || noTipos}
                 >
                     {tipos?.data?.data?.map((val, i) =>
                         <MenuItem value={val.id} key={`m-item-${i}`} >

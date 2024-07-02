@@ -114,27 +114,22 @@ const FormOrdemServico = ({
             </TextField>
 
 
-            <ConditionalTooltip
-                enabled={!deptoSelecionado}
-                texto={"Selecione um Departamento!"}
-            >
-                <CampoLocais
-                    label="Base de origem dos materiais"
-                    name="origem_id"
-                    tipo="base"
-                    depto={deptoSelecionado}
-                    onChange={(e) => setBaseSelecionada(e.target.value)}
-                    onLocaisQuery={(res) => setBaseSelecionada(prev => {
-                        return prev === "" ? (res.length === 1 ? res[0].id : "") : prev
-                    })}
-                    value={baseSelecionada}
-                    error={errors.hasOwnProperty('origem_id')}
-                    helperText={errors.origem_id || ""}
-                    disabled={!deptoSelecionado}
-                    required
-                    restrito
-                />
-            </ConditionalTooltip>
+            <CampoLocais
+                label="Base de origem dos materiais"
+                name="origem_id"
+                tipo="base"
+                depto={deptoSelecionado}
+                onChange={(e) => setBaseSelecionada(e.target.value)}
+                onLocaisQuery={(res) => setBaseSelecionada(prev => {
+                    return prev === "" ? (res.length === 1 ? res[0].id : "") : prev
+                })}
+                value={baseSelecionada}
+                error={errors.hasOwnProperty('origem_id')}
+                helperText={errors.origem_id || ""}
+                disabled={!deptoSelecionado}
+                required
+                restrito
+            />
 
             <ConditionalTooltip
                 enabled={!deptoSelecionado}
