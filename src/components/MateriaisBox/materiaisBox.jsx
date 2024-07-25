@@ -13,6 +13,7 @@ export default function MateriaisBox({
     inputName = "",
     entrada = false,
     loading = false,
+    displayOnly = false,
     errors = {}
 }) {
     const [selectedTipo, setSelectedTipo] = useState("")
@@ -59,7 +60,7 @@ export default function MateriaisBox({
                     label="Tipo de material"
                     value={selectedTipo}
                     onChange={(e) => setSelectedTipo(e.target.value)}
-                    disabled={!baseSelecionada || noTipos}
+                    disabled={!baseSelecionada || noTipos || displayOnly}
                 >
                     {tipos?.data?.data?.map((val, i) =>
                         <MenuItem value={val.id} key={`m-item-${i}`} >
